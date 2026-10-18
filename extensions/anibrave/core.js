@@ -1,6 +1,6 @@
 export const hostKey = url => { try { const u = new URL(url); return /^https?:$/.test(u.protocol) ? u.hostname.toLowerCase().replace(/^www\./, '') : ''; } catch { return ''; } };
 export const titleKey = title => String(title).normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
-export const validSpeed = speed => typeof speed === 'number' && Number.isFinite(speed) && speed >= .25 && speed <= 3;
+export const validSpeed = speed => typeof speed === 'number' && Number.isFinite(speed) && speed >= .25 && speed <= 5;
 const MODES = ['desktop', 'mobile', 'identity'];
 
 export function normalizeSpeed(speed) {
@@ -18,16 +18,6 @@ export function formatSpeed(speed) {
   return `${Number.isInteger(n) ? n.toFixed(0) : n}×`;
 }
 
-// Snap to a rate the site player actually offers, so the extension does not
-// keep writing a value the player immediately rejects.
-export function nearestSpeed(rate, allowed) {
-  const target = normalizeSpeed(rate);
-  if (target == null) return null;
-  const choices = (Array.isArray(allowed) ? allowed : []).map(normalizeSpeed).filter(n => n != null);
-  if (!choices.length || choices.some(n => speedsMatch(n, target))) return target;
-  return choices.reduce((best, n) => Math.abs(n - target) < Math.abs(best - target) ? n : best);
-}
-
 export function mergeSettings(current, patch, now = Date.now()) {
   const settings = {
     speed: normalizeSpeed(current?.speed) ?? 1,
@@ -36,7 +26,7 @@ export function mergeSettings(current, patch, now = Date.now()) {
   };
   if (patch?.speed !== undefined) {
     const speed = normalizeSpeed(patch.speed);
-    if (speed == null) throw Error('Speed must be between 0.25× and 3×.');
+    if (speed == null) throw Error('Speed must be between 0.25× and 5×.');
     const updated = Number(patch.speedUpdated) || now;
     if (updated >= settings.speedUpdated) {
       settings.speed = speed;
@@ -51,7 +41,7 @@ export function mergeSettings(current, patch, now = Date.now()) {
 }
 
 // How to react when a media element reports a new playbackRate.
-// ignore: echo of our own write, an ad, a preview, or a rate outside 0.25×–3×.
+// ignore: echo of our own write, an ad, a preview, or a rate outside 0.25×–5×.
 // enforce: startup window — put the saved speed back once.
 // adopt: the site chose this speed; remember it instead of fighting.
 export function rateDecision({mediaRate, savedRate, suppressRate, withinSuppress, withinHold, adActive, main}) {

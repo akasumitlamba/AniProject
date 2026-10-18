@@ -4,7 +4,7 @@
   const normalizeSpeed = speed => {
     if (typeof speed !== 'number' || !Number.isFinite(speed)) return null;
     const rounded = Math.round((speed + Number.EPSILON) * 100) / 100;
-    return rounded >= .25 && rounded <= 3 ? rounded : null;
+    return rounded >= .25 && rounded <= 5 ? rounded : null;
   };
   const speedsMatch = (a, b) => typeof a === 'number' && typeof b === 'number' && Math.abs(a - b) < .01;
   const rateDecision = ({mediaRate, savedRate, suppressRate, withinSuppress, withinHold, adActive, main}) => {

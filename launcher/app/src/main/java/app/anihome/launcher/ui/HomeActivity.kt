@@ -88,7 +88,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         hideStatusBar()
         store = TileStore(this)
-        widgets = WidgetController(this, binding.widgetGrid)
+        widgets = WidgetController(this, binding.widgetGrid, ::setDragScrolling)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
@@ -117,6 +117,9 @@ class HomeActivity : AppCompatActivity() {
         touchHelper = ItemTouchHelper(DragCallback())
         touchHelper.attachToRecyclerView(binding.grid)
 
+        binding.btnEdit.setImageResource(R.drawable.ic_check)
+        binding.btnEdit.contentDescription = "Finish editing Home"
+        binding.btnEdit.setOnClickListener { setEditMode(false) }
         binding.btnNotifications.setOnClickListener { notificationPanel.show() }
         binding.btnMore.setOnClickListener { showMoreMenu(it) }
         binding.btnSearch.imageTintList = null
@@ -164,9 +167,9 @@ class HomeActivity : AppCompatActivity() {
         val vertical = resources.getBoolean(R.bool.vertical_controls)
         val controlSize = if (vertical) 52 else 44
         val iconPadding = if (vertical) 10 else 6
-        val actions = listOf(binding.btnSearch, binding.btnAdd, binding.btnNotifications)
+        val actions = listOf(binding.btnSearch, binding.btnAdd, binding.btnNotifications) + if (tiles.editMode) listOf(binding.btnEdit) else emptyList()
         val all = listOf(binding.railBrand, binding.btnSearch, binding.btnAdd, binding.btnNotifications,
-            binding.btnSettings, binding.btnMore, binding.btnApps, clock, recents, notificationBadge)
+            binding.btnSettings, binding.btnEdit, binding.btnMore, binding.btnApps, clock, recents, notificationBadge)
         all.forEach { (it.parent as? ViewGroup)?.removeView(it) }
         val rail = binding.controlRail
         rail.removeAllViews()
@@ -232,12 +235,13 @@ class HomeActivity : AppCompatActivity() {
         GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onDown(event: MotionEvent) = true
             override fun onDoubleTap(event: MotionEvent): Boolean {
+                if (tiles.editMode || !homePreferences.getBoolean("double_tap_lock", true)) return false
                 gestureConsumed = true
                 systemAction(AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN)
                 return true
             }
             override fun onLongPress(event: MotionEvent) {
-                if (emptyGesture && !dragging) { gestureConsumed = true; cancelHomeTouch(event); setEditMode(true) }
+                if (emptyGesture && !dragging) { gestureConsumed = true; cancelHomeTouch(event); binding.root.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS); setEditMode(true) }
             }
             override fun onFling(start: MotionEvent?, end: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
                 if (start == null || gestureConsumed || dragging) return false
@@ -263,7 +267,7 @@ class HomeActivity : AppCompatActivity() {
     }
     private fun emptyHomeSpace(event: MotionEvent): Boolean {
         val x = event.rawX.toInt(); val y = event.rawY.toInt()
-        if (!contains(binding.homeScroll, x, y) || contains(binding.controlRail, x, y) || contains(binding.defaultBanner, x, y)) return false
+        if (!contains(binding.root, x, y) || contains(binding.controlRail, x, y) || contains(binding.defaultBanner, x, y)) return false
         // Never steal a gesture from an app tile, a provider widget, or its controls.
         for (i in 0 until binding.grid.childCount) {
             val tile = binding.grid.getChildAt(i)
@@ -284,6 +288,11 @@ class HomeActivity : AppCompatActivity() {
             emptyGesture = !dragging && emptyHomeSpace(event)
             gestureConsumed = false
             gestureAtTop = binding.homeScroll.scrollY == 0
+            if (!emptyGesture) {
+                val cancel = MotionEvent.obtain(event).apply { action = MotionEvent.ACTION_CANCEL }
+                gestures.onTouchEvent(cancel)
+                cancel.recycle()
+            }
         }
         if (emptyGesture) gestures.onTouchEvent(event)
         val consumed = emptyGesture && gestureConsumed
@@ -304,6 +313,13 @@ class HomeActivity : AppCompatActivity() {
             }
             ViewCompat.postOnAnimation(binding.homeScroll, this)
         }
+    }
+    private fun setDragScrolling(active: Boolean) {
+        if (!active) { stopDragScroll(); return }
+        dragging = true
+        binding.homeScroll.requestDisallowInterceptTouchEvent(true)
+        binding.homeScroll.removeCallbacks(dragScroll)
+        ViewCompat.postOnAnimation(binding.homeScroll, dragScroll)
     }
     private fun stopDragScroll() {
         dragging = false
@@ -404,6 +420,7 @@ class HomeActivity : AppCompatActivity() {
     private fun setEditMode(enabled: Boolean) {
         tiles.editMode = enabled
         widgets.setEditMode(enabled)
+        configureRail()
         binding.btnSettings.isActivated = enabled
         ViewCompat.setStateDescription(binding.btnSettings, if (enabled) "Editing home" else "Home settings")
     }
@@ -538,7 +555,10 @@ class HomeActivity : AppCompatActivity() {
                 configureRail()
             }
         }
-        panel.section("Swipe gestures", R.drawable.ic_gestures) {
+        panel.section("Gestures", R.drawable.ic_gestures) {
+            panel.toggle(this, "Double tap empty Home to lock", homePreferences.getBoolean("double_tap_lock", true)) {
+                homePreferences.edit().putBoolean("double_tap_lock", it).apply()
+            }
             HomeInteractionPolicy.Swipe.entries.forEach { direction ->
                 val row = LinearLayout(this@HomeActivity).apply { gravity = Gravity.CENTER_VERTICAL }
                 row.addView(android.widget.TextView(this@HomeActivity).apply {
@@ -665,10 +685,7 @@ class HomeActivity : AppCompatActivity() {
         override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
             super.onSelectedChanged(viewHolder, actionState)
             if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
-                dragging = true
-                binding.homeScroll.requestDisallowInterceptTouchEvent(true)
-                binding.homeScroll.removeCallbacks(dragScroll)
-                ViewCompat.postOnAnimation(binding.homeScroll, dragScroll)
+                setDragScrolling(true)
             } else stopDragScroll()
         }
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) = Unit

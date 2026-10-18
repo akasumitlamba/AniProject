@@ -2,6 +2,9 @@ package app.anihome.launcher.notifications
 
 import android.content.ComponentName
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
+import android.app.Notification
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import androidx.core.app.NotificationManagerCompat
@@ -10,6 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 /** Live device notifications only: never persisted, logged, backed up or transmitted. */
 class HomeNotifications : NotificationListenerService() {
+    private val handler = Handler(Looper.getMainLooper())
     private val current = linkedMapOf<String, StatusBarNotification>()
     override fun onListenerConnected() {
         connected = this
@@ -22,6 +26,7 @@ class HomeNotifications : NotificationListenerService() {
     override fun onListenerDisconnected() { clear() }
     override fun onDestroy() { clear(); super.onDestroy() }
     private fun clear() {
+        handler.removeCallbacksAndMessages(null)
         current.clear()
         if (connected === this) { connected = null; state.value = emptyList(); connectionState.value = false }
     }
@@ -35,14 +40,32 @@ class HomeNotifications : NotificationListenerService() {
         fun enabled(context: Context) = context.packageName in NotificationManagerCompat.getEnabledListenerPackages(context)
         fun isConnected() = connected != null
         fun reconnect(context: Context) { requestRebind(ComponentName(context, HomeNotifications::class.java)) }
-        fun dismiss(key: String) { connected?.let { service ->
-            if (service.current[key]?.isClearable == true) runCatching { service.cancelNotification(key) }
-        } }
-        fun clearAll() { connected?.let { service ->
-            val keys = NotificationPolicy.dismissible(service.current.values.map {
-                NotificationPolicy.Entry(it.key, it.groupKey, false, it.isClearable)
-            })
-            if (keys.isNotEmpty()) runCatching { service.cancelNotifications(keys.toTypedArray()) }
-        } }
+        fun dismiss(key: String, result: (Boolean) -> Unit = {}) {
+            val service = connected ?: return result(false)
+            service.cancel(setOf(key), result)
+        }
+        fun clearAll(result: (Boolean) -> Unit = {}) {
+            val service = connected ?: return result(false)
+            service.cancel(service.current.keys.toSet(), result)
+        }
+    }
+    private fun cancel(requested: Set<String>, result: (Boolean) -> Unit) {
+        val keys = NotificationPolicy.dismissalTargets(current.values.map {
+            NotificationPolicy.Entry(it.key, it.groupKey, it.notification.flags and Notification.FLAG_GROUP_SUMMARY != 0, it.isClearable)
+        }, requested)
+        val postedAt = keys.associateWith { current[it]?.postTime }
+        if (keys.isEmpty()) { result(requested.none { it in current }); return }
+        if (runCatching { cancelNotifications(keys.toTypedArray()) }.isFailure) { result(false); return }
+        // Listener callbacks can be delayed or missed after a rebind. Reconcile with Android,
+        // rather than permanently hiding a card that is still active in the system.
+        handler.postDelayed({
+            if (connected !== this) { result(false); return@postDelayed }
+            val active = runCatching { activeNotifications?.toList() ?: emptyList() }.getOrNull()
+            if (active == null) { result(false); return@postDelayed }
+            current.clear()
+            active.forEach { current[it.key] = it }
+            publish()
+            result(keys.none { current[it]?.postTime == postedAt[it] })
+        }, 750)
     }
 }

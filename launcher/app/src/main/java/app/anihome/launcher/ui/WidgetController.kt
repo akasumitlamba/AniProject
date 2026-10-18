@@ -23,6 +23,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -30,7 +31,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 /** Local widget host. One TV tile is two columns by two rows of conventional widget cells. */
-class WidgetController(private val activity: AppCompatActivity, private val grid: RecyclerView) {
+class WidgetController(private val activity: AppCompatActivity, private val grid: RecyclerView, private val onDragging: (Boolean) -> Unit = {}) {
     private data class Entry(val id: Int, var columns: Int, var rows: Int, val kind: String = BuiltInWidgetPolicy.PROVIDER, var note: String = "")
     private val prefs = activity.getSharedPreferences("home_widgets", 0)
     private val manager = AppWidgetManager.getInstance(activity)
@@ -40,6 +41,29 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
     private var pendingId = prefs.getInt("pending", -1)
     private var editing = false
     private val adapter = WidgetAdapter()
+    private val dragHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+        ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, 0
+    ) {
+        override fun isLongPressDragEnabled() = false
+        override fun onMove(view: RecyclerView, from: RecyclerView.ViewHolder, to: RecyclerView.ViewHolder): Boolean {
+            val start = from.bindingAdapterPosition
+            val end = to.bindingAdapterPosition
+            if (!editing || !HomeInteractionPolicy.validMove(start, end, entries.size)) return false
+            entries.add(end, entries.removeAt(start))
+            adapter.notifyItemMoved(start, end)
+            return true
+        }
+        override fun onSelectedChanged(holder: RecyclerView.ViewHolder?, state: Int) {
+            super.onSelectedChanged(holder, state)
+            onDragging(state == ItemTouchHelper.ACTION_STATE_DRAG)
+        }
+        override fun clearView(view: RecyclerView, holder: RecyclerView.ViewHolder) {
+            super.clearView(view, holder)
+            onDragging(false)
+            save()
+        }
+        override fun onSwiped(holder: RecyclerView.ViewHolder, direction: Int) = Unit
+    })
     private val builtIns = BuiltInWidgets(activity)
     private val bind = activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == Activity.RESULT_OK) configureOrAdd() else cancelAdding()
@@ -64,6 +88,7 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
         }
         grid.layoutManager = layout
         grid.adapter = adapter
+        dragHelper.attachToRecyclerView(grid)
         grid.isNestedScrollingEnabled = false
         grid.itemAnimator = null
         grid.addOnLayoutChangeListener { _, left, _, right, _, oldLeft, _, oldRight, _ ->
@@ -87,7 +112,11 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
         (grid.layoutManager as GridLayoutManager).spanCount = columns
         refresh()
     }
-    fun setEditMode(value: Boolean) { editing = value; adapter.notifyDataSetChanged() }
+    fun setEditMode(value: Boolean) {
+        editing = value
+        if (!value) { dragHelper.attachToRecyclerView(null); dragHelper.attachToRecyclerView(grid) }
+        adapter.notifyDataSetChanged()
+    }
 
     fun pick() {
         if (pendingId != -1) {
@@ -400,7 +429,9 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
             if (!builtin && info == null) { holder.container.addView(TextView(activity).apply { text = "Widget unavailable" }); return }
             if (editing) holder.container.addView(Button(activity).apply {
                 text = "${if (builtin) builtIns.title(entry.kind) else info!!.loadLabel(activity.packageManager)} · Edit"
+                contentDescription = "Edit widget; hold and drag to rearrange"
                 setOnClickListener { options(entry) }
+                setOnLongClickListener { dragHelper.startDrag(holder); true }
             }, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
             val height = (entry.rows * cellHeightDp() * activity.resources.displayMetrics.density).toInt()
             if (builtin) {

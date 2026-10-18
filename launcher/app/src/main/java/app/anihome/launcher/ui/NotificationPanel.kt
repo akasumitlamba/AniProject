@@ -12,6 +12,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDialog
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.anihome.launcher.R
@@ -48,10 +49,9 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
         }
         val heading = LinearLayout(activity).apply { gravity = Gravity.CENTER_VERTICAL }
         heading.addView(ArtworkUi.title(activity, "Notifications").apply { textSize = 16f }, LinearLayout.LayoutParams(0, dp(40), 1f))
-        val clear = ArtworkUi.plainIcon(activity, R.drawable.ic_clear_all, "Clear all notifications") { HomeNotifications.clearAll() }
+        val clear = ArtworkUi.plainIcon(activity, R.drawable.ic_clear_all, "Clear all notifications") { }
         compactIcon(clear, 40)
         heading.addView(clear)
-        heading.addView(ArtworkUi.plainIcon(activity, R.drawable.ic_close, "Close notifications") { dismiss() }.also { compactIcon(it, 40) })
         root.addView(heading)
         val state = TextView(activity).apply { textSize = 13f; setTextColor(0xffbdbdbd.toInt()); setPadding(dp(6), dp(20), dp(6), dp(12)) }
         val access = ArtworkUi.chip(activity, "Notification access", R.drawable.ic_notifications) {
@@ -65,7 +65,24 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
         }
         val emptyScroll = ScrollView(activity).apply { addView(empty) }
         val adapter = Cards()
+        clear.setOnClickListener {
+            expandedKeys.clear()
+            adapter.notifyDataSetChanged()
+            HomeNotifications.clearAll { success ->
+                if (!success && isShowing) Toast.makeText(activity, "Some notifications could not be dismissed", Toast.LENGTH_SHORT).show()
+            }
+        }
         val list = RecyclerView(activity).apply { layoutManager = LinearLayoutManager(activity); this.adapter = adapter; itemAnimator = null }
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(view: RecyclerView, from: RecyclerView.ViewHolder, to: RecyclerView.ViewHolder) = false
+            override fun getSwipeDirs(view: RecyclerView, holder: RecyclerView.ViewHolder): Int {
+                val item = adapter.items.getOrNull(holder.bindingAdapterPosition)
+                return if (item?.isClearable == true) super.getSwipeDirs(view, holder) else 0
+            }
+            override fun onSwiped(holder: RecyclerView.ViewHolder, direction: Int) {
+                (holder as? Card)?.key?.let { dismissNotification(it, adapter) }
+            }
+        }).attachToRecyclerView(list)
         val notifications = FrameLayout(activity).apply {
             addView(list, FrameLayout.LayoutParams(-1, -1))
             addView(emptyScroll, FrameLayout.LayoutParams(-1, -1))
@@ -85,6 +102,8 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
             }
         }.apply { setContentView(root) }
         dialog = sheet
+        sheet.setCancelable(true)
+        sheet.setCanceledOnTouchOutside(true)
         sheet.setOnDismissListener { quickSettings.detach(); collector?.cancel(); collector = null; adapter.items = emptyList(); expandedKeys.clear(); dialog = null }
         sheet.window?.let { SidePanelLayout.apply(activity, it) }
         sheet.show()
@@ -96,6 +115,7 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
                 val visible = NotificationPolicy.visible(notifications.map {
                     NotificationPolicy.Entry(it.key, it.groupKey, it.notification.flags and Notification.FLAG_GROUP_SUMMARY != 0, it.isClearable)
                 })
+                expandedKeys.retainAll(visible)
                 adapter.items = notifications.filter { it.key in visible }; adapter.notifyDataSetChanged()
                 val enabled = HomeNotifications.enabled(activity)
                 state.text = when {
@@ -110,6 +130,14 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
                 clear.isEnabled = enabled && notifications.any { it.isClearable }
                 clear.alpha = if (clear.isEnabled) 1f else 0.4f
             }
+        }
+    }
+    private fun dismissNotification(key: String, adapter: Cards) {
+        expandedKeys.remove(key)
+        // Reset expansion and any swipe translation even if Android refuses cancellation.
+        adapter.notifyDataSetChanged()
+        HomeNotifications.dismiss(key) { success ->
+            if (!success && isShowing) Toast.makeText(activity, "This notification could not be dismissed", Toast.LENGTH_SHORT).show()
         }
     }
     private fun compactIcon(icon: ImageButton, size: Int) {
@@ -166,7 +194,7 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
             holder.title.visibility = if (holder.title.text.isEmpty()) View.GONE else View.VISIBLE
             holder.body.visibility = if (holder.body.text.isEmpty()) View.GONE else View.VISIBLE
             holder.close.visibility = if (sbn.isClearable) View.VISIBLE else View.GONE
-            holder.close.setOnClickListener { HomeNotifications.dismiss(sbn.key) }
+            holder.close.setOnClickListener { dismissNotification(sbn.key, this) }
             holder.actions.removeAllViews()
             n.actions.orEmpty().filter { it.remoteInputs.isNullOrEmpty() && it.actionIntent != null }.take(3).forEach { action ->
                 holder.actions.addView(ArtworkUi.textChip(activity, action.title.toString().take(32)) {

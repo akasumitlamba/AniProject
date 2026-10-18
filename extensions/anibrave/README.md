@@ -4,7 +4,7 @@ An unpacked Manifest V3 extension for Brave on PC. No Android build or web app i
 
 ## Install
 
-1. Extract `AniBrave-Extension-0.1.2.zip` into a permanent folder.
+1. Extract `AniBrave-Extension-0.1.3.zip` into a permanent folder.
 2. Open `brave://extensions` in Brave and enable **Developer mode**.
 3. Choose **Load unpacked**, then select the extracted folder containing `manifest.json`.
 4. Open Brave’s extensions menu (puzzle piece) and pin **AniBrave — Playback & Anime Memory**. The AniBrave lion appears in the toolbar.
@@ -14,9 +14,9 @@ Keep that folder: Brave loads the extension from it. To update, replace its file
 
 ## Playback
 
-Use the − and + buttons to adjust speed in 0.25× steps, from 0.25× through 3×. The same speed is shared with the site’s own playback control. Changing it on YouTube (or another HTML player) updates the extension, including the popup while it is open. Changing it in the extension updates the player and its on-screen control through the native player API where available. Native API acknowledgements are handled asynchronously; an old reply cannot overwrite a newer selection. Existing native selections are preserved even when a legacy API reports an incomplete speed list. If the player cannot use a speed — some players expose a restricted rate menu — the extension settles on the nearest speed the player accepts instead of fighting it. Repeated competing writes can cause visible speed oscillation and unnecessary player work.
+Use the − and + buttons to adjust speed in 0.25× steps, from 0.25× through 5×. The same speed is shared with the site’s own playback control. Changing it on YouTube (or another HTML player) updates the extension, including the popup while it is open. Changing it in the extension updates the player and its on-screen control through the native player API where available. Native API acknowledgements are handled asynchronously; an old reply cannot overwrite a newer selection. Existing native selections are preserved even when a legacy API reports an incomplete speed list. An explicit extension choice takes precedence over a restricted site speed menu. If the native player API refuses it, the extension applies the requested speed to the HTML media element and filters scripted rate resets instead of repeatedly rewriting competing speeds. A real site click/key selection releases that filter and becomes the new saved choice. The site’s menu may lack the higher rate even while actual media playback uses it. Protected players or code that bypasses the media setter can still restrict playback. Repeated competing writes can cause visible speed oscillation and unnecessary player work.
 
-The selection is remembered per hostname; `www` and the bare hostname share settings, while other subdomains remain separate. YouTube and Crunchyroll can have different speeds. New videos, episode transitions, frames, reloads, and later visits reapply the selected speed. A short, bounded startup window restores the saved speed over automatic player resets. A real click/key change on the site takes priority even during that window. YouTube ad playback is left alone when the player reports its ad state, and does not overwrite the saved speed. Rates outside 0.25×–3× are left to the site. Long HTML audio is supported; clips under 20 seconds are not sped up. Existing website media controls stay on the page.
+The selection is remembered per hostname; `www` and the bare hostname share settings, while other subdomains remain separate. YouTube and Crunchyroll can have different speeds. New videos, episode transitions, frames, reloads, and later visits reapply the selected speed. A short, bounded startup window restores the saved speed over automatic player resets. A real click/key change on the site takes priority even during that window. YouTube ad playback is left alone when the player reports its ad state, and does not overwrite the saved speed. Rates outside 0.25×–5× are left to the site. Long HTML audio is supported; clips under 20 seconds are not sped up. Existing website media controls stay on the page.
 
 Choose a website view from the single View dropdown. Episode memory is collapsed until opened.
 
@@ -42,10 +42,14 @@ All settings/history stay in `chrome.storage.local` on this browser profile. If 
 
 ## Validation
 
-- `node --test tests/*.test.js`: 28 checks covering speed ordering, validation, history edits, private-window history guards, message scope and debugger cancellation.
+- `node --test tests/*.test.js`: 29 checks covering speed ordering, validation, history edits, private-window history guards, message scope and debugger cancellation.
 - `node tests/browser.cjs`: isolated real Brave profile; extension loading, popup speed changes, site-control sync in both directions, asynchronous native acknowledgements, rapid clicks, player speed limits, ad playback left intact, replacement videos, cross-origin embedded players, open shadow roots, reload persistence, history rename/deletion, reminder dismissal/revisit, phone layout, identity-only view and desktop restoration. Requires Playwright and Brave; set `PLAYWRIGHT_MODULE` / `BRAVE_BINARY` if needed.
 
 Two Python packaging tests verify manifest resources and the page-world bridge. The automated browser suite uses local HTML fixtures. An additional unsigned-in public YouTube check used its actual Playback speed menu and verified site-control-to-extension and extension-to-player synchronization. Signed-in YouTube/Crunchyroll streams, DRM playback, and future live-site markup changes still need acceptance testing. No claim of bug-free compatibility is made.
+
+## 0.1.3 speed precedence
+
+Extends the selectable range to 5× and retains explicit extension speeds above the native player menu limit. The media fallback releases on real site interaction, ad playback and detached players. Regression checks cover native menu rejection, scripted resets, trusted site changes and ads.
 
 ## 0.1.2 maintenance
 

@@ -3,7 +3,7 @@
   // Site player methods live in MAIN world, not the extension's isolated world.
   if (window.__anibravePlayer) return;
   window.__anibravePlayer = true;
-  const rate = n => typeof n === 'number' && Number.isFinite(n) && n >= .25 && n <= 3 ? Math.round(n * 100) / 100 : null;
+  const rate = n => typeof n === 'number' && Number.isFinite(n) && n >= .25 && n <= 5 ? Math.round(n * 100) / 100 : null;
   const near = (a, b) => typeof a === 'number' && typeof b === 'number' && Math.abs(a - b) < .01;
   function media(root, id, depth = 0) {
     if (!root?.querySelectorAll || depth > 8) return null;
@@ -13,28 +13,67 @@
     }
     return null;
   }
+  const guarded = new Map();
+  const nativeRate = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'playbackRate');
+  const guardObserver = new MutationObserver(() => {
+    for (const v of guarded.keys()) {
+      let ad = false;
+      for (let p = v; p; p = p.parentElement || p.getRootNode()?.host) {
+        if (p.classList?.contains('ad-showing') || p.classList?.contains('ad-interrupting')) { ad = true; break; }
+      }
+      if (!v.isConnected || ad) release(v);
+    }
+  });
+  function release(v) {
+    if (!guarded.has(v)) return;
+    const previous = guarded.get(v).previous;
+    if (previous) Object.defineProperty(v, 'playbackRate', previous);
+    else delete v.playbackRate;
+    guarded.delete(v);
+    if (!guarded.size) guardObserver.disconnect();
+  }
+  // A real site-control selection can replace the extension choice. Scripted clamps cannot.
+  for (const type of ['pointerdown', 'keydown']) document.addEventListener(type, event => {
+    if (event.isTrusted) for (const v of guarded.keys()) release(v);
+  }, true);
+  function forceMedia(v, requested) {
+    if (!nativeRate?.get || !nativeRate?.set) return;
+    if (!guarded.has(v)) {
+      const previous = Object.getOwnPropertyDescriptor(v, 'playbackRate');
+      // Do not destroy another controller's non-configurable property.
+      if (previous?.configurable === false) return;
+      guarded.set(v, {previous, requested});
+      Object.defineProperty(v, 'playbackRate', {
+        configurable: true,
+        get() { return nativeRate.get.call(this); },
+        set(value) {
+          const guard = guarded.get(this);
+          if (!guard || near(value, guard.requested)) nativeRate.set.call(this, value);
+        }
+      });
+    }
+    guardObserver.observe(document, {subtree: true, childList: true, attributes: true, attributeFilter: ['class']});
+    guarded.get(v).requested = requested;
+    nativeRate.set.call(v, requested);
+  }
   function apply(v, requested) {
     // Only update this media's own native player. Ads/other players are not targets.
     for (let player = v; player; player = player.parentElement || player.getRootNode()?.host) {
-      if (player.classList?.contains('ad-showing') || player.classList?.contains('ad-interrupting')) return requested;
+      if (player.classList?.contains('ad-showing') || player.classList?.contains('ad-interrupting')) { release(v); return requested; }
       if (typeof player.setPlaybackRate !== 'function') continue;
       try {
+        release(v);
         const current = typeof player.getPlaybackRate === 'function' ? player.getPlaybackRate() : null;
-        // A native control can offer rates omitted from an older API's advertised list.
         if (near(current, requested)) return requested;
         player.setPlaybackRate(requested);
-        const actual = typeof player.getPlaybackRate === 'function' ? rate(player.getPlaybackRate()) : null;
-        if (near(actual, requested)) return requested;
-        const offered = typeof player.getAvailablePlaybackRates === 'function' ? player.getAvailablePlaybackRates() : null;
-        const allowed = Array.isArray(offered) ? offered.map(rate).filter(n => n != null) : [];
-        if (allowed.length && !allowed.some(n => near(n, requested))) {
-          const accepted = allowed.reduce((best, n) => Math.abs(n - requested) < Math.abs(best - requested) ? n : best);
-          if (!near(actual, accepted)) player.setPlaybackRate(accepted);
-          return accepted;
-        }
+        const actual = typeof player.getPlaybackRate === 'function' ? player.getPlaybackRate() : null;
+        // A site's advertised menu is not the browser media engine's limit. Keep the
+        // explicit choice and use HTML playback when the native API refuses it.
+        if (!near(actual, requested)) forceMedia(v, requested);
         return requested;
-      } catch { return requested; }
+      } catch { forceMedia(v, requested); return requested; }
     }
+    forceMedia(v, requested);
     return requested;
   }
   window.addEventListener('message', event => {

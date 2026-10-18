@@ -26,8 +26,8 @@ android {
         applicationId = "app.anihome.launcher"
         minSdk = 26
         targetSdk = 35
-        versionCode = 26
-        versionName = "0.8.14"
+        versionCode = 27
+        versionName = "0.8.15"
         vectorDrawables.useSupportLibrary = true
     }
 
