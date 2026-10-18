@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="6dp"
+    android:layout_marginEnd="6dp"
+    android:background="@drawable/bg_continue_card"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:maxWidth="280dp"
+    android:minWidth="200dp"
+    android:orientation="horizontal"
+    android:paddingStart="14dp"
+    android:paddingTop="10dp"
+    android:paddingEnd="4dp"
+    android:paddingBottom="10dp">
+
+    <LinearLayout
+        android:id="@+id/body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:maxWidth="220dp"
+            android:textColor="@color/text"
+            android:textSize="13sp"
+            tools:text="You were on episode 9 of Frieren: Beyond Journey's End" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_dismiss"
+        style="@style/Widget.AniHome.IconButton"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="4dp"
+        android:contentDescription="@string/action_dismiss_reminder"
+        android:padding="8dp"
+        android:src="@drawable/ic_close" />
+</LinearLayout>

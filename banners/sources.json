@@ -1,0 +1,1227 @@
+[
+  {
+    "id": "youtube-music",
+    "name": "YouTube Music",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.youtube.music&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/MyptZXmcCyF59phIWPsNCfHq6zSO_ojEdw_4rMYYWPOGdikSjqeOXcoszBZ053VYpINe5K7ZR9KV1nkFWgxdOw=s0-br30",
+    "verifiedPlayTitle": "YouTube Music - Apps on Google Play",
+    "brandColor": "#FF0033"
+  },
+  {
+    "id": "clash-of-clans",
+    "name": "Clash of Clans",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.supercell.clashofclans&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/sFmWfYbYp_2ea7VRMTnwd3gjIBrPGXHj_d_ab1_k1q1p2OMk4riGMF1vqxdhONOtTYOt_BVpk7a4AYcKU68LNGQ=s0-br30",
+    "verifiedPlayTitle": "Clash of Clans - Apps on Google Play",
+    "brandColor": "#F0C64D"
+  },
+  {
+    "id": "google",
+    "name": "Google",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.googlequicksearchbox&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/xqk8hd6dMyffxE6iQa59cUt75EA-0YDvjnJlxH4z8W63-e5KwaWXbrNob6Q-OoH5SSDa78Y0I0YA3BB0zDVnB8w=s0-br30",
+    "verifiedPlayTitle": "Google - Apps on Google Play",
+    "brandColor": "#FFFFFF"
+  },
+  {
+    "id": "instagram",
+    "name": "Instagram",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.instagram.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/yHi59jmO_lVamcyJ1i3rM1_E8bAiAspShnGjjURq05ipQQSUksO3QVEsXTegRSqul038-4YNA7O644XAcx251Q=s0-br30",
+    "verifiedPlayTitle": "Instagram - Apps on Google Play",
+    "brandColor": "#C13584"
+  },
+  {
+    "id": "snapchat",
+    "name": "Snapchat",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.snapchat.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/nOJWJoDAzuRSHmlFfpzHXAj8UbTJwk_JGYf0uAPTKPtiiIX_2Y7r5ATO1ZtxHRqaFTqfIDZ40PnBK4hukeJh=s0-br30",
+    "verifiedPlayTitle": "Snapchat - Apps on Google Play",
+    "brandColor": "#FFFC00"
+  },
+  {
+    "id": "reddit",
+    "name": "Reddit",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.reddit.frontpage&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/8FVS0kvM60JwqZWRNzBIlwrZZxJa8vpli8IWaaTo8QXRe1PHmCNJ8UpWoXkGPV3jKEaTY2OVAeYoisOnGJXY=s0-br30",
+    "verifiedPlayTitle": "Reddit: Recommended By Sachin - Apps on Google Play",
+    "brandColor": "#FF4500"
+  },
+  {
+    "id": "apple-tv",
+    "name": "Apple TV",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.apple.atve.androidtv.appletv&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/OClJIvZt6akgvt1v9AZf5C0RHtanBLtxtEKPMO-iU0UQgOIaKqSf_efqSi06H8dRNVVAz1y9rMX8TUugdpSI9A=s0-br30",
+    "verifiedPlayTitle": "Apple TV: Shows, Movies & More - Apps on Google Play",
+    "brandColor": "#101010"
+  },
+  {
+    "id": "myjio",
+    "name": "MyJio",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.jio.myjio&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/NXcAxgd2mmvEOKDR7vZSywec4JYoFTsS7VzrGkh2QwOgCXbiAT_3qRqY3tpmkVomRDdv2IgxZRQapqBnFErg7w=s0-br30",
+    "verifiedPlayTitle": "MyJio: For Everything Jio - Apps on Google Play",
+    "brandColor": "#0A2885"
+  },
+  {
+    "id": "paytm",
+    "name": "Paytm",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=net.one97.paytm&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/WDGsMRuVENnZPEpV4DEaXw12qtMY3em85xpmZqcXzeh0iT_eXFtAU9VUj-Z7xNQQd5DMqrkKSs9D0qbI1rlt=s0-br30",
+    "verifiedPlayTitle": "Paytm: Secure UPI Payments - Apps on Google Play",
+    "brandColor": "#002970"
+  },
+  {
+    "id": "cred",
+    "name": "CRED",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.dreamplug.androidapp&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/PJvM1900ufKia-hc7l7eaU0quGrOm_sx1x_szS_-lA7kRm9sb7gr1cgI8uQMH7tq3n-vnx0SkIUZa19fwz2G=s0-br30",
+    "verifiedPlayTitle": "CRED: Credit Cards, Bills, UPI - Apps on Google Play",
+    "brandColor": "#181818"
+  },
+  {
+    "id": "google-pay",
+    "name": "Google Pay",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Wbik2RoUSGgWEg8ybAhFaMJO2fE7x9gqCXfwbmW0YPjh6TKcjKzecth8GaYkbUBYtLZXhyfVMpqkIuJgTM8p=s0-br30",
+    "verifiedPlayTitle": "Google Pay: Secure UPI payment - Apps on Google Play",
+    "brandColor": "#FFFFFF"
+  },
+  {
+    "id": "phonepe",
+    "name": "PhonePe",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.phonepe.app&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/ARGoCZk-5QCKPpyTsGhn1WahhPbVMa95T1U7clwnI8gjtW-YNY96rAANqFkuENbU35IbYF2Gjg2UjZXA495x0A=s0-br30",
+    "verifiedPlayTitle": "PhonePe UPI Payments, Loan App - Apps on Google Play",
+    "brandColor": "#5F259F"
+  },
+  {
+    "id": "duolingo",
+    "name": "Duolingo",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.duolingo&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/tw_coGKgk1K_zO-Ypf9zBKV1s-KT3dYN1MIUxIqtnbfmON5x_YmuoAr31gE4oSfJHNtA-aStTd-qe9R8S6NVyA=s0-br30",
+    "verifiedPlayTitle": "Duolingo: Learn Languages - Apps on Google Play",
+    "brandColor": "#58CC02"
+  },
+  {
+    "id": "google-maps",
+    "name": "Google Maps",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.maps&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/B8pdO_2K5nBsF0g1h6dKwV_jQFLP-XombGDEQGtJT-mw1EUKCKJpa9lBGCF4rP_MwCsozSXyvI3z19g9R3J4=s0-br30",
+    "verifiedPlayTitle": "Google Maps - Apps on Google Play",
+    "brandColor": "#FFFFFF"
+  },
+  {
+    "id": "bing",
+    "name": "Microsoft Bing",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.microsoft.bing&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Llv5qosW9ejRHVUYmyNKucKbu271n15AqWV4kwLSUHrfYpzOrNeAunBZ9hnpphvRP0BR8yCfQUR-V1ZCeCrerA=s0-br30",
+    "verifiedPlayTitle": "Microsoft Bing Search - Apps on Google Play",
+    "brandColor": "#00809D"
+  },
+  {
+    "id": "naukri",
+    "name": "Naukri",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=naukriApp.appModules.login&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/8XpMlCAY1Xsr2fO4u86b6AFErfh9zq7FPZzpio4X9eAKSEhUJfFPmu_KX9jK-iEsAXZVWDt9FORixVf61yJo=s0-br30",
+    "verifiedPlayTitle": "Naukri: Job Search App - Apps on Google Play",
+    "brandColor": "#4A90E2"
+  },
+  {
+    "id": "linkedin",
+    "name": "LinkedIn",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.linkedin.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/oij55bxj3e-4JrhGntpki0lnQyE8yQn8X5FPEzZ0t7cLppeiSINynEk7n9COoh7QSaCOZ_yiPO31NVaW4SDbWg=s0-br30",
+    "verifiedPlayTitle": "LinkedIn: Community & Network - Apps on Google Play",
+    "brandColor": "#0A66C2"
+  },
+  {
+    "id": "adobe-acrobat",
+    "name": "Adobe Acrobat Reader",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.adobe.reader&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/VIohTA3wyJgKJ-SZzoJeYuykxyVFCbSmXFAjefIGQybY57FX44VCHyVa3CTOZROzWLbMc-VFwL4CEDj47LeRpM0=s0-br30",
+    "verifiedPlayTitle": "Adobe Acrobat Reader: Edit PDF - Apps on Google Play",
+    "brandColor": "#ED2224"
+  },
+  {
+    "id": "adobe-express",
+    "name": "Adobe Express",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.adobe.spark.post&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/wRRbdNCwLGLovy0kTfhjHZpcggVHRJmYc1hkoCy2Q3kljku-WsAEL437L90MIPF1tW_XZkwihE7AMO7d_EF1Sg=s0-br30",
+    "verifiedPlayTitle": "Adobe Express: AI Photo, Video - Apps on Google Play",
+    "brandColor": "#5316C8"
+  },
+  {
+    "id": "adobe-photoshop",
+    "name": "Adobe Photoshop",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.adobe.photoshop.retail&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/CDdttb_dBXoeygilKolRae_ideVLb2izBHmgZrLO1BKwVNvwMF-lkwR5yVrQ4goYEsjFVOBbUyk77493ap8XZnk=s0-br30",
+    "verifiedPlayTitle": "Adobe Photoshop: Photo Editor - Apps on Google Play",
+    "brandColor": "#001E36"
+  },
+  {
+    "id": "adobe-lightroom",
+    "name": "Adobe Lightroom",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.adobe.lrmobile&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/ALv_YzwUQTXc17qvu2oy7JTl8Qn-zm22M4FoZKVv2Ru541nDa2EltKPSlv_KyQGacLdpHLotR9Z98bamyEd9rKc=s0-br30",
+    "verifiedPlayTitle": "Lightroom AI Photo Editor - Apps on Google Play",
+    "brandColor": "#001E36"
+  },
+  {
+    "id": "microsoft-edge",
+    "name": "Microsoft Edge",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.microsoft.emmx&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/4Z1Nt1I9HUDevt5VJ7BmgpqSTUpsC0Ei1K-IiXSmkH5Dzorz_isDzq4qdpb75RA1SfOV7v6csav-atWBur1wJQM=s0-br30",
+    "verifiedPlayTitle": "Microsoft Edge - Apps on Google Play",
+    "brandColor": "#0078D4"
+  },
+  {
+    "id": "flipkart",
+    "name": "Flipkart",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.flipkart.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/mlWjVjxflQoYJHBBgDQ08FqT8i3KnDG__2RH8P-GWOKlEPAIo8TllTZo3HDQ3J5zlO6oAhc1FAv0Bf2on0wL8w=s0-br30",
+    "verifiedPlayTitle": "Flipkart Online Shopping App - Apps on Google Play",
+    "brandColor": "#2874F0"
+  },
+  {
+    "id": "amazon",
+    "name": "Amazon Shopping",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=in.amazon.mShop.android.shopping&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/E2Nyw1kSrYFvi5DFOznWOR2iXY9mwxwfYHXV37aLHmuKtEW3gs7StIvVptoV2x8_ykiHQQmliwpfDsFm0Quuwbk=s0-br30",
+    "verifiedPlayTitle": "Amazon India Shop, Pay, miniTV - Apps on Google Play",
+    "brandColor": "#232F3E"
+  },
+  {
+    "id": "github",
+    "name": "GitHub",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.github.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/nxpwi4UD84GNJuJ42S9U0f3lGDsHu8VkIDPCccFmJL6kyNVb1O3pTY1rl1YZICLBk6EcWIaX6n9prCbdUoQEOw=s0-br30",
+    "verifiedPlayTitle": "GitHub - Apps on Google Play",
+    "brandColor": "#181717"
+  },
+  {
+    "id": "chess-com",
+    "name": "Chess.com",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.chess&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/jun3x57JiaIDT-RS7Vs2E-maCq3A1-dAN9CxlHl2lri2o64CY86b0Isspoa_lMXFunSJCmPm56OR-bnuJt6L1LI=s0-br30",
+    "verifiedPlayTitle": "Chess - Play and Learn Online - Apps on Google Play",
+    "brandColor": "#769656"
+  },
+  {
+    "id": "whatsapp",
+    "name": "WhatsApp",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.whatsapp&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Gqxk4T0uZsDwFp07DE-508hkyvcNmgFuRwPiwTEfF7D7OzGv1FdHDzEyMxNsSBZLOJlGpe3ULvVM2RgrRAlBqA=s0-br30",
+    "verifiedPlayTitle": "WhatsApp Messenger - Apps on Google Play",
+    "brandColor": "#25D366"
+  },
+  {
+    "id": "facebook",
+    "name": "Facebook",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.facebook.katana&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/12KEJDhgk6oyE1VgmfCuFzFrQripZ_endElbvEhU1rZawQgV3RI-v3II8fDslI1sdC_WKBkmtxS3jxuIihk33Q=s0-br30",
+    "verifiedPlayTitle": "Facebook - Apps on Google Play",
+    "brandColor": "#1877F2"
+  },
+  {
+    "id": "messenger",
+    "name": "Messenger",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.facebook.orca&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/cuRpiGqvAMkcbAOibD-AKCBagAunUkspQUWC_jVZF2Hob_ODdmkefnZeqkofW1idFQHhgZgnLIjsqT-2v7JKBw=s0-br30",
+    "verifiedPlayTitle": "Messenger - Apps on Google Play",
+    "brandColor": "#0078FF"
+  },
+  {
+    "id": "threads",
+    "name": "Threads",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.instagram.barcelona&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/6PzXaP0KaRU4DifAfsXKbWNVA3JPrP9uklvEh5EDhzPRdPfHV4tzszhAavQa4bq0YGdbnphBucz9vEUXiu1Ebg=s0-br30",
+    "verifiedPlayTitle": "Threads - Apps on Google Play",
+    "brandColor": "#101010"
+  },
+  {
+    "id": "x",
+    "name": "X",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.twitter.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/IsLsCD4eLC2CYvlkgTI6Z5TROj0BJIBgUF7BZ5eliTzyyTjqG_mbofeG4kw2s7oG_JZMSi5ErLz_qsDi169C8w=s0-br30",
+    "verifiedPlayTitle": "X - Apps on Google Play",
+    "brandColor": "#101010"
+  },
+  {
+    "id": "discord",
+    "name": "Discord",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.discord&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/w2DdjDHGSj3DQElQQM0_J3PsNsALS-WD3CBeH0aXOYceR-F3aT02gFonhoFzz-Tc9ec8Dx9cLqh48-tzIFcP=s0-br30",
+    "verifiedPlayTitle": "Discord - Talk, Play, Hang Out - Apps on Google Play",
+    "brandColor": "#5865F2"
+  },
+  {
+    "id": "signal",
+    "name": "Signal",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/HXEs85Okatm4_lZMmCaLFk3iXQ6_lrr00i8nsxaqBRSy6VGnsP7F50dKUfrO37Sj0nxtzSjMpKbjgWh6d0PTyEA=s0-br30",
+    "verifiedPlayTitle": "Signal Private Messenger - Apps on Google Play",
+    "brandColor": "#3A76F0"
+  },
+  {
+    "id": "pinterest",
+    "name": "Pinterest",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.pinterest&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/VExMwhu9Fe5kz72YnPWP6mHrNA5WfgZ-PJMnBnQmXFpLncTAOaaHtK4b8w7b2xxGxtqycDatYslVyNSLucl9QA=s0-br30",
+    "verifiedPlayTitle": "Pinterest - Apps on Google Play",
+    "brandColor": "#E60023"
+  },
+  {
+    "id": "spotify",
+    "name": "Spotify",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.spotify.music&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/IzQgYCcnCFCD08GR-3bdtcT8xzOvrNkC84avGT5CwTX2VIqmTmKKJcP_Cd4JoBOdmCMlTndlOzV6hrthg2fOWA=s0-br30",
+    "verifiedPlayTitle": "Spotify: Music and Podcasts - Apps on Google Play",
+    "brandColor": "#1DB954"
+  },
+  {
+    "id": "netflix",
+    "name": "Netflix",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.netflix.mediaclient&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/fXVS45nukV1x9PYVSKHkCQK0QGCOishIvAOxIZS3sgRem8HS7l9l94_Ggj-WZPrTLePRdNYN4pp4SPAQL7oS0PU=s0-br30",
+    "verifiedPlayTitle": "Netflix - Apps on Google Play",
+    "brandColor": "#E50914"
+  },
+  {
+    "id": "prime-video",
+    "name": "Prime Video",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.amazon.avod.thirdpartyclient&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/NnoDzfxkvlsAvU8jzoPeK8aaxbcU2sEH_btwgMQ2xI88_qtrNGQuf1vlFkxSiQODyKVFZ3-s71sU1MHyV-vc9Q=s0-br30",
+    "verifiedPlayTitle": "Prime Video - Apps on Google Play",
+    "brandColor": "#00A8E1"
+  },
+  {
+    "id": "sonyliv",
+    "name": "Sony LIV",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.sonyliv&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/OSPwLdQHHx16DNvMT8GxkBvpzj5x9WG9_DmJoTMS1YKKbg1YsQlfzTLzc-XTkCLaF9FT7-I-kX9RvSUxSAwYRA=s0-br30",
+    "verifiedPlayTitle": "Sony LIV: Sports & Entmt - Apps on Google Play",
+    "brandColor": "#181818"
+  },
+  {
+    "id": "zee5",
+    "name": "ZEE5",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.graymatrix.did&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/NyMT3ByjkBG1FhdFX9GSj_0mXLNIAuz_IZO8Xr9Noow6D4IQs-Srai9Hklad5gDasSv6F5tHYwsquk1mXErQ5A=s0-br30",
+    "verifiedPlayTitle": "Zee 5 - Apps on Google Play",
+    "brandColor": "#161616"
+  },
+  {
+    "id": "apple-music",
+    "name": "Apple Music",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.apple.android.music&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/MGyoUqkEdhfozD6bo8otUvCEsD4RlGorPXOqKGdap99JX1McBjHgI70iGai-W-_YenuJ8gdIGJQQmUt2wP7ung=s0-br30",
+    "verifiedPlayTitle": "Apple Music - Apps on Google Play",
+    "brandColor": "#FA243C"
+  },
+  {
+    "id": "mx-player",
+    "name": "MX Player",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.mxtech.videoplayer.ad&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/pL-FlnQwdyKetEhT_Uzre61MnGKhMgLC7wnV12KgC_wrQbU0UbSkYs4T5fQQWL_QLZZ48fl1mBmN-cNbc1wSZA=s0-br30",
+    "verifiedPlayTitle": "MX Player: Video Player & OTT - Apps on Google Play",
+    "brandColor": "#0099FF"
+  },
+  {
+    "id": "jiosaavn",
+    "name": "JioSaavn",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.jio.media.jiobeats&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/tJwz_QkxqQN1yFfb8ItXc2hpfzzSfxA-sdqaPGv51ldOFDXCMSmG0coD0uCzKo5y28rJLzyiIY7tmCHiuOOtdKM=s0-br30",
+    "verifiedPlayTitle": "JioSaavn - Music & Podcasts - Apps on Google Play",
+    "brandColor": "#2BC5B4"
+  },
+  {
+    "id": "swiggy",
+    "name": "Swiggy",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=in.swiggy.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/FJ5W5ygiN-DYfpd2-3LqyN5F-OxDtQ7z_9v5nAeD4vOrN8kQitoOwULactKgKvktXowVEM491wE-unmGmnt8OWM=s0-br30",
+    "verifiedPlayTitle": "Swiggy: Food Instamart Dineout - Apps on Google Play",
+    "brandColor": "#FC8019"
+  },
+  {
+    "id": "zomato",
+    "name": "Zomato",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.application.zomato&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/F3A40FhcqC9fAoPeYpC_olDg2Upkq1UsylJCvmZmB7a26R0S6L-2Zo35-exR8n-__0M-uFTHq3T_nbS9oxDQ15w=s0-br30",
+    "verifiedPlayTitle": "Zomato: Food Delivery & Dining - Apps on Google Play",
+    "brandColor": "#E23744"
+  },
+  {
+    "id": "blinkit",
+    "name": "Blinkit",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.grofers.customerapp&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/dY1ryTjOaVsnslxvNamNvSBulmDUkvW5f5FJ_HDApMfecSOIxjCafpNAv4LTG8TJVyp0XR9tAAaRI4K77Eiqfg=s0-br30",
+    "verifiedPlayTitle": "Blinkit: Groceries & more - Apps on Google Play",
+    "brandColor": "#F8CB46"
+  },
+  {
+    "id": "zepto",
+    "name": "Zepto",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.zeptoconsumerapp&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/jrtmMFv4qjtgMPQeaQzUFZ3EYBkHd_8OFYl6O1Ngt5Pey52RJAR4u8K4IoPILkJz76a7s5U3DNaY3r3xnl7t8X4=s0-br30",
+    "verifiedPlayTitle": "Zepto: Groceries in minutes - Apps on Google Play",
+    "brandColor": "#5A1692"
+  },
+  {
+    "id": "bigbasket",
+    "name": "bigbasket",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.bigbasket.mobileapp&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/OP5Xf_95EAJhJ_riZcWxyaFUu4TaEISBVHXLkzRfK2PH2AZQrVGsZgru0Y4r2BMJhnl_fCRixVBDLQGVhNuI=s0-br30",
+    "verifiedPlayTitle": "bigbasket: Groceries and more - Apps on Google Play",
+    "brandColor": "#84C225"
+  },
+  {
+    "id": "myntra",
+    "name": "Myntra",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.myntra.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/G4PzdZ4rHsX_itOqEa603UMdUmCcEgA4uvmuGJ4mSRkA8zJ8UkPGSGYptSK0yM9mmx6WlJCKEASy8WxXE8XBHg=s0-br30",
+    "verifiedPlayTitle": "Myntra - Fashion Shopping App - Apps on Google Play",
+    "brandColor": "#FF3F6C"
+  },
+  {
+    "id": "meesho",
+    "name": "Meesho",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.meesho.supply&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/lQrsRJ7PT25f2J8n14Zp4j0695_2NIpIUEQpG6bEuljhk7oJ8q_GeA5iYgWm1DiDq0WFPBWP4iaJcXi4XPwoWCk=s0-br30",
+    "verifiedPlayTitle": "Meesho: Online Shopping App - Apps on Google Play",
+    "brandColor": "#F43397"
+  },
+  {
+    "id": "jiomart",
+    "name": "JioMart",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.jpl.jiomart&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/NdZijEuqyzce2NCzGc7C2lddwmgwp-IRCHMgZccZ2dMo0vwo9TgKx7sJriU2E_7eApu3Ols8GBcXEWCdbsN_=s0-br30",
+    "verifiedPlayTitle": "JioMart Online Shopping App - Apps on Google Play",
+    "brandColor": "#008ECC"
+  },
+  {
+    "id": "uber",
+    "name": "Uber",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.ubercab&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/OXQnDlRtPa5ha6KCnKPqVmxHYBP7tjrAa7PXGNRqcwDC_J03HVeuEKcKrkcIqnfOqsF5uy3uwWxIXR067QHsNQ=s0-br30",
+    "verifiedPlayTitle": "Uber - Bike, Auto & Car Rides - Apps on Google Play",
+    "brandColor": "#101010"
+  },
+  {
+    "id": "ola",
+    "name": "Ola",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.olacabs.customer&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/X2EES6J1Q6cf18gTsBX-yWvsLrDm31TjwjwbSGE8t8w-v1uEIpHDNExfTF3tw_bbOqeRuYZhPg5mOu-kLWKhJ64=s0-br30",
+    "verifiedPlayTitle": "Ola: Book Cab, Auto, Bike Taxi - Apps on Google Play",
+    "brandColor": "#C8DD41"
+  },
+  {
+    "id": "rapido",
+    "name": "Rapido",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.rapido.passenger&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/94XgU5OUmk5HIyv6gn9ZVJWudLxUjeAunu8QcORlmEx3sG_bw8NArUjvKx3lSAXsJAOYf7qfz1Fi7E-xEN4O=s0-br30",
+    "verifiedPlayTitle": "Rapido: Bike-Taxi, Auto & Cabs - Apps on Google Play",
+    "brandColor": "#F9D400"
+  },
+  {
+    "id": "irctc",
+    "name": "IRCTC Rail Connect",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=cris.org.in.prs.ima&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/zwiNMuB10nmp3HTXdM9gNoAZBAQOur4AvXr-JMr9PPmsYtqxPGGGp-RJnKC14WVcnPWjhMpmb876okDltLDD0g=s0-br30",
+    "verifiedPlayTitle": "IRCTC Rail Connect - Apps on Google Play",
+    "brandColor": "#213A8F"
+  },
+  {
+    "id": "ixigo",
+    "name": "ixigo Trains",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.ixigo.train.ixitrain&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Ax51Po0dz9yGJYPzHKzVJB69hL0VWVDvjYmbJFoF_n1cTlIGwk9dwzq_zLHxLMxcDNteFXaw9Kc5OkWRAfWnyw=s0-br30",
+    "verifiedPlayTitle": "ixigo Train, Bus, Metro Ticket - Apps on Google Play",
+    "brandColor": "#FC790D"
+  },
+  {
+    "id": "makemytrip",
+    "name": "MakeMyTrip",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.makemytrip&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/_dXIQDuR0zm2GVbcPla3IQMTmCIh-6bDKNZ1jELwTn82BWrkmte-EZDKiAJ7qigppAyYqUEf8Zf74cvVKzjKZA=s0-br30",
+    "verifiedPlayTitle": "MakeMyTrip: Hotel, Flight, Bus - Apps on Google Play",
+    "brandColor": "#EB2026"
+  },
+  {
+    "id": "goibibo",
+    "name": "Goibibo",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.goibibo&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/0a5E7RrRoJLWcCpTLqlkanPO9rD-6RQ8_cP7L5CIZP5diVaW9ytfmO_roFa-c4qZhwaVQCaITYDo4h3IEIq79A=s0-br30",
+    "verifiedPlayTitle": "Goibibo: Hotel, Flight & Train - Apps on Google Play",
+    "brandColor": "#F26722"
+  },
+  {
+    "id": "redbus",
+    "name": "redBus",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=in.redbus.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/43E5nFgmkuKssO6qMp8RVnhQFDKVUWiRj4onvTASAFV38f7UI1ywQ0xYRhq4CLVc2sWf8Glm8GRS5n4lj-aFyIg=s0-br30",
+    "verifiedPlayTitle": "redBus Book Bus, Train Tickets - Apps on Google Play",
+    "brandColor": "#D84E55"
+  },
+  {
+    "id": "bookmyshow",
+    "name": "BookMyShow",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.bt.bms&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/TB_8RMvDjxGmx06LBK-8opRFJ0msb6hSZalEtOMBmxgJ4jYE_i0BmdRuMWChCE76tLnxoytZ75Cew_r0_JDd=s0-br30",
+    "verifiedPlayTitle": "BookMyShow | Movies & Events - Apps on Google Play",
+    "brandColor": "#F84464"
+  },
+  {
+    "id": "airtel",
+    "name": "Airtel Thanks",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.myairtelapp&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/v00UJ-fq2PRJgxukJtiZY5JVGcP-uEi44zRWWIgTaB7kw6lZ8KOxpqTsIQe-MLcS_ojUT3XXY-XfoiCUL1J9lg=s0-br30",
+    "verifiedPlayTitle": "Airtel: Recharge, Bank & Loans - Apps on Google Play",
+    "brandColor": "#ED1C24"
+  },
+  {
+    "id": "bhim",
+    "name": "BHIM",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=in.org.npci.upiapp&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/rPJLwugORRZudZYpG6HrP2ejHgdinQzqkKgdPvsoCM5jc_7d507xaYCVUWELWOTu2OEEdwtZNJ7ySq5Mpj2S7DQ=s0-br30",
+    "verifiedPlayTitle": "BHIM Bharat's Own Payments App - Apps on Google Play",
+    "brandColor": "#EE7B23"
+  },
+  {
+    "id": "mobikwik",
+    "name": "MobiKwik",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.mobikwik_new&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Uvs56Ws0HOjsm7iOkl7nWaPHutFkZBwr6JoMu4bGCSGyQUyGD8FwzPF-LdrkTZC9M2vVDIF9ocznlv2y334Z=s0-br30",
+    "verifiedPlayTitle": "MobiKwik: Loans, UPI & Wallet - Apps on Google Play",
+    "brandColor": "#0066FF"
+  },
+  {
+    "id": "yono-sbi",
+    "name": "YONO SBI",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.sbi.lotusintouch&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/S7fFzuIKI7cFtClNrKuCrwNTZ9WpJEPP3dx2CAn44_1qA4g88QL3_nnQvM82fqLfdvFKITVWvPisYFl-NeA5=s0-br30",
+    "verifiedPlayTitle": "YONO SBI: Banking, UPI & Pay - Apps on Google Play",
+    "brandColor": "#92278F"
+  },
+  {
+    "id": "hdfc-bank",
+    "name": "HDFC Bank",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.hdfcbank.android.now&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/xj4AYs3IX_hcELMoicEJj2B4MpbpGQP2TW8klh6b9Ipv6ljNsrlROwpQS_seqQ74oT9HxtKrOiTsKHLPseYx=s0-br30",
+    "verifiedPlayTitle": "HDFC Bank App: Banking & Cards - Apps on Google Play",
+    "brandColor": "#004C8F"
+  },
+  {
+    "id": "groww",
+    "name": "Groww",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.nextbillion.groww&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/dG1q2wx6Nk3aN6FIna144DYXI51P1cnbmBSRSvxKMZcZEDXcBv1-clSpc_PgjsE-UkGUCmX1kvRF-D443l3e=s0-br30",
+    "verifiedPlayTitle": "Groww Stocks, Mutual Fund, IPO - Apps on Google Play",
+    "brandColor": "#00D09C"
+  },
+  {
+    "id": "zerodha-kite",
+    "name": "Zerodha Kite",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.zerodha.kite3&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/NOgiEaLywYeSsxQL4qZIwQhXxBN-3Gdx-6RUAzBxU6kCW6fzg4t7mY6pKgu3T5-dwaLmClxxG1TQl7wntzpr=s0-br30",
+    "verifiedPlayTitle": "Zerodha Kite - Trade & Invest - Apps on Google Play",
+    "brandColor": "#FF5722"
+  },
+  {
+    "id": "digilocker",
+    "name": "DigiLocker",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.digilocker.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/pZQowHx0ANVf_7Kra61qgi6NCX3gYgLiQgz3NYlaVoCYMTQu4T_b_lumz9KjqjiOegEF8Q8QJXGQ3YlwU9wtMA=s0-br30",
+    "verifiedPlayTitle": "DigiLocker - Apps on Google Play",
+    "brandColor": "#5B2D91"
+  },
+  {
+    "id": "umang",
+    "name": "UMANG",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=in.gov.umang.negd.g2c&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Z0Yogu95xmD1RTw1XKYSjGC0MYTU8ihx5dW4baie0EWm_l88z4gn4FxgiPZ29RIbP3lrM5qt316Wm7dx0MB4Ng=s0-br30",
+    "verifiedPlayTitle": "UMANG - Apps on Google Play",
+    "brandColor": "#E56B2F"
+  },
+  {
+    "id": "truecaller",
+    "name": "Truecaller",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.truecaller&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/kVMxXC3fV4cyG56MZunYS2-HYaHh3eM3YTWoDbYaN5-G9xIU2k235hHVQmRrm79tzBSzt0cZ6GsBbzGzGbbMwg=s0-br30",
+    "verifiedPlayTitle": "Truecaller: Call Blocker - Apps on Google Play",
+    "brandColor": "#0086FF"
+  },
+  {
+    "id": "microsoft-outlook",
+    "name": "Microsoft Outlook",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.microsoft.office.outlook&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/cQ6W3fn_i56tK1PDQZlKvpuggupXR-kGyzwCtF1vYw-wK9FS3YDVUTnpfEvpbWXXuqH6aJ1JRD_t5bfAyCD4=s0-br30",
+    "verifiedPlayTitle": "Microsoft Outlook - Apps on Google Play",
+    "brandColor": "#0078D4"
+  },
+  {
+    "id": "microsoft-excel",
+    "name": "Microsoft Excel",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.microsoft.office.excel&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/yycGmvRqYttLxLsu_2mMo17jb5KVfrSSj0W67w5nN6QcOn30HIxQ7DBwdNVtbTRTFCQNd5vNyd-bgeGfmiSS=s0-br30",
+    "verifiedPlayTitle": "Microsoft Excel: Spreadsheets - Apps on Google Play",
+    "brandColor": "#217346"
+  },
+  {
+    "id": "microsoft-powerpoint",
+    "name": "Microsoft PowerPoint",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.microsoft.office.powerpoint&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/T1Jpfdfi6q8x0da-eNvBve4UlTxxLBGDFEeXR9sH5uFwU5m6EUpaK6vL4J3t4Gc9RlzDCgmsp4N4E8aeNCmNCw=s0-br30",
+    "verifiedPlayTitle": "Microsoft PowerPoint - Apps on Google Play",
+    "brandColor": "#D24726"
+  },
+  {
+    "id": "microsoft-onedrive",
+    "name": "Microsoft OneDrive",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.microsoft.skydrive&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/pkzkr91OWFffdDGZ9706Ev2lxjM1pMizefY__r8JkCAtNVO-hmaMG2Qfx9ngpu7V7K4Yx_E7csAMl6fP7dGNS28=s0-br30",
+    "verifiedPlayTitle": "Microsoft OneDrive - Apps on Google Play",
+    "brandColor": "#0078D4"
+  },
+  {
+    "id": "microsoft-teams",
+    "name": "Microsoft Teams",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.microsoft.teams&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/afnciqsoxrp8BYGFAS_BZtUBn2NvmxTVoKFproR5SljREfTBnueRjPxzxCXvIJNYTUdbtOWz-_GjVuOCMfi7fiU=s0-br30",
+    "verifiedPlayTitle": "Microsoft Teams - Apps on Google Play",
+    "brandColor": "#6264A7"
+  },
+  {
+    "id": "zoom",
+    "name": "Zoom Workplace",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=us.zoom.videomeetings&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/-Ajlo-aDBHtpCez_yILc8Kepv_kNhbTJPw1WyvXgkh4O-hvUN-YD_v_0FlJmgRbZ2vn1OmZCmCBOY23h4kJYEA=s0-br30",
+    "verifiedPlayTitle": "Zoom Workplace - Apps on Google Play",
+    "brandColor": "#2D8CFF"
+  },
+  {
+    "id": "notion",
+    "name": "Notion",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=notion.id&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/-GY1Xv9hhhK_RFJCCb-rvDX8OMR8Fj68AgcRIFcD8zIXlOA8pG-L-cuOJbgSs_U6GGGyGs8qiiQsjIfEBazE8g=s0-br30",
+    "verifiedPlayTitle": "Notion: AI Workspace - Apps on Google Play",
+    "brandColor": "#FFFFFF"
+  },
+  {
+    "id": "canva",
+    "name": "Canva",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.canva.editor&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Vz2scDEcbSvWxgPV7IcmD0ECtvvuFluOYMaJf0h7O2nwAbmB4hyh7lJj9xPFZlsUZLottcE5dwqNQKxzr-mY5w=s0-br30",
+    "verifiedPlayTitle": "Photo & Video Editor - Canva - Apps on Google Play",
+    "brandColor": "#00C4CC"
+  },
+  {
+    "id": "indeed",
+    "name": "Indeed",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.indeed.android.jobsearch&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/w6ltLlZlgLQYlmaMvbVyyttJAI3rXLjoz0i2pW9lltNTxRk9bQF7HmwkelKPWjVk_s6Et-VCFKhJzsyeC9xNNA=s0-br30",
+    "verifiedPlayTitle": "Indeed Job Search - Apps on Google Play",
+    "brandColor": "#2164F3"
+  },
+  {
+    "id": "apna",
+    "name": "apna",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.apnatime&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/_gVitzH_trMy4NS-ujPqjhxFYV6JZGszjUGXdfKm21KVCrHidaDUkHCQknNYPSyMxl7OZdMkik4Dr_wkNYvhXak=s0-br30",
+    "verifiedPlayTitle": "apna - Search Job, Vacancy App - Apps on Google Play",
+    "brandColor": "#1F8268"
+  },
+  {
+    "id": "coursera",
+    "name": "Coursera",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=org.coursera.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/LbjoYTPK5ZlNO3GDMZsFoGoRXHLoA2iTAUvJF7ePRZzbRPu7En-Go3wWXPXEdCL6grpkPHHavvzalozZrbJi=s0-br30",
+    "verifiedPlayTitle": "Coursera: Grow your career - Apps on Google Play",
+    "brandColor": "#0056D2"
+  },
+  {
+    "id": "udemy",
+    "name": "Udemy",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.udemy.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/b4vY9kDlVRfWsPCi4GEOvCtoQs0vU6lo2RFYc2qixQBVMzYmA9UebE8R4xbnrRMy4jB6NQEBNqd0ZDyg2Wciig=s0-br30",
+    "verifiedPlayTitle": "Udemy - Online Courses - Apps on Google Play",
+    "brandColor": "#A435F0"
+  },
+  {
+    "id": "khan-academy",
+    "name": "Khan Academy",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=org.khanacademy.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/ZpYO18Se26RWzXzmOGvT7R_5wBknrnznqKqFjXUiMIZDCD_OO1V4Nr8q_bJrU34jR2TaZPNOSzbUrKb8DeZatro=s0-br30",
+    "verifiedPlayTitle": "Khan Academy - Apps on Google Play",
+    "brandColor": "#14BF96"
+  },
+  {
+    "id": "perplexity",
+    "name": "Perplexity",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=ai.perplexity.app.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/vg7sPhgWiPr0L2cK_NLLcCl0mrkEmNNv7C-aUkBdIUEa-9uSnCi5x4z_3Mw0vNYWKoSVWHfgri7THMOsOZKQuA=s0-br30",
+    "verifiedPlayTitle": "Perplexity - Ask Anything - Apps on Google Play",
+    "brandColor": "#20808D"
+  },
+  {
+    "id": "gemini",
+    "name": "Google Gemini",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.bard&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/C64IqPWyFoCZzXVxXVl0Y6mliiNlG_sZJsqul-SBvk9ZL0wJHlU0Eho2wvsBHhho0FT5XQtH55RVGerIwXF_MA=s0-br30",
+    "verifiedPlayTitle": "Google Gemini - Apps on Google Play",
+    "brandColor": "#4285F4"
+  },
+  {
+    "id": "google-chrome",
+    "name": "Google Chrome",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.android.chrome&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/gbkzfC3R1fXcGR4Uag1uRSN_123Tpo_KxhVZFLFCatmthFuO1bzPczUomFtxI42YYEQMJeAaZuIFVrTF58gZYg=s0-br30",
+    "verifiedPlayTitle": "Google Chrome - Apps on Google Play",
+    "brandColor": "#FFFFFF"
+  },
+  {
+    "id": "firefox",
+    "name": "Firefox",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=org.mozilla.firefox&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/jQAmlGUkuJGc4TjZs2OEUeB5Gy3dCpKCWqfgVmab5NvM_43oed2qhVhrlEajccjJV6VkDFCEXws_6t6StKKLTY4=s0-br30",
+    "verifiedPlayTitle": "Firefox Fast & Private Browser - Apps on Google Play",
+    "brandColor": "#FF7139"
+  },
+  {
+    "id": "opera",
+    "name": "Opera",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.opera.browser&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/ClFQAxLPGuKdEp4YwGiEiaUVrujYcKSLVZVKWNwmMsmffL29yMUeuLa0sY54mZ3Cwa5zcSJpqbsj_wwxsiUrhA=s0-br30",
+    "verifiedPlayTitle": "Opera: AI browser with VPN - Apps on Google Play",
+    "brandColor": "#FF1B2D"
+  },
+  {
+    "id": "google-photos",
+    "name": "Google Photos",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.photos&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/kErBTF4VcGwhtKbCr80Bs2R1lNZiYkHbKcf1i3ZF6dg_5LqDAlCI4wU-nzwvo7PAbxeBXM_tv1hc11gr4aIIW-Q=s0-br30",
+    "verifiedPlayTitle": "Google Photos - Apps on Google Play",
+    "brandColor": "#FFFFFF"
+  },
+  {
+    "id": "google-keep",
+    "name": "Google Keep",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.keep&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/0AM0MfDO-MWUAKwg8vpbftm7GqvEW1JfLGHCgwsgIemF6hMW61XOVnnNDHCGeRMiYZtVaxV2M-AYoP_zMoJt6w=s0-br30",
+    "verifiedPlayTitle": "Google Keep - Notes and lists - Apps on Google Play",
+    "brandColor": "#FBBC04"
+  },
+  {
+    "id": "google-meet",
+    "name": "Google Meet",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.tachyon&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/G7KKIhzS9ZKa5iCVAkt1P8vXvVWPbaV9JjkMsgb4BcEjqov0TysngtuJ4jE17DYhi4wblu4UXJDWjr7SYgnZ6A=s0-br30",
+    "verifiedPlayTitle": "Google Meet - Apps on Google Play",
+    "brandColor": "#FFFFFF"
+  },
+  {
+    "id": "google-translate",
+    "name": "Google Translate",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.translate&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/muIZuJn9awFB9XWa4g0aiqFxHbgAFVVfHVQrEmos46v29NfyZX5z1n1ZYBjH3Zvg80Dm90TI2ZdQZMr2cLMcCg=s0-br30",
+    "verifiedPlayTitle": "Google Translate - Apps on Google Play",
+    "brandColor": "#4285F4"
+  },
+  {
+    "id": "clash-royale",
+    "name": "Clash Royale",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.supercell.clashroyale&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/z0rspJKftanEI7MA4WOdypbaaHfeKy4UjoawRGKf4Ys3v6LrrcleZWOfms7XK-J33Oqyfm3DlFd4Z_eKWafVFg=s0-br30",
+    "verifiedPlayTitle": "Clash Royale - Apps on Google Play",
+    "brandColor": "#2586E8"
+  },
+  {
+    "id": "brawl-stars",
+    "name": "Brawl Stars",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.supercell.brawlstars&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/wEOIM7cYyXkMExNztvFYKHJLPegXp6h81-P_JQQ_9KQvDCWK49m2zpt1mTRXO5bA2qU_Bp4em_nfMsHXmq8Z=s0-br30",
+    "verifiedPlayTitle": "Brawl Stars - Apps on Google Play",
+    "brandColor": "#F9CC27"
+  },
+  {
+    "id": "bgmi",
+    "name": "Battlegrounds Mobile India",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.pubg.imobile&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Yn_MSg1BJIQrTJI_nIxX7EaZ1ha_ICXsxw5QKBPBv96OAnwen98qu0hdEZ7zQsu-QzY7ceH0cshq-vQ8rBxSgg=s0-br30",
+    "verifiedPlayTitle": "BGMI: FPS Battle Royale - Apps on Google Play",
+    "brandColor": "#E79221"
+  },
+  {
+    "id": "free-fire-max",
+    "name": "Free Fire MAX",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.dts.freefiremax&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/M_l-dWl4q9FLX3IgYu8lrSPAs6WrMiL2gPxzYwehWAsfFpOVOSG-APyLkUkJn8Og_uHXw_qv5K351Dyy4pmqoQ=s0-br30",
+    "verifiedPlayTitle": "Free Fire MAX x NARUTO - Apps on Google Play",
+    "brandColor": "#F19E16"
+  },
+  {
+    "id": "candy-crush",
+    "name": "Candy Crush Saga",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.king.candycrushsaga&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/UnJeAEhtjxDyRdwv2steMYn-AeiV1pJ_COfsqNGy9xBqF9LWtCHGU_k51K7rOecvk-Y591tmW_ZrlO3W7Sbg=s0-br30",
+    "verifiedPlayTitle": "Candy Crush Saga - Apps on Google Play",
+    "brandColor": "#EF92C2"
+  },
+  {
+    "id": "ludo-king",
+    "name": "Ludo King",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.ludo.king&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/qSN0Eb6mDVPIX4PRggTB3PsEU1oyPorteUfiuJ709P9cZxdWP9Y-kV0htG7rtJNYywGE-3wlrC_7Gix0h0-Urw=s0-br30",
+    "verifiedPlayTitle": "Ludo King\u00ae - Apps on Google Play",
+    "brandColor": "#DF252C"
+  },
+  {
+    "id": "subway-surfers",
+    "name": "Subway Surfers",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.kiloo.subwaysurf&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/G1eIJ3yor1yW20izrYjOfCzHgVkRtewlfPFG9CEFTHzSI2m0Lwds_Y1xYgeg21CFok_UXrol-ox2IwqL4JMrLQ=s0-br30",
+    "verifiedPlayTitle": "Subway Surfers - Apps on Google Play",
+    "brandColor": "#F9D034"
+  },
+  {
+    "id": "roblox",
+    "name": "Roblox",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.roblox.client&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/QqZj22aXblAyYDxLQw-Gg0ycW0QkKhrDnwqgERZU9BMRXZnMlgXfq-94sikG5mEpt_I0lzZxcUzfLblmQgwYzUE=s0-br30",
+    "verifiedPlayTitle": "Roblox - Apps on Google Play",
+    "brandColor": "#101010"
+  },
+  {
+    "id": "anibrave",
+    "name": "AniBrave",
+    "sourceUrl": null,
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "anihome",
+    "name": "AniHome",
+    "sourceUrl": null,
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "anikoto",
+    "name": "AniKoto",
+    "sourceUrl": null,
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "brave",
+    "name": "Brave",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.brave.browser&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/UBrZnuXGb-QACU0uUdF5r_n5nx5oBbdfPyEbtsr0xXv00RN7rpaTVu3GjLeE90aHFmNlbaCmm8vNcmY0eE98U9E=s0-br30",
+    "verifiedPlayTitle": "Brave Private Web Browser, VPN - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "calculator",
+    "name": "Calculator",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tcl.tct.calculator&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "calendar",
+    "name": "Calendar",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.calendar&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/vEoqLbT_QkYcEaawWBRc22N6i98OUtOUpM1LmKdVs_xx7lCsUyFfV0ZiqoUXjMijUteiBhhN4K5MpoF96FRNOg=s0-br30",
+    "verifiedPlayTitle": "Google Calendar - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "camera",
+    "name": "Camera",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tcl.camera&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "chatgpt",
+    "name": "ChatGPT",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.openai.chatgpt&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/T9J8e9oxxPd600j_KPM4KK2GHfNpUpGBdTy8lHPXBXpOUfGusRuZXj0UMgFNrP8we6LVt9V-AibEgcLootE6VK4=s0-br30",
+    "verifiedPlayTitle": "ChatGPT - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "claude",
+    "name": "Claude",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.anthropic.claude&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/YeFCFSW5LkBVdsEAL_fjzxDxTbhKz31j1uZUfDbSaCeM0t4Bi3SqyHTWzWsUsZnbwjofXhYajitG_gr2_B2xil8=s0-br30",
+    "verifiedPlayTitle": "Claude by Anthropic - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "clock",
+    "name": "Clock",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.android.deskclock&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "cometin",
+    "name": "Cometin",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=host.stjin.cometin&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/-I7AjYMhUdDVfCILatd9lxdnSo6DsotpLwgmChz-JPDZxqZfF3fTJFp2bxssEkAVY2IolGfCLkS-AT7ub-Y_wQ=s0-br30",
+    "verifiedPlayTitle": "Cometin - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "contacts",
+    "name": "Contacts",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.contacts&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/pQFpAZw7ZrQiRrG9wX3_PkyNgvlmeSUes4-XIGPN6z81IBxfcLJ6X0-u-j3ILwW995heg3L2qHZazJA94r-ONQ=s0-br30",
+    "verifiedPlayTitle": "Contacts - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "crunchyroll",
+    "name": "Crunchyroll",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.crunchyroll.crunchyroid&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/FUEOotGzxEZqItvGGov0YBiOhZBCACxCM6kF37OtpWrCG9H6EyxSeY2G8PDXQGueLxlxtL3Xr0fbkvXaQ67NLg=s0-br30",
+    "verifiedPlayTitle": "Crunchyroll: Anime Streaming - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "cursor-ai",
+    "name": "Cursor",
+    "sourceUrl": "https://cursor.com/brand",
+    "referenceSourceUrl": "https://ptht05hbb1ssoooe.public.blob.vercel-storage.com/assets/brand/brand-logo-1.svg",
+    "brandColor": "#14120B"
+  },
+  {
+    "id": "drive",
+    "name": "Drive",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.docs&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/chc-Fx3Qi3BisTZw1aOteYK_XkMHUiXKRbX2Hc8shyFI8pYt7DcyUPzVwLGJKIeKCKDD6nFVhEtUrIaEyzcnmA=s0-br30",
+    "verifiedPlayTitle": "Google Drive - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "file-manager",
+    "name": "File Manager",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tcl.tct.filemanager&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "files-by-google",
+    "name": "Files by Google",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.files&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/cjyFg0ABFwOFdLf1GsCGRvOoAANqCnIsFCgwGe8g-FPVaQ5STxoqZAKQOph44Hlx-gO0GMx8AZC9AY1VUBiO=s0-br30",
+    "verifiedPlayTitle": "Files by Google - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "files",
+    "name": "Files",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.documentsui&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "find-hub",
+    "name": "Find Hub",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.adm&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/i0_6dO_MWC1nkjIMdh3uPXrhbkxfAr5H5Nb7YIynV0W8kGhX2BWb0hH2gm-2Fp21CeEx6ZonAnwlkPDYOIyEAVs=s0-br30",
+    "verifiedPlayTitle": "Google\u2019s Find Hub - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "gallery",
+    "name": "Gallery",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tclhz.gallery&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "gmail",
+    "name": "Gmail",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.gm&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/c6KD_8-GvnGRJA4lRQ4y5YnUa3-LOeYAS7ubw1jWyB9bmr6Kj6zzRvh2A5WBB-Vd3e6zhElmhDv07fCJx2Fc=s0-br30",
+    "verifiedPlayTitle": "Gmail - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "google-play-store",
+    "name": "Google Play Store",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.android.vending&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "grok-ai",
+    "name": "Grok AI",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=ai.x.grok&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/-VnI9BrQO0PYyZG15YE6wt68KOmZ7AXGAqGti58g25ES1XdXWDBaaWUMIewHaiROwge6ibvn_b3WalmpgWGG=s0-br30",
+    "verifiedPlayTitle": "Grok - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "grok-bot",
+    "name": "Grok Bot",
+    "sourceUrl": "local installed application icon",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "heymelody",
+    "name": "HeyMelody",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.heytap.headset&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/oydmgr_bnkjONumDbWa6cssFRKy0imLWEgcqgS-YNrQ-V1zD0qSy8e_vMP2gGHZeuObOKs8lNz8-jOrlEqegp4U=s0-br30",
+    "verifiedPlayTitle": "HeyMelody - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "hianime",
+    "name": "HiAnime",
+    "sourceUrl": null,
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "jiohotstar",
+    "name": "JioHotstar",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=in.startv.hotstar&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/02xiO0ptbXjD8NR3sbS2StP1P9aytDN56dDR15zqM_i66Vwq5W_hD-98CoFxvRVoUS4uV_xMSv-iQh3nQFeDeQ=s0-br30",
+    "verifiedPlayTitle": "JioHotstar - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "kids-mode",
+    "name": "Kids Mode",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.kidsedu&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "localsend",
+    "name": "LocalSend",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=org.localsend.localsend_app&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/M33xh7ahqjZnunTUOX1-p13D8z3ZX9R8Y41ooCm5SENNxtN_1htUR0t2M7RKjTL4UxuJ9GAsfBQVleL3g5mLMg=s0-br30",
+    "verifiedPlayTitle": "LocalSend: Transfer Files - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "messages",
+    "name": "Messages",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.messaging&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Mgukz1fq2stUYX_lQf79gmMeDzNvRCu5eobmiJwNkXl4riNY6HZ3VB-HRW5QciwEuLnFyk_ZmHumvn8RJ5Um=s0-br30",
+    "verifiedPlayTitle": "Google Messages - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "music",
+    "name": "Music",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tct.music&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "notes",
+    "name": "Notes",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tct.smart.notes&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "phone",
+    "name": "Phone",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.dialer&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/b0ipxfvtgDE5kT8PscD8hggLVWrP5Zodu2EwIPN0ub-3UBJ7CosIHCP0V9pSjV-hPdXQjd7u7JP2gGMrfSMZmA=s0-br30",
+    "verifiedPlayTitle": "Phone by Google - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "proton-pass",
+    "name": "Proton Pass",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=proton.android.pass&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Fl-aCgnpB0xcDpnzFYYccPrHKBoh5zSEUZKrHax9m8jGYJepQZhCNO-vhnsJ2En9Hqv8R3f7VJ62QNfgOfXL=s0-br30",
+    "verifiedPlayTitle": "Password Manager - Proton Pass - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "radio",
+    "name": "Radio",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tcl.fmradio&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "settings",
+    "name": "Settings",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.android.settings&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "smart-manager",
+    "name": "Smart Manager",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tct.onetouchbooster&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "sololearn",
+    "name": "Sololearn",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.sololearn&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/PFmNIm2mn6t-x-aaJTxt5dqnLpw3mqDM6ehet4Miqk61JZ_oC71hpxu2jMpPbNJ_Q9c4Gfn3G680e2XMIusAWfo=s0-br30",
+    "verifiedPlayTitle": "Sololearn: Learn to code - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "sound-recorder",
+    "name": "Sound Recorder",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tcl.tct.soundrecorder&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "spacedesk",
+    "name": "spacedesk",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=ph.spacedesk.beta&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/ge3VhZjb-c8ofz6FtXg3N2Gd9H7kslPmb3VphmxvfnLoJvGIujW0rqlrMim7kxiqTJfy2BLvnrj1c_uK93eLIA=s0-br30",
+    "verifiedPlayTitle": "spacedesk - USB Display for PC - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "support-centre",
+    "name": "Support Centre",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tcl.usercare&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "telegram",
+    "name": "Telegram",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=org.telegram.messenger&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/PyZ3akMGXPV0tKKirKNwfO--PSQW3FHR6rD_H9mAaukZ8LiHyYFuBLeU8UZ2ok6r5SP79-3prkfybWKh98AZAD0=s0-br30",
+    "verifiedPlayTitle": "Telegram - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "velixa",
+    "name": "Velixa",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.velixa.app&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "video",
+    "name": "Video",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tcl.android.video&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "vlc",
+    "name": "VLC",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=org.videolan.vlc&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/BG5YwziGHjh0wvWg6VO9c3iprYa3vFww1CnNqPvFszUVxcY4yB29dy7t2jsLwwI4jAqX08_--12FmMxgNG1JFg=s0-br30",
+    "verifiedPlayTitle": "VLC for Android - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "voter-helpline",
+    "name": "Voter Helpline",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.eci.citizen&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/eY8j1O_h_MACSB8Ox35ttFQPt527e5pO7H0jDXxJRkNxlocD4AucqXZmMl50Q1ulj0kWNp1pkOAfTjMVozJYXg=s0-br30",
+    "verifiedPlayTitle": "Voter Helpline - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "weather",
+    "name": "Weather",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tcl.tct.weather&hl=en&gl=IN",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "whatsapp-business",
+    "name": "WhatsApp Business",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.whatsapp.w4b&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/4LJ6f3U5wANt09KBlZ-F-YKooCQXTwHsa3vtTBFmsXWmNy-AdBEoHnWmyT0mGxh-1pQetlSoc9mIkRDJotQYbg=s0-br30",
+    "verifiedPlayTitle": "WhatsApp Business - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "word",
+    "name": "Word",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.microsoft.office.word&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/UPPHK323_gvNZWTnmq_lgp_qrSXwdXI8aYNfqNF27MtuujT2YAytdueWIKncRh5YfNB_rfpCBfImzo95iYC1Fw=s0-br30",
+    "verifiedPlayTitle": "Microsoft Word: Edit Documents - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "youtube",
+    "name": "YouTube",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.youtube&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/QNmuZQc9I6Zbe3mWnSr0hycnENqGFCI5p3yE29Hkxtf22T0IWS6zTrpxULLyyjWpB7ONAXDsDQXnXcVWokl3eg=s0-br30",
+    "verifiedPlayTitle": "YouTube - Apps on Google Play",
+    "brandColor": "#18202D"
+  },
+  {
+    "id": "kindle",
+    "name": "Amazon Kindle",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.amazon.kindle&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/OMOY8Erqgf955efAZgpCJLC9yU8W8WMRgiZSUc4jf653YyV3XwTY2uFQZCY1nz8-8Lb4eZXRCmd4RoWK5q6G2A=s0-br30",
+    "verifiedPlayTitle": "Amazon Kindle - eBooks & more - Apps on Google Play",
+    "brandColor": "#1E3F59"
+  },
+  {
+    "id": "google-play-books",
+    "name": "Google Play Books",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.books&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/KQKRmi5uic0yjSl7rfXKRyDunmQP1d7kqsswnKM4QPkq8OtQtAYAqb7nKsLyQKq7QXD01s4EVpxfDK7G9gyzZQ=s0-br30",
+    "verifiedPlayTitle": "Google Play Books & Audiobooks - Apps on Google Play",
+    "brandColor": "#4285F4"
+  },
+  {
+    "id": "krita",
+    "name": "Krita",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=org.krita&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/_OrKvCvTU10UNkMyayAvF1wyzYMFyB34H9jouQ7h9DrH4W_yYPqwLSqf1bRwch0N6JMH3P4Rc_X4XldgovbEWA=s0-br30",
+    "verifiedPlayTitle": "Krita - Apps on Google Play",
+    "brandColor": "#3BABFF"
+  },
+  {
+    "id": "ibis-paint-x",
+    "name": "ibis Paint X",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=jp.ne.ibis.ibispaintx.app&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/OCUAuT3z9O_YGN6LX3fBIS4S2sv1ArhtMO1PRYqoyDRqEJnILt_rIvfsjYakxRnuc9mAtDwbBYUb4r2h2ubvzrc=s0-br30",
+    "verifiedPlayTitle": "ibis Paint X - Apps on Google Play",
+    "brandColor": "#1478CB"
+  },
+  {
+    "id": "sketchbook",
+    "name": "Sketchbook",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.adsk.sketchbook&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/SAwYo44DrmijrKgVa8VhGB4zFshE7Luw0stwCos86Id3jVd2q1dSs4rjbi25IvUQCpzvLk1pdrld7ZcapdX9RA=s0-br30",
+    "verifiedPlayTitle": "Sketchbook - Apps on Google Play",
+    "brandColor": "#F47B20"
+  },
+  {
+    "id": "goodnotes",
+    "name": "Goodnotes",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.goodnotes.android.app&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/2nc3YRZAC7LZx4WIuhm8_bQKRiBk6Zzi8sv8dsNUlpqnC6gQgt74F0WxEbKKTcXkx05MyhbKohV7fQjLyWWF2So=s0-br30",
+    "verifiedPlayTitle": "Goodnotes: AI Notes, Docs, PDF - Apps on Google Play",
+    "brandColor": "#FFFFFF"
+  },
+  {
+    "id": "microsoft-onenote",
+    "name": "Microsoft OneNote",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.microsoft.office.onenote&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/9EfkTyLOKF8za5xRjWQOSkGn-YuXnPVYbXBN9mT_HZp9PcIuMl4wqxTBeE-iN0fbfYDqBiUdr8Vd2ip9sX2n0g=s0-br30",
+    "verifiedPlayTitle": "Microsoft OneNote: Save Notes - Apps on Google Play",
+    "brandColor": "#7719AA"
+  },
+  {
+    "id": "readera",
+    "name": "ReadEra",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=org.readera&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/IYYIJY9HttxtQhZjbsA7tzQRdMQ675qFtOJFiRbvJvRJarsBzvBn4tcjE2RbWgSQfhEJn4wpbUtEzq-4CXUorg=s0-br30",
+    "verifiedPlayTitle": "ReadEra \u2013 book reader pdf epub - Apps on Google Play",
+    "brandColor": "#E56E22"
+  },
+  {
+    "id": "concepts",
+    "name": "Concepts",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tophatch.concepts&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/N040rmpKIeM49dsl3Ac02dT4XBemfi7BL_1w9-Ci7SYS1Kr3vOqeZ7dgCaLQkwHaPnpMlElI7p-qvINn5vqJIg=s0-br30",
+    "verifiedPlayTitle": "Concepts: Sketch, Note, Draw - Apps on Google Play",
+    "brandColor": "#171C27"
+  },
+  {
+    "id": "xodo",
+    "name": "Xodo PDF",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.xodo.pdf.reader&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/AmBoaxTjw_jERw2p8YUqv52zctH_P5K9Hxb1OXBEIrKFXV_KDi4HYEQ1303G2e_cQwnIDsHR225tySjFYJCxDg=s0-br30",
+    "verifiedPlayTitle": "PDF Reader & Editor: Xodo - Apps on Google Play",
+    "brandColor": "#0055A5"
+  }
+]

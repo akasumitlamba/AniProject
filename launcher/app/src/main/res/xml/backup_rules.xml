@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Android 8–11 cannot distinguish cloud backup from local transfer. Keep dormant watch history private. -->
+    <include domain="sharedpref" path="." />
+    <include domain="file" path="icons" />
+    <include domain="file" path="tile-artwork" />
+    <!-- Widget IDs belong to this device's AppWidgetService and cannot be restored elsewhere. -->
+    <exclude domain="sharedpref" path="home_widgets.xml" />
+</full-backup-content>

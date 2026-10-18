@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ink">#060913</color>
+    <color name="ink_soft">#141414</color>
+    <color name="text">#F8FAFC</color>
+    <color name="muted">#94A3B8</color>
+    <color name="cyan">#38BDF8</color>
+    <color name="accent">#FF6B35</color>
+    <color name="glass_line">#66D8EAF8</color>
+    <color name="danger">#EF4444</color>
+    <color name="card_default">#263B57</color>
+</resources>

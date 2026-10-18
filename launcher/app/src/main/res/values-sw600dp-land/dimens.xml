@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="home_columns">4</integer>
+    <dimen name="page_padding">28dp</dimen>
+    <bool name="vertical_controls">true</bool>
+    <dimen name="home_bottom_space">0dp</dimen>
+    <dimen name="home_end_space">88dp</dimen>
+</resources>

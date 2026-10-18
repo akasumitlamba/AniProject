@@ -1,0 +1,43 @@
+name: AniBrave controller checks
+on:
+  push:
+    paths: ['anibrave/**', '.github/workflows/source-checks.yml']
+  pull_request:
+    paths: ['anibrave/**', '.github/workflows/source-checks.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  controllers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Playback script tests
+        run: node --test anibrave/tests/playback.test.cjs anibrave/tests/tracking.test.cjs
+      - name: Site key tests
+        run: |
+          javac -d /tmp/anibrave-tests anibrave/src/SiteKey.java anibrave/tests/SiteKeyTest.java
+          java -cp /tmp/anibrave-tests app.anibrave.SiteKeyTest
+      - name: Engine HTTP tests
+        run: |
+          javac -d /tmp/anibrave-tests anibrave/src/EngineHttp.java anibrave/tests/EngineHttpTest.java
+          java -cp /tmp/anibrave-tests app.anibrave.EngineHttpTest
+      - name: Anime identity and reminder policy tests
+        run: |
+          javac -d /tmp/anibrave-tests anibrave/src/AnimeIdentity.java anibrave/tests/AnimeIdentityTest.java
+          java -cp /tmp/anibrave-tests app.anibrave.AnimeIdentityTest
+      - name: Reminder presentation timeout policy
+        run: |
+          javac -d /tmp/anibrave-tests anibrave/src/ReminderPresentation.java anibrave/tests/ReminderPresentationTest.java
+          java -cp /tmp/anibrave-tests app.anibrave.ReminderPresentationTest
+      - name: Responsive tab layout policy
+        run: |
+          javac -d /tmp/anibrave-tests anibrave/src/TabLayoutPolicy.java anibrave/tests/TabLayoutPolicyTest.java
+          java -cp /tmp/anibrave-tests app.anibrave.TabLayoutPolicyTest

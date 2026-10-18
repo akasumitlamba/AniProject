@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="page_padding">14dp</dimen>
+    <dimen name="rail_radius">100dp</dimen>
+    <dimen name="control_radius">12dp</dimen>
+    <dimen name="tile_radius">@dimen/control_radius</dimen>
+    <dimen name="tile_gap">8dp</dimen>
+    <integer name="home_columns">2</integer>
+    <bool name="vertical_controls">false</bool>
+    <dimen name="home_bottom_space">88dp</dimen>
+    <dimen name="home_end_space">@dimen/page_padding</dimen>
+</resources>

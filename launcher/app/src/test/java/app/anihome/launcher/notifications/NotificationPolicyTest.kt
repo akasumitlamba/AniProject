@@ -1,0 +1,20 @@
+package app.anihome.launcher.notifications
+
+import org.junit.Assert.*
+import org.junit.Test
+
+class NotificationPolicyTest {
+    private fun entry(key: String, group: String? = null, summary: Boolean = false, clear: Boolean = true) = NotificationPolicy.Entry(key, group, summary, clear)
+    @Test fun ongoingNotificationsAreNeverClearAllTargets() {
+        assertEquals(listOf("message"), NotificationPolicy.dismissible(listOf(entry("music", clear = false), entry("message"))))
+    }
+    @Test fun summariesWithoutChildrenStayVisible() {
+        assertEquals(setOf("summary"), NotificationPolicy.visible(listOf(entry("summary", "group", true))))
+    }
+    @Test fun duplicateSummaryIsHiddenButOtherGroupsRemainVisible() {
+        assertEquals(setOf("child", "other"), NotificationPolicy.visible(listOf(entry("summary", "chat", true), entry("child", "chat"), entry("other", "other", true))))
+    }
+    @Test fun emptyNotificationsHaveNoDismissTargets() {
+        assertTrue(NotificationPolicy.visible(emptyList()).isEmpty()); assertTrue(NotificationPolicy.dismissible(emptyList()).isEmpty())
+    }
+}

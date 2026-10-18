@@ -1,0 +1,60 @@
+# Tag pushes do not reliably match path filters on launcher-checks.yml.
+# This workflow builds the same debug APK and attaches it to launcher-v* releases
+# without replacing a signed *-release.apk that is already on the release.
+name: Launcher tag APK
+on:
+  push:
+    tags: ['launcher-v*']
+permissions:
+  contents: write
+jobs:
+  debug-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+          cache-dependency-path: launcher/**
+      - name: Accept Android SDK licenses
+        run: |
+          set -euo pipefail
+          : "${ANDROID_HOME:=${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          mkdir -p "$ANDROID_HOME/licenses"
+          echo '24333f8a63b6825ea9c5514f07dd2228aae7667791ff3bccff90ce7dba9fa0fd' > "$ANDROID_HOME/licenses/android-sdk-license"
+          echo '84831b9409646161da1d394410b170f47369ce6' > "$ANDROID_HOME/licenses/android-sdk-preview-license"
+          echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
+      - name: Detector and policy tests
+        working-directory: launcher
+        run: ./gradlew --no-daemon :app:testDebugUnitTest --console=plain
+      - name: Assemble debug APK
+        working-directory: launcher
+        run: ./gradlew --no-daemon :app:assembleDebug --console=plain
+      - uses: actions/upload-artifact@v4
+        with:
+          name: anihome-launcher-debug
+          path: launcher/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+      - name: Attach debug APK to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          apk=$(ls launcher/app/build/outputs/apk/debug/*.apk | head -n 1)
+          tag="${GITHUB_REF_NAME}"
+          version="${tag#launcher-v}"
+          asset="AniHome-Launcher-${version}-debug.apk"
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            if gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name' | grep -qx "$asset"; then
+              echo "Asset $asset already on $tag; not replacing it."
+            else
+              gh release upload "$tag" "${apk}#${asset}" --repo "$GITHUB_REPOSITORY"
+            fi
+          else
+            gh release create "$tag" "${apk}#${asset}" --repo "$GITHUB_REPOSITORY" \
+              --prerelease \
+              --title "AniHome Launcher ${version}" \
+              --notes "CI debug APK for ${tag}. Prefer the signed *-release.apk asset when present."
+          fi

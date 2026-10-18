@@ -1,0 +1,2796 @@
+{
+  "schema": 1,
+  "updated": "2026-10-15",
+  "curation": "India-focused mainstream apps and existing device utilities; not a live ranked top chart",
+  "entries": [
+    {
+      "id": "youtube-music",
+      "name": "YouTube Music",
+      "file": "images/youtube-music.webp",
+      "packages": [
+        "com.google.android.apps.youtube.music"
+      ],
+      "aliases": [
+        "YouTube Music",
+        "YT Music"
+      ],
+      "webHosts": [
+        "music.youtube.com"
+      ],
+      "sha256": "235a33173a85ae5dec1fb5b9e69b22e72a916f996adc8c5e452b8a6d71ecfe71",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "clash-of-clans",
+      "name": "Clash of Clans",
+      "file": "images/clash-of-clans.webp",
+      "packages": [
+        "com.supercell.clashofclans"
+      ],
+      "aliases": [
+        "Clash of Clans",
+        "COC"
+      ],
+      "webHosts": [],
+      "sha256": "82d00d72de0d4ac7a0a8ac9e0db674a6e5d7542e0787aee9692218f66214dd02",
+      "popular": true,
+      "category": "games",
+      "tabletPriority": 96
+    },
+    {
+      "id": "google",
+      "name": "Google",
+      "file": "images/google.webp",
+      "packages": [
+        "com.google.android.googlequicksearchbox"
+      ],
+      "aliases": [
+        "Google"
+      ],
+      "webHosts": [
+        "google.com"
+      ],
+      "sha256": "435bea5370736c409d327854a03d787d530a0e9a9c5244281e85dcfbc3a30c98",
+      "popular": false,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "instagram",
+      "name": "Instagram",
+      "file": "images/instagram.webp",
+      "packages": [
+        "com.instagram.android"
+      ],
+      "aliases": [
+        "Instagram"
+      ],
+      "webHosts": [
+        "instagram.com"
+      ],
+      "sha256": "88e6439d7571fd7a1915e70991aa44ac91e42c718fb1b37e76bcdd2e74ed5e66",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "snapchat",
+      "name": "Snapchat",
+      "file": "images/snapchat.webp",
+      "packages": [
+        "com.snapchat.android"
+      ],
+      "aliases": [
+        "Snapchat"
+      ],
+      "webHosts": [
+        "snapchat.com"
+      ],
+      "sha256": "9656ade9cd34a7b9a8452337d37bb3f186f679c1246d3ecc85907ffd8ad035d3",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "reddit",
+      "name": "Reddit",
+      "file": "images/reddit.webp",
+      "packages": [
+        "com.reddit.frontpage"
+      ],
+      "aliases": [
+        "Reddit"
+      ],
+      "webHosts": [
+        "reddit.com"
+      ],
+      "sha256": "110379c32832c50af6cd52fe1bc8ff085b57ed3616da1b63b918eddb2f3384a2",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "apple-tv",
+      "name": "Apple TV",
+      "file": "images/apple-tv.webp",
+      "packages": [
+        "com.apple.atve.androidtv.appletv"
+      ],
+      "aliases": [
+        "Apple TV",
+        "AppleTV",
+        "Apple TV+"
+      ],
+      "webHosts": [
+        "tv.apple.com"
+      ],
+      "sha256": "399fe8ffba568b4ada85af1c717f16fe088d7e34066fff331611d6a79b063ed0",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "myjio",
+      "name": "MyJio",
+      "file": "images/myjio.webp",
+      "packages": [
+        "com.jio.myjio"
+      ],
+      "aliases": [
+        "MyJio",
+        "My Jio",
+        "Jio"
+      ],
+      "webHosts": [
+        "jio.com"
+      ],
+      "sha256": "eb399a5c3427a139df096752dcc1097904e99dfb08a93f16cbdb69b6e24291f5",
+      "popular": true,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "paytm",
+      "name": "Paytm",
+      "file": "images/paytm.webp",
+      "packages": [
+        "net.one97.paytm"
+      ],
+      "aliases": [
+        "Paytm"
+      ],
+      "webHosts": [
+        "paytm.com"
+      ],
+      "sha256": "c9d59f82fa7bca4d4602e3a203408bab809e1f3e8c34e38bce95d91ccc3da650",
+      "popular": true,
+      "category": "payments",
+      "tabletPriority": 25
+    },
+    {
+      "id": "cred",
+      "name": "CRED",
+      "file": "images/cred.webp",
+      "packages": [
+        "com.dreamplug.androidapp"
+      ],
+      "aliases": [
+        "CRED"
+      ],
+      "webHosts": [
+        "cred.club"
+      ],
+      "sha256": "9456cdb916a5aa37a0231cbc0baca27638d0eb947d21a4c3f1a314fa11abb904",
+      "popular": true,
+      "category": "payments",
+      "tabletPriority": 25
+    },
+    {
+      "id": "google-pay",
+      "name": "Google Pay",
+      "file": "images/google-pay.webp",
+      "packages": [
+        "com.google.android.apps.nbu.paisa.user"
+      ],
+      "aliases": [
+        "Google Pay",
+        "GPay",
+        "Google Pay India",
+        "Tez",
+        "GooglePay",
+        "G Pay"
+      ],
+      "webHosts": [
+        "pay.google.com"
+      ],
+      "sha256": "0f6572ce9a25ab7c4ea45d5ac885a72fae40305038095bea75244ae2f4e2e31c",
+      "popular": true,
+      "category": "payments",
+      "tabletPriority": 25
+    },
+    {
+      "id": "phonepe",
+      "name": "PhonePe",
+      "file": "images/phonepe.webp",
+      "packages": [
+        "com.phonepe.app"
+      ],
+      "aliases": [
+        "PhonePe",
+        "Phone Pe"
+      ],
+      "webHosts": [
+        "phonepe.com"
+      ],
+      "sha256": "9571d1ca47c45b86a2405bc8f52ee3f8b8646c8abc07d6b96d4f47b56a17888c",
+      "popular": true,
+      "category": "payments",
+      "tabletPriority": 25
+    },
+    {
+      "id": "duolingo",
+      "name": "Duolingo",
+      "file": "images/duolingo.webp",
+      "packages": [
+        "com.duolingo"
+      ],
+      "aliases": [
+        "Duolingo"
+      ],
+      "webHosts": [
+        "duolingo.com"
+      ],
+      "sha256": "0246b62a27f44b2b2df61571108bbb9b29dcc02fd8cf525a2e7e1fcd07fa95b1",
+      "popular": true,
+      "category": "learning",
+      "tabletPriority": 90
+    },
+    {
+      "id": "google-maps",
+      "name": "Google Maps",
+      "file": "images/google-maps.webp",
+      "packages": [
+        "com.google.android.apps.maps"
+      ],
+      "aliases": [
+        "Google Maps",
+        "Maps"
+      ],
+      "webHosts": [
+        "maps.google.com"
+      ],
+      "sha256": "06a033eaa917622c1d766630a0308aa8e60663bb78395189fc17335f1355f11b",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "bing",
+      "name": "Microsoft Bing",
+      "file": "images/bing.webp",
+      "packages": [
+        "com.microsoft.bing"
+      ],
+      "aliases": [
+        "Microsoft Bing",
+        "Bing"
+      ],
+      "webHosts": [
+        "bing.com"
+      ],
+      "sha256": "23c6000deffdf78fcf6a527310b2ca8796e19214de56870ecdf2bd6641208c81",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "naukri",
+      "name": "Naukri",
+      "file": "images/naukri.webp",
+      "packages": [
+        "naukriApp.appModules.login"
+      ],
+      "aliases": [
+        "Naukri"
+      ],
+      "webHosts": [
+        "naukri.com"
+      ],
+      "sha256": "7cfaf155b2f821a9154904a4e48282668c6ddb5a7266f31b92fc36e79a9bdb67",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "linkedin",
+      "name": "LinkedIn",
+      "file": "images/linkedin.webp",
+      "packages": [
+        "com.linkedin.android"
+      ],
+      "aliases": [
+        "LinkedIn"
+      ],
+      "webHosts": [
+        "linkedin.com"
+      ],
+      "sha256": "1899840c96afdaf2b8662265a7762533a30d52d9c102c31a6fcbd211c98ea084",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "adobe-acrobat",
+      "name": "Adobe Acrobat Reader",
+      "file": "images/adobe-acrobat.webp",
+      "packages": [
+        "com.adobe.reader"
+      ],
+      "aliases": [
+        "Adobe Acrobat Reader",
+        "Acrobat",
+        "Adobe Reader"
+      ],
+      "webHosts": [
+        "acrobat.adobe.com"
+      ],
+      "sha256": "64e291f0281c774c17518b89547706fd0c678302855b307922195ffab11b5b6b",
+      "popular": true,
+      "category": "creativity",
+      "tabletPriority": 92
+    },
+    {
+      "id": "adobe-express",
+      "name": "Adobe Express",
+      "file": "images/adobe-express.webp",
+      "packages": [
+        "com.adobe.spark.post"
+      ],
+      "aliases": [
+        "Adobe Express"
+      ],
+      "webHosts": [
+        "express.adobe.com"
+      ],
+      "sha256": "5705ae37d378b7a8dc89ea696397b6509a56cd03519cb4a32e8138c989472da9",
+      "popular": true,
+      "category": "creativity",
+      "tabletPriority": 92
+    },
+    {
+      "id": "adobe-photoshop",
+      "name": "Adobe Photoshop",
+      "file": "images/adobe-photoshop.webp",
+      "packages": [
+        "com.adobe.photoshop.retail"
+      ],
+      "aliases": [
+        "Adobe Photoshop",
+        "Photoshop"
+      ],
+      "webHosts": [
+        "photoshop.adobe.com"
+      ],
+      "sha256": "89410a85ba3edc99e3f06b01ec6fcbdc3546a2aec66bd05d57a5b04ec4b440db",
+      "popular": true,
+      "category": "creativity",
+      "tabletPriority": 92
+    },
+    {
+      "id": "adobe-lightroom",
+      "name": "Adobe Lightroom",
+      "file": "images/adobe-lightroom.webp",
+      "packages": [
+        "com.adobe.lrmobile"
+      ],
+      "aliases": [
+        "Adobe Lightroom"
+      ],
+      "webHosts": [
+        "lightroom.adobe.com"
+      ],
+      "sha256": "282e63871865a7ec6dfadf4f9dfedb559a28fb7926032e3352bd00a9d62cb3a2",
+      "popular": true,
+      "category": "creativity",
+      "tabletPriority": 92
+    },
+    {
+      "id": "microsoft-edge",
+      "name": "Microsoft Edge",
+      "file": "images/microsoft-edge.webp",
+      "packages": [
+        "com.microsoft.emmx"
+      ],
+      "aliases": [
+        "Microsoft Edge",
+        "Edge",
+        "Microsoft Edge Browser"
+      ],
+      "webHosts": [],
+      "sha256": "e1be115bcb9f69ce1be6145bb102c7074629acf9d3aeec65d43932e9d7935c02",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "flipkart",
+      "name": "Flipkart",
+      "file": "images/flipkart.webp",
+      "packages": [
+        "com.flipkart.android"
+      ],
+      "aliases": [
+        "Flipkart"
+      ],
+      "webHosts": [
+        "flipkart.com"
+      ],
+      "sha256": "cc53c6cfad9e0b5f380a8b920131c9a1ebd87f2c4c856bb7a1b1ab340cec802b",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "amazon",
+      "name": "Amazon Shopping",
+      "file": "images/amazon.webp",
+      "packages": [
+        "in.amazon.mShop.android.shopping"
+      ],
+      "aliases": [
+        "Amazon Shopping"
+      ],
+      "webHosts": [
+        "amazon.in"
+      ],
+      "sha256": "f508642c884e9f2cc80e2194b34152b07007aff2256f34fe8cc3489bef7159e5",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "github",
+      "name": "GitHub",
+      "file": "images/github.webp",
+      "packages": [
+        "com.github.android"
+      ],
+      "aliases": [
+        "GitHub",
+        "Github"
+      ],
+      "webHosts": [
+        "github.com"
+      ],
+      "sha256": "5263105a5fca2baa3010da0e1696e4fcf4d73639ee294b04e0974e1efc7e2f37",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "chess-com",
+      "name": "Chess.com",
+      "file": "images/chess-com.webp",
+      "packages": [
+        "com.chess"
+      ],
+      "aliases": [
+        "Chess.com",
+        "Chess",
+        "Chess com"
+      ],
+      "webHosts": [
+        "chess.com"
+      ],
+      "sha256": "cce122ae14ded4c5cba8b550ac235d027b31b7766bbd02f3f40433e4b455fee3",
+      "popular": true,
+      "category": "games",
+      "tabletPriority": 96
+    },
+    {
+      "id": "whatsapp",
+      "name": "WhatsApp",
+      "file": "images/whatsapp.webp",
+      "packages": [
+        "com.whatsapp"
+      ],
+      "aliases": [
+        "WhatsApp"
+      ],
+      "webHosts": [
+        "whatsapp.com"
+      ],
+      "sha256": "c6bced41992a35ae0ef8d7e3b2f95cc73cb4780f6753492badae2a4d8a2d60e3",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "facebook",
+      "name": "Facebook",
+      "file": "images/facebook.webp",
+      "packages": [
+        "com.facebook.katana"
+      ],
+      "aliases": [
+        "Facebook"
+      ],
+      "webHosts": [
+        "facebook.com"
+      ],
+      "sha256": "745c222e32088a1d876b02477931e7a97f4207dc2aab15037f499690312c74cd",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "messenger",
+      "name": "Messenger",
+      "file": "images/messenger.webp",
+      "packages": [
+        "com.facebook.orca"
+      ],
+      "aliases": [
+        "Messenger"
+      ],
+      "webHosts": [
+        "messenger.com"
+      ],
+      "sha256": "708e8abc8b6c947060c0dd4279ce39df996e501d1d680e602f52c0cb67ebaea7",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "threads",
+      "name": "Threads",
+      "file": "images/threads.webp",
+      "packages": [
+        "com.instagram.barcelona"
+      ],
+      "aliases": [
+        "Threads"
+      ],
+      "webHosts": [
+        "threads.net"
+      ],
+      "sha256": "0a6112bd4f3cf9a6be3fb1d67ec15793f5e74461b0a97cccabc84a0e55573769",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "x",
+      "name": "X",
+      "file": "images/x.webp",
+      "packages": [
+        "com.twitter.android"
+      ],
+      "aliases": [
+        "X"
+      ],
+      "webHosts": [
+        "x.com"
+      ],
+      "sha256": "30146e268111b7b6c4fee287dc1acc325dc47aea8b6164c1a9f78fa124c0e291",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "discord",
+      "name": "Discord",
+      "file": "images/discord.webp",
+      "packages": [
+        "com.discord"
+      ],
+      "aliases": [
+        "Discord"
+      ],
+      "webHosts": [
+        "discord.com"
+      ],
+      "sha256": "1d003c954ca384d530ed3bc7359fcf7f36cebffe632e2bd3b54b6498fc19eac4",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "signal",
+      "name": "Signal",
+      "file": "images/signal.webp",
+      "packages": [
+        "org.thoughtcrime.securesms"
+      ],
+      "aliases": [
+        "Signal"
+      ],
+      "webHosts": [
+        "signal.org"
+      ],
+      "sha256": "ec613ef3b78a80218eb9998b1c9a11fa3c894e972622d1ebfb14774168c90d7c",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "pinterest",
+      "name": "Pinterest",
+      "file": "images/pinterest.webp",
+      "packages": [
+        "com.pinterest"
+      ],
+      "aliases": [
+        "Pinterest"
+      ],
+      "webHosts": [
+        "pinterest.com"
+      ],
+      "sha256": "5a5910d50be7951f210e4ff97b854fb92e8fa4fb6cf5527693f55205f111f56c",
+      "popular": true,
+      "category": "creativity",
+      "tabletPriority": 92
+    },
+    {
+      "id": "spotify",
+      "name": "Spotify",
+      "file": "images/spotify.webp",
+      "packages": [
+        "com.spotify.music"
+      ],
+      "aliases": [
+        "Spotify"
+      ],
+      "webHosts": [
+        "spotify.com"
+      ],
+      "sha256": "82cb3ddf5a204de68ee1f5b7bdc637dcdf13ffe0ceea76332d0d9f3a46e5dd41",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "netflix",
+      "name": "Netflix",
+      "file": "images/netflix.webp",
+      "packages": [
+        "com.netflix.mediaclient"
+      ],
+      "aliases": [
+        "Netflix"
+      ],
+      "webHosts": [
+        "netflix.com"
+      ],
+      "sha256": "1fbd9c3c0d743b94fd9cffdfaf990541bed7855756ca1001d6d3c0cd6236d73c",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 100
+    },
+    {
+      "id": "prime-video",
+      "name": "Prime Video",
+      "file": "images/prime-video.webp",
+      "packages": [
+        "com.amazon.avod.thirdpartyclient"
+      ],
+      "aliases": [
+        "Prime Video"
+      ],
+      "webHosts": [
+        "primevideo.com"
+      ],
+      "sha256": "8d7fa9e7c318b955e3765f27fdd8fd7b742ea3a1be80885b402e1fdfc34c0d5a",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 100
+    },
+    {
+      "id": "sonyliv",
+      "name": "Sony LIV",
+      "file": "images/sonyliv.webp",
+      "packages": [
+        "com.sonyliv"
+      ],
+      "aliases": [
+        "Sony LIV"
+      ],
+      "webHosts": [
+        "sonyliv.com"
+      ],
+      "sha256": "bc3f178e623327be183a309fbec1c96ce9bb03fa6ec31fd6a0ea361bc0d731d1",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "zee5",
+      "name": "ZEE5",
+      "file": "images/zee5.webp",
+      "packages": [
+        "com.graymatrix.did"
+      ],
+      "aliases": [
+        "ZEE5"
+      ],
+      "webHosts": [
+        "zee5.com"
+      ],
+      "sha256": "b5c498e0cc35893d8824baef1529d295d64045826e02910fa8d9d1261cc3dc5a",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "apple-music",
+      "name": "Apple Music",
+      "file": "images/apple-music.webp",
+      "packages": [
+        "com.apple.android.music"
+      ],
+      "aliases": [
+        "Apple Music"
+      ],
+      "webHosts": [
+        "music.apple.com"
+      ],
+      "sha256": "e91f0af5b87d1c32bfb0c758120be4d1a07bea8d4e21af3726746677d5d650da",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "mx-player",
+      "name": "MX Player",
+      "file": "images/mx-player.webp",
+      "packages": [
+        "com.mxtech.videoplayer.ad"
+      ],
+      "aliases": [
+        "MX Player"
+      ],
+      "webHosts": [
+        "mxplayer.in"
+      ],
+      "sha256": "0752963ca99af28c41dc4cc4b6439bb0b824f88a51ab22e17552934dff407ace",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "jiosaavn",
+      "name": "JioSaavn",
+      "file": "images/jiosaavn.webp",
+      "packages": [
+        "com.jio.media.jiobeats"
+      ],
+      "aliases": [
+        "JioSaavn"
+      ],
+      "webHosts": [
+        "jiosaavn.com"
+      ],
+      "sha256": "9e044dbd47170a49e86a8e5a1fb98482f182217d0a95ae9112f3412c9679010a",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "swiggy",
+      "name": "Swiggy",
+      "file": "images/swiggy.webp",
+      "packages": [
+        "in.swiggy.android"
+      ],
+      "aliases": [
+        "Swiggy"
+      ],
+      "webHosts": [
+        "swiggy.com"
+      ],
+      "sha256": "2271bc2eecc94c4da79c55627261875a376d9a6eadaabbd4f5036825ca219581",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "zomato",
+      "name": "Zomato",
+      "file": "images/zomato.webp",
+      "packages": [
+        "com.application.zomato"
+      ],
+      "aliases": [
+        "Zomato"
+      ],
+      "webHosts": [
+        "zomato.com"
+      ],
+      "sha256": "02ce797e81cc4d1020ba479e5c12fdb5fa90e9f9a0bc1fb5be2b5691c1325631",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "blinkit",
+      "name": "Blinkit",
+      "file": "images/blinkit.webp",
+      "packages": [
+        "com.grofers.customerapp"
+      ],
+      "aliases": [
+        "Blinkit"
+      ],
+      "webHosts": [
+        "blinkit.com"
+      ],
+      "sha256": "452a2cd7751a2008d4ca421bb83bc6a300b116f3e6b76ccc290ab4f21db6c9cc",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "zepto",
+      "name": "Zepto",
+      "file": "images/zepto.webp",
+      "packages": [
+        "com.zeptoconsumerapp"
+      ],
+      "aliases": [
+        "Zepto"
+      ],
+      "webHosts": [
+        "zeptonow.com"
+      ],
+      "sha256": "0b9b0afbcbc0cc9ac8c216eb29d89eb8136e4154c4bccabb4de25a87feed1fc1",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "bigbasket",
+      "name": "bigbasket",
+      "file": "images/bigbasket.webp",
+      "packages": [
+        "com.bigbasket.mobileapp"
+      ],
+      "aliases": [
+        "bigbasket"
+      ],
+      "webHosts": [
+        "bigbasket.com"
+      ],
+      "sha256": "66ef069c121d50bd16ab1581f23ddd82ea8a2a796c531e8c2965d7440dc7520c",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "myntra",
+      "name": "Myntra",
+      "file": "images/myntra.webp",
+      "packages": [
+        "com.myntra.android"
+      ],
+      "aliases": [
+        "Myntra"
+      ],
+      "webHosts": [
+        "myntra.com"
+      ],
+      "sha256": "60f23fcaab01d5f26b21cc8dc67559e52b37c3a5455989dd9664c713e7487f7b",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "meesho",
+      "name": "Meesho",
+      "file": "images/meesho.webp",
+      "packages": [
+        "com.meesho.supply"
+      ],
+      "aliases": [
+        "Meesho"
+      ],
+      "webHosts": [
+        "meesho.com"
+      ],
+      "sha256": "3f23a00c0476e935c0d81ddadb6bab269f83a828005b3d5b2fd3982be02c37da",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "jiomart",
+      "name": "JioMart",
+      "file": "images/jiomart.webp",
+      "packages": [
+        "com.jpl.jiomart"
+      ],
+      "aliases": [
+        "JioMart"
+      ],
+      "webHosts": [
+        "jiomart.com"
+      ],
+      "sha256": "aa982ab064ddae85a98c3508ff1280e005de38e8ba2c982aa6cf044fe4f76296",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "uber",
+      "name": "Uber",
+      "file": "images/uber.webp",
+      "packages": [
+        "com.ubercab"
+      ],
+      "aliases": [
+        "Uber"
+      ],
+      "webHosts": [
+        "uber.com"
+      ],
+      "sha256": "8e49295d2ad09c764d0071b577e0397b3fb803c0b6ba701efbee445c58698a36",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "ola",
+      "name": "Ola",
+      "file": "images/ola.webp",
+      "packages": [
+        "com.olacabs.customer"
+      ],
+      "aliases": [
+        "Ola"
+      ],
+      "webHosts": [
+        "olacabs.com"
+      ],
+      "sha256": "9028ff3d72ca73d8f6f0cd404f26abe25d4047779b1a994250d9c6bee65f9ae6",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "rapido",
+      "name": "Rapido",
+      "file": "images/rapido.webp",
+      "packages": [
+        "com.rapido.passenger"
+      ],
+      "aliases": [
+        "Rapido"
+      ],
+      "webHosts": [
+        "rapido.bike"
+      ],
+      "sha256": "019162b0973a20a8af7d8c8ed0d7f19d1fdabc108c6f1ea6066af1e50a49c433",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "irctc",
+      "name": "IRCTC Rail Connect",
+      "file": "images/irctc.webp",
+      "packages": [
+        "cris.org.in.prs.ima"
+      ],
+      "aliases": [
+        "IRCTC Rail Connect",
+        "IRCTC"
+      ],
+      "webHosts": [
+        "irctc.co.in"
+      ],
+      "sha256": "e34ac0f8244add8adb7eb3e6cc82b9c4d86c22cde0910879094c134a1404edb0",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "ixigo",
+      "name": "ixigo Trains",
+      "file": "images/ixigo.webp",
+      "packages": [
+        "com.ixigo.train.ixitrain"
+      ],
+      "aliases": [
+        "ixigo Trains"
+      ],
+      "webHosts": [
+        "ixigo.com"
+      ],
+      "sha256": "ae606baa1b7f43d66d1964f6e79fbddf115d7834561c0c8d1ce2573001223caf",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "makemytrip",
+      "name": "MakeMyTrip",
+      "file": "images/makemytrip.webp",
+      "packages": [
+        "com.makemytrip"
+      ],
+      "aliases": [
+        "MakeMyTrip"
+      ],
+      "webHosts": [
+        "makemytrip.com"
+      ],
+      "sha256": "c00610d1e32d9ea2aa0c38ca18c9bc316bc07fdfe13817aa84fc587e58c6fdc8",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "goibibo",
+      "name": "Goibibo",
+      "file": "images/goibibo.webp",
+      "packages": [
+        "com.goibibo"
+      ],
+      "aliases": [
+        "Goibibo"
+      ],
+      "webHosts": [
+        "goibibo.com"
+      ],
+      "sha256": "0bea66e68b0c1cefa3f133688c86c548e65eba2ce726e1a1fcb0aa584d05c401",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "redbus",
+      "name": "redBus",
+      "file": "images/redbus.webp",
+      "packages": [
+        "in.redbus.android"
+      ],
+      "aliases": [
+        "redBus"
+      ],
+      "webHosts": [
+        "redbus.in"
+      ],
+      "sha256": "2caf38925abf13bf3c3d984205f2aaffaa2cee34c6f75cf616ca19e759e3b031",
+      "popular": true,
+      "category": "shopping",
+      "tabletPriority": 45
+    },
+    {
+      "id": "bookmyshow",
+      "name": "BookMyShow",
+      "file": "images/bookmyshow.webp",
+      "packages": [
+        "com.bt.bms"
+      ],
+      "aliases": [
+        "BookMyShow"
+      ],
+      "webHosts": [
+        "bookmyshow.com"
+      ],
+      "sha256": "80833b3bdd176fa21ff8a2ecb56322aab12a7f66b7ba1951071352cd19099284",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "airtel",
+      "name": "Airtel Thanks",
+      "file": "images/airtel.webp",
+      "packages": [
+        "com.myairtelapp"
+      ],
+      "aliases": [
+        "Airtel Thanks"
+      ],
+      "webHosts": [
+        "airtel.in"
+      ],
+      "sha256": "64a32660ca202674fc8ac0cdf5c5209d968dad6f5cd9cd4e90b62914995c748e",
+      "popular": true,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "bhim",
+      "name": "BHIM",
+      "file": "images/bhim.webp",
+      "packages": [
+        "in.org.npci.upiapp"
+      ],
+      "aliases": [
+        "BHIM"
+      ],
+      "webHosts": [
+        "bhimupi.org.in"
+      ],
+      "sha256": "aae6772e490583c4583a986a801cc3613d70653069a29655398ce8f6714ae431",
+      "popular": true,
+      "category": "payments",
+      "tabletPriority": 25
+    },
+    {
+      "id": "mobikwik",
+      "name": "MobiKwik",
+      "file": "images/mobikwik.webp",
+      "packages": [
+        "com.mobikwik_new"
+      ],
+      "aliases": [
+        "MobiKwik"
+      ],
+      "webHosts": [
+        "mobikwik.com"
+      ],
+      "sha256": "9345dea7077fcdbd56d5ab34a37c9498712a0682d77967f6ac5fd044644ccb31",
+      "popular": true,
+      "category": "payments",
+      "tabletPriority": 25
+    },
+    {
+      "id": "yono-sbi",
+      "name": "YONO SBI",
+      "file": "images/yono-sbi.webp",
+      "packages": [
+        "com.sbi.lotusintouch"
+      ],
+      "aliases": [
+        "YONO SBI"
+      ],
+      "webHosts": [
+        "onlinesbi.sbi"
+      ],
+      "sha256": "b95fda731bb1e9d78fd094bc9168f3e0cce0562192838389a9dbf9f2c4b7eee9",
+      "popular": true,
+      "category": "payments",
+      "tabletPriority": 25
+    },
+    {
+      "id": "hdfc-bank",
+      "name": "HDFC Bank",
+      "file": "images/hdfc-bank.webp",
+      "packages": [
+        "com.hdfcbank.android.now"
+      ],
+      "aliases": [
+        "HDFC Bank"
+      ],
+      "webHosts": [
+        "hdfcbank.com"
+      ],
+      "sha256": "09b2c366c4cc908f100da5d22d3921bcd84eeb17b42f59da47f52a86533698ee",
+      "popular": true,
+      "category": "payments",
+      "tabletPriority": 25
+    },
+    {
+      "id": "groww",
+      "name": "Groww",
+      "file": "images/groww.webp",
+      "packages": [
+        "com.nextbillion.groww"
+      ],
+      "aliases": [
+        "Groww"
+      ],
+      "webHosts": [
+        "groww.in"
+      ],
+      "sha256": "645959726e17bc1eeb74953030e0c8b6cd9f16ee8ff1d0a93dc7a3e31d5abd93",
+      "popular": true,
+      "category": "payments",
+      "tabletPriority": 25
+    },
+    {
+      "id": "zerodha-kite",
+      "name": "Zerodha Kite",
+      "file": "images/zerodha-kite.webp",
+      "packages": [
+        "com.zerodha.kite3"
+      ],
+      "aliases": [
+        "Zerodha Kite"
+      ],
+      "webHosts": [
+        "kite.zerodha.com"
+      ],
+      "sha256": "a0f20fc060297b37e934bb25d5739d533066ea667e74500094fe57f0f9764e65",
+      "popular": true,
+      "category": "payments",
+      "tabletPriority": 25
+    },
+    {
+      "id": "digilocker",
+      "name": "DigiLocker",
+      "file": "images/digilocker.webp",
+      "packages": [
+        "com.digilocker.android"
+      ],
+      "aliases": [
+        "DigiLocker"
+      ],
+      "webHosts": [
+        "digilocker.gov.in"
+      ],
+      "sha256": "03f8db32d5c08ef25563b098fd8ba9e133840bf9b59fe90a9b049358e2b7840b",
+      "popular": true,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "umang",
+      "name": "UMANG",
+      "file": "images/umang.webp",
+      "packages": [
+        "in.gov.umang.negd.g2c"
+      ],
+      "aliases": [
+        "UMANG"
+      ],
+      "webHosts": [
+        "web.umang.gov.in"
+      ],
+      "sha256": "cd4497899ee06480ee24d8c28ff7b3806334c4d2bc6528d8bc1389fb1fad9be2",
+      "popular": true,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "truecaller",
+      "name": "Truecaller",
+      "file": "images/truecaller.webp",
+      "packages": [
+        "com.truecaller"
+      ],
+      "aliases": [
+        "Truecaller"
+      ],
+      "webHosts": [
+        "truecaller.com"
+      ],
+      "sha256": "021aebd490db5d8f0b689be18458c4633a8964adf96e2c71e6cc51ef00de815b",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "microsoft-outlook",
+      "name": "Microsoft Outlook",
+      "file": "images/microsoft-outlook.webp",
+      "packages": [
+        "com.microsoft.office.outlook"
+      ],
+      "aliases": [
+        "Microsoft Outlook"
+      ],
+      "webHosts": [
+        "outlook.com"
+      ],
+      "sha256": "d14b8fba28848b430948ce3bf75444646b93142cc08b142428d09e561fd435da",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "microsoft-excel",
+      "name": "Microsoft Excel",
+      "file": "images/microsoft-excel.webp",
+      "packages": [
+        "com.microsoft.office.excel"
+      ],
+      "aliases": [
+        "Microsoft Excel"
+      ],
+      "webHosts": [],
+      "sha256": "34c4a60bf06da29ea2900e67e61f9c73868c9cdce392e24f1c34e0cd2028faea",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "microsoft-powerpoint",
+      "name": "Microsoft PowerPoint",
+      "file": "images/microsoft-powerpoint.webp",
+      "packages": [
+        "com.microsoft.office.powerpoint"
+      ],
+      "aliases": [
+        "Microsoft PowerPoint"
+      ],
+      "webHosts": [],
+      "sha256": "99178e88a04db9e8b7dba5a9924f3107c783039da8777185fc62349f2127850e",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "microsoft-onedrive",
+      "name": "Microsoft OneDrive",
+      "file": "images/microsoft-onedrive.webp",
+      "packages": [
+        "com.microsoft.skydrive"
+      ],
+      "aliases": [
+        "Microsoft OneDrive"
+      ],
+      "webHosts": [
+        "onedrive.live.com"
+      ],
+      "sha256": "d58daca694a0c1bb39ca23ca29ba1269c2023ba091bb17473b15f2ecff002373",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "microsoft-teams",
+      "name": "Microsoft Teams",
+      "file": "images/microsoft-teams.webp",
+      "packages": [
+        "com.microsoft.teams"
+      ],
+      "aliases": [
+        "Microsoft Teams"
+      ],
+      "webHosts": [
+        "teams.microsoft.com"
+      ],
+      "sha256": "3fcbd743de72fa52a77900e1e9503a77825197ff7be9929529f72ab877541344",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "zoom",
+      "name": "Zoom Workplace",
+      "file": "images/zoom.webp",
+      "packages": [
+        "us.zoom.videomeetings"
+      ],
+      "aliases": [
+        "Zoom Workplace"
+      ],
+      "webHosts": [
+        "zoom.us"
+      ],
+      "sha256": "4f8f19f8ea7bf7a0bbc50062f7fe24a2f091840e1e92e36fe679973fdb28cf19",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "notion",
+      "name": "Notion",
+      "file": "images/notion.webp",
+      "packages": [
+        "notion.id"
+      ],
+      "aliases": [
+        "Notion"
+      ],
+      "webHosts": [
+        "notion.so"
+      ],
+      "sha256": "5d2e40b7d6ce45fa23002e1b10ccada5da8e487f385997e77e1a5d81f07c5c96",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "canva",
+      "name": "Canva",
+      "file": "images/canva.webp",
+      "packages": [
+        "com.canva.editor"
+      ],
+      "aliases": [
+        "Canva"
+      ],
+      "webHosts": [
+        "canva.com"
+      ],
+      "sha256": "07a023fd7480081433cc81108a7a1eefb652a93fa2cb5710652dea67773f004b",
+      "popular": true,
+      "category": "creativity",
+      "tabletPriority": 92
+    },
+    {
+      "id": "indeed",
+      "name": "Indeed",
+      "file": "images/indeed.webp",
+      "packages": [
+        "com.indeed.android.jobsearch"
+      ],
+      "aliases": [
+        "Indeed"
+      ],
+      "webHosts": [
+        "indeed.com"
+      ],
+      "sha256": "524dd2913a38ae0c179079c18084c45e85314417dd9b3f1f0789a37a336638a2",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "apna",
+      "name": "apna",
+      "file": "images/apna.webp",
+      "packages": [
+        "com.apnatime"
+      ],
+      "aliases": [
+        "apna"
+      ],
+      "webHosts": [
+        "apna.co"
+      ],
+      "sha256": "665474aed37214e5e022e7487737a9b5524c71697409e0ccedd8d1d016363638",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "coursera",
+      "name": "Coursera",
+      "file": "images/coursera.webp",
+      "packages": [
+        "org.coursera.android"
+      ],
+      "aliases": [
+        "Coursera"
+      ],
+      "webHosts": [
+        "coursera.org"
+      ],
+      "sha256": "14b654d6e3474e377380170bdc89b46973be8b2082f5d3bc7a009a5d86720d9b",
+      "popular": true,
+      "category": "learning",
+      "tabletPriority": 90
+    },
+    {
+      "id": "udemy",
+      "name": "Udemy",
+      "file": "images/udemy.webp",
+      "packages": [
+        "com.udemy.android"
+      ],
+      "aliases": [
+        "Udemy"
+      ],
+      "webHosts": [
+        "udemy.com"
+      ],
+      "sha256": "e7494d52b3eda4850da7726321fbbf55ef6ed708ba15115761bb0ad7103c2797",
+      "popular": true,
+      "category": "learning",
+      "tabletPriority": 90
+    },
+    {
+      "id": "khan-academy",
+      "name": "Khan Academy",
+      "file": "images/khan-academy.webp",
+      "packages": [
+        "org.khanacademy.android"
+      ],
+      "aliases": [
+        "Khan Academy"
+      ],
+      "webHosts": [
+        "khanacademy.org"
+      ],
+      "sha256": "93d1552dab1309d7c568c88e684ca3efcc7414d4faeccb3db1bae154cfb48963",
+      "popular": true,
+      "category": "learning",
+      "tabletPriority": 90
+    },
+    {
+      "id": "perplexity",
+      "name": "Perplexity",
+      "file": "images/perplexity.webp",
+      "packages": [
+        "ai.perplexity.app.android"
+      ],
+      "aliases": [
+        "Perplexity"
+      ],
+      "webHosts": [
+        "perplexity.ai"
+      ],
+      "sha256": "3548ba6e89732b7e49f9ad9047d5e939ee595a2629e5a9fd8bb4b3d0be38aeba",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "gemini",
+      "name": "Google Gemini",
+      "file": "images/gemini.webp",
+      "packages": [
+        "com.google.android.apps.bard"
+      ],
+      "aliases": [
+        "Google Gemini"
+      ],
+      "webHosts": [
+        "gemini.google.com"
+      ],
+      "sha256": "64858afa8c005d37f57f9b9c16cc461c2ac8c16943ff92ca4647d876c9ca9d31",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "google-chrome",
+      "name": "Google Chrome",
+      "file": "images/google-chrome.webp",
+      "packages": [
+        "com.android.chrome"
+      ],
+      "aliases": [
+        "Google Chrome",
+        "Chrome"
+      ],
+      "webHosts": [],
+      "sha256": "e61a5d14966f9623d42eacb979359d7c838eceabef3c0c613bcc9a2d6c7ee676",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "firefox",
+      "name": "Firefox",
+      "file": "images/firefox.webp",
+      "packages": [
+        "org.mozilla.firefox"
+      ],
+      "aliases": [
+        "Firefox"
+      ],
+      "webHosts": [
+        "mozilla.org"
+      ],
+      "sha256": "770391d2ea105d7e172022c4d9bef93a4694ce90d4b1fe5879a97f0a4e7ff344",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "opera",
+      "name": "Opera",
+      "file": "images/opera.webp",
+      "packages": [
+        "com.opera.browser"
+      ],
+      "aliases": [
+        "Opera"
+      ],
+      "webHosts": [
+        "opera.com"
+      ],
+      "sha256": "341959fffec8d9df78cd03acd751870d019cf15d2b5d3fbe8e2076980405d030",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "google-photos",
+      "name": "Google Photos",
+      "file": "images/google-photos.webp",
+      "packages": [
+        "com.google.android.apps.photos"
+      ],
+      "aliases": [
+        "Google Photos"
+      ],
+      "webHosts": [
+        "photos.google.com"
+      ],
+      "sha256": "184e812050197f8774ef4941871080fb897bef73bcb23f3a71db8d694fd310be",
+      "popular": true,
+      "category": "creativity",
+      "tabletPriority": 92
+    },
+    {
+      "id": "google-keep",
+      "name": "Google Keep",
+      "file": "images/google-keep.webp",
+      "packages": [
+        "com.google.android.keep"
+      ],
+      "aliases": [
+        "Google Keep"
+      ],
+      "webHosts": [
+        "keep.google.com"
+      ],
+      "sha256": "5b900b57ed0d7718c692227990cc5d94fb996d6340c7b911df79c14710a737cb",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "google-meet",
+      "name": "Google Meet",
+      "file": "images/google-meet.webp",
+      "packages": [
+        "com.google.android.apps.tachyon"
+      ],
+      "aliases": [
+        "Google Meet"
+      ],
+      "webHosts": [
+        "meet.google.com"
+      ],
+      "sha256": "509b70a53a68ef10c37a2813a293fac44dee9fca148e52acf3c3035a9f5c24cb",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "google-translate",
+      "name": "Google Translate",
+      "file": "images/google-translate.webp",
+      "packages": [
+        "com.google.android.apps.translate"
+      ],
+      "aliases": [
+        "Google Translate"
+      ],
+      "webHosts": [
+        "translate.google.com"
+      ],
+      "sha256": "9eab009dda637910ccd9eb018d3ded30c513e9e8020553621671e2bdec98c95c",
+      "popular": true,
+      "category": "learning",
+      "tabletPriority": 90
+    },
+    {
+      "id": "clash-royale",
+      "name": "Clash Royale",
+      "file": "images/clash-royale.webp",
+      "packages": [
+        "com.supercell.clashroyale"
+      ],
+      "aliases": [
+        "Clash Royale"
+      ],
+      "webHosts": [],
+      "sha256": "1652dc14cefc83261fd9dfebb163b62c2372ac0c6462571870b1b7abd4a3d736",
+      "popular": true,
+      "category": "games",
+      "tabletPriority": 96
+    },
+    {
+      "id": "brawl-stars",
+      "name": "Brawl Stars",
+      "file": "images/brawl-stars.webp",
+      "packages": [
+        "com.supercell.brawlstars"
+      ],
+      "aliases": [
+        "Brawl Stars"
+      ],
+      "webHosts": [],
+      "sha256": "1cb63e3494012e013a2eef3115f5d7d91d754eabbfbd2d0c3fc31e779495db5f",
+      "popular": true,
+      "category": "games",
+      "tabletPriority": 96
+    },
+    {
+      "id": "bgmi",
+      "name": "Battlegrounds Mobile India",
+      "file": "images/bgmi.webp",
+      "packages": [
+        "com.pubg.imobile"
+      ],
+      "aliases": [
+        "Battlegrounds Mobile India"
+      ],
+      "webHosts": [
+        "battlegroundsmobileindia.com"
+      ],
+      "sha256": "eff60ca4b5f9341ad5d8df9632014e1b99c492af65b989795d8792895c3909cb",
+      "popular": true,
+      "category": "games",
+      "tabletPriority": 96
+    },
+    {
+      "id": "free-fire-max",
+      "name": "Free Fire MAX",
+      "file": "images/free-fire-max.webp",
+      "packages": [
+        "com.dts.freefiremax"
+      ],
+      "aliases": [
+        "Free Fire MAX"
+      ],
+      "webHosts": [
+        "ff.garena.com"
+      ],
+      "sha256": "072339c85cdfb0f2f90ac09faea0a68b34143c5fafc2eac87fbf694d4c6ba111",
+      "popular": true,
+      "category": "games",
+      "tabletPriority": 96
+    },
+    {
+      "id": "candy-crush",
+      "name": "Candy Crush Saga",
+      "file": "images/candy-crush.webp",
+      "packages": [
+        "com.king.candycrushsaga"
+      ],
+      "aliases": [
+        "Candy Crush Saga"
+      ],
+      "webHosts": [
+        "king.com"
+      ],
+      "sha256": "7d5a464992a23491245798703c5e3faffe32a561820d8d55c97494257639f546",
+      "popular": true,
+      "category": "games",
+      "tabletPriority": 96
+    },
+    {
+      "id": "ludo-king",
+      "name": "Ludo King",
+      "file": "images/ludo-king.webp",
+      "packages": [
+        "com.ludo.king"
+      ],
+      "aliases": [
+        "Ludo King"
+      ],
+      "webHosts": [
+        "ludoking.com"
+      ],
+      "sha256": "cc4ad8a080a54746f9d6db7b60039b285bb203b3927c236b7007a2324d9bd089",
+      "popular": true,
+      "category": "games",
+      "tabletPriority": 96
+    },
+    {
+      "id": "subway-surfers",
+      "name": "Subway Surfers",
+      "file": "images/subway-surfers.webp",
+      "packages": [
+        "com.kiloo.subwaysurf"
+      ],
+      "aliases": [
+        "Subway Surfers"
+      ],
+      "webHosts": [
+        "sybogames.com"
+      ],
+      "sha256": "8bf18e7ac271a4599259ccf2339dbda1c75b39682a86a3f981d76fa030f485ec",
+      "popular": true,
+      "category": "games",
+      "tabletPriority": 96
+    },
+    {
+      "id": "roblox",
+      "name": "Roblox",
+      "file": "images/roblox.webp",
+      "packages": [
+        "com.roblox.client"
+      ],
+      "aliases": [
+        "Roblox"
+      ],
+      "webHosts": [
+        "roblox.com"
+      ],
+      "sha256": "2526169bdf1ddd60ff0afe13ddedf8ddfe5c738ba39fd924368f9b318db34f05",
+      "popular": true,
+      "category": "games",
+      "tabletPriority": 96
+    },
+    {
+      "id": "anibrave",
+      "name": "AniBrave",
+      "file": "images/anibrave.webp",
+      "packages": [
+        "app.anibrave.main"
+      ],
+      "aliases": [
+        "AniBrave"
+      ],
+      "webHosts": [],
+      "sha256": "8cc85e51c3a2b17d3198dfde8ea16276a14fae9526a3b3354c510426be0c7b0f",
+      "popular": false,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "anihome",
+      "name": "AniHome",
+      "file": "images/anihome.webp",
+      "packages": [
+        "app.anihome.launcher"
+      ],
+      "aliases": [
+        "AniHome"
+      ],
+      "webHosts": [],
+      "sha256": "13777df25f6482c90df7d6f7ce8f8d792f3be3296c9eb1cd0649910cc2626e31",
+      "popular": false,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "anikoto",
+      "name": "AniKoto",
+      "file": "images/anikoto.webp",
+      "packages": [],
+      "aliases": [
+        "AniKoto"
+      ],
+      "webHosts": [
+        "anikototv.to"
+      ],
+      "sha256": "b85fa48d1300e32a76f3ff16c5d579bb7b4be4be5d7e096c8cc84f05f7f9c34b",
+      "popular": false,
+      "category": "entertainment",
+      "tabletPriority": 100
+    },
+    {
+      "id": "brave",
+      "name": "Brave",
+      "file": "images/brave.webp",
+      "packages": [
+        "com.brave.browser"
+      ],
+      "aliases": [
+        "Brave"
+      ],
+      "webHosts": [],
+      "sha256": "97eb24d32320be63a69dc0207da03f050bfbcb651f536e8dd0a19502b74bc464",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "calculator",
+      "name": "Calculator",
+      "file": "images/calculator.webp",
+      "packages": [
+        "com.tcl.tct.calculator"
+      ],
+      "aliases": [
+        "Calculator"
+      ],
+      "webHosts": [],
+      "sha256": "6921d1f5fe1915ea7677be6a0269771569584914fdbe3224c05ea83079c73b46",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "calendar",
+      "name": "Calendar",
+      "file": "images/calendar.webp",
+      "packages": [
+        "com.google.android.calendar"
+      ],
+      "aliases": [
+        "Calendar"
+      ],
+      "webHosts": [],
+      "sha256": "7dfc9e564f7228c9bbc831ba283751a46fa38f1bd24f08619903feac361ccc25",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "camera",
+      "name": "Camera",
+      "file": "images/camera.webp",
+      "packages": [
+        "com.tcl.camera"
+      ],
+      "aliases": [
+        "Camera"
+      ],
+      "webHosts": [],
+      "sha256": "cedd65e68c9c1f6a63311a4c7ec9d865f5b70679f167f3bf0eb9e9a0541c5f2f",
+      "popular": false,
+      "category": "creativity",
+      "tabletPriority": 92
+    },
+    {
+      "id": "chatgpt",
+      "name": "ChatGPT",
+      "file": "images/chatgpt.webp",
+      "packages": [
+        "com.openai.chatgpt"
+      ],
+      "aliases": [
+        "ChatGPT"
+      ],
+      "webHosts": [
+        "chatgpt.com"
+      ],
+      "sha256": "05331825c02075317efe5e4cc5598019e3548add93fbcec8fc69ea0f4faff3da",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "claude",
+      "name": "Claude",
+      "file": "images/claude.webp",
+      "packages": [
+        "com.anthropic.claude"
+      ],
+      "aliases": [
+        "Claude"
+      ],
+      "webHosts": [
+        "claude.ai"
+      ],
+      "sha256": "41b5b44240756b34bb0a825039c4114d915ef19a8e167444b5f0a780a7aeaac1",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "clock",
+      "name": "Clock",
+      "file": "images/clock.webp",
+      "packages": [
+        "com.android.deskclock"
+      ],
+      "aliases": [
+        "Clock"
+      ],
+      "webHosts": [],
+      "sha256": "bb4dbd54cc1a8f3261166fa7af42755c6bc9cc26421a4a641b1191ae862538c2",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "cometin",
+      "name": "Cometin",
+      "file": "images/cometin.webp",
+      "packages": [
+        "host.stjin.cometin"
+      ],
+      "aliases": [
+        "Cometin"
+      ],
+      "webHosts": [],
+      "sha256": "e208894b272e1b3defb016ab8b66acd1cf746f744be87cec6e93ad484e9d86e1",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "contacts",
+      "name": "Contacts",
+      "file": "images/contacts.webp",
+      "packages": [
+        "com.google.android.contacts"
+      ],
+      "aliases": [
+        "Contacts"
+      ],
+      "webHosts": [],
+      "sha256": "83213eb846b976a3f30cff51a6ac737d4615bd2f81615b5b8ab5ca2c48ae61cf",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "crunchyroll",
+      "name": "Crunchyroll",
+      "file": "images/crunchyroll.webp",
+      "packages": [
+        "com.crunchyroll.crunchyroid"
+      ],
+      "aliases": [
+        "Crunchyroll"
+      ],
+      "webHosts": [
+        "crunchyroll.com"
+      ],
+      "sha256": "de5ebcb0f97a0ab9440b88e2ee6d268d7f066ec3bea83e0a9163d133e033609f",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 100
+    },
+    {
+      "id": "cursor-ai",
+      "name": "Cursor",
+      "file": "images/cursor-ai.webp",
+      "packages": [],
+      "aliases": [
+        "Cursor",
+        "Cursor AI"
+      ],
+      "webHosts": [
+        "cursor.com"
+      ],
+      "sha256": "89456ac0dbd31c43240c2107e360082f76a7d8044d4e2edb211b60ddd858b089",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "drive",
+      "name": "Drive",
+      "file": "images/drive.webp",
+      "packages": [
+        "com.google.android.apps.docs"
+      ],
+      "aliases": [
+        "Drive"
+      ],
+      "webHosts": [],
+      "sha256": "aa3f3030276e56cb3fc84f64b06d5de9197331395a4730a282be522863cb7cbe",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "file-manager",
+      "name": "File Manager",
+      "file": "images/file-manager.webp",
+      "packages": [
+        "com.tcl.tct.filemanager"
+      ],
+      "aliases": [
+        "File Manager"
+      ],
+      "webHosts": [],
+      "sha256": "004891a88398631dede74fea79a8e66678ee942f05305116dc94f69ba411288a",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "files-by-google",
+      "name": "Files by Google",
+      "file": "images/files-by-google.webp",
+      "packages": [
+        "com.google.android.apps.nbu.files"
+      ],
+      "aliases": [
+        "Files by Google"
+      ],
+      "webHosts": [],
+      "sha256": "33f8a59f0fc8bcb4532cb6eab860f5025caeb6d271632442aae30bc951517e78",
+      "popular": true,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "files",
+      "name": "Files",
+      "file": "images/files.webp",
+      "packages": [
+        "com.google.android.documentsui"
+      ],
+      "aliases": [
+        "Files"
+      ],
+      "webHosts": [],
+      "sha256": "378abb79ce773b9d5b18c4a04ae7b2e36dda5ed8cf7459734789c69524d11a17",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "find-hub",
+      "name": "Find Hub",
+      "file": "images/find-hub.webp",
+      "packages": [
+        "com.google.android.apps.adm"
+      ],
+      "aliases": [
+        "Find Hub"
+      ],
+      "webHosts": [],
+      "sha256": "51dfebba30330e2a006ee6b0e24af490643d981a076cf294ad698d2bdba6e536",
+      "popular": true,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "gallery",
+      "name": "Gallery",
+      "file": "images/gallery.webp",
+      "packages": [
+        "com.tclhz.gallery"
+      ],
+      "aliases": [
+        "Gallery"
+      ],
+      "webHosts": [],
+      "sha256": "fcddf930b687ce6721d8aee642f48d958ce9cfab45ec6f1762fb32a5b42af4d8",
+      "popular": false,
+      "category": "creativity",
+      "tabletPriority": 92
+    },
+    {
+      "id": "gmail",
+      "name": "Gmail",
+      "file": "images/gmail.webp",
+      "packages": [
+        "com.google.android.gm"
+      ],
+      "aliases": [
+        "Gmail"
+      ],
+      "webHosts": [],
+      "sha256": "ccf6438e19b1dde8374c72f71589d0c785732f306a6d3436ffcdd183499a99dc",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "google-play-store",
+      "name": "Google Play Store",
+      "file": "images/google-play-store.webp",
+      "packages": [
+        "com.android.vending"
+      ],
+      "aliases": [
+        "Google Play Store"
+      ],
+      "webHosts": [],
+      "sha256": "3f347de471082f44cd0687fd049d076c341dd923d8270449add568fb4502d0d3",
+      "popular": true,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "grok-ai",
+      "name": "Grok AI",
+      "file": "images/grok-ai.webp",
+      "packages": [
+        "ai.x.grok"
+      ],
+      "aliases": [
+        "Grok AI",
+        "Grok"
+      ],
+      "webHosts": [
+        "grok.com"
+      ],
+      "sha256": "866342867e4a6edef34cb23fa7626b91634d9871fdb59908a56d2380ad552dfc",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "grok-bot",
+      "name": "Grok Bot",
+      "file": "images/grok-bot.webp",
+      "packages": [],
+      "aliases": [
+        "Grok Bot"
+      ],
+      "webHosts": [],
+      "sha256": "559fd40515fc52bf197f5ea04efbc04a848b26cdbd2382f3c88e54f2320bb8a8",
+      "popular": false,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "heymelody",
+      "name": "HeyMelody",
+      "file": "images/heymelody.webp",
+      "packages": [
+        "com.heytap.headset"
+      ],
+      "aliases": [
+        "HeyMelody"
+      ],
+      "webHosts": [],
+      "sha256": "0a69772de79dacfaba76bfb7edd32612bfcb825fdd539ad915b6e1fed9b1c88e",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "hianime",
+      "name": "HiAnime",
+      "file": "images/hianime.webp",
+      "packages": [],
+      "aliases": [
+        "HiAnime"
+      ],
+      "webHosts": [
+        "hianime.to"
+      ],
+      "sha256": "08d25abcf9516b85ba0b805a5e402bdfb7884915b9195bf91097722d937d0b9f",
+      "popular": false,
+      "category": "entertainment",
+      "tabletPriority": 100
+    },
+    {
+      "id": "jiohotstar",
+      "name": "JioHotstar",
+      "file": "images/jiohotstar.webp",
+      "packages": [
+        "in.startv.hotstar"
+      ],
+      "aliases": [
+        "JioHotstar",
+        "Jio Hotstar",
+        "Hotstar",
+        "Disney+ Hotstar"
+      ],
+      "webHosts": [],
+      "sha256": "9162254c209a0e789a83fb2876adbd26ceadfea199c0fb55a895a499a097c0e8",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 100
+    },
+    {
+      "id": "kids-mode",
+      "name": "Kids Mode",
+      "file": "images/kids-mode.webp",
+      "packages": [
+        "com.kidsedu"
+      ],
+      "aliases": [
+        "Kids Mode"
+      ],
+      "webHosts": [],
+      "sha256": "3313ee2f150fbb375b4b09b899e42f54c0b686e2f399cd08292d3ee93f47adef",
+      "popular": false,
+      "category": "learning",
+      "tabletPriority": 90
+    },
+    {
+      "id": "localsend",
+      "name": "LocalSend",
+      "file": "images/localsend.webp",
+      "packages": [
+        "org.localsend.localsend_app"
+      ],
+      "aliases": [
+        "LocalSend"
+      ],
+      "webHosts": [],
+      "sha256": "0d2d3efe104e684eba870ddc081b6bf78210558c6d5d8d147ac53b44d7bff213",
+      "popular": false,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "messages",
+      "name": "Messages",
+      "file": "images/messages.webp",
+      "packages": [
+        "com.google.android.apps.messaging"
+      ],
+      "aliases": [
+        "Messages"
+      ],
+      "webHosts": [],
+      "sha256": "7dd0f09da31a9baeaddcd19fa38fec10f2d2ade7056bb82fdf511a92fe859b46",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "music",
+      "name": "Music",
+      "file": "images/music.webp",
+      "packages": [
+        "com.tct.music"
+      ],
+      "aliases": [
+        "Music"
+      ],
+      "webHosts": [],
+      "sha256": "60f21f7bfe4c7ec731e2dfea2dfa9f03fefe858b264104e5cfdfc6f83d0cceb9",
+      "popular": false,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "notes",
+      "name": "Notes",
+      "file": "images/notes.webp",
+      "packages": [
+        "com.tct.smart.notes"
+      ],
+      "aliases": [
+        "Notes"
+      ],
+      "webHosts": [],
+      "sha256": "1d9192c833e25f3b233641d6f6f04783f0f53989260146f30e3f62df66857ea1",
+      "popular": false,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "phone",
+      "name": "Phone",
+      "file": "images/phone.webp",
+      "packages": [
+        "com.google.android.dialer"
+      ],
+      "aliases": [
+        "Phone"
+      ],
+      "webHosts": [],
+      "sha256": "2cf6c69adf5e8acc47fb8c01095b4bf3f2d2fd77b0b17d6ffdad89c4e83d1eb3",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "proton-pass",
+      "name": "Proton Pass",
+      "file": "images/proton-pass.webp",
+      "packages": [
+        "proton.android.pass"
+      ],
+      "aliases": [
+        "Proton Pass"
+      ],
+      "webHosts": [],
+      "sha256": "388150398aaab67b37d2732d9c03f594de2e1545eacee18e4d05d80bba751522",
+      "popular": false,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "radio",
+      "name": "Radio",
+      "file": "images/radio.webp",
+      "packages": [
+        "com.tcl.fmradio"
+      ],
+      "aliases": [
+        "Radio"
+      ],
+      "webHosts": [],
+      "sha256": "3e9513ae900cef5c8d72d1199d59d3b3cd1484440583719c09b0daa5b020c6d6",
+      "popular": false,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "settings",
+      "name": "Settings",
+      "file": "images/settings.webp",
+      "packages": [
+        "com.android.settings"
+      ],
+      "aliases": [
+        "Settings"
+      ],
+      "webHosts": [],
+      "sha256": "3fa4659d68a334f95308ec437b4619a0f5504c56327dd1337f61e66c45d16f70",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "smart-manager",
+      "name": "Smart Manager",
+      "file": "images/smart-manager.webp",
+      "packages": [
+        "com.tct.onetouchbooster"
+      ],
+      "aliases": [
+        "Smart Manager"
+      ],
+      "webHosts": [],
+      "sha256": "96a6d18b85c2a4eccc2c4e1b57e3d0f13c810ed04b52deabc0763f96ed07283f",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "sololearn",
+      "name": "Sololearn",
+      "file": "images/sololearn.webp",
+      "packages": [
+        "com.sololearn"
+      ],
+      "aliases": [
+        "Sololearn"
+      ],
+      "webHosts": [],
+      "sha256": "9ab1da830aa8248e0c8510e881c0dcfc8742b7f2d7cd11040ff13e8409f1f755",
+      "popular": false,
+      "category": "learning",
+      "tabletPriority": 90
+    },
+    {
+      "id": "sound-recorder",
+      "name": "Sound Recorder",
+      "file": "images/sound-recorder.webp",
+      "packages": [
+        "com.tcl.tct.soundrecorder"
+      ],
+      "aliases": [
+        "Sound Recorder"
+      ],
+      "webHosts": [],
+      "sha256": "5430b4c95f7794cdff39638bdce08b4fa2b9e1b6e7e896a45c97f766c96d258b",
+      "popular": false,
+      "category": "creativity",
+      "tabletPriority": 92
+    },
+    {
+      "id": "spacedesk",
+      "name": "spacedesk",
+      "file": "images/spacedesk.webp",
+      "packages": [
+        "ph.spacedesk.beta"
+      ],
+      "aliases": [
+        "spacedesk"
+      ],
+      "webHosts": [],
+      "sha256": "fbed87f51de54a08940d51caf67e84a242ea528374d1db57d5a6e5f23b23faab",
+      "popular": false,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "support-centre",
+      "name": "Support Centre",
+      "file": "images/support-centre.webp",
+      "packages": [
+        "com.tcl.usercare"
+      ],
+      "aliases": [
+        "Support Centre"
+      ],
+      "webHosts": [],
+      "sha256": "a451983ad46a0d7407bac828f3dd5060e4c6ae3aaf4f58b48fd8a806ff9d29d5",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "telegram",
+      "name": "Telegram",
+      "file": "images/telegram.webp",
+      "packages": [
+        "org.telegram.messenger"
+      ],
+      "aliases": [
+        "Telegram"
+      ],
+      "webHosts": [],
+      "sha256": "f50503a1cf4e9d08822da76bd73c863b2f60dc7c13ab00a1693d37d363fac8c3",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "velixa",
+      "name": "Velixa",
+      "file": "images/velixa.webp",
+      "packages": [
+        "com.velixa.app"
+      ],
+      "aliases": [
+        "Velixa"
+      ],
+      "webHosts": [],
+      "sha256": "c1edc6fbf9004631d8ffb3c218a6dee5f1b2c3947deb37ed942e6df997eec4ae",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "video",
+      "name": "Video",
+      "file": "images/video.webp",
+      "packages": [
+        "com.tcl.android.video"
+      ],
+      "aliases": [
+        "Video"
+      ],
+      "webHosts": [],
+      "sha256": "1c70e2127ff39d97cb37a8f2d2dcca5583630a0c8767267f34da6b0cddde0176",
+      "popular": false,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "vlc",
+      "name": "VLC",
+      "file": "images/vlc.webp",
+      "packages": [
+        "org.videolan.vlc"
+      ],
+      "aliases": [
+        "VLC"
+      ],
+      "webHosts": [],
+      "sha256": "0e2b85f7ecf39a4ee06d8c8e55221c364564fb1241aa8e3bff2bbd86482696db",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "voter-helpline",
+      "name": "Voter Helpline",
+      "file": "images/voter-helpline.webp",
+      "packages": [
+        "com.eci.citizen"
+      ],
+      "aliases": [
+        "Voter Helpline"
+      ],
+      "webHosts": [],
+      "sha256": "e6406baa0e7bf25d598eddb0b9be69f6efd20b8ea618ea00448ea67ee9a0676c",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "weather",
+      "name": "Weather",
+      "file": "images/weather.webp",
+      "packages": [
+        "com.tcl.tct.weather"
+      ],
+      "aliases": [
+        "Weather"
+      ],
+      "webHosts": [],
+      "sha256": "2d95720421b2748b7f3256e522d45bb114f1373e9be93daeed1d397288c183d8",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 35
+    },
+    {
+      "id": "whatsapp-business",
+      "name": "WhatsApp Business",
+      "file": "images/whatsapp-business.webp",
+      "packages": [
+        "com.whatsapp.w4b"
+      ],
+      "aliases": [
+        "WhatsApp Business"
+      ],
+      "webHosts": [],
+      "sha256": "586b68516d7d770fe0ea2c3a08ef5049f5beeb8bc84265fba597c14ed7d77816",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 75
+    },
+    {
+      "id": "word",
+      "name": "Word",
+      "file": "images/word.webp",
+      "packages": [
+        "com.microsoft.office.word"
+      ],
+      "aliases": [
+        "Word"
+      ],
+      "webHosts": [],
+      "sha256": "4076946b9ebc37b06a7e85909197abbadc1c389b0643fca28518be599f0122fc",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 82
+    },
+    {
+      "id": "youtube",
+      "name": "YouTube",
+      "file": "images/youtube.webp",
+      "packages": [
+        "com.google.android.youtube"
+      ],
+      "aliases": [
+        "YouTube"
+      ],
+      "webHosts": [],
+      "sha256": "4cb3306c4a590257d1b29a4510f09815a7579533e8dbe4458bca58d6ec795e1d",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 100
+    },
+    {
+      "id": "kindle",
+      "name": "Amazon Kindle",
+      "file": "images/kindle.webp",
+      "packages": [
+        "com.amazon.kindle"
+      ],
+      "aliases": [
+        "Amazon Kindle",
+        "Kindle"
+      ],
+      "webHosts": [
+        "read.amazon.com"
+      ],
+      "sha256": "ee24f5c1d7f4a33759de021df13c77a3c51fd1912df26c862fece2a7efedd9cd",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 91
+    },
+    {
+      "id": "google-play-books",
+      "name": "Google Play Books",
+      "file": "images/google-play-books.webp",
+      "packages": [
+        "com.google.android.apps.books"
+      ],
+      "aliases": [
+        "Google Play Books",
+        "Play Books",
+        "Google Books"
+      ],
+      "webHosts": [],
+      "sha256": "e997f09a632f612608fcc8cda3d4e3b159e6fe1a25ce9938748437dfbe0adf3a",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 90
+    },
+    {
+      "id": "krita",
+      "name": "Krita",
+      "file": "images/krita.webp",
+      "packages": [
+        "org.krita"
+      ],
+      "aliases": [
+        "Krita"
+      ],
+      "webHosts": [
+        "krita.org"
+      ],
+      "sha256": "3efcabe45f3547b07b6870064c077cccd51b0555d87f66b2c7a24bc03bcb9dda",
+      "popular": true,
+      "category": "creativity",
+      "tabletPriority": 94
+    },
+    {
+      "id": "ibis-paint-x",
+      "name": "ibis Paint X",
+      "file": "images/ibis-paint-x.webp",
+      "packages": [
+        "jp.ne.ibis.ibispaintx.app"
+      ],
+      "aliases": [
+        "ibis Paint X",
+        "IbisPaint X",
+        "ibisPaint"
+      ],
+      "webHosts": [
+        "ibispaint.com"
+      ],
+      "sha256": "7748e59afd00a5995898bdc4cc3702c8aabc2e755aea7321675b054984e40fa1",
+      "popular": true,
+      "category": "creativity",
+      "tabletPriority": 94
+    },
+    {
+      "id": "sketchbook",
+      "name": "Sketchbook",
+      "file": "images/sketchbook.webp",
+      "packages": [
+        "com.adsk.sketchbook"
+      ],
+      "aliases": [
+        "Sketchbook"
+      ],
+      "webHosts": [
+        "sketchbook.com"
+      ],
+      "sha256": "629fb88de76087a21f1ef2cc8917833f08c470d8819f3dee851aae74c9e41605",
+      "popular": true,
+      "category": "creativity",
+      "tabletPriority": 94
+    },
+    {
+      "id": "goodnotes",
+      "name": "Goodnotes",
+      "file": "images/goodnotes.webp",
+      "packages": [
+        "com.goodnotes.android.app"
+      ],
+      "aliases": [
+        "Goodnotes",
+        "Good Notes"
+      ],
+      "webHosts": [
+        "goodnotes.com"
+      ],
+      "sha256": "f7bdf49d14b6057f603716674d739cbf3c773bbb0c0f68d100cde75484391bc5",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 88
+    },
+    {
+      "id": "microsoft-onenote",
+      "name": "Microsoft OneNote",
+      "file": "images/microsoft-onenote.webp",
+      "packages": [
+        "com.microsoft.office.onenote"
+      ],
+      "aliases": [
+        "Microsoft OneNote",
+        "OneNote"
+      ],
+      "webHosts": [
+        "onenote.com"
+      ],
+      "sha256": "492b6f3c62fb432386871938eb7bb6bf6933d5c87958b06dd848e33456ad5c53",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 89
+    },
+    {
+      "id": "readera",
+      "name": "ReadEra",
+      "file": "images/readera.webp",
+      "packages": [
+        "org.readera"
+      ],
+      "aliases": [
+        "ReadEra"
+      ],
+      "webHosts": [
+        "readera.org"
+      ],
+      "sha256": "40fca9bb26c34afab21b02fad5f44132780f8afef5675d826781803f3ad6b58f",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 91
+    },
+    {
+      "id": "concepts",
+      "name": "Concepts",
+      "file": "images/concepts.webp",
+      "packages": [
+        "com.tophatch.concepts"
+      ],
+      "aliases": [
+        "Concepts"
+      ],
+      "webHosts": [
+        "concepts.app"
+      ],
+      "sha256": "2b955e84af6996aedaf3c8be4dc84fc55d25630a910728b03a990908d3603ef2",
+      "popular": true,
+      "category": "creativity",
+      "tabletPriority": 94
+    },
+    {
+      "id": "xodo",
+      "name": "Xodo PDF",
+      "file": "images/xodo.webp",
+      "packages": [
+        "com.xodo.pdf.reader"
+      ],
+      "aliases": [
+        "Xodo PDF",
+        "Xodo"
+      ],
+      "webHosts": [
+        "xodo.com"
+      ],
+      "sha256": "7873b2b69d0296ea5a9832f74bc83a01a429305bbd96d98acc6cfe987ffa6807",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 88
+    }
+  ]
+}

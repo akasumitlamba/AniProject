@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TV-style ambient backdrop: deep navy base with soft coloured glows, like AniHome's wallpaper. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:startColor="#0E1628"
+                android:endColor="#060912" />
+        </shape>
+    </item>
+    <item android:left="-200dp" android:top="-220dp" android:right="120dp" android:bottom="260dp">
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="360dp"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:startColor="#8C3B82F6"
+                android:endColor="#003B82F6" />
+        </shape>
+    </item>
+    <item android:left="160dp" android:top="-140dp" android:right="-220dp" android:bottom="300dp">
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="340dp"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:startColor="#85D946EF"
+                android:endColor="#00D946EF" />
+        </shape>
+    </item>
+    <item android:left="120dp" android:top="320dp" android:right="-160dp" android:bottom="-200dp">
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="360dp"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:startColor="#7AF43F5E"
+                android:endColor="#00F43F5E" />
+        </shape>
+    </item>
+    <item android:left="-180dp" android:top="380dp" android:right="200dp" android:bottom="-220dp">
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="340dp"
+                android:centerX="0.5"
+                android:centerY="0.5"
+                android:startColor="#6B10B981"
+                android:endColor="#0010B981" />
+        </shape>
+    </item>
+</layer-list>

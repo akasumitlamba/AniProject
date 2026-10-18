@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <!-- Watch history and tiles stay on the device; only device-to-device transfer is allowed. -->
+        <exclude domain="database" path="." />
+        <exclude domain="sharedpref" path="." />
+        <exclude domain="file" path="icons" />
+        <exclude domain="file" path="tile-artwork" />
+    </cloud-backup>
+    <device-transfer>
+        <include domain="database" path="." />
+        <include domain="sharedpref" path="." />
+        <include domain="file" path="icons" />
+        <include domain="file" path="tile-artwork" />
+        <exclude domain="sharedpref" path="home_widgets.xml" />
+    </device-transfer>
+</data-extraction-rules>

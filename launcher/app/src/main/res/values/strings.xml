@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AniHome</string>
+    <string name="brand">AniHome</string>
+
+    <string name="action_search">Search or open address</string>
+    <string name="action_add">Add to home</string>
+    <string name="action_edit">Edit home</string>
+    <string name="action_done">Done</string>
+    <string name="action_all_apps">All apps</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_remove">Remove</string>
+    <string name="action_rename">Rename</string>
+    <string name="action_app_info">App info</string>
+    <string name="action_open">Open</string>
+    <string name="action_ok">OK</string>
+    <string name="action_add_app">Add an app</string>
+    <string name="action_add_site">Add a website</string>
+    <string name="action_library">Anime library</string>
+    <string name="action_default_home">Set as default home</string>
+    <string name="action_about">About AniHome</string>
+    <string name="action_refresh_icon">Refresh icon</string>
+    <string name="action_desktop_site">Desktop site</string>
+    <string name="action_mobile_site">Mobile site</string>
+    <string name="action_reload">Reload</string>
+    <string name="action_back">Back</string>
+    <string name="action_home">Home</string>
+    <string name="action_forget">Forget</string>
+    <string name="action_dont_remind">Don\'t remind for this anime</string>
+    <string name="action_dismiss_reminder">Dismiss reminder</string>
+    <string name="action_watch_log">Watch log</string>
+
+    <string name="empty_home">Nothing here yet. Tap + to add apps and websites.</string>
+    <string name="reminder_body">You were on episode %1$d of %2$s</string>
+    <string name="default_home_banner">AniHome is not your default home screen yet.</string>
+    <string name="default_home_set">Choose</string>
+
+    <string name="add_site_title">Add a website</string>
+    <string name="add_site_hint_url">Website address</string>
+    <string name="add_site_hint_name">Name (optional)</string>
+    <string name="add_site_help">Opens full-page, like an app. Its logo is cached on this device.</string>
+    <string name="rename_title">Rename</string>
+    <string name="search_title">Search or open address</string>
+    <string name="search_hint">Search Google or type a URL</string>
+    <string name="drawer_search_hint">Search apps</string>
+    <string name="drawer_hint_long_press">Tap to open, long-press to add to home</string>
+    <string name="added_to_home">Added to home</string>
+    <string name="already_on_home">Already on home</string>
+    <string name="app_missing">This app is no longer installed</string>
+    <string name="invalid_url">Enter a valid website address</string>
+
+    <string name="library_title">Anime library</string>
+    <string name="library_empty">No anime tracked yet. Watch an episode in any website tile and it will appear here. Everything stays on this device.</string>
+    <string name="library_episode_line">Episode %1$d of ~%2$d watched</string>
+    <string name="library_clear_all">Clear all history</string>
+    <string name="library_clear_confirm">Delete all locally stored anime progress?</string>
+    <string name="library_forget_confirm">Forget progress for %1$s?</string>
+    <string name="library_muted">Reminders off</string>
+
+    <string name="cross_site_title">You already watched this</string>
+    <string name="cross_site_body_ahead">You watched up to episode %1$d of %2$s on %3$s. You are opening episode %4$d here.</string>
+    <string name="cross_site_body_same">You already finished episode %1$d of %2$s on %3$s.</string>
+    <string name="cross_site_body_behind">On %3$s you reached episode %1$d of %2$s. Episode %4$d here is further along.</string>
+    <string name="history_title">Watch log</string>
+    <string name="history_empty">No watch entries yet for this anime.</string>
+    <string name="history_episode">Episode %1$d</string>
+    <string name="history_meta">%1$s · %2$s</string>
+
+    <string name="about_body">AniHome turns your phone\'s home screen into a TV-style launcher where native apps and websites sit side by side. The home screen uses your system wallpaper. Websites open full-page. Anime progress is detected from the pages you watch and stored only on this device. No account, no server, no cloud.</string>
+    <string name="action_show_app_names">Show app names</string>
+    <string name="drawer_hint_open">Tap an app to open it</string>
+    <string name="drawer_hint_add">Tap an app to add it to Home</string>
+    <string name="action_screen_off">Turn screen off</string>
+    <string name="action_notifications">Open notifications</string>
+    <string name="action_recents">Open recent apps</string>
+    <string name="home_controls_name">AniHome controls</string>
+    <string name="home_controls_description">Lets the Home buttons turn the screen off and open recent apps. It does not read screen content or monitor your interactions.</string>
+    <string name="action_more">More controls</string>
+</resources>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ink">
+
+    <WebView
+        android:id="@+id/web"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:id="@+id/fullscreen_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@android:style/Widget.Material.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_gravity="top"
+        android:indeterminate="false"
+        android:max="100"
+        android:progressTint="@color/cyan"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_pill"
+        android:elevation="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="4dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            style="@style/Widget.AniHome.IconButton"
+            android:contentDescription="@string/action_back"
+            android:src="@drawable/ic_back" />
+
+        <ImageButton
+            android:id="@+id/btn_reload"
+            style="@style/Widget.AniHome.IconButton"
+            android:layout_marginStart="4dp"
+            android:contentDescription="@string/action_reload"
+            android:src="@drawable/ic_refresh" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="middle"
+            android:maxWidth="180dp"
+            android:maxLines="1"
+            android:textColor="@color/text"
+            android:textSize="13sp"
+            tools:text="crunchyroll.com" />
+
+        <ImageButton
+            android:id="@+id/btn_desktop"
+            style="@style/Widget.AniHome.IconButton"
+            android:contentDescription="@string/action_desktop_site"
+            android:src="@drawable/ic_desktop" />
+
+        <ImageButton
+            android:id="@+id/btn_home"
+            style="@style/Widget.AniHome.IconButton"
+            android:layout_marginStart="4dp"
+            android:contentDescription="@string/action_home"
+            android:src="@drawable/ic_home" />
+    </LinearLayout>
+</FrameLayout>
