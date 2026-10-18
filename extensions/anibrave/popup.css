@@ -1,0 +1,39 @@
+:root{color-scheme:dark;font:12px/1.4 system-ui,sans-serif;color:#f4f0e9;background:#191817;--surface:#252320;--border:#403b35;--muted:#b8afa3;--accent:#e2b779}
+*{box-sizing:border-box}
+body{margin:0;width:268px}
+header{display:flex;align-items:center;gap:8px;padding:12px 14px 0}
+header img{width:22px;height:22px}
+h1{font-size:14px;line-height:22px;margin:0;font-weight:650}
+main{padding:0 14px 12px}
+#host{font-size:11px;line-height:16px;color:var(--muted);margin:4px 0 12px;overflow-wrap:anywhere}
+button,input,select{font:inherit;color:inherit;background:var(--surface);border:1px solid var(--border);border-radius:7px}
+button{padding:6px 9px;cursor:pointer}
+button:hover{background:#34302a}
+button:disabled{color:#716b62;cursor:default}
+.speed-control{display:grid;grid-template-columns:40px minmax(0,1fr) 40px;gap:8px;margin-bottom:12px}
+.speed-control button,.speed-control output{height:38px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:7px;background:var(--surface);padding:0;line-height:1}
+.speed-control button{font-size:20px;font-weight:400}
+.speed-control output{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
+.speed-control button:not(:disabled):hover{background:#34302a;border-color:#71614b;color:var(--accent)}
+.view-row{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--muted)}
+select{height:34px;min-width:0;flex:1;width:100%;padding:0 7px;font-size:12px;cursor:pointer}
+select:hover{border-color:#71614b}
+details{margin-top:12px;border-top:1px solid #37322c;padding-top:10px}
+summary{cursor:pointer;color:var(--muted);font-size:12px;line-height:18px}
+summary::marker{color:#a99b87}
+.memory-content{padding-top:10px}
+.text{background:transparent;border:0;padding:0;color:var(--accent);font-size:12px}
+.row{display:flex;align-items:center;gap:8px;justify-content:space-between}
+label{display:block;font-size:12px;color:var(--muted);flex:1;min-width:0}
+input{display:block;width:100%;padding:7px 8px;margin:4px 0 10px;background:#211f1c}
+form{margin-top:10px}
+.entry{border-top:1px solid #37322c;padding-top:10px;margin-top:10px}
+.entry strong{display:block;font-size:12px;font-weight:600;overflow-wrap:anywhere}
+.entry p{font-size:11px;color:var(--muted);margin:4px 0 7px;overflow-wrap:anywhere}
+.entry a{font-size:11px;color:var(--accent)}
+.entry button{font-size:11px;padding:4px 6px}
+#history:empty{display:none}
+#status{font-size:11px;color:#ccb594;line-height:1.4;margin:8px 0 0}
+#status:empty{display:none}
+button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}

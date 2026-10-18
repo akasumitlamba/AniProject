@@ -1,0 +1,52 @@
+# AniBrave for Brave desktop
+
+An unpacked Manifest V3 extension for Brave on PC. No Android build or web app is required.
+
+## Install
+
+1. Extract `AniBrave-Extension-0.1.2.zip` into a permanent folder.
+2. Open `brave://extensions` in Brave and enable **Developer mode**.
+3. Choose **Load unpacked**, then select the extracted folder containing `manifest.json`.
+4. Open Brave’s extensions menu (puzzle piece) and pin **AniBrave — Playback & Anime Memory**. The AniBrave lion appears in the toolbar.
+5. Reload any websites already open before installation.
+
+Keep that folder: Brave loads the extension from it. To update, replace its files and press Reload on the extension card. Local settings survive extension reloads and browser restarts; uninstalling removes extension storage. No store account, subscription, server, or build tool is required.
+
+## Playback
+
+Use the − and + buttons to adjust speed in 0.25× steps, from 0.25× through 3×. The same speed is shared with the site’s own playback control. Changing it on YouTube (or another HTML player) updates the extension, including the popup while it is open. Changing it in the extension updates the player and its on-screen control through the native player API where available. Native API acknowledgements are handled asynchronously; an old reply cannot overwrite a newer selection. Existing native selections are preserved even when a legacy API reports an incomplete speed list. If the player cannot use a speed — some players expose a restricted rate menu — the extension settles on the nearest speed the player accepts instead of fighting it. Repeated competing writes can cause visible speed oscillation and unnecessary player work.
+
+The selection is remembered per hostname; `www` and the bare hostname share settings, while other subdomains remain separate. YouTube and Crunchyroll can have different speeds. New videos, episode transitions, frames, reloads, and later visits reapply the selected speed. A short, bounded startup window restores the saved speed over automatic player resets. A real click/key change on the site takes priority even during that window. YouTube ad playback is left alone when the player reports its ad state, and does not overwrite the saved speed. Rates outside 0.25×–3× are left to the site. Long HTML audio is supported; clips under 20 seconds are not sped up. Existing website media controls stay on the page.
+
+Choose a website view from the single View dropdown. Episode memory is collapsed until opened.
+
+## Website views
+
+- **Desktop**: restore normal browser identity and layout (the default).
+- **Mobile**: Android phone identity, touch emulation, and a 412 × 915 phone viewport.
+- **Mobile identity**: Android phone identity while keeping the browser’s desktop viewport.
+
+Changing view saves the choice for that site and reloads the current tab. Other tabs pick up the saved view on their next navigation/reload. Emulation is attached per tab and removed when navigating to a site using Desktop. A restored browser session applies saved modes when its pages load.
+
+Brave displays a debugger notice while a mobile mode is active. Opening DevTools or cancelling that notice can disconnect emulation; select the mode again to resume. Some sites redirect, use account preferences, reject spoofing, or choose layouts independently. Device identity is emulation, not a physical phone. The initial request to a newly opened site may precede application of its saved mode; reload if its server-selected layout needs it.
+
+## Episode memory
+
+Automatic detection supports Crunchyroll, HiAnime (`hianime.to` / `hianimez.to`), and AniKotoTV (`anikototv.to`). It reads the series title, season where available, and the real episode number. It never treats HiAnime’s internal `?ep=` ID as an episode number. Watching for 15 seconds of advancing HTML video saves progress; opening a page alone does not mark an episode watched. Seeks, pauses, buffering, and media under a minute do not count. Accessible embedded HTML players can report progress to the main watch page.
+
+On a supported site’s homepage, a card shows up to three remembered anime, including entries saved on another site. On an identified series/watch page it shows that anime’s saved episode. Closing the card keeps the history; it can appear again on a new visit. The popup contains the library with return links, editing, and individual deletion. **+ Remember** works on any website and is also the fallback when automatic identification is unavailable. Use consistent titles for cross-site matching. Different translations, aliases, season numbering, or changed website markup may require manual correction; there is no external anime catalog or account synchronization.
+
+## Privacy and permissions
+
+All settings/history stay in `chrome.storage.local` on this browser profile. If enabled in a private window, episode memory is hidden and does not save or delete watch records; playback/view preferences remain shared with the regular profile. No analytics, remote code, external requests, or cloud service. Website access lets the content script control media and read episode headings across player frames. `tabs` resolves the active site; `webNavigation` restores site modes; `debugger` implements real viewport and user-agent/client-hint emulation; `storage` saves preferences and episode memory. Browser internal pages, extension store pages, inaccessible players, and DRM-controlled behavior may be restricted.
+
+## Validation
+
+- `node --test tests/*.test.js`: 28 checks covering speed ordering, validation, history edits, private-window history guards, message scope and debugger cancellation.
+- `node tests/browser.cjs`: isolated real Brave profile; extension loading, popup speed changes, site-control sync in both directions, asynchronous native acknowledgements, rapid clicks, player speed limits, ad playback left intact, replacement videos, cross-origin embedded players, open shadow roots, reload persistence, history rename/deletion, reminder dismissal/revisit, phone layout, identity-only view and desktop restoration. Requires Playwright and Brave; set `PLAYWRIGHT_MODULE` / `BRAVE_BINARY` if needed.
+
+Two Python packaging tests verify manifest resources and the page-world bridge. The automated browser suite uses local HTML fixtures. An additional unsigned-in public YouTube check used its actual Playback speed menu and verified site-control-to-extension and extension-to-player synchronization. Signed-in YouTube/Crunchyroll streams, DRM playback, and future live-site markup changes still need acceptance testing. No claim of bug-free compatibility is made.
+
+## 0.1.2 maintenance
+
+Includes the page-world bridge in every ZIP; awaits native rate acknowledgements and confines them to the corresponding player; retains rapid popup changes; respects debugger cancellation; fixes renamed history edits and invalid history inputs; and removes stale episode reminders after history deletion/navigation. Mobile validation uses a responsive fixture and checks the actual layout viewport and touch emulation rather than mistaking fixed-width page overflow for an emulation failure.
