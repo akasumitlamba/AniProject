@@ -67,7 +67,7 @@ rewrite('org/chromium/chrome/browser/customtabs/FullScreenCustomTabActivity.smal
 manifest=RES/'AndroidManifest.xml'
 tree=ET.parse(manifest);root=tree.getroot()
 root.set('package','app.anibrave.main')
-root.set('{'+NS+'}versionName','0.1.1-brave-1.97.56')
+root.set('{'+NS+'}versionName','0.1.2-brave-1.97.56')
 app=root.find('application')
 app.set('{'+NS+'}label','AniBrave')
 app.set('{'+NS+'}allowBackup','false')

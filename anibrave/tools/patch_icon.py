@@ -49,7 +49,10 @@ def main():
     parser.add_argument('--framework', type=Path, default=root/'.tools/sdk/platforms/android-37.1/android.jar')
     parser.add_argument('--feature-dex', type=Path, help='Optional rebuilt app.anibrave classes8.dex; upstream engine stays identical')
     parser.add_argument('--feature-source', type=Path, default=root/'anibrave/src', help='JS asset source used with --feature-dex')
+    parser.add_argument('--version-name', help='Optional application version name; versionCode still increments')
     args = parser.parse_args()
+    if args.version_name and not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9.+_-]{0,99}', args.version_name):
+        parser.error('Invalid version name')
     if not os.environ.get('ANIBRAVE_KS_PASS'):
         raise RuntimeError('Set ANIBRAVE_KS_PASS privately before signing')
     os.environ.setdefault('ANIBRAVE_KEY_PASS', os.environ['ANIBRAVE_KS_PASS'])
@@ -98,10 +101,13 @@ def main():
             raise RuntimeError('Input versionCode unavailable')
         new_version = str(previous_version + 1)
         element.set(android+'versionCode', new_version)
+        if args.version_name:
+            element.set(android+'versionName', args.version_name)
+            metadata_text = re.sub(r'(?m)^(\s*versionName:)\s*[^\r\n]+$', lambda match: match.group(1)+' '+args.version_name, metadata_text)
         tree.write(manifest, encoding='utf-8', xml_declaration=True)
         if metadata_version:
             metadata_text = metadata_text[:metadata_version.start()] + metadata_version.group(1) + ' ' + new_version + metadata_text[metadata_version.end():]
-            metadata.write_text(metadata_text)
+        metadata.write_text(metadata_text)
         run('java', '-jar', args.apktool, 'b', decoded, '-o', work/'unsigned.apk', '-p', framework)
         run(args.build_tools/'zipalign', '-f', '-P', '16', '4', work/'unsigned.apk', work/'aligned.apk')
         run(signer, 'sign', '--ks', args.keystore, '--ks-key-alias', args.alias,

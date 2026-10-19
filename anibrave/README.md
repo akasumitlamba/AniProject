@@ -60,7 +60,7 @@ Existing native and browser notices are retained in the app. Customization sourc
 
 ## Local anime history
 
-Tracking belongs to AniBrave. Updates preserve the browser profile when signed with the same identity. See [TRACKING.md](TRACKING.md) for progress gating, cross-site reminders, local import, privacy, build verification and acceptance limits. The version name remains 0.1.1; versionCode increments for the feature update.
+Tracking belongs to AniBrave. Updates preserve the browser profile when signed with the same identity. See [TRACKING.md](TRACKING.md) for progress gating, cross-site reminders, local import, privacy, build verification and acceptance limits. The version name is 0.1.2; versionCode increments for the feature update.
 
 ## Episode reminders and protected playback
 
@@ -100,3 +100,9 @@ Private tabs never contribute to the normal watch library: tracking requires the
 DevTools default browser context and a foreground normal-profile tab. Unknown
 context identities fail closed. AniKoto slug fallback preserves alphabetic words;
 opaque alphabetic suffixes can remain until the authoritative heading is available.
+
+## Combined release
+
+AniBrave 0.1.2 is included with AniHome 0.8.17 and desktop extension 0.1.3 in the
+[AniProject 2026.10.19 release](https://github.com/akasumitlamba/AniProject/releases/tag/aniproject-2026.10.19).
+The Android update retains the existing signing identity and profile.
