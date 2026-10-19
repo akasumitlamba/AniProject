@@ -23,7 +23,7 @@ class TileStore(context: Context) {
     fun hasApp(packageName: String, activityName: String?): Boolean {
         val selection = if (activityName == null) "kind=? AND package_name=?" else "kind=? AND package_name=? AND activity_name=?"
         val args = listOfNotNull(HomeTile.Kind.APP.name, packageName, activityName).toTypedArray()
-        return db.query(TABLE, arrayOf("id"), selection, args, null, null, null).use { it.count > 0 }
+        return db.query(TABLE, arrayOf("id"), "$selection AND shortcut_id IS NULL", args, null, null, null).use { it.count > 0 }
     }
 
     fun hasUrl(url: String): Boolean =
@@ -48,6 +48,26 @@ class TileStore(context: Context) {
             put("created_at", System.currentTimeMillis())
         }
         val id = db.insert(TABLE, null, values)
+        return byId(id)!!
+    }
+
+    /** Platform shortcut identity is package + ID + user, independent of the normal app tile. */
+    fun addShortcut(label: String, packageName: String, shortcutId: String, user: Long, iconPath: String?): HomeTile {
+        require(label.isNotBlank() && packageName.isNotBlank() && shortcutId.isNotBlank() && user >= 0)
+        val selection = "package_name=? AND shortcut_id=? AND shortcut_user=?"
+        val args = arrayOf(packageName, shortcutId, user.toString())
+        val existing = db.query(TABLE, arrayOf("id"), selection, args, null, null, null).use { if (it.moveToFirst()) it.getLong(0) else null }
+        val previousIcon = existing?.let { byId(it)?.iconPath }
+        val values = ContentValues().apply {
+            put("kind", HomeTile.Kind.APP.name); put("label", label.take(200)); put("package_name", packageName)
+            put("shortcut_id", shortcutId); put("shortcut_user", user)
+            if (iconPath != null) put("icon_path", iconPath)
+        }
+        val id = if (existing != null) { db.update(TABLE, values, "id=?", arrayOf(existing.toString())); existing }
+        else { values.put("position", nextPosition()); values.put("created_at", System.currentTimeMillis()); db.insertOrThrow(TABLE, null, values) }
+        if (iconPath != null && previousIcon != null && previousIcon != iconPath) {
+            IconCache.invalidateFile(previousIcon); File(previousIcon).delete()
+        }
         return byId(id)!!
     }
 
@@ -110,9 +130,15 @@ class TileStore(context: Context) {
     }
 
     fun remove(id: Long) {
+        val removed = byId(id)
         byId(id)?.artworkPath?.let { IconCache.invalidateFile(it); File(it).delete() }
         byId(id)?.iconPath?.let { runCatching { File(it).delete() } }
         db.delete(TABLE, "id=?", arrayOf(id.toString()))
+        if (removed?.isShortcut == true) runCatching {
+            val user = app.getSystemService(android.os.UserManager::class.java).getUserForSerialNumber(removed.shortcutUser ?: -1) ?: return@runCatching
+            val remaining = all().filter { it.packageName == removed.packageName && it.shortcutUser == removed.shortcutUser }.mapNotNull { it.shortcutId }
+            app.getSystemService(android.content.pm.LauncherApps::class.java).pinShortcuts(removed.packageName!!, remaining, user)
+        }
     }
 
     fun removePackage(packageName: String): Int {
@@ -147,6 +173,8 @@ class TileStore(context: Context) {
         label = getString(getColumnIndexOrThrow("label")),
         packageName = getStringOrNull("package_name"),
         activityName = getStringOrNull("activity_name"),
+        shortcutId = getStringOrNull("shortcut_id"),
+        shortcutUser = getColumnIndexOrThrow("shortcut_user").let { if (isNull(it)) null else getLong(it) },
         url = getStringOrNull("url"),
         iconPath = getStringOrNull("icon_path"),
         artworkPath = getStringOrNull("artwork_path"),

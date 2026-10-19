@@ -85,7 +85,7 @@ class TileAdapter(
             val context = binding.root.context
             val artwork = tile.artworkPath?.let(IconCache::fileIcon)
             val bitmap: Bitmap? = artwork ?: when (tile.kind) {
-                HomeTile.Kind.APP -> IconCache.appIcon(context, tile.packageName!!, tile.activityName)
+                HomeTile.Kind.APP -> tile.iconPath?.let(IconCache::fileIcon) ?: IconCache.appIcon(context, tile.packageName!!, tile.activityName)
                 HomeTile.Kind.WEB -> tile.iconPath?.let(IconCache::fileIcon)
             }
             binding.card.foreground = ContextCompat.getDrawable(context,

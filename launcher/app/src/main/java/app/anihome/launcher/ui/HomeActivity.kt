@@ -393,7 +393,7 @@ class HomeActivity : AppCompatActivity() {
         var changed = false
         items.filter { it.color == null }.forEach { tile ->
             val bitmap = when (tile.kind) {
-                HomeTile.Kind.APP -> IconCache.appIcon(this, tile.packageName!!, tile.activityName)
+                HomeTile.Kind.APP -> tile.iconPath?.let(IconCache::fileIcon) ?: IconCache.appIcon(this, tile.packageName!!, tile.activityName)
                 HomeTile.Kind.WEB -> tile.iconPath?.let(IconCache::fileIcon)
             } ?: return@forEach
             store.setIcon(tile.id, tile.iconPath, TileColors.fromIcon(bitmap))
@@ -438,6 +438,14 @@ class HomeActivity : AppCompatActivity() {
 
     private fun openApp(tile: HomeTile) {
         val pkg = tile.packageName ?: return
+        if (tile.isShortcut) {
+            runCatching {
+                val user = getSystemService(android.os.UserManager::class.java).getUserForSerialNumber(tile.shortcutUser ?: -1)
+                    ?: error("Shortcut profile is unavailable")
+                getSystemService(android.content.pm.LauncherApps::class.java).startShortcut(pkg, tile.shortcutId!!, null, null, user)
+            }.onFailure { Toast.makeText(this, "Shortcut unavailable. Try adding it again from its app.", Toast.LENGTH_LONG).show() }
+            return
+        }
         val intents = listOfNotNull(InstalledApps.launchIntent(tile), InstalledApps.fallbackLaunchIntent(this, pkg))
         for (intent in intents) {
             try {

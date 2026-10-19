@@ -72,6 +72,13 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.PinShortcutActivity" android:exported="true" android:excludeFromRecents="true" android:taskAffinity="">
+            <intent-filter>
+                <action android:name="android.content.pm.action.CONFIRM_PIN_SHORTCUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <!-- Each website runs as its own document so it shows up in Recents like a native app. -->
         <activity
             android:name=".web.WebActivity"

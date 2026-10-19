@@ -1,9 +1,10 @@
 # AniHome Launcher
 
-AniHome is an Android HOME launcher with a TV-style grid of apps and websites over the system wallpaper. Websites open through AniBrave's immersive shortcut activity, sharing its browser profile. Package: `app.anihome.launcher`; Android 8.0+; current source version 0.8.15.
+AniHome is an Android HOME launcher with a TV-style grid of apps and websites over the system wallpaper. Websites open through AniBrave's immersive shortcut activity, sharing its browser profile. Package: `app.anihome.launcher`; Android 8.0+; current source version 0.8.16.
 
 ## Home and app drawer
 
+- Android pinned shortcuts are supported: confirm Add to Home in the requesting browser/app. Shortcuts retain their original app destination, including fullscreen browser launches, and remain separate from normal app tiles.
 - App/site banners support custom artwork, drag ordering, optional names and contrasting notification-count tags.
 - The dock includes a clock/date, apps, notifications and optional Recent apps. Settings can hide the Recents button independently of gestures.
 - Double tap empty Home to lock (optional Accessibility control); long press empty Home, including margins, to enter Edit Home. Drag banners or hold a widget’s Edit header to rearrange; tap the dock checkmark to finish. Double tap is disabled while editing and can be turned off in Gestures.

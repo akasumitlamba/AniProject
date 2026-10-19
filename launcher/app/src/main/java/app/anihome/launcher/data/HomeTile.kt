@@ -15,10 +15,13 @@ data class HomeTile(
     val artworkPath: String? = null,
     val color: Int? = null,
     val position: Int,
+    val shortcutId: String? = null,
+    val shortcutUser: Long? = null,
 ) {
     enum class Kind { APP, WEB }
 
-    val isApp get() = kind == Kind.APP
+    val isShortcut get() = shortcutId != null
+    val isApp get() = kind == Kind.APP && !isShortcut
     val isWeb get() = kind == Kind.WEB
 
     companion object {

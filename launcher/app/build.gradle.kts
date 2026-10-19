@@ -26,8 +26,8 @@ android {
         applicationId = "app.anihome.launcher"
         minSdk = 26
         targetSdk = 35
-        versionCode = 27
-        versionName = "0.8.15"
+        versionCode = 28
+        versionName = "0.8.16"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -49,6 +49,8 @@ android {
 
     buildTypes {
         release {
+            // Public artifacts must not embed private repository provenance.
+            vcsInfo { include = false }
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
