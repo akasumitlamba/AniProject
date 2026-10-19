@@ -17,6 +17,12 @@ final class SiteKey {
             return host;
         } catch (IllegalArgumentException e) { return ""; }
     }
+    static String watchHost(String url) {
+        String host=of(url);
+        for(String supported:new String[]{"crunchyroll.com","hianime.to","hianimez.to","anikototv.to"})
+            if(host.equals(supported)||host.endsWith("."+supported))return supported;
+        return "";
+    }
     static String blankNewTab(String url) {
         if (url == null) return "about:blank";
         String value = url.toLowerCase(Locale.ROOT);

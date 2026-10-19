@@ -20,7 +20,7 @@ jobs:
           distribution: temurin
           java-version: '17'
       - name: Playback script tests
-        run: node --test anibrave/tests/playback.test.cjs anibrave/tests/tracking.test.cjs
+        run: node --test anibrave/tests/playback.test.cjs anibrave/tests/player.test.cjs anibrave/tests/tracking.test.cjs
       - name: Site key tests
         run: |
           javac -d /tmp/anibrave-tests anibrave/src/SiteKey.java anibrave/tests/SiteKeyTest.java
@@ -41,3 +41,11 @@ jobs:
         run: |
           javac -d /tmp/anibrave-tests anibrave/src/TabLayoutPolicy.java anibrave/tests/TabLayoutPolicyTest.java
           java -cp /tmp/anibrave-tests app.anibrave.TabLayoutPolicyTest
+      - name: Shortcut resume policy
+        run: |
+          javac -d /tmp/anibrave-tests anibrave/src/SiteKey.java anibrave/src/ResumeLocation.java anibrave/tests/ResumeLocationTest.java
+          java -cp /tmp/anibrave-tests app.anibrave.ResumeLocationTest
+      - name: Tracking profile privacy policy
+        run: |
+          javac -d /tmp/anibrave-tests anibrave/src/TrackingPrivacy.java anibrave/tests/TrackingPrivacyTest.java
+          java -cp /tmp/anibrave-tests app.anibrave.TrackingPrivacyTest

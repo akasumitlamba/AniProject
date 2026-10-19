@@ -24,6 +24,7 @@ android {
 
     defaultConfig {
         applicationId = "app.anihome.launcher"
+        testInstrumentationRunner = "app.anihome.launcher.RegressionInstrumentation"
         minSdk = 26
         targetSdk = 35
         versionCode = 28

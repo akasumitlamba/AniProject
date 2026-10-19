@@ -12,7 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class WebActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val url = intent.dataString ?: intent.getStringExtra(EXTRA_URL)
+        val url = (intent.dataString ?: intent.getStringExtra(EXTRA_URL))?.let { Uri.parse(it).normalizeScheme().toString() }
         if (url == null || Uri.parse(url).scheme !in listOf("https", "http")) { finish(); return }
         try {
             startActivity(browserIntent(url))

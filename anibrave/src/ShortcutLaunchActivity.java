@@ -11,7 +11,8 @@ public final class ShortcutLaunchActivity extends Activity {
         super.onCreate(saved);
         String url=getIntent().getDataString();
         if(!SiteKey.of(url).isEmpty()){
-            Intent target=new Intent(Intent.ACTION_VIEW,getIntent().getData());
+            url=ResumeStore.resolve(this,url);
+            Intent target=new Intent(Intent.ACTION_VIEW,android.net.Uri.parse(url));
             target.setClassName(getPackageName(),"org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity");
             target.putExtra("app.anibrave.immersive",true);
             target.putExtra(Browser.EXTRA_APPLICATION_ID,getPackageName());

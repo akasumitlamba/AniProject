@@ -12,7 +12,6 @@ class BannerRepository(private val context: Context) {
     private val catalogFile = File(cache, "catalog.json")
     private val policyPreferences = context.getSharedPreferences("banner-network-policy", Context.MODE_PRIVATE)
     private val failedImages = mutableSetOf<String>()
-    private var networkSessionFailed = false
     private fun pause() = BannerFetchPolicy.Pause(policyPreferences.getLong("until", 0), policyPreferences.getInt("status", 0))
     @Synchronized fun cooldownReason(): String? = pause().let {
         if (BannerFetchPolicy.permits(it, System.currentTimeMillis())) null else BannerFetchPolicy.reason(it.status)
@@ -21,20 +20,17 @@ class BannerRepository(private val context: Context) {
     @Synchronized fun clearCooldown() {
         policyPreferences.edit().remove("until").remove("status").apply()
         failedImages.clear()
-        networkSessionFailed = false
     }
     private fun migratePublicSource() {
         if (policyPreferences.getString("source", null) == BannerSource.REPOSITORY) return
         LegacyBannerAccess.clear(context)
         policyPreferences.edit().clear().putString("source", BannerSource.REPOSITORY).apply()
         failedImages.clear()
-        networkSessionFailed = false
     }
     @Synchronized fun catalog(refresh: Boolean = false): List<BannerEntry> {
         migratePublicSource()
         if (refresh) {
             failedImages.clear()
-            networkSessionFailed = false
             val bytes = request("catalog.json", 1024 * 1024)
             val parsed = parse(bytes)
             write(catalogFile, bytes)
@@ -72,7 +68,6 @@ class BannerRepository(private val context: Context) {
         require(path == "catalog.json" || BannerRules.safeFile(path))
         val url = URL(BannerSource.url(path))
         require(url.protocol == "https" && url.host == "raw.githubusercontent.com")
-        if (networkSessionFailed) throw BannerApiException(null, paused = true, friendlyReason = "Online checks are paused after a failed request.")
         val currentPause = pause()
         if (!BannerFetchPolicy.permits(currentPause, System.currentTimeMillis())) throw BannerApiException(currentPause.status, paused = true)
         val connection = url.openConnection() as HttpURLConnection
@@ -101,9 +96,8 @@ class BannerRepository(private val context: Context) {
                 output.toByteArray()
             }
         } catch (error: Exception) {
-            networkSessionFailed = true
             if (error is BannerApiException) throw error
-            throw BannerApiException(null, paused = true, friendlyReason = "GitHub couldn't provide this banner. Check your connection, then tap Retry.")
+            throw BannerApiException(null, paused = false, friendlyReason = "GitHub couldn't provide this banner. Check your connection, then tap Retry.")
         } finally { connection.disconnect() }
     }
     private fun write(file: File, bytes: ByteArray) {

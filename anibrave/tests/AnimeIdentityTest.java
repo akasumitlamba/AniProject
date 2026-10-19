@@ -5,6 +5,8 @@ public final class AnimeIdentityTest {
     public static void main(String[] args){
         eq("frieren beyond journeys end|s2",AnimeIdentity.key("Frieren: Beyond Journey's End 2nd Season | Crunchyroll"));
         eq("frieren beyond journeys end|s2",AnimeIdentity.key("Watch Frieren: Beyond Journey’s End Season 2 English Sub - HiAnime"));
+        eq("86",AnimeIdentity.key("86"));
+        eq("100",AnimeIdentity.key("The 100"));
         eq("one piece",AnimeIdentity.key("One Piece"));
         eq("",AnimeIdentity.key("Crunchyroll"));
         eq("example ii",AnimeIdentity.key("Example Season 1 II"));

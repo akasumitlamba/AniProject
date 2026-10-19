@@ -83,7 +83,7 @@ def main():
             shutil.copyfile(args.feature_dex, decoded/'classes8.dex')
             assets=decoded/'assets/anibrave'
             assets.mkdir(parents=True,exist_ok=True)
-            for name in ('playback.js','tracking.js'):
+            for name in ('playback.js','tracking.js','player.js'):
                 shutil.copyfile(args.feature_source/name,assets/name)
             application=element.find('application')
             application.set(android+'allowBackup','false')

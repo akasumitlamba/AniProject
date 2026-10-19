@@ -44,28 +44,36 @@ final class AnimeHistory extends SQLiteOpenHelper {
     private static long timestamp(JSONObject row,String field)throws JSONException{long t=row.getLong(field);if(t<0||t>System.currentTimeMillis()+86400000L)throw new JSONException("Invalid date");return t;}
     private static int episode(JSONObject row,String field)throws JSONException{int n=row.getInt(field);if(n<0||n>9999)throw new JSONException("Invalid episode");return n;}
     private static String url(JSONObject row,String field)throws JSONException{String u=bounded(row,field,4096,true);if(u!=null&&!u.startsWith("https://")&&!u.startsWith("http://"))throw new JSONException("Invalid watch URL");return u;}
-    synchronized int importHistory(JSONObject data)throws JSONException{
+    static final class ImportResult {
+        int shows, sites, logs;
+        String message(){
+            if(shows==0&&sites==0&&logs==0)return "This history was already present. No changes were needed.";
+            return shows+" shows merged, "+sites+" site progress records merged, and "+logs+" new watch log entries added.";
+        }
+    }
+    synchronized ImportResult importHistory(JSONObject data)throws JSONException{
         if(data.getInt("version")!=1||!"app.anihome.launcher".equals(data.getString("source")))throw new JSONException("Unknown source");
         JSONArray anime=data.getJSONArray("anime"),sites=data.getJSONArray("site_progress"),logs=data.getJSONArray("episode_log");
         if(anime.length()>10000||sites.length()>30000||logs.length()>100000)throw new JSONException("History too large");
-        SQLiteDatabase db=getWritableDatabase();db.beginTransaction();int added=0;
+        SQLiteDatabase db=getWritableDatabase();db.beginTransaction();ImportResult result=new ImportResult();
         try{
             for(int i=0;i<anime.length();i++){
                 JSONObject row=anime.getJSONObject(i);String key=bounded(row,"key",100,false);long time=timestamp(row,"updated_at");ContentValues v=new ContentValues();v.put("title",bounded(row,"title",500,false));v.put("last_episode",episode(row,"last_episode"));v.put("last_host",bounded(row,"last_host",253,true));v.put("last_url",url(row,"last_url"));v.put("updated_at",time);v.put("muted",row.optInt("muted",0)==1?1:0);v.put("reminder_dismissed",row.optInt("reminder_dismissed",0)==1?1:0);
                 long existing=-1;try(Cursor c=db.rawQuery("SELECT updated_at FROM anime WHERE key=?",new String[]{key})){if(c.moveToFirst())existing=c.getLong(0);}
-                if(existing<0){v.put("key",key);db.insertOrThrow("anime",null,v);}else if(time>existing)db.update("anime",v,"key=?",new String[]{key});
+                if(existing<0){v.put("key",key);db.insertOrThrow("anime",null,v);result.shows++;}else if(time>existing){db.update("anime",v,"key=?",new String[]{key});result.shows++;}
             }
             for(int i=0;i<sites.length();i++){
                 JSONObject row=sites.getJSONObject(i);String key=bounded(row,"anime_key",100,false),host=bounded(row,"host",253,false);if(summary(key)==null)throw new JSONException("Orphan site");long time=timestamp(row,"updated_at");ContentValues v=new ContentValues();v.put("anime_key",key);v.put("host",host);v.put("last_episode",episode(row,"last_episode"));v.put("max_episode",episode(row,"max_episode"));v.put("last_url",url(row,"last_url"));v.put("position_sec",Math.max(0,row.optInt("position_sec")));v.put("duration_sec",Math.max(0,row.optInt("duration_sec")));v.put("updated_at",time);
                 long existing=-1;int maximum=0;try(Cursor c=db.rawQuery("SELECT updated_at,max_episode FROM site_progress WHERE anime_key=? AND host=?",new String[]{key,host})){if(c.moveToFirst()){existing=c.getLong(0);maximum=c.getInt(1);}}
-                v.put("max_episode",Math.max(maximum,v.getAsInteger("max_episode")));if(time>existing)db.insertWithOnConflict("site_progress",null,v,SQLiteDatabase.CONFLICT_REPLACE);
+                v.put("max_episode",Math.max(maximum,v.getAsInteger("max_episode")));if(time>existing){db.insertWithOnConflict("site_progress",null,v,SQLiteDatabase.CONFLICT_REPLACE);result.sites++;}
+                else if(v.getAsInteger("max_episode")>maximum){ContentValues merged=new ContentValues();merged.put("max_episode",v.getAsInteger("max_episode"));db.update("site_progress",merged,"anime_key=? AND host=?",new String[]{key,host});result.sites++;}
             }
             for(int i=0;i<logs.length();i++){
                 JSONObject row=logs.getJSONObject(i);String key=bounded(row,"anime_key",100,false),host=bounded(row,"host",253,false);if(summary(key)==null)throw new JSONException("Orphan episode");int ep=episode(row,"episode");long time=timestamp(row,"watched_at");String watchUrl=url(row,"url");
                 try(Cursor c=db.rawQuery("SELECT id FROM episode_log WHERE anime_key=? AND episode=? AND host=? AND watched_at=?",new String[]{key,Integer.toString(ep),host,Long.toString(time)})){if(c.moveToFirst())continue;}
-                ContentValues v=new ContentValues();v.put("anime_key",key);v.put("episode",ep);v.put("host",host);v.put("url",watchUrl);v.put("watched_at",time);db.insertOrThrow("episode_log",null,v);added++;
+                ContentValues v=new ContentValues();v.put("anime_key",key);v.put("episode",ep);v.put("host",host);v.put("url",watchUrl);v.put("watched_at",time);db.insertOrThrow("episode_log",null,v);result.logs++;
             }
             db.setTransactionSuccessful();
-        }finally{db.endTransaction();}return added;
+        }finally{db.endTransaction();}return result;
     }
 }

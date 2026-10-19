@@ -30,20 +30,35 @@
       if (!path) return null;
       episode = Number(path[2]);
       title = text('h1.title.d-title') || text('h1.title') || text('h1');
-      if (!title) title = decodeURIComponent(path[1]).replace(/-([a-z0-9]{4,6})$/i, '').replace(/-/g, ' ');
+      if (!title) {
+        let slug; try { slug = decodeURIComponent(path[1]); } catch (_) { slug = path[1]; }
+        const match = slug.match(/^(.+)-([a-z0-9]{4,6})$/i);
+        if (match && /\d/.test(match[2])) slug = match[1];
+        title = slug.replace(/-/g, ' ');
+      }
     } else return null;
     title = title.replace(/^watch\s+/i, '').replace(/\s*[|–-]\s*(?:HiAnime|AniKoto|AniKotoTV|Crunchyroll).*$/i, '').trim();
     return title && episode > 0 ? {type:'watchPage', title:title.slice(0,500), episode, host, url:location.href} : null;
   }
   let lastSnapshot = '', lastProbe = 0;
-  const probe = () => { const data = snapshot(); const encoded = JSON.stringify(data); if (encoded !== lastSnapshot || Date.now() - lastProbe >= 10000) { lastSnapshot = encoded; lastProbe = Date.now(); send(data || {type:'watchPage', title:'', episode:0, url:location.href}); } };
+  let knownPage = null;
+  const probe = () => {
+    const data = snapshot();
+    if (knownPage && knownPage.url !== location.href) knownPage = null;
+    if (data) knownPage = data;
+    const encoded = JSON.stringify(knownPage);
+    if (encoded !== lastSnapshot || Date.now() - lastProbe >= 10000) {
+      lastSnapshot = encoded; lastProbe = Date.now();
+      send(knownPage || {type:'watchPage', title:'', episode:0, url:location.href});
+    }
+  };
   const progress = new WeakMap();
   function tick(event) {
     const video = event.target;
     if (!video || video.tagName !== 'VIDEO') return;
     const now = Date.now(), position = Number(video.currentTime), duration = Number(video.duration);
     const previous = progress.get(video);
-    const signature = location.href + '|' + (video.currentSrc || '') + '|' + lastSnapshot;
+    const signature = location.href + '|' + (knownPage?.episode || 0);
     let seconds = previous && previous.signature === signature ? previous.seconds : 0;
     if (previous && previous.signature === signature && !video.paused && !video.seeking && Number.isFinite(position) && duration >= 60) {
       const wall = (now - previous.time) / 1000, delta = position - previous.position;
@@ -56,9 +71,15 @@
   }
   document.addEventListener('timeupdate', tick, true);
   const shadowRoots = new WeakSet();
-  const scan = root => { for (const node of root.querySelectorAll('*')) if (node.shadowRoot && !shadowRoots.has(node.shadowRoot)) { shadowRoots.add(node.shadowRoot); node.shadowRoot.addEventListener('timeupdate',tick,true); scan(node.shadowRoot); } };
+  const scan = root => { for (const node of root.querySelectorAll('*')) if (node.shadowRoot) {
+    if (!shadowRoots.has(node.shadowRoot)) { shadowRoots.add(node.shadowRoot); node.shadowRoot.addEventListener('timeupdate',tick,true); }
+    scan(node.shadowRoot);
+  } };
   globalThis.__aniWatch = {snapshot, tick};
   probe();
-  const timer = setInterval(() => { probe(); scan(document); }, 2000);
-  window.addEventListener('pagehide', () => clearInterval(timer), {once:true});
+  let timer = null;
+  const start = () => { if (timer === null) timer = setInterval(() => { probe(); scan(document); }, 2000); };
+  start();
+  window.addEventListener('pagehide', () => { clearInterval(timer); timer = null; });
+  window.addEventListener('pageshow', () => { probe(); scan(document); start(); });
 })();

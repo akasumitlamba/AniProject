@@ -80,12 +80,10 @@ class LauncherDb(context: Context) : SQLiteOpenHelper(context.applicationContext
                         watched_at INTEGER NOT NULL
                     )""",
                 )
-                runCatching {
-                    db.execSQL(
-                        """INSERT INTO episode_log_v2(anime_key, episode, host, url, watched_at)
-                           SELECT anime_key, episode, host, NULL, updated_at FROM episode_log""",
-                    )
-                }
+                db.execSQL(
+                    """INSERT INTO episode_log_v2(anime_key, episode, host, url, watched_at)
+                       SELECT anime_key, episode, host, NULL, updated_at FROM episode_log""",
+                )
                 db.execSQL("DROP TABLE IF EXISTS episode_log")
                 db.execSQL("ALTER TABLE episode_log_v2 RENAME TO episode_log")
             }

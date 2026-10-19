@@ -6,6 +6,7 @@ final class ReminderPresentation {
     private String page = "", anime = "";
     private int episode;
     void enter(String url) {
+        if (url == null || url.isEmpty()) return;
         if (!page.equals(url)) { page = url; anime = ""; episode = 0; }
     }
     boolean accept(String url, String key, int number) {

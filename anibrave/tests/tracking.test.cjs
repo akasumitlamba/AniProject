@@ -1,12 +1,12 @@
 const test=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');
 const source=fs.readFileSync(require('node:path').join(__dirname,'../src/tracking.js'),'utf8');
 function fixture(url,selectors={},title=''){
-  let now=100000;const messages=[],listeners=new Map();
+  let now=100000;const messages=[],listeners=new Map(),intervals=new Map();let timerId=0;
   const document={title,querySelector:s=>selectors[s]||null,querySelectorAll:()=>[],addEventListener:(name,fn)=>listeners.set(name,fn)};
-  const location=new URL(url),window={addEventListener(){}};
-  const context=vm.createContext({document,location,window,Date:{now:()=>now},setInterval:()=>1,clearInterval(){},aniBraveNative:value=>messages.push(JSON.parse(value))});
+  const location=new URL(url),window={addEventListener:(name,fn)=>listeners.set(name,fn)};
+  const context=vm.createContext({document,location,window,Date:{now:()=>now},setInterval:fn=>{intervals.set(++timerId,fn);return timerId;},clearInterval:id=>intervals.delete(id),aniBraveNative:value=>messages.push(JSON.parse(value))});
   vm.runInContext(source,context);
-  return{context,messages,time:ms=>now+=ms,tick:video=>listeners.get('timeupdate')({target:video})};
+  return{context,messages,document,fire:(name,event)=>listeners.get(name)?.(event),activeTimers:()=>intervals.size,probe:()=>intervals.forEach(fn=>fn()),time:ms=>now+=ms,tick:video=>listeners.get('timeupdate')({target:video})};
 }
 const text=value=>({textContent:value});
 test('AniKoto real path ep detects anime without recording a visit',()=>{
@@ -31,4 +31,59 @@ test('fifteen seconds of actual moving video records playback; paused/seek do no
 test('seeking around and short ads never count as an episode',()=>{
   const f=fixture('https://player.example/embed');const video={tagName:'VIDEO',currentTime:0,duration:30,paused:false,seeking:false,playbackRate:1};f.tick(video);for(let i=1;i<=40;i++){f.time(1000);video.currentTime=i;f.tick(video);}assert.equal(f.messages.filter(m=>m.type==='watchProgress').length,0);
   video.duration=1200;for(let i=1;i<=30;i++){f.time(1000);video.currentTime+=60;f.tick(video);}assert.equal(f.messages.filter(m=>m.type==='watchProgress').length,0);
+});
+
+test('source and title refinements keep actual playback time for the same episode',()=>{
+  const selectors={'h1':text('Example')};
+  const f=fixture('https://anikototv.to/watch/example/ep-9',selectors);
+  const video={tagName:'VIDEO',currentTime:0,duration:1200,paused:false,seeking:false,playbackRate:1,currentSrc:'cdn-one'};
+  f.tick(video);
+  for(let i=1;i<=15;i++){
+    f.time(1000);video.currentTime=i;
+    if(i===10){video.currentSrc='cdn-two';selectors.h1=text('Example Series');f.probe();}
+    f.tick(video);
+  }
+  assert.equal(f.messages.filter(m=>m.type==='watchProgress').length,1);
+});
+test('temporary metadata gap preserves the episode, but navigation clears it',()=>{
+  const selectors={'.film-name':text('Example'),'.ep-item.active, .ssl-item.ep-item.active, [data-number].active':{textContent:'9',getAttribute:()=>null}};
+  const f=fixture('https://hianime.to/watch/example?ep=123',selectors);
+  delete selectors['.film-name'];f.time(11000);f.probe();
+  assert.equal(f.messages.at(-1).episode,9);
+  f.context.location.href='https://hianime.to/home';f.probe();
+  assert.equal(f.messages.at(-1).episode,0);
+});
+test('a new episode does not inherit the previous episode playback time',()=>{
+  const f=fixture('https://anikototv.to/watch/example/ep-9',{'h1':text('Example')});
+  const video={tagName:'VIDEO',currentTime:0,duration:1200,paused:false,seeking:false,playbackRate:1};f.tick(video);
+  for(let i=1;i<=14;i++){f.time(1000);video.currentTime=i;f.tick(video);}
+  f.context.location.href='https://anikototv.to/watch/example/ep-10';f.probe();
+  f.time(1000);video.currentTime=15;f.tick(video);
+  assert.equal(f.messages.filter(m=>m.type==='watchProgress').length,0);
+});
+test('alphabetic slug words are preserved and malformed percent encoding is safe',()=>{
+  for(const slug of ['demon-slayer','attack-on-titan','example-movie']){
+    const f=fixture('https://anikototv.to/watch/'+slug+'/ep-9');
+    assert.equal(f.context.__aniWatch.snapshot().title,slug.replaceAll('-',' '));
+  }
+  assert.equal(fixture('https://anikototv.to/watch/example-%zz/ep-9').context.__aniWatch.snapshot().episode,9);
+});
+test('late nested shadow players receive tracking listeners only once',()=>{
+  const f=fixture('https://player.example/embed');
+  const outer={querySelectorAll:()=>[],addEventListener(){}};
+  f.document.querySelectorAll=()=>[{shadowRoot:outer}];f.probe();
+  const events=[];const inner={querySelectorAll:()=>[],addEventListener:(...args)=>events.push(args)};
+  outer.querySelectorAll=()=>[{shadowRoot:inner}];f.probe();f.probe();
+  assert.equal(events.filter(e=>e[0]==='timeupdate').length,1);
+});
+
+test('back-forward cache restore restarts one metadata and shadow discovery timer',()=>{
+  const selectors={};const f=fixture('https://hianime.to/watch/example?ep=123',selectors);
+  assert.equal(f.activeTimers(),1);
+  f.fire('pagehide',{persisted:true});assert.equal(f.activeTimers(),0);
+  selectors['.film-name']=text('Example');
+  selectors['.ep-item.active, .ssl-item.ep-item.active, [data-number].active']={textContent:'9',getAttribute:()=>null};
+  f.fire('pageshow',{persisted:true});f.fire('pageshow',{persisted:true});
+  assert.equal(f.activeTimers(),1);assert.equal(f.messages.at(-1).episode,9);
+  f.fire('pagehide',{persisted:true});assert.equal(f.activeTimers(),0);
 });

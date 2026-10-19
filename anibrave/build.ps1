@@ -10,9 +10,11 @@ function Run([string]$exe, [string[]]$arguments) {
     if ($LASTEXITCODE -ne 0) { throw "Build failed: $exe (exit $LASTEXITCODE)" }
 }
 New-Item -ItemType Directory -Force -Path anibrave\compiled\app-classes,anibrave\compiled\test-classes,anibrave\compiled\patches,anibrave\compiled\dex,anibrave\downloads,anibrave\tools,anibrave\signing,output\anibrave | Out-Null
-Run 'node' @('--test','anibrave/tests/playback.test.cjs')
+Run 'node' @('--test','anibrave/tests/playback.test.cjs','anibrave/tests/player.test.cjs','anibrave/tests/tracking.test.cjs')
 Run 'javac' @('-d','anibrave/compiled/test-classes','anibrave/src/SiteKey.java','anibrave/tests/SiteKeyTest.java')
 Run 'java' @('-cp','anibrave/compiled/test-classes','app.anibrave.SiteKeyTest')
+Run 'javac' @('-d','anibrave/compiled/test-classes','anibrave/src/SiteKey.java','anibrave/src/ResumeLocation.java','anibrave/tests/ResumeLocationTest.java')
+Run 'java' @('-cp','anibrave/compiled/test-classes','app.anibrave.ResumeLocationTest')
 Run 'javac' @('-d','anibrave/compiled/test-classes','anibrave/src/EngineHttp.java','anibrave/tests/EngineHttpTest.java')
 Run 'java' @('-cp','anibrave/compiled/test-classes','app.anibrave.EngineHttpTest')
 if ($TestsOnly) { return }

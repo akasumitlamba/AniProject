@@ -31,13 +31,14 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 /** Local widget host. One TV tile is two columns by two rows of conventional widget cells. */
-class WidgetController(private val activity: AppCompatActivity, private val grid: RecyclerView, private val onDragging: (Boolean) -> Unit = {}) {
+class WidgetController(private val activity: AppCompatActivity, private val grid: RecyclerView, private val onDragging: (Boolean) -> Unit = {}, private val onChanged: () -> Unit = {}) {
     private data class Entry(val id: Int, var columns: Int, var rows: Int, val kind: String = BuiltInWidgetPolicy.PROVIDER, var note: String = "")
     private val prefs = activity.getSharedPreferences("home_widgets", 0)
     private val manager = AppWidgetManager.getInstance(activity)
     private val host = AppWidgetHost(activity, 1024)
     private var columns = HomeLayout.columns(activity) * 2
     private val entries = mutableListOf<Entry>()
+    val hasWidgets: Boolean get() = entries.isNotEmpty()
     private var pendingId = prefs.getInt("pending", -1)
     private var editing = false
     private val adapter = WidgetAdapter()
@@ -346,11 +347,11 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
         prefs.edit().putString("items", array.toString()).apply()
     }
     private fun refresh() {
-        val removed = runCatching { entries.filter { BuiltInWidgetPolicy.usesProviderHost(it.kind, it.id) && manager.getAppWidgetInfo(it.id) == null } }.getOrElse { return }
-        removed.forEach { runCatching { host.deleteAppWidgetId(it.id) } }
-        if (entries.removeAll(removed.toSet())) save()
+        // Provider info can be temporarily absent during restore or an app update.
+        // Keep the allocation and a removable placeholder until explicit removal.
         grid.visibility = if (entries.isEmpty()) View.GONE else View.VISIBLE
         adapter.notifyDataSetChanged()
+        onChanged()
     }
     private fun options(entry: Entry) {
         MaterialAlertDialogBuilder(activity).setTitle("Widget").setItems(arrayOf("Resize", "Move earlier", "Move later", "Remove")) { _, index ->
@@ -426,7 +427,13 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
             holder.container.removeAllViews()
             val builtin = BuiltInWidgetPolicy.isBuiltIn(entry.kind)
             val info = if (BuiltInWidgetPolicy.usesProviderHost(entry.kind, entry.id)) runCatching { manager.getAppWidgetInfo(entry.id) }.getOrNull() else null
-            if (!builtin && info == null) { holder.container.addView(TextView(activity).apply { text = "Widget unavailable" }); return }
+            if (!builtin && info == null) {
+                holder.container.addView(Button(activity).apply {
+                    text = "Widget unavailable · Remove"
+                    setOnClickListener { options(entry) }
+                })
+                return
+            }
             if (editing) holder.container.addView(Button(activity).apply {
                 text = "${if (builtin) builtIns.title(entry.kind) else info!!.loadLabel(activity.packageManager)} · Edit"
                 contentDescription = "Edit widget; hold and drag to rearrange"

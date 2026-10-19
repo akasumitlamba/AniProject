@@ -42,10 +42,10 @@ object SiteIcons {
         val trimmed = raw.trim()
         if (trimmed.isEmpty() || trimmed.contains(' ')) return null
         val withScheme = if (trimmed.startsWith("http://", true) || trimmed.startsWith("https://", true)) trimmed else "https://$trimmed"
-        val uri = Uri.parse(withScheme)
+        val uri = Uri.parse(withScheme).normalizeScheme()
         val host = uri.host ?: return null
         if (!host.contains('.') && host != "localhost") return null
-        return withScheme
+        return uri.toString()
     }
 
     fun smartTitle(url: String): String {

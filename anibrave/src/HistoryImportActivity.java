@@ -21,8 +21,8 @@ public final class HistoryImportActivity extends Activity {
         new Thread(()->{
             try(InputStream in=getContentResolver().openInputStream(uri);ByteArrayOutputStream out=new ByteArrayOutputStream()){
                 if(in==null)throw new IOException("History unavailable");byte[] buffer=new byte[8192];int n;while((n=in.read(buffer))!=-1){if(out.size()+n>16*1024*1024)throw new IOException("History exceeds 16 MB");out.write(buffer,0,n);}
-                int added;try(AnimeHistory history=new AnimeHistory(getApplicationContext())){added=history.importHistory(new JSONObject(out.toString(StandardCharsets.UTF_8.name())));}
-                runOnUiThread(()->{if(isFinishing()||isDestroyed())return;new AlertDialog.Builder(this).setTitle("History imported").setMessage(added+" watch log entries added. Tracking now lives in AniBrave.").setPositiveButton("Done",(d,w)->{setResult(RESULT_OK,new Intent().putExtra("imported",true));finish();}).setOnCancelListener(d->{setResult(RESULT_OK,new Intent().putExtra("imported",true));finish();}).show();});
+                AnimeHistory.ImportResult result;try(AnimeHistory history=new AnimeHistory(getApplicationContext())){result=history.importHistory(new JSONObject(out.toString(StandardCharsets.UTF_8.name())));}
+                runOnUiThread(()->{if(isFinishing()||isDestroyed())return;new AlertDialog.Builder(this).setTitle("History imported").setMessage(result.message()+" Tracking now lives in AniBrave.").setPositiveButton("Done",(d,w)->{setResult(RESULT_OK,new Intent().putExtra("imported",true));finish();}).setOnCancelListener(d->{setResult(RESULT_OK,new Intent().putExtra("imported",true));finish();}).show();});
             }catch(Exception failure){runOnUiThread(()->{if(isFinishing()||isDestroyed())return;new AlertDialog.Builder(this).setTitle("History was not imported").setMessage("The local file could not be read or validated. Your existing history was kept.").setPositiveButton("Close",(d,w)->{setResult(RESULT_CANCELED);finish();}).setOnCancelListener(d->{setResult(RESULT_CANCELED);finish();}).show();});}
         },"AniBrave-history-import").start();
     }

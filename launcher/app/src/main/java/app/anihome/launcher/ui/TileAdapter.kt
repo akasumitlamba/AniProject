@@ -9,7 +9,6 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.content.ContextCompat
 import app.anihome.launcher.R
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import app.anihome.launcher.data.HomeTile
 import app.anihome.launcher.data.IconCache
@@ -23,7 +22,24 @@ class TileAdapter(
     private val onOptions: (HomeTile) -> Unit,
     private val onRemove: (HomeTile) -> Unit,
     private val onStartDrag: (RecyclerView.ViewHolder) -> Unit,
-) : ListAdapter<HomeTile, TileAdapter.Holder>(Diff) {
+) : RecyclerView.Adapter<TileAdapter.Holder>() {
+
+    var currentList: List<HomeTile> = emptyList()
+        private set
+    override fun getItemCount() = currentList.size
+    private fun getItem(position: Int) = currentList[position]
+    fun submitList(items: List<HomeTile>) {
+        val old = currentList
+        val next = items.toList()
+        val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun getOldListSize() = old.size
+            override fun getNewListSize() = next.size
+            override fun areItemsTheSame(a: Int, b: Int) = Diff.areItemsTheSame(old[a], next[b])
+            override fun areContentsTheSame(a: Int, b: Int) = Diff.areContentsTheSame(old[a], next[b])
+        })
+        currentList = next
+        diff.dispatchUpdatesTo(this)
+    }
 
     var editMode = false
         set(value) {
@@ -60,7 +76,8 @@ class TileAdapter(
         val items = currentList.toMutableList()
         if (from < to) for (i in from until to) Collections.swap(items, i, i + 1)
         else for (i in from downTo to + 1) Collections.swap(items, i, i - 1)
-        submitList(items)
+        currentList = items
+        notifyItemMoved(from, to)
         return items
     }
 

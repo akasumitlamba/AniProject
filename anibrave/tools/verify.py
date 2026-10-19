@@ -21,6 +21,7 @@ with zipfile.ZipFile(APK) as app,zipfile.ZipFile(BASE/'downloads'/'Bravearm64Uni
         assert data[12:32]==hashlib.sha1(data[32:]).digest(),name
         assert struct.unpack_from('<I',data,8)[0]==zlib.adler32(data[12:])&0xffffffff,name
     assert app.read('assets/anibrave/playback.js')==(BASE/'src'/'playback.js').read_bytes()
+    assert app.read('assets/anibrave/player.js')==(BASE/'src'/'player.js').read_bytes()
     assert app.testzip() is None
 badging=subprocess.check_output([str(BUILD/'aapt2.exe'),'dump','badging',str(APK)],encoding='utf-8')
 assert "name='app.anibrave.main'" in badging

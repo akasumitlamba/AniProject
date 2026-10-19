@@ -23,7 +23,7 @@ final class AnimeIdentity {
         int count=words.size();
         words.removeIf(w->w.isEmpty()||(NOISE.contains(w)&&(count>1||SITE_WORDS.contains(w))));
         String key=String.join(" ",words);if(key.length()>80)key=key.substring(0,80);
-        if(key.length()<2||key.matches("[\\d ]+"))return "";
+        if(key.length()<2)return "";
         return key+(season>1?"|s"+season:"");
     }
     static boolean staysDismissed(boolean dismissed,int previous,int next){return dismissed&&previous>0&&previous==next;}

@@ -29,11 +29,12 @@ public final class AniRuntime {
     private static int reminderEpisode;
     private static final ReminderPresentation reminderPresentation=new ReminderPresentation();
     private static final Runnable AUTO_HIDE_REMINDER=()->removeWatchReminder();
-    private static final Runnable CHECK_REMINDER=new Runnable(){public void run(){reminderPresentation.enter(currentUrl());if(watchReminder!=null&&!reminderUrl.equals(currentUrl()))removeWatchReminder();if(alive(active.get()))UI.postDelayed(this,2000);}};
+    private static final Runnable CHECK_REMINDER=new Runnable(){public void run(){captureLocation(active.get());reminderPresentation.enter(currentUrl());if(watchReminder!=null&&!reminderUrl.equals(currentUrl()))removeWatchReminder();if(alive(active.get()))UI.postDelayed(this,2000);}};
     private static EngineClient engine;
     private static Object server;
     private static long serverPointer;
     private static boolean registered, immersive;
+    private static final WeakHashMap<Activity,String> lastLocations=new WeakHashMap<>();
     private static final WeakHashMap<Activity,Boolean> fullscreenActivities=new WeakHashMap<>();
     private static final WeakHashMap<Activity,Integer> normalLayouts=new WeakHashMap<>();
     private static final WeakHashMap<Activity,Boolean> normalDecorFits=new WeakHashMap<>();
@@ -110,13 +111,13 @@ public final class AniRuntime {
         UI.post(()->{if(alive(a)&&active.get()==a){bindWindow(a);applyImmersive(a);bindToolbar(a);bindTabLayout(a);}});
     }
     private static void pause() {
+        captureLocation(active.get());
         if(engine!=null){engine.stop();engine=null;}
         UI.removeCallbacks(CHECK_REMINDER);toggleServer(false);dismiss();active=new WeakReference<>(null);
     }
     private static void dismiss(){
         NativeStrip.settle(active.get());
         if(verticalTabs!=null){verticalTabs.close();verticalTabs=null;}
-        reminderPresentation.reset();
         UI.removeCallbacks(HIDE);
         removeWatchReminder();
         if(tools!=null){tools.dismiss();tools=null;}
@@ -215,6 +216,28 @@ public final class AniRuntime {
             return (String)url.getClass().getField("a").get(url);
         }catch(Exception e){return "";}
     }
+    private static boolean normalProfile(Activity a){
+        try {Object tab=a.getClass().getMethod("m4").invoke(a);return tab!=null&&!((Boolean)tab.getClass().getMethod("isIncognito").invoke(tab));}
+        catch(Exception e){return false;} // Unknown profile must never persist browsing URLs.
+    }
+    private static void captureLocation(Activity a){
+        if(context==null||a==null||a.isDestroyed()||!normalProfile(a))return;
+        String url=currentUrlFor(a);
+        // Returning to an unchanged older window must not overwrite a newer visit.
+        if(!url.equals(lastLocations.put(a,url)))ResumeStore.save(context,url);
+    }
+    private static String currentUrlFor(Activity a){
+        try{Object tab=a.getClass().getMethod("m4").invoke(a);Object url=tab.getClass().getMethod("getUrl").invoke(tab);return (String)url.getClass().getField("a").get(url);}catch(Exception e){return "";}
+    }
+    static void navigated(String url){UI.post(()->{
+        Activity a=active.get();if(a!=null&&url.equals(currentUrlFor(a)))captureLocation(a);
+    });}
+    static void nativeRate(String url,double rate,long revision){UI.post(()->{
+        Activity a=active.get();if(!alive(a)||!SiteKey.of(url).equals(SiteKey.of(currentUrl())))return;
+        String site=SiteKey.of(url);
+        PlaybackSettings.adopt(context,site,rate,revision);
+        EngineClient e=engine;if(e!=null)IO.execute(()->e.refresh(site,false));
+    });}
     private static int dp(Activity a,int value){return Math.round(value*a.getResources().getDisplayMetrics().density);}
     private static Button action(Activity a,String text,Runnable click){
         Button result=new Button(a);result.setText(text);result.setTextColor(Color.WHITE);result.setTextSize(13);result.setAllCaps(false);result.setMinWidth(0);result.setMinimumWidth(0);
@@ -300,11 +323,14 @@ public final class AniRuntime {
     }
     private static String requireSite(Activity a){String site=SiteKey.of(currentUrl());if(site.isEmpty())Toast.makeText(a,"Open a website first",Toast.LENGTH_SHORT).show();return site;}
     private static void speed(Activity a){
-        String site=requireSite(a);if(site.isEmpty())return;HIDE.run();String[] labels=new String[RATES.length];int selected=2;
+        String site=requireSite(a);if(site.isEmpty())return;HIDE.run();int selected=2;
         float saved=context.getSharedPreferences("anibrave_sites",0).getFloat("rate:"+site,1);
-        for(int i=0;i<RATES.length;i++){labels[i]=RATES[i]+"×";if(Math.abs(saved-RATES[i])<0.001)selected=i;}
+        java.util.ArrayList<Double> values=new java.util.ArrayList<>();for(double r:RATES)values.add(r);
+        if(PlaybackSettings.valid(saved)&&values.stream().noneMatch(r->Math.abs(r-saved)<.001)){values.add((double)saved);java.util.Collections.sort(values);}
+        String[] labels=new String[values.size()];
+        for(int i=0;i<values.size();i++){labels[i]=String.format(java.util.Locale.ROOT,"%.2f",values.get(i)).replaceAll("0+$", "").replaceAll("\\.$", "")+"×";if(Math.abs(saved-values.get(i))<.001)selected=i;}
         new AlertDialog.Builder(a,android.R.style.Theme_Material_Dialog_Alert).setTitle("Playback speed · "+site).setSingleChoiceItems(labels,selected,(dialog,index)->{
-            context.getSharedPreferences("anibrave_sites",0).edit().putFloat("rate:"+site,(float)RATES[index]).apply();
+            PlaybackSettings.set(context,site,values.get(index));
             EngineClient e=engine;if(e!=null)IO.execute(()->e.refresh(site,false));dialog.dismiss();
         }).setNegativeButton("Close",null).setNeutralButton("Status",(d,w)->Toast.makeText(a,status,Toast.LENGTH_LONG).show()).show();
     }
@@ -322,7 +348,7 @@ public final class AniRuntime {
     }
     static void watchPage(String url,JSONObject page){
         UI.post(()->{
-            if(!url.equals(currentUrl()))return;
+            if(!url.equals(currentUrl())||!normalProfile(active.get()))return;
             if(page==null){removeWatchReminder();return;}
             String key=AnimeIdentity.key(page.optString("title"));
             IO.execute(()->{AnimeHistory.Summary summary=history.summary(key);UI.post(()->displayReminder(url,summary));});
@@ -330,14 +356,15 @@ public final class AniRuntime {
     }
     static void watched(String url,JSONObject page,int position,int duration){
         UI.post(()->{
-            if(!url.equals(currentUrl())||duration<60)return;
+            if(!url.equals(currentUrl())||duration<60||!normalProfile(active.get()))return;
             String title=page.optString("title"),host=SiteKey.of(url);int episode=page.optInt("episode");
-            if(!(host.equals("crunchyroll.com")||host.equals("hianime.to")||host.equals("hianimez.to")||host.equals("anikototv.to")))return;
-            IO.execute(()->{AnimeHistory.Summary summary=history.record(title,episode,host,url,position,duration);UI.post(()->displayReminder(url,summary));});
+            host=SiteKey.watchHost(url);if(host.isEmpty())return;
+            final String watchHost=host;
+            IO.execute(()->{AnimeHistory.Summary summary=history.record(title,episode,watchHost,url,position,duration);UI.post(()->displayReminder(url,summary));});
         });
     }
     private static void displayReminder(String url,AnimeHistory.Summary summary){
-        Activity a=active.get();if(!alive(a)||!url.equals(currentUrl()))return;
+        Activity a=active.get();if(!alive(a)||!url.equals(currentUrl())||!normalProfile(a))return;
         if(summary==null||summary.episode<1||summary.dismissed){removeWatchReminder();return;}
         if(!reminderPresentation.accept(url,summary.key,summary.episode))return;
         removeWatchReminder();reminderUrl=url;reminderKey=summary.key;reminderEpisode=summary.episode;

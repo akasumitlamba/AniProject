@@ -10,7 +10,9 @@ import android.util.LruCache
 
 /** Small bitmap cache so the grid can bind without touching disk or PackageManager each time. */
 object IconCache {
-    private val cache = object : LruCache<String, Bitmap>(64) {}
+    private val cache = object : LruCache<String, Bitmap>((Runtime.getRuntime().maxMemory() / 16).coerceIn(4L * 1024 * 1024, 24L * 1024 * 1024).toInt()) {
+        override fun sizeOf(key: String, value: Bitmap) = value.allocationByteCount
+    }
 
     fun cachedAppIcon(packageName: String, activityName: String?): Bitmap? = cache.get("app:$packageName/$activityName")
 
@@ -26,7 +28,13 @@ object IconCache {
     fun fileIcon(path: String): Bitmap? {
         val key = "file:$path"
         cache.get(key)?.let { return it }
-        val bitmap = BitmapFactory.decodeFile(path) ?: return null
+        val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        BitmapFactory.decodeFile(path, options)
+        if (options.outWidth < 1 || options.outHeight < 1) return null
+        options.inSampleSize = 1
+        while (maxOf(options.outWidth, options.outHeight) / options.inSampleSize > 640) options.inSampleSize *= 2
+        options.inJustDecodeBounds = false
+        val bitmap = BitmapFactory.decodeFile(path, options) ?: return null
         cache.put(key, bitmap)
         return bitmap
     }
@@ -40,7 +48,7 @@ object IconCache {
     private fun sizePx(context: Context) = (112 * context.resources.displayMetrics.density).toInt().coerceIn(96, 320)
 
     private fun Drawable.toBitmap(size: Int): Bitmap {
-        if (this is BitmapDrawable && bitmap != null) return bitmap
+        if (this is BitmapDrawable && bitmap != null && bitmap.width <= size && bitmap.height <= size) return bitmap
         val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         setBounds(0, 0, size, size)

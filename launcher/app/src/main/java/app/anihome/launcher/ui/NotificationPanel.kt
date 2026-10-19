@@ -214,7 +214,11 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
                 updateExpanded()
             }
             holder.itemView.setOnClickListener {
-                n.contentIntent?.let { intent ->
+                val open = n.contentIntent
+                if (open == null) {
+                    if (!expandedKeys.add(sbn.key)) expandedKeys.remove(sbn.key)
+                    updateExpanded()
+                } else open.let { intent ->
                     runCatching {
                         intent.send()
                         if (sbn.isClearable && n.flags and Notification.FLAG_AUTO_CANCEL != 0) HomeNotifications.dismiss(sbn.key)

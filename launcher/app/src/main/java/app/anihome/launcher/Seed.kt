@@ -22,7 +22,6 @@ object Seed {
     suspend fun ensure(context: Context, store: TileStore) {
         val prefs = context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
         if (prefs.getInt(KEY_VERSION, 0) >= VERSION) return
-        prefs.edit().putInt(KEY_VERSION, VERSION).remove("seeded").apply()
         defaults.forEach { (url, label) ->
             val host = hostOf(url) ?: return@forEach
             if (store.hasHost(host)) return@forEach
@@ -30,6 +29,7 @@ object Seed {
             val path = SiteIcons.fetch(context, tile.id, url)
             if (path != null) store.setIcon(tile.id, path, null)
         }
+        prefs.edit().putInt(KEY_VERSION, VERSION).remove("seeded").apply()
         TileEvents.notifyChanged()
     }
 

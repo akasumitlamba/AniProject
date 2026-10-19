@@ -69,7 +69,7 @@ class HomeActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK && result.data?.getBooleanExtra("imported", false) == true) {
             homePreferences.edit().putBoolean("history_imported", true).apply()
             Toast.makeText(this, "Watch history copied to AniBrave. Original history is preserved.", Toast.LENGTH_LONG).show()
-        } else Toast.makeText(this, "History was not transferred. Original history is preserved.", Toast.LENGTH_LONG).show()
+        } else if (result.resultCode != Activity.RESULT_CANCELED) Toast.makeText(this, "History was not transferred. Original history is preserved.", Toast.LENGTH_LONG).show()
         HistoryMigration.removeTemporaryCopy(this)
     }
     private val homeRoleRequest = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -88,7 +88,9 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         hideStatusBar()
         store = TileStore(this)
-        widgets = WidgetController(this, binding.widgetGrid, ::setDragScrolling)
+        widgets = WidgetController(this, binding.widgetGrid, ::setDragScrolling) {
+            binding.empty.visibility = if ((!::tiles.isInitialized || tiles.itemCount == 0) && binding.widgetGrid.visibility != View.VISIBLE) View.VISIBLE else View.GONE
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
@@ -382,8 +384,9 @@ class HomeActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val items = withContext(Dispatchers.IO) { store.all() }
             legacyHistoryAvailable = withContext(Dispatchers.IO) { HistoryMigration.hasHistory(this@HomeActivity) }
+            if (dragging) return@launch
             tiles.submitList(items)
-            binding.empty.visibility = if (items.isEmpty()) View.VISIBLE else View.GONE
+            binding.empty.visibility = if (items.isEmpty() && !widgets.hasWidgets) View.VISIBLE else View.GONE
             withContext(Dispatchers.IO) { backfillColors(items) }
         }
     }

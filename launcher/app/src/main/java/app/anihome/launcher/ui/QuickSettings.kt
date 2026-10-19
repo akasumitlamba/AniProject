@@ -110,7 +110,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
                     BluetoothAdapter.ACTION_DISCOVERY_FINISHED -> { scanningBluetooth = false; status = "Search complete" }
                     WifiManager.NETWORK_STATE_CHANGED_ACTION -> {
                         @Suppress("DEPRECATION") val ssid = wifi?.connectionInfo?.ssid?.removeSurrounding("\"")
-                        if (ssid == connectingNetwork) { connectingNetwork = null; status = "" }
+                        if (ssid == connectingNetwork && intent.getParcelableExtra<android.net.NetworkInfo>(WifiManager.EXTRA_NETWORK_INFO)?.isConnected == true) { connectingNetwork = null; status = "" }
                     }
                     WifiManager.SUPPLICANT_STATE_CHANGED_ACTION -> if (intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1) == WifiManager.ERROR_AUTHENTICATING) {
                         needsPasswordFor = connectingNetwork; connectingNetwork = null; status = "Password rejected. Tap the network to update it."
@@ -390,8 +390,12 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
             render(); return
         }
         if (radioBusy) { status = "Please wait for the current radio action."; render(); return }
+        val service = bridge.service ?: run {
+            pendingBluetooth = null
+            status = "Direct Bluetooth access is not ready. Reconnect Shizuku and retry."
+            render(); return
+        }
         pendingBluetooth = device.address; status = "Connecting…"; render()
-        val service = bridge.service ?: return
         radioBusy = true
         activity.lifecycleScope.launch {
             val accepted = try { app.anihome.launcher.controls.BluetoothConnections.connect(activity, service, device.address) }

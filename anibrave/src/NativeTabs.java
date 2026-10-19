@@ -89,7 +89,9 @@ final class NativeTabs {
     /** Re-resolve IDs after every click; row indexes may change while a menu is open. */
     boolean selectById(int id,boolean incognito) throws Failure {
         try {
-            Object selector=selector(),model=model(selector,incognito),tab=resolve(model,id);
+            Object selector=selector();
+            if((Boolean)call(call(selector,"h"),"isIncognito")!=incognito)return false;
+            Object model=model(selector,incognito),tab=resolve(model,id);
             if(tab==null)return false;
             call(selector,"F",new Class<?>[]{boolean.class},incognito);
             int count=((Number)call(model,"getCount")).intValue();
@@ -106,7 +108,9 @@ final class NativeTabs {
     }
     boolean closeById(int id,boolean incognito) throws Failure {
         try {
-            Object model=model(selector(),incognito),tab=resolve(model,id);
+            Object selector=selector();
+            if((Boolean)call(call(selector,"h"),"isIncognito")!=incognito)return false;
+            Object model=model(selector,incognito),tab=resolve(model,id);
             if(tab==null)return false;
             Class<?> tabType=Class.forName("org.chromium.chrome.browser.tab.Tab");
             // Use the same removal pipeline as the tab UI: preserves undo and

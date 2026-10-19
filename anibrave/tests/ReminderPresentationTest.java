@@ -11,7 +11,8 @@ public final class ReminderPresentationTest {
         check(guard.accept("other-site/a","show",4),"new site visit shows reminder");
         guard.enter("untracked/page");
         check(guard.accept("other-site/a","show",4),"navigation after timeout re-arms next visit");
-        guard.reset();check(guard.accept("other-site/a","show",4),"new foreground session");
+        guard.enter("");check(!guard.accept("other-site/a","show",4),"temporary missing URL does not re-arm same visit");
+        guard.reset();check(guard.accept("other-site/a","show",4),"explicit reset");
         check(ReminderPresentation.TIMEOUT_MS==8000,"eight-second baseline");
         System.out.println("8 reminder presentation checks passed");
     }

@@ -12,6 +12,10 @@ public final class SiteKeyTest {
         equal(SiteKey.blankNewTab("chrome://newtab/"),"about:blank");
         equal(SiteKey.blankNewTab("chrome-native://newtab/"),"about:blank");
         equal(SiteKey.blankNewTab("https://example.com/newtab/"),"https://example.com/newtab/");
+        equal(SiteKey.watchHost("https://beta.crunchyroll.com/watch/x"),"crunchyroll.com");
+        equal(SiteKey.watchHost("https://player.hianime.to/watch/x"),"hianime.to");
+        equal(SiteKey.watchHost("https://not-hianime.to/watch/x"),"");
+        equal(SiteKey.watchHost("https://hianime.to.attacker.invalid/watch/x"),"");
         System.out.println("10 site identity and blank-tab checks passed");
     }
 }

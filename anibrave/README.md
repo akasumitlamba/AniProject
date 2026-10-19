@@ -7,8 +7,9 @@ The native engine and Shields libraries remain byte-for-byte identical to the ve
 ## Included scope
 
 - Per-site speed choices from 0.5× to 4×, saved immediately. `www` and mobile hostname aliases share settings. Embedded frames use the top website's setting.
-- Event-driven speed recovery for replacement players, metadata, playing and rate changes, with bounded retries when a player rejects the requested rate.
+- Two-way site/browser speed synchronization, with bounded recovery across episode/player replacements. Browser rates above a site menu limit take precedence.
 - A native sliders icon beside the tab switcher opens Playback speed, Site view and Fullscreen shortcut. It belongs to the address-bar layout and scrolls with Brave's toolbar; there is no persistent floating button. Website seeking, subtitles and playback controls remain untouched.
+- Shortcuts resume the last foreground normal-profile URL for the same site, including pages visited in the normal browser. Private/background pages never update that destination.
 - Android pinned website shortcuts launch Brave's existing FullScreenCustomTabActivity via an internal activity, using its normal browsing profile, zero-height browser toolbar and immersive Android system bars. Edge gestures can temporarily reveal system bars.
 - Scroll or vertical touch gestures in immersive shortcuts reveal tools without consuming page input.
 - Mobile, desktop identity with mobile viewport, and desktop viewport settings saved per site. Changes reload the page. Device rotation updates viewport dimensions.
@@ -38,7 +39,7 @@ Output: `output/anibrave/AniBrave-0.1.0-arm64-v8a.apk`, plus `verification.json`
 
 ## Validation and limits
 
-23 controller checks cover rate persistence/recovery, replacement videos, bounded rejection, independent frame contexts, preserved fullscreen controls, gestures, duplicate installation, site keys and persistent HTTP response parsing. APK signature, 16 KiB library alignment, APK integrity, all eight DEX checksums and all five original native-library hashes are checked.
+The controller suite includes JavaScript checks plus Java resume/site/HTTP, identity, reminder and layout policies. It covers native rate synchronization, replacement videos, bounded recovery, stale choices, private URL exclusion, preserved fullscreen controls and gestures. APK signature, 16 KiB library alignment, APK integrity, all eight DEX checksums and all five original native-library hashes are checked.
 
 The original page-control connection waited for EOF on Chromium's persistent HTTP connection, preventing any settings from being applied. The response reader now consumes exactly Content-Length bytes, including partial reads, with size and truncation checks. Browser-level events without a page session no longer trigger a null-key lookup and reconnect. Target URL changes update saved settings. Diagnostic logs report connection and protocol failures without logging page contents.
 
@@ -78,3 +79,24 @@ stay full-page. See [controls, implementation and QA](docs/vertical-tabs.md).
 ## Private signing configuration
 
 The PowerShell build requires `ANIBRAVE_KEYSTORE` pointing to an existing private keystore and `ANIBRAVE_KS_PASS` supplied through the environment. `ANIBRAVE_KEY_ALIAS` defaults to `anibrave`; `ANIBRAVE_KEY_PASS` defaults to the store password. No signing key or password is generated or embedded in the build script. The Python feature-update tools accept `--keystore` and use the same password environment variables. Keep the signing identity stable for in-place updates; a new independent build needs its own privately generated key.
+
+## Resume and speed synchronization
+
+See [website resume and speed](docs/resume-and-speed.md) for shortcut behavior, native-player synchronization, recovery policy and validation scope. AniHome 0.8.16 adds Android pinned-shortcut confirmation support.
+
+### Android regression checks
+
+`python3 anibrave/tools/run_android_history_tests.py --serial <emulator-serial>`
+runs real SQLite imports, rollback, persistence and stale-profile tab action checks in
+an isolated, disposable QA package. Set `JAVA_HOME` and `ANDROID_HOME` (SDK 37.1,
+build-tools 37.0.0). The runner installs/removes only `app.anibrave.qatests` and never
+updates the browser or reads its profile. Its signing key is temporary and is not a
+release key. Launcher integration checks are built with
+`./gradlew :app:assembleDebugAndroidTest` and run with the configured
+`RegressionInstrumentation` on a matching debug installation. They use a dedicated
+QA cache database; they do not migrate the user's launcher database.
+
+Private tabs never contribute to the normal watch library: tracking requires the
+DevTools default browser context and a foreground normal-profile tab. Unknown
+context identities fail closed. AniKoto slug fallback preserves alphabetic words;
+opaque alphabetic suffixes can remain until the authoritative heading is available.

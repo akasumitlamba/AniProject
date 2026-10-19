@@ -48,7 +48,7 @@ final class VerticalTabs {
     private ViewTreeObserver.OnGlobalLayoutListener layoutListener;
     private final Runnable refresh = new Runnable() { public void run() {
         if (closed) return;
-        try { update(); } catch (Exception e) { if(rail!=null||++startupAttempts>=20) { android.util.Log.w("AniBrave","Native tab layout unavailable",e);fail(); } }
+        try { update(); startupAttempts=0; } catch (Exception e) { if(++startupAttempts>=20) { android.util.Log.w("AniBrave","Native tab layout unavailable",e);fail(); } }
         if (!closed) handler.postDelayed(this, 750);
     }};
 
@@ -342,8 +342,7 @@ final class VerticalTabs {
         } finally { updating=false; }
     }
     private void fail() {
-        activity.getSharedPreferences("anibrave_ui",0).edit().putBoolean("vertical_tabs",false).apply();
-        close();Toast.makeText(activity,"Vertical tabs are unavailable. Horizontal tabs restored.",Toast.LENGTH_LONG).show();activity.recreate();
+        close();Toast.makeText(activity,"Vertical tabs are temporarily unavailable. Reopen the browser to retry.",Toast.LENGTH_LONG).show();
     }
     void close() {
         if(closed)return;closed=true;handler.removeCallbacks(refresh);
