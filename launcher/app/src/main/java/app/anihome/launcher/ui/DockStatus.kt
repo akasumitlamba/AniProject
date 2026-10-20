@@ -50,14 +50,18 @@ internal class DockStatus(context: Context) : LinearLayout(context) {
         }
     }
     init {
-        orientation = HORIZONTAL; gravity = Gravity.CENTER
+        orientation = VERTICAL; gravity = Gravity.CENTER
         importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
-        addView(ImageView(context).apply {
-            setImageDrawable(batteryIcon); importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
-        }, LayoutParams(dp(9), dp(14)))
-        addView(chargingIcon, LayoutParams(dp(8), dp(14)))
-        addView(percent, LayoutParams(-2, -2).apply { marginStart = dp(1) })
-        addView(usb, LayoutParams(dp(10), dp(12)).apply { marginStart = dp(1) })
+        val icons = LinearLayout(context).apply {
+            orientation = HORIZONTAL; gravity = Gravity.CENTER
+            addView(ImageView(context).apply {
+                setImageDrawable(batteryIcon); importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+            }, LayoutParams(dp(9), dp(14)))
+            addView(chargingIcon, LayoutParams(dp(8), dp(14)))
+            addView(usb, LayoutParams(dp(10), dp(12)))
+        }
+        addView(icons, LayoutParams(-2, dp(14)))
+        addView(percent, LayoutParams(-2, -2))
         render()
     }
     private fun dp(value: Int) = ArtworkUi.dp(context, value)
