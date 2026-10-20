@@ -163,6 +163,7 @@ class HomeActivity : AppCompatActivity() {
     } }
     private val recents by lazy { ArtworkUi.plainIcon(this, R.drawable.ic_recents, "Recent apps") { systemAction(AccessibilityService.GLOBAL_ACTION_RECENTS) } }
     private val notificationBadge by lazy { BadgeUi.create(this) }
+    private val dockStatus by lazy { DockStatus(this) }
     private fun hideStatusBar() = HomeFullscreen.apply(window)
     override fun onWindowFocusChanged(hasFocus: Boolean) { super.onWindowFocusChanged(hasFocus); if (hasFocus) hideStatusBar() }
     private fun showDockPicker() {
@@ -174,7 +175,7 @@ class HomeActivity : AppCompatActivity() {
         val showSearch = homePreferences.getBoolean("show_dock_search", true)
         val showRecents = !tiles.editMode && homePreferences.getBoolean("show_recents_button", AdaptiveLayout.tablet(this@HomeActivity))
         val all = listOf(binding.railBrand, binding.btnSearch, binding.btnAdd, binding.btnNotifications,
-            binding.btnSettings, binding.btnEdit, binding.btnMore, binding.btnApps, clock, recents, notificationBadge)
+            binding.btnSettings, binding.btnEdit, binding.btnMore, binding.btnApps, clock, recents, notificationBadge, dockStatus)
         all.forEach { (it.parent as? ViewGroup)?.removeView(it) }
         val rail = binding.controlRail
         rail.removeAllViews()
@@ -194,11 +195,16 @@ class HomeActivity : AppCompatActivity() {
         clock.textSize = if (vertical) 12f else 11f
         clock.setOnClickListener { notificationPanel.show() }
         clock.tooltipText = "Notifications"
+        val clockBlock = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER
+            addView(clock, LinearLayout.LayoutParams(-1, 0, 1f))
+            addView(dockStatus, LinearLayout.LayoutParams(-1, dp(16)))
+        }
         val clockArea = FrameLayout(this).apply {
-            addView(clock, FrameLayout.LayoutParams(-1, -1))
+            addView(clockBlock, FrameLayout.LayoutParams(-1, -1))
             addView(notificationBadge, FrameLayout.LayoutParams(-2, dp(20), Gravity.TOP or Gravity.END))
         }
-        rail.addView(clockArea, LinearLayout.LayoutParams(dp(if (vertical) 52 else 76), dp(if (vertical) 60 else 48)))
+        rail.addView(clockArea, LinearLayout.LayoutParams(dp(if (vertical) 52 else 76), dp(if (vertical) 76 else 48)))
         binding.btnSearch.setImageResource(R.drawable.ic_google)
         binding.btnSearch.contentDescription = "Search or open address"
         val browser = DockBrowser.selected(this)
@@ -391,6 +397,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         if (::widgets.isInitialized) widgets.start()
+        dockStatus.start()
     }
 
     override fun onStop() {
@@ -399,6 +406,7 @@ class HomeActivity : AppCompatActivity() {
         stopDragScroll()
         emptyGesture = false
         if (::widgets.isInitialized) widgets.stop()
+        dockStatus.stop()
         super.onStop()
     }
 
