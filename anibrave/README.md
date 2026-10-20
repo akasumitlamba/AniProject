@@ -103,6 +103,6 @@ opaque alphabetic suffixes can remain until the authoritative heading is availab
 
 ## Combined release
 
-AniBrave 0.1.3 is included with AniHome 0.8.18 and desktop extension 0.1.3 in the
-[AniProject 2026.10.20 release](https://github.com/akasumitlamba/AniProject/releases/tag/aniproject-2026.10.20).
+AniBrave 0.1.3 is included with AniHome 0.8.19 and desktop extension 0.1.3 in the
+[AniProject 2026.10.20 release](https://github.com/akasumitlamba/AniProject/releases/tag/aniproject-2026.10.20-r2).
 The Android update retains the existing signing identity and profile.

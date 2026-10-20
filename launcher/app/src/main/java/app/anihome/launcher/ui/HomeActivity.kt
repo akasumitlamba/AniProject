@@ -192,7 +192,9 @@ class HomeActivity : AppCompatActivity() {
             if (view is android.widget.ImageButton) view.setPadding(dp((size - 32) / 2), dp((size - 32) / 2), dp((size - 32) / 2), dp((size - 32) / 2))
             parent.addView(view, LinearLayout.LayoutParams(dp(size), dp(size)))
         }
-        clock.textSize = if (vertical) 12f else 11f
+        dockStatus.onPowerIndicatorsChanged = { hasPowerIndicators ->
+            clock.textSize = if (hasPowerIndicators) 13f else 16f
+        }
         clock.setOnClickListener { notificationPanel.show() }
         clock.tooltipText = "Notifications"
         val clockBlock = LinearLayout(this).apply {
@@ -261,6 +263,10 @@ class HomeActivity : AppCompatActivity() {
         else rail.addView(group, LinearLayout.LayoutParams(0, -1, 1f))
         if (showRecents) add(rail, recents)
         add(rail, binding.btnApps)
+        // Inset the visible circle equally while preserving the full button touch target.
+        binding.btnApps.background = android.graphics.drawable.InsetDrawable(
+            androidx.core.content.ContextCompat.getDrawable(this, R.drawable.bg_dock_apps), dp(4)
+        )
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

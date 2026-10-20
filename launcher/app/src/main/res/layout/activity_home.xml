@@ -92,7 +92,7 @@
             <ImageButton android:id="@+id/btn_more" style="@style/Widget.AniHome.BorderlessIconButton" android:layout_marginStart="2dp" android:layout_marginEnd="2dp"
                 android:src="@drawable/ic_more" android:contentDescription="@string/action_more" android:tooltipText="@string/action_more" android:visibility="visible" />
         </LinearLayout>
-        <ImageButton android:id="@+id/btn_apps" style="@style/Widget.AniHome.BorderlessIconButton" android:src="@drawable/ic_apps" android:contentDescription="@string/action_all_apps" android:tooltipText="@string/action_all_apps" />
+        <ImageButton android:id="@+id/btn_apps" style="@style/Widget.AniHome.BorderlessIconButton" android:src="@drawable/ic_dock_apps" android:background="@drawable/bg_dock_apps" android:contentDescription="@string/action_all_apps" android:tooltipText="@string/action_all_apps" />
     </LinearLayout>
 
     <TextView
