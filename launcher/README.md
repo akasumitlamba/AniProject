@@ -17,7 +17,7 @@ AniHome is an Android HOME launcher with a TV-style grid of apps and websites ov
 
 ## Validation — 20 October 2026
 
-Version 0.8.20 passed 100 JVM tests, release lint, and signed release assembly. Physical-phone checks covered portrait/landscape rotation, the landscape side dock and 360dp sidebar cap, app-grid geometry, dock pin selection/persistence/launch, and recent-file expansion, metadata and Android sharing. Tablet-emulator checks covered both drawer orientations. Dock browser selection, browser launch, search visibility and preference persistence were checked in the emulator.
+Version 0.8.20 passed 100 JVM tests, release lint, and signed release assembly. Earlier 0.8.19 physical-phone checks covered portrait/landscape rotation, the landscape side dock and 360dp sidebar cap, app-grid geometry, dock pin selection/persistence/launch, and recent-file expansion, metadata and Android sharing. Earlier tablet-emulator checks covered both drawer orientations. Dock browser selection, browser launch, search visibility and preference persistence were checked in the emulator.
 
 Auto mode enables Android sensor rotation; physical sensor movement and every vendor’s firmware have not been exhaustively tested. System-wide rotation needs optional Android modify-system-settings access. Direct Shizuku controls additionally lock the display against app and Recents orientation requests; Auto releases that display lock. Unsupported firmware reports an error instead of assuming enforcement succeeded. Local launcher rotation does not need extra access.
 
@@ -53,3 +53,5 @@ Public release downloads are listed in the [root README](../README.md). Release-
 License: MPL-2.0.
 
 The dock clock grows when neither charging nor USB is active. The app-menu outline is inset equally within its touch target.
+
+Version 0.8.20 adds a shared compact time/count row and date row in either dock layout, plus optional direct system rotation enforcement against app-requested orientation.
