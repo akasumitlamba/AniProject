@@ -186,7 +186,7 @@ class HomeActivity : AppCompatActivity() {
             height = if (vertical) ViewGroup.LayoutParams.MATCH_PARENT else dp(56)
             gravity = if (vertical) Gravity.END else Gravity.BOTTOM
         }
-        rail.setPadding(dp(2), dp(4), dp(2), dp(4))
+        rail.setPadding(dp(if (vertical) 2 else 6), dp(4), dp(if (vertical) 2 else 6), dp(4))
         fun add(parent: LinearLayout, view: View, size: Int = controlSize) {
             view.visibility = View.VISIBLE
             if (view is android.widget.ImageButton) view.setPadding(dp((size - 32) / 2), dp((size - 32) / 2), dp((size - 32) / 2), dp((size - 32) / 2))
