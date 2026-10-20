@@ -183,7 +183,7 @@ class HomeActivity : AppCompatActivity() {
         rail.gravity = if (vertical) Gravity.CENTER_HORIZONTAL else Gravity.CENTER_VERTICAL
         rail.updateLayoutParams<FrameLayout.LayoutParams> {
             width = if (vertical) dp(56) else ViewGroup.LayoutParams.MATCH_PARENT
-            height = if (vertical) ViewGroup.LayoutParams.MATCH_PARENT else dp(56)
+            height = if (vertical) ViewGroup.LayoutParams.MATCH_PARENT else dp(72)
             gravity = if (vertical) Gravity.END else Gravity.BOTTOM
         }
         rail.setPadding(dp(if (vertical) 2 else 6), dp(4), dp(if (vertical) 2 else 6), dp(4))
@@ -195,6 +195,7 @@ class HomeActivity : AppCompatActivity() {
         dockStatus.onPowerIndicatorsChanged = { hasPowerIndicators ->
             clock.textSize = if (hasPowerIndicators) 13f else 16f
         }
+        clock.includeFontPadding = false
         clock.setOnClickListener { notificationPanel.show() }
         clock.tooltipText = "Notifications"
         val clockBlock = LinearLayout(this).apply {
@@ -206,7 +207,7 @@ class HomeActivity : AppCompatActivity() {
             addView(clockBlock, FrameLayout.LayoutParams(-1, -1))
             addView(notificationBadge, FrameLayout.LayoutParams(-2, dp(20), Gravity.TOP or Gravity.END))
         }
-        rail.addView(clockArea, LinearLayout.LayoutParams(dp(if (vertical) 52 else 76), dp(if (vertical) 76 else 48)))
+        rail.addView(clockArea, LinearLayout.LayoutParams(dp(if (vertical) 52 else 76), dp(if (vertical) 76 else 64)))
         binding.btnSearch.setImageResource(R.drawable.ic_google)
         binding.btnSearch.contentDescription = "Search or open address"
         val browser = DockBrowser.selected(this)
