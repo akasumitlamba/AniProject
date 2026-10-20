@@ -90,7 +90,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         override fun onServiceDisconnected(profile: Int) { profiles.remove(profile) }
     }
     private val observer = object : ContentObserver(Handler(Looper.getMainLooper())) {
-        override fun onChange(selfChange: Boolean) { render() }
+        override fun onChange(selfChange: Boolean) { RotationControl.applyHome(activity); render() }
     }
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -123,7 +123,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
     }
     private var expandedHeight = 0
     fun resize(sheetHeight: Int) {
-        val next = minOf(dp(230), (sheetHeight - dp(180)).coerceAtLeast(dp(32)))
+        val next = dp(AdaptiveLayout.expandedHeight((sheetHeight / activity.resources.displayMetrics.density).toInt(), activity.resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT))
         if (next == expandedHeight) return
         expandedHeight = next
         scrollView?.let { scroll ->
@@ -186,7 +186,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
             }; textSize = 13f
             setTextColor(if (active) 0xffffffff.toInt() else 0xffeeeeee.toInt())
             gravity = Gravity.CENTER_VERTICAL; minHeight = dp(48); setPadding(dp(12), dp(6), dp(12), dp(6))
-            background = GradientDrawable().apply { setColor(if (active) 0xff383838.toInt() else 0xff131e32.toInt()); cornerRadius = dp(10).toFloat() }
+            background = GradientDrawable().apply { setColor(if (active) 0xff383838.toInt() else 0xff242424.toInt()); cornerRadius = dp(10).toFloat() }
             foreground = ContextCompat.getDrawable(activity, app.anihome.launcher.R.drawable.bg_drawer_item)
             clipToOutline = true
             isFocusable = true; setOnClickListener { click() }
@@ -283,19 +283,21 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
             if (bridge.ready) {
                 val requestedAt = SystemClock.elapsedRealtime()
                 status = "Searching…"; render()
-                privileged({ if (it.scanWifi()) "Searching…" else "Scan unavailable. Showing last results." }) {
+                privileged({ if (runCatching { it.scanWifi() }.getOrDefault(false)) "Searching…" else frameworkWifiScan() }) {
                     status = if (lastWifiScanAt >= requestedAt) "" else it
                     render(); if (status == "Searching…") handler.postDelayed(scanTimeout, 12000)
                 }
                 return
             }
             if (!granted(Manifest.permission.ACCESS_FINE_LOCATION)) { permission.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)); return }
-            @Suppress("DEPRECATION")
-            status = if (runCatching { wifi?.startScan() == true }.getOrDefault(false)) "Searching…" else "Showing last scan. Android limits scan frequency; check Wi-Fi and Location."
+            status = frameworkWifiScan()
         }
         render()
         if (status == "Searching…" && selected == "Wi-Fi") handler.postDelayed(scanTimeout, 12000)
     }
+    @Suppress("DEPRECATION")
+    private fun frameworkWifiScan(): String = if (runCatching { wifi?.startScan() == true }.getOrDefault(false)) "Searching…"
+        else "Showing last scan. Android limits scan frequency; check Wi-Fi and Location."
     private fun radioHeader(body: LinearLayout, name: String, enabled: Boolean, toggle: (Boolean) -> Unit) {
         val header = LinearLayout(activity).apply { gravity = Gravity.CENTER_VERTICAL; setPadding(dp(12), 0, 0, 0) }
         header.addView(ArtworkUi.title(activity, name).apply { textSize = 14f }, LinearLayout.LayoutParams(0, dp(40), 1f))
@@ -452,18 +454,10 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
     }
     private fun rotationMode(): String = RotationControl.mode(activity)
     private fun cycleRotation() {
-        if (!Settings.System.canWrite(activity)) {
-            runCatching { launch(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:${activity.packageName}"))) }
-            return
-        }
         val next = when (rotationMode()) { "Portrait" -> "Landscape"; "Landscape" -> "Auto"; else -> "Portrait" }
-        val target = if (next == "Landscape") (RotationControl.portraitAngle(activity) + 1) % 2 else RotationControl.portraitAngle(activity)
-        runCatching {
-            check(Settings.System.putInt(activity.contentResolver, Settings.System.ACCELEROMETER_ROTATION, if (next == "Auto") 1 else 0))
-            if (next != "Auto") check(Settings.System.putInt(activity.contentResolver, Settings.System.USER_ROTATION, target))
-            (activity as? HomeActivity)?.applyRotationFromPanel() ?: RotationControl.applyHome(activity)
-            render()
-        }.onFailure { Toast.makeText(activity, "System rotation could not be changed", Toast.LENGTH_LONG).show() }
+        RotationControl.select(activity, next)
+        (activity as? HomeActivity)?.applyRotationFromPanel() ?: RotationControl.applyHome(activity)
+        render()
     }
     private fun note(body: LinearLayout, value: String) {
         body.addView(TextView(activity).apply { text = value; textSize = 12f; setTextColor(0xffbdbdbd.toInt()); setPadding(dp(12), dp(8), dp(12), dp(8)) })

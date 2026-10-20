@@ -49,3 +49,5 @@ jobs:
         run: |
           javac -d /tmp/anibrave-tests anibrave/src/TrackingPrivacy.java anibrave/tests/TrackingPrivacyTest.java
           java -cp /tmp/anibrave-tests app.anibrave.TrackingPrivacyTest
+      - name: Android task and icon resource policies
+        run: python3 -m unittest discover -s anibrave/tests -p 'test_*.py'

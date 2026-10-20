@@ -18,3 +18,12 @@ browser runtime. Supply the original keystore and passwords privately through
 `ANIBRAVE_KS_PASS` and `ANIBRAVE_KEY_PASS`. It verifies that the certificate,
 all DEX files and all native libraries are unchanged before delivering an APK.
 Build outputs and signing material must stay out of git.
+
+The launcher drawable centers the lion face rather than the full PNG bounds: the
+trailing ribbon makes the raw face axis about 57.5% from the left. Shared XML
+placement in `tools/app_resources.py` offsets the legacy bitmap and adaptive
+foreground. The original transparent artwork remains unchanged.
+
+Updates add an explicit adaptive mipmap when an older APK has only a legacy icon.
+Both variants use positive proportional insets; adaptive foreground bounds expand
+beyond the visible mask, so fixed dp offsets do not preserve the face center.

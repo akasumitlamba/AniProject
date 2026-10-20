@@ -38,7 +38,8 @@ class AppDrawerActivity : AppCompatActivity() {
     private var adding = false
     private val adapter = Adapter()
     private val iconWorkers = Semaphore(4)
-    private val pickMode by lazy { intent.getBooleanExtra(EXTRA_PICK, false) }
+    private val dockPickMode by lazy { intent.getBooleanExtra(EXTRA_DOCK_PICK, false) }
+    private val pickMode by lazy { dockPickMode || intent.getBooleanExtra(EXTRA_PICK, false) }
     private fun InstalledApp.key() = "$packageName/$activityName"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +50,7 @@ class AppDrawerActivity : AppCompatActivity() {
         setContentView(binding.root)
         store = TileStore(this); preferences = DrawerPreferences(this)
         selected.addAll(savedInstanceState?.getStringArrayList("selected").orEmpty())
+        if (savedInstanceState == null && dockPickMode) selected.addAll(DockApps.pins(this).map { "${it.packageName}/${it.className}" })
         showHidden = savedInstanceState?.getBoolean("show_hidden") ?: false
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime() or WindowInsetsCompat.Type.displayCutout())
@@ -60,6 +62,7 @@ class AppDrawerActivity : AppCompatActivity() {
         binding.list.layoutManager = GridLayoutManager(this, if (resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT) 4 else (availableDp / 96f).toInt().coerceIn(3, 8))
         binding.list.adapter = adapter
         binding.list.itemAnimator = null
+        fitColumns(binding.list, if (AdaptiveLayout.tablet(this) && resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT) 4 else 8)
         buildLibrary()
         binding.btnBack.setOnClickListener { finish() }
         binding.search.doAfterTextChanged { filter(); renderFiles() }
@@ -71,7 +74,10 @@ class AppDrawerActivity : AppCompatActivity() {
             ))
         }
         binding.btnAddSelected.visibility = if (pickMode) View.VISIBLE else View.GONE
-        binding.btnAddSelected.setOnClickListener { addApps(all.filter { it.key() in selected }, true) }
+        binding.btnAddSelected.setOnClickListener {
+            if (dockPickMode) { DockApps.set(this, selected.mapNotNull { key -> all.firstOrNull { it.key() == key }?.component }); finish() }
+            else addApps(all.filter { it.key() in selected }, true)
+        }
         InstalledApps.cached()?.let {
             all = it
             if (pickMode) { filter(); binding.loading.visibility = View.GONE }
@@ -89,7 +95,7 @@ class AppDrawerActivity : AppCompatActivity() {
             }
             binding.loading.visibility = View.GONE
             result.onSuccess { (apps, home) ->
-                all = apps; onHome = home; selected.removeAll(home); filter()
+                all = apps; onHome = if (dockPickMode) emptySet() else home; if (!dockPickMode) selected.removeAll(home); filter()
                 libraryContent?.visibility = View.VISIBLE
             }
                 .onFailure { libraryContent?.visibility = View.VISIBLE; binding.hint.text = "Couldn’t load apps. Reopen Apps to retry."; binding.hint.visibility = View.VISIBLE }
@@ -102,7 +108,7 @@ class AppDrawerActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
         favorites.items = all.filter { it.key() in onHome && it.key() !in hidden && (q.isEmpty() || it.label.lowercase(Locale.ROOT).contains(q)) }
         favorites.notifyDataSetChanged()
-        frequent.items = AppFrequency.rank(this, all.filter { it.key() !in hidden }, onHome).filter {
+        frequent.items = AppFrequency.rank(this, all.filter { it.key() !in hidden }, onHome).take(if (AdaptiveLayout.tablet(this)) 8 else AdaptiveLayout.columns(resources.configuration.screenWidthDp - 28f, resources.configuration.fontScale, 5)).filter {
             q.isEmpty() || it.label.lowercase(Locale.ROOT).contains(q) || it.packageName.lowercase(Locale.ROOT).contains(q)
         }
         frequent.notifyDataSetChanged()
@@ -111,12 +117,13 @@ class AppDrawerActivity : AppCompatActivity() {
             binding.loading.visibility == View.VISIBLE -> ""
             all.isEmpty() -> "No apps available"
             adapter.items.isEmpty() -> "No matching apps"
+            dockPickMode -> "Choose up to five apps; the dock shows as many as fit."
             pickMode -> "Choose apps, then add them together"
             else -> ""
         }
         binding.hint.visibility = if (binding.hint.text.isEmpty()) View.GONE else View.VISIBLE
-        binding.btnAddSelected.text = "Add selected (${selected.size})"
-        binding.btnAddSelected.isEnabled = selected.isNotEmpty() && !adding
+        binding.btnAddSelected.text = if (dockPickMode) "Save dock (${selected.size}/5)" else "Add selected (${selected.size})"
+        binding.btnAddSelected.isEnabled = (dockPickMode || selected.isNotEmpty()) && !adding
     }
     private val favorites = Adapter()
     private val frequent = Adapter()
@@ -142,9 +149,106 @@ class AppDrawerActivity : AppCompatActivity() {
         super.onStop()
     }
     private val mediaPermission = registerForActivityResult(androidx.activity.result.contract.ActivityResultContracts.RequestMultiplePermissions()) { refreshFiles() }
+    private fun fitColumns(grid: RecyclerView, maximum: Int) {
+        grid.addOnLayoutChangeListener { _, left, _, right, _, oldLeft, _, oldRight, _ ->
+            if (right - left > 0 && (right - left != oldRight - oldLeft || grid.tag != resources.configuration.fontScale)) {
+                val width = (right - left - grid.paddingLeft - grid.paddingRight) / resources.displayMetrics.density
+                val columns = AdaptiveLayout.columns(width, resources.configuration.fontScale, maximum, if (AdaptiveLayout.tablet(this)) 96f else 80f)
+                (grid.layoutManager as GridLayoutManager).spanCount = columns
+                grid.tag = resources.configuration.fontScale
+            }
+        }
+    }
+    private fun buildPhoneLibrary() {
+        val parent = binding.list.parent as android.widget.LinearLayout
+        val index = parent.indexOfChild(binding.list)
+        if (resources.configuration.screenHeightDp >= 560) {
+            val grid = RecyclerView(this).apply {
+                adapter = frequent; layoutManager = GridLayoutManager(this@AppDrawerActivity, 4); itemAnimator = null
+            }
+            fitColumns(grid, 5)
+            parent.addView(grid, index, android.widget.LinearLayout.LayoutParams(-1, -2))
+            parent.addView(View(this).apply { setBackgroundColor(0xff484848.toInt()) }, index + 1,
+                android.widget.LinearLayout.LayoutParams(-1, ArtworkUi.dp(this, 1)).apply { topMargin = ArtworkUi.dp(this@AppDrawerActivity, 6); bottomMargin = ArtworkUi.dp(this@AppDrawerActivity, 8) })
+        }
+        recentBody = android.widget.LinearLayout(this).apply { orientation = android.widget.LinearLayout.VERTICAL }
+        val recent = android.widget.ScrollView(this).apply { addView(recentBody); visibility = View.GONE }
+        val sheet = android.widget.LinearLayout(this).apply {
+            orientation = android.widget.LinearLayout.VERTICAL
+            setBackgroundColor(0xff1c1c1c.toInt())
+        }
+        val header = android.widget.LinearLayout(this).apply {
+            orientation = android.widget.LinearLayout.VERTICAL
+            gravity = android.view.Gravity.CENTER_HORIZONTAL
+            isClickable = true; isFocusable = true
+            contentDescription = "Recent files"
+            val value = android.util.TypedValue()
+            theme.resolveAttribute(android.R.attr.selectableItemBackground, value, true)
+            foreground = androidx.core.content.ContextCompat.getDrawable(context, value.resourceId)
+        }
+        header.addView(View(this).apply {
+            background = android.graphics.drawable.GradientDrawable().apply {
+                setColor(0xff8a8a8a.toInt()); cornerRadius = ArtworkUi.dp(this@AppDrawerActivity, 2).toFloat()
+            }
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        }, android.widget.LinearLayout.LayoutParams(ArtworkUi.dp(this, 28), ArtworkUi.dp(this, 3)).apply { topMargin = ArtworkUi.dp(this@AppDrawerActivity, 8) })
+        val label = android.widget.LinearLayout(this).apply {
+            gravity = android.view.Gravity.CENTER_VERTICAL
+            setPadding(ArtworkUi.dp(context, 12), 0, ArtworkUi.dp(context, 12), 0)
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+        }
+        label.addView(android.widget.ImageView(this).apply {
+            setImageResource(R.drawable.ic_folder); setColorFilter(0xffcccccc.toInt())
+        }, android.widget.LinearLayout.LayoutParams(ArtworkUi.dp(this, 20), ArtworkUi.dp(this, 20)))
+        label.addView(android.widget.TextView(this).apply {
+            text = "Recent files"; textSize = 14f; setTextColor(-1)
+            setPadding(ArtworkUi.dp(context, 10), 0, 0, 0)
+        })
+        header.addView(label, android.widget.LinearLayout.LayoutParams(-1, ArtworkUi.dp(this, 44)))
+        sheet.addView(header)
+        sheet.addView(recent, android.widget.LinearLayout.LayoutParams(-1, 0))
+        parent.addView(sheet, android.widget.LinearLayout.LayoutParams(-1, -2))
+        var expanded = false
+        var paneHeight = ArtworkUi.dp(this, resources.configuration.screenHeightDp / 2)
+        var expansion: android.animation.ValueAnimator? = null
+        fun describeState() {
+            ViewCompat.setStateDescription(header, if (expanded) "Expanded" else "Collapsed")
+            ViewCompat.replaceAccessibilityAction(header, androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_CLICK,
+                if (expanded) "Collapse recent files" else "Expand recent files") { view, _ -> view.performClick() }
+        }
+        header.setOnClickListener {
+            expansion?.cancel()
+            expanded = !expanded
+            describeState()
+            recent.visibility = View.VISIBLE
+            expansion = android.animation.ValueAnimator.ofInt(recent.layoutParams.height, if (expanded) paneHeight else 0).apply {
+                duration = 180
+                interpolator = android.view.animation.DecelerateInterpolator()
+                addUpdateListener { animator -> recent.layoutParams = recent.layoutParams.apply { height = animator.animatedValue as Int } }
+                addListener(object : android.animation.AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: android.animation.Animator) {
+                        if (!expanded) recent.visibility = View.GONE
+                    }
+                })
+                start()
+            }
+        }
+        describeState()
+        binding.root.addOnLayoutChangeListener { _, _, top, _, bottom, _, _, _, _ ->
+            if (bottom > top) {
+                paneHeight = ((bottom - top - binding.root.paddingTop - binding.root.paddingBottom) / 2)
+                    .coerceAtLeast(ArtworkUi.dp(this@AppDrawerActivity, 80))
+                if (expanded && expansion?.isRunning != true && recent.layoutParams.height != paneHeight) {
+                    recent.layoutParams = recent.layoutParams.apply { height = paneHeight }
+                }
+            }
+        }
+        binding.search.hint = "Search apps and files"
+    }
     private fun buildLibrary() {
         binding.root.setBackgroundColor(0xff141414.toInt())
         if (pickMode) return
+        if (!AdaptiveLayout.tablet(this)) { buildPhoneLibrary(); return }
         val landscape = resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE && resources.configuration.screenWidthDp >= 700
         wideLibrary = landscape
         val container = android.widget.LinearLayout(this).apply {
@@ -166,6 +270,7 @@ class AppDrawerActivity : AppCompatActivity() {
         fav.addView(RecyclerView(this).apply {
             adapter = if (landscape) favorites else frequent
             layoutManager = GridLayoutManager(this@AppDrawerActivity, 2)
+            fitColumns(this, 2)
         }, android.widget.LinearLayout.LayoutParams(-1, 0, 1f))
         container.addView(fav, if (landscape) android.widget.LinearLayout.LayoutParams(0, -1, .25f) else android.widget.LinearLayout.LayoutParams(-1, -2))
         val apps = column("All applications")
@@ -224,11 +329,60 @@ class AppDrawerActivity : AppCompatActivity() {
                 setTextColor(-1); textSize = 12f; maxLines = 3; ellipsize = android.text.TextUtils.TruncateAt.END
                 setPadding(ArtworkUi.dp(context, 8), 0, 0, 0)
             }, android.widget.LinearLayout.LayoutParams(0, -2, 1f))
-            row.setOnClickListener {
-                runCatching { startActivity(Intent(Intent.ACTION_VIEW).setDataAndType(file.uri, file.mime).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)) }
-                    .onFailure { Toast.makeText(this@AppDrawerActivity, "No app can open this file, or access has changed.", Toast.LENGTH_LONG).show() }
-            }
+            row.setOnClickListener { openRecentFile(file) }
+            row.addView(android.widget.ImageButton(this).apply {
+                setImageResource(R.drawable.ic_more_vertical); setColorFilter(-1)
+                setBackgroundColor(android.graphics.Color.TRANSPARENT)
+                contentDescription = "More options for ${file.name}"
+                setPadding(ArtworkUi.dp(context, 12), ArtworkUi.dp(context, 12), ArtworkUi.dp(context, 12), ArtworkUi.dp(context, 12))
+                setOnClickListener { anchor ->
+                    HomeMenu.show(anchor, file.name, listOf(
+                        HomeMenu.Item(1, "Open", R.drawable.ic_file) { openRecentFile(file) },
+                        HomeMenu.Item(2, "Share", R.drawable.ic_share) { openRecentFile(file, share = true) },
+                        HomeMenu.Item(3, "File info", R.drawable.ic_info) { showRecentFileInfo(file) }
+                    ))
+                }
+            }, android.widget.LinearLayout.LayoutParams(ArtworkUi.dp(this, 48), ArtworkUi.dp(this, 48)))
             recentBody.addView(row)
+        }
+    }
+    private fun recentFileUnavailable() {
+        Toast.makeText(this, "This file is unavailable or access has changed. Refreshing recent files.", Toast.LENGTH_LONG).show()
+        refreshFiles()
+    }
+    private fun openRecentFile(file: RecentFiles.File, share: Boolean = false) {
+        lifecycleScope.launch {
+            val available = withContext(Dispatchers.IO) {
+                runCatching { contentResolver.openAssetFileDescriptor(file.uri, "r")?.use { true } ?: false }.getOrDefault(false)
+            }
+            if (!available) { recentFileUnavailable(); return@launch }
+            val intent = if (share) Intent(Intent.ACTION_SEND).apply {
+                type = file.mime
+                putExtra(Intent.EXTRA_STREAM, file.uri)
+                clipData = android.content.ClipData.newUri(contentResolver, file.name, file.uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            } else Intent(Intent.ACTION_VIEW).setDataAndType(file.uri, file.mime).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            runCatching { startActivity(if (share) Intent.createChooser(intent, "Share file") else intent) }
+                .onFailure { Toast.makeText(this@AppDrawerActivity, "No app can handle this file, or access has changed.", Toast.LENGTH_LONG).show() }
+        }
+    }
+    private fun showRecentFileInfo(file: RecentFiles.File) {
+        lifecycleScope.launch {
+            val metadata = withContext(Dispatchers.IO) {
+                runCatching {
+                    contentResolver.query(file.uri, arrayOf(android.provider.OpenableColumns.DISPLAY_NAME, android.provider.OpenableColumns.SIZE), null, null, null)?.use { cursor ->
+                        check(cursor.moveToFirst())
+                        (cursor.getString(0) ?: file.name) to (if (cursor.isNull(1)) null else cursor.getLong(1))
+                    }
+                }.getOrNull()
+            }
+            if (metadata == null) { recentFileUnavailable(); return@launch }
+            val size = metadata.second?.takeIf { it >= 0 }?.let { android.text.format.Formatter.formatFileSize(this@AppDrawerActivity, it) } ?: "Unknown"
+            val modified = if (file.modified > 0) java.text.DateFormat.getDateTimeInstance().format(java.util.Date(file.modified)) else "Unknown"
+            androidx.appcompat.app.AlertDialog.Builder(this@AppDrawerActivity)
+                .setTitle("File info")
+                .setMessage("Name: ${metadata.first}\n\nType: ${file.mime}\n\nSize: $size\n\nModified: $modified")
+                .setPositiveButton("Done", null).show()
         }
     }
     private fun launch(app: InstalledApp) {
@@ -242,6 +396,11 @@ class AppDrawerActivity : AppCompatActivity() {
     private fun options(app: InstalledApp, anchor: View) {
         val hidden = app.key() in preferences.hidden()
         val actions = mutableListOf<HomeMenu.Item>()
+        val docked = app.component in DockApps.pins(this)
+        actions += HomeMenu.Item(5, if (docked) "Unpin from dock" else "Pin to dock", R.drawable.ic_apps) {
+            if (!docked && DockApps.pins(this).size >= 5) Toast.makeText(this, "Dock stores up to five apps. Unpin one first.", Toast.LENGTH_SHORT).show()
+            else { DockApps.toggle(this, app.component); Toast.makeText(this, if (docked) "Removed from dock" else "Pinned to dock", Toast.LENGTH_SHORT).show() }
+        }
         if (app.key() !in onHome) actions += HomeMenu.Item(1, "Add to Home", R.drawable.ic_add) { addApps(listOf(app), false) }
         actions += HomeMenu.Item(2, if (hidden) "Show in Apps" else "Hide from Apps", R.drawable.ic_visibility) {
             preferences.hide(app.key(), !hidden); filter()
@@ -301,12 +460,14 @@ class AppDrawerActivity : AppCompatActivity() {
             binding.root.setOnClickListener {
                 if (!pickMode) launch(app)
                 else if (app.key() !in onHome && !adding) {
-                    if (!selected.add(app.key())) selected.remove(app.key())
+                    if (app.key() in selected) selected.remove(app.key())
+                    else if (!dockPickMode || selected.size < 5) selected.add(app.key())
+                    else Toast.makeText(this@AppDrawerActivity, "Choose up to five dock apps", Toast.LENGTH_SHORT).show()
                     filter()
                 }
             }
             binding.root.setOnLongClickListener { options(app, it); true }
         }
     }
-    companion object { const val EXTRA_PICK = "pick" }
+    companion object { const val EXTRA_PICK = "pick"; const val EXTRA_DOCK_PICK = "dock_pick" }
 }

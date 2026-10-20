@@ -1,25 +1,34 @@
 package app.anibrave;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Browser;
 
-/** Launches Brave's own zero-toolbar-height activity in the existing normal profile. */
+/** Hidden pin/launcher entry point; web windows live in separate retained documents. */
 public final class ShortcutLaunchActivity extends Activity {
     @Override protected void onCreate(Bundle saved) {
         super.onCreate(saved);
-        String url=getIntent().getDataString();
-        if(!SiteKey.of(url).isEmpty()){
-            url=ResumeStore.resolve(this,url);
-            Intent target=new Intent(Intent.ACTION_VIEW,android.net.Uri.parse(url));
-            target.setClassName(getPackageName(),"org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity");
-            target.putExtra("app.anibrave.immersive",true);
-            target.putExtra(Browser.EXTRA_APPLICATION_ID,getPackageName());
-            target.putExtra("android.support.customtabs.extra.TITLE_VISIBILITY",0);
-            target.putExtra("android.support.customtabs.extra.ENABLE_URLBAR_HIDING",false);
-            target.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(target);
+        String seed=getIntent().getDataString();
+        if(ResumeLocation.valid(seed)){
+            Uri identity=Uri.parse("anibrave://shortcut/"+Uri.encode(SiteKey.of(seed)));
+            ActivityManager manager=getSystemService(ActivityManager.class);
+            if(manager!=null)for(ActivityManager.AppTask task:manager.getAppTasks()){
+                try{
+                ActivityManager.RecentTaskInfo info=task.getTaskInfo();
+                Intent base=info.baseIntent;
+                if(base!=null&&base.getComponent()!=null&&base.getComponent().getClassName().equals(ShortcutTaskActivity.class.getName())
+                        &&identity.equals(base.getData())&&info.numActivities>1
+                        &&ResumeStore.resolve(this,seed).equals(AniRuntime.taskUrl(info.taskId))){
+                    task.setExcludeFromRecents(false);task.moveToFront();finish();return;
+                }
+                }catch(IllegalArgumentException|SecurityException ignored){} // Task may have been dismissed.
+            }
+            Intent document=new Intent(this,ShortcutTaskActivity.class).setData(identity);
+            document.putExtra(ShortcutTaskActivity.SEED,seed);
+            document.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT|Intent.FLAG_ACTIVITY_RETAIN_IN_RECENTS);
+            startActivity(document);
         }
         finish();
     }

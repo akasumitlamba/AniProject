@@ -60,7 +60,7 @@ Existing native and browser notices are retained in the app. Customization sourc
 
 ## Local anime history
 
-Tracking belongs to AniBrave. Updates preserve the browser profile when signed with the same identity. See [TRACKING.md](TRACKING.md) for progress gating, cross-site reminders, local import, privacy, build verification and acceptance limits. The version name is 0.1.2; versionCode increments for the feature update.
+Tracking belongs to AniBrave. Updates preserve the browser profile when signed with the same identity. See [TRACKING.md](TRACKING.md) for progress gating, cross-site reminders, local import, privacy, build verification and acceptance limits. The current update is 0.1.3 (Brave 1.97.56), versionCode 429705616.
 
 ## Episode reminders and protected playback
 
@@ -103,6 +103,6 @@ opaque alphabetic suffixes can remain until the authoritative heading is availab
 
 ## Combined release
 
-AniBrave 0.1.2 is included with AniHome 0.8.17 and desktop extension 0.1.3 in the
-[AniProject 2026.10.19 release](https://github.com/akasumitlamba/AniProject/releases/tag/aniproject-2026.10.19).
+AniBrave 0.1.3 is included with AniHome 0.8.18 and desktop extension 0.1.3 in the
+[AniProject 2026.10.20 release](https://github.com/akasumitlamba/AniProject/releases/tag/aniproject-2026.10.20).
 The Android update retains the existing signing identity and profile.

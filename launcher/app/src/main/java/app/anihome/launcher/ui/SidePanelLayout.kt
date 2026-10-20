@@ -28,7 +28,7 @@ internal object SidePanelLayout {
             activity.windowManager.defaultDisplay.getRealMetrics(metrics)
             android.graphics.Rect(0, 0, metrics.widthPixels, metrics.heightPixels)
         }
-        return PanelGeometryPolicy.bounds(size.width(), size.height(), ArtworkUi.dp(activity, 360))
+        return PanelGeometryPolicy.bounds(size.width(), size.height(), if (AdaptiveLayout.tablet(activity) || size.width() > size.height()) minOf(ArtworkUi.dp(activity, 360), (size.width() - ArtworkUi.dp(activity, 32)).coerceAtLeast(1)) else (size.width() - ArtworkUi.dp(activity, 32)).coerceAtLeast(1))
     }
     fun apply(activity: AppCompatActivity, window: Window): PanelGeometryPolicy.Bounds {
         val bounds = bounds(activity)
@@ -45,7 +45,7 @@ internal object SidePanelLayout {
         val edge = Gravity.LEFT
         window.setGravity(edge or Gravity.TOP)
         window.setLayout(bounds.width, bounds.height)
-        window.attributes = window.attributes.apply { x = bounds.x; y = bounds.y }
+        window.attributes = window.attributes.apply { x = bounds.x; y = bounds.y; screenOrientation = activity.requestedOrientation }
         return bounds
     }
 }

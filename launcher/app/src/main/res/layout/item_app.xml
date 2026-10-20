@@ -9,13 +9,13 @@
     android:focusable="true"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="6dp">
 
     <FrameLayout android:layout_width="match_parent" android:layout_height="56dp">
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
             android:layout_gravity="center"
             android:scaleType="fitCenter"
             android:contentDescription="@null" />

@@ -1,5 +1,6 @@
 """Version-pinned integration hooks. Fail rather than guessing changed upstream bytecode."""
 from pathlib import Path
+from app_resources import configure_tasks, write_icon_placement
 import re
 import shutil
 import xml.etree.ElementTree as ET
@@ -75,6 +76,7 @@ app.set('{'+NS+'}icon','@mipmap/anibrave_icon')
 app.set('{'+NS+'}roundIcon','@mipmap/anibrave_icon')
 if not any(node.get('{'+NS+'}name')=='app.anibrave.ShortcutLaunchActivity' for node in app.findall('activity')):
     ET.SubElement(app,'activity',{'{'+NS+'}name':'app.anibrave.ShortcutLaunchActivity','{'+NS+'}exported':'true','{'+NS+'}theme':'@android:style/Theme.NoDisplay','{'+NS+'}excludeFromRecents':'true'})
+configure_tasks(app)
 for node in root.iter():
     for key,value in list(node.attrib.items()):
         if value.startswith('com.brave.browser'):
@@ -103,6 +105,7 @@ adaptive=RES/'res'/'mipmap-anydpi-v26';adaptive.mkdir(exist_ok=True)
     <foreground><inset android:inset="16dp"><bitmap android:src="@drawable/anibrave_lion" android:gravity="fill" android:filter="true"/></inset></foreground>
 </adaptive-icon>
 ''',encoding='utf-8')
+write_icon_placement(RES/'res')
 assets=RES/'assets'/'anibrave';assets.mkdir(exist_ok=True)
 (assets/'playback.js').write_bytes((BASE/'src'/'playback.js').read_bytes())
 (assets/'player.js').write_bytes((BASE/'src'/'player.js').read_bytes())

@@ -16,6 +16,19 @@ AniHome must support Android's pinned-shortcut confirmation flow. Request **Full
 from AniBrave features, confirm **Add to Home**, and tap the resulting tile. It retains Android's
 publisher/package/shortcut identity and opens AniBrave's immersive activity; it is not a WebView.
 
+## Shortcut tasks and Recents
+
+Each site uses a stable Android document task, separate from normal browser tabs.
+The internal document root retains its Recents card beneath the native fullscreen
+web activity. Retapping a live shortcut brings its existing page forward when it
+still matches the saved destination; a newer normal-browser visit opens the newer
+same-site URL. Different sites have separate cards, with at most 16 retained tasks.
+The website profile and cookies remain shared with the normal browser.
+
+Back can finish the web window while leaving a relaunchable card; explicitly
+swiping a card away dismisses that task. Returning from a retained card or shortcut
+uses native restoration and the local saved URL fallback, not a playback timestamp.
+
 ## Speed ownership
 
 - A browser speed selection is saved immediately per top-level site and applied to existing players,

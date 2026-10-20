@@ -229,6 +229,10 @@ public final class AniRuntime {
     private static String currentUrlFor(Activity a){
         try{Object tab=a.getClass().getMethod("m4").invoke(a);Object url=tab.getClass().getMethod("getUrl").invoke(tab);return (String)url.getClass().getField("a").get(url);}catch(Exception e){return "";}
     }
+    static String taskUrl(int taskId){
+        for(Activity a:lastLocations.keySet())if(a!=null&&!a.isDestroyed()&&a.getTaskId()==taskId)return currentUrlFor(a);
+        return "";
+    }
     static void navigated(String url){UI.post(()->{
         Activity a=active.get();if(a!=null&&url.equals(currentUrlFor(a)))captureLocation(a);
     });}

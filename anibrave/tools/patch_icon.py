@@ -13,6 +13,7 @@ import subprocess
 import tempfile
 import xml.etree.ElementTree as ET
 import zipfile
+from app_resources import configure_tasks, write_icon_placement
 
 
 def run(*args, capture=False):
@@ -74,6 +75,7 @@ def main():
             shutil.copyfile(root/'anibrave/assets/anibrave-lion.png', target)
         for background in res.rglob('anibrave_icon_background.xml'):
             background.write_text('<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle"><solid android:color="#FF7638"/></shape>\n')
+        write_icon_placement(res)
         manifest = decoded/'AndroidManifest.xml'
         tree = ET.parse(manifest)
         android = '{http://schemas.android.com/apk/res/android}'
@@ -90,6 +92,7 @@ def main():
                 shutil.copyfile(args.feature_source/name,assets/name)
             application=element.find('application')
             application.set(android+'allowBackup','false')
+            configure_tasks(application)
             if not any(activity.get(android+'name')=='app.anibrave.HistoryImportActivity' for activity in application.findall('activity')):
                 ET.SubElement(application,'activity',{android+'name':'app.anibrave.HistoryImportActivity',android+'exported':'true',android+'configChanges':'orientation|screenSize',android+'theme':'@android:style/Theme.Material.NoActionBar'})
         metadata = decoded/'apktool.yml'

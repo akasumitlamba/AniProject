@@ -165,11 +165,14 @@ class HomeActivity : AppCompatActivity() {
     private val notificationBadge by lazy { BadgeUi.create(this) }
     private fun hideStatusBar() = HomeFullscreen.apply(window)
     override fun onWindowFocusChanged(hasFocus: Boolean) { super.onWindowFocusChanged(hasFocus); if (hasFocus) hideStatusBar() }
+    private fun showDockPicker() {
+        startActivity(Intent(this, AppDrawerActivity::class.java).putExtra(AppDrawerActivity.EXTRA_DOCK_PICK, true))
+    }
     private fun configureRail() {
         val vertical = resources.getBoolean(R.bool.vertical_controls)
         val controlSize = if (vertical) 52 else 44
-        val iconPadding = if (vertical) 10 else 6
-        val actions = listOf(binding.btnSearch, binding.btnAdd, binding.btnNotifications) + if (tiles.editMode) listOf(binding.btnEdit) else emptyList()
+        val showSearch = homePreferences.getBoolean("show_dock_search", true)
+        val showRecents = !tiles.editMode && homePreferences.getBoolean("show_recents_button", AdaptiveLayout.tablet(this@HomeActivity))
         val all = listOf(binding.railBrand, binding.btnSearch, binding.btnAdd, binding.btnNotifications,
             binding.btnSettings, binding.btnEdit, binding.btnMore, binding.btnApps, clock, recents, notificationBadge)
         all.forEach { (it.parent as? ViewGroup)?.removeView(it) }
@@ -183,34 +186,75 @@ class HomeActivity : AppCompatActivity() {
             gravity = if (vertical) Gravity.END else Gravity.BOTTOM
         }
         rail.setPadding(dp(2), dp(4), dp(2), dp(4))
-        rail.addView(clock, LinearLayout.LayoutParams(dp(if (vertical) 52 else 48), dp(if (vertical) 56 else 48)))
+        fun add(parent: LinearLayout, view: View, size: Int = controlSize) {
+            view.visibility = View.VISIBLE
+            if (view is android.widget.ImageButton) view.setPadding(dp((size - 32) / 2), dp((size - 32) / 2), dp((size - 32) / 2), dp((size - 32) / 2))
+            parent.addView(view, LinearLayout.LayoutParams(dp(size), dp(size)))
+        }
+        clock.textSize = if (vertical) 12f else 11f
+        clock.setOnClickListener { notificationPanel.show() }
+        clock.tooltipText = "Notifications"
+        val clockArea = FrameLayout(this).apply {
+            addView(clock, FrameLayout.LayoutParams(-1, -1))
+            addView(notificationBadge, FrameLayout.LayoutParams(-2, dp(20), Gravity.TOP or Gravity.END))
+        }
+        rail.addView(clockArea, LinearLayout.LayoutParams(dp(if (vertical) 52 else 76), dp(if (vertical) 60 else 48)))
+        binding.btnSearch.setImageResource(R.drawable.ic_google)
+        binding.btnSearch.contentDescription = "Search or open address"
+        val browser = DockBrowser.selected(this)
+        if (browser != null) {
+            val label = runCatching { packageManager.getApplicationLabel(packageManager.getApplicationInfo(browser, 0)).toString() }.getOrDefault("selected browser")
+            binding.btnSearch.contentDescription = "Search or open address with $label"
+            packageManager.getLaunchIntentForPackage(browser)?.component?.let { component ->
+                lifecycleScope.launch {
+                    val icon = withContext(Dispatchers.IO) { IconCache.appIcon(applicationContext, component.packageName, component.className) }
+                    if (DockBrowser.selected(this@HomeActivity) == browser && binding.btnSearch.isAttachedToWindow) {
+                        binding.btnSearch.setImageDrawable(androidx.core.graphics.drawable.RoundedBitmapDrawableFactory.create(resources, icon).apply { isCircular = true; setAntiAlias(true) })
+                    }
+                }
+            }
+        }
+        binding.btnSearch.tooltipText = binding.btnSearch.contentDescription
+        if (showSearch) add(rail, binding.btnSearch)
         val group = LinearLayout(this).apply {
             orientation = if (vertical) LinearLayout.VERTICAL else LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER
+            contentDescription = "Pinned apps. Hold to choose dock apps"
+            setOnLongClickListener { showDockPicker(); true }
         }
-        actions.forEach { button ->
-            button.visibility = View.VISIBLE
-            button.setPadding(dp(iconPadding), dp(iconPadding), dp(iconPadding), dp(iconPadding))
-            val control: View = if (button == binding.btnNotifications) FrameLayout(this).apply {
-                addView(button, FrameLayout.LayoutParams(-1, -1))
-                addView(notificationBadge, FrameLayout.LayoutParams(-2, dp(20), Gravity.TOP or Gravity.END))
-            } else button
-            group.addView(control, LinearLayout.LayoutParams(dp(controlSize), dp(controlSize)).apply {
-                if (vertical) { topMargin = dp(2); bottomMargin = dp(2) }
-                else { marginStart = dp(2); marginEnd = dp(2) }
-            })
-        }
-        if (vertical) {
-            val scroll = NestedScrollView(this).apply {
-                isFillViewport = true; isVerticalScrollBarEnabled = false
-                addView(group, ViewGroup.LayoutParams(-1, -2))
+        if (tiles.editMode) {
+            add(group, binding.btnAdd); add(group, binding.btnEdit)
+        } else {
+            val page = resources.getDimensionPixelSize(R.dimen.page_padding) / resources.displayMetrics.density
+            val length = if (vertical) resources.configuration.screenHeightDp - (page * 2).toInt() - 40 else resources.configuration.screenWidthDp - (page * 2).toInt()
+            val count = AdaptiveLayout.dockCapacity(length, vertical, showRecents, false, showSearch)
+            DockApps.pins(this).take(count).forEach { component ->
+                val button = ArtworkUi.plainIcon(this, R.drawable.ic_apps, "Open pinned app") {
+                    runCatching {
+                        startActivity(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER).setComponent(component).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED))
+                        AppFrequency.record(this, component.packageName, component.className)
+                    }.onFailure { Toast.makeText(this, "App unavailable. Hold its dock icon to remove it.", Toast.LENGTH_SHORT).show() }
+                }
+                button.imageTintList = null
+                val label = runCatching { packageManager.getActivityInfo(component, 0).loadLabel(packageManager).toString() }.getOrDefault(component.packageName)
+                button.contentDescription = label
+                button.setOnLongClickListener {
+                    HomeMenu.show(button, label, listOf(
+                        HomeMenu.Item(1, "Unpin from dock", R.drawable.ic_close) { DockApps.toggle(this, component); configureRail() },
+                        HomeMenu.Item(2, "Choose dock apps", R.drawable.ic_apps) { showDockPicker() }
+                    )); true
+                }
+                lifecycleScope.launch {
+                    val icon = withContext(Dispatchers.IO) { IconCache.appIcon(applicationContext, component.packageName, component.className) }
+                    if (button.isAttachedToWindow) button.setImageDrawable(androidx.core.graphics.drawable.RoundedBitmapDrawableFactory.create(resources, icon).apply { isCircular = true; setAntiAlias(true) })
+                }
+                add(group, button)
             }
-            rail.addView(scroll, LinearLayout.LayoutParams(-1, 0, 1f))
-        } else rail.addView(group, LinearLayout.LayoutParams(0, -1, 1f))
-        (if (homePreferences.getBoolean("show_recents_button", true)) listOf(recents, binding.btnApps) else listOf(binding.btnApps)).forEach { button ->
-            button.setPadding(dp(iconPadding), dp(iconPadding), dp(iconPadding), dp(iconPadding))
-            rail.addView(button, LinearLayout.LayoutParams(dp(controlSize), dp(controlSize)).apply { if (vertical) topMargin = dp(4) else marginStart = dp(4) })
         }
+        if (vertical) rail.addView(NestedScrollView(this).apply { isFillViewport = true; isVerticalScrollBarEnabled = false; addView(group, ViewGroup.LayoutParams(-1, -2)) }, LinearLayout.LayoutParams(-1, 0, 1f))
+        else rail.addView(group, LinearLayout.LayoutParams(0, -1, 1f))
+        if (showRecents) add(rail, recents)
+        add(rail, binding.btnApps)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -248,7 +292,7 @@ class HomeActivity : AppCompatActivity() {
             override fun onFling(start: MotionEvent?, end: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
                 if (start == null || gestureConsumed || dragging) return false
                 val swipe = HomeInteractionPolicy.swipe(end.x - start.x, end.y - start.y, velocityX, velocityY, dp(64).toFloat(), dp(200).toFloat()) ?: return false
-                val action = HomeInteractionPolicy.action(homePreferences.getString("gesture_action_${swipe.name}", null), swipe)
+                val action = HomeInteractionPolicy.action(homePreferences.getString("gesture_action_${swipe.name}", null), swipe, AdaptiveLayout.tablet(this@HomeActivity))
                 if (action == HomeInteractionPolicy.Action.NONE) return false
                 gestureConsumed = true
                 when (action) {
@@ -269,6 +313,8 @@ class HomeActivity : AppCompatActivity() {
     }
     private fun emptyHomeSpace(event: MotionEvent): Boolean {
         val x = event.rawX.toInt(); val y = event.rawY.toInt()
+        val edges = ViewCompat.getRootWindowInsets(binding.root)?.getInsets(WindowInsetsCompat.Type.systemGestures())
+        if (edges != null && (x < edges.left || x >= resources.displayMetrics.widthPixels - edges.right || y >= resources.displayMetrics.heightPixels - edges.bottom)) return false
         if (!contains(binding.root, x, y) || contains(binding.controlRail, x, y) || contains(binding.defaultBanner, x, y)) return false
         // Never steal a gesture from an app tile, a provider widget, or its controls.
         for (i in 0 until binding.grid.childCount) {
@@ -331,7 +377,8 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        // HOME key while already home: reset to a calm state.
+        // HOME key while already home: close overlays and reset editing.
+        notificationPanel.dismiss()
         setEditMode(false)
         binding.homeScroll.smoothScrollTo(0, 0)
     }
@@ -358,6 +405,7 @@ class HomeActivity : AppCompatActivity() {
     internal fun applyRotationFromPanel() {
         restoreNotificationPanel = false
         RotationControl.applyHome(this)
+        notificationPanel.onConfigurationChanged()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -376,6 +424,7 @@ class HomeActivity : AppCompatActivity() {
             }
         }
         else notificationPanel.resume()
+        configureRail()
         reload()
         binding.defaultBanner.visibility = if (isDefaultHome()) View.GONE else View.VISIBLE
     }
@@ -548,7 +597,11 @@ class HomeActivity : AppCompatActivity() {
             if (q.isEmpty()) return@input
             val url = SiteIcons.normalizeUrl(q).takeIf { q.contains('.') && !q.contains(' ') }
                 ?: "https://www.google.com/search?q=" + Uri.encode(q)
-            openUrl(url)
+            val browserIntent = DockBrowser.intent(this, q, url, q.contains('.') && !q.contains(' '))
+            if (browserIntent == null) openUrl(url)
+            else runCatching { startActivity(browserIntent) }.onFailure {
+                Toast.makeText(this, "Selected browser unavailable. Choose another in Dock settings.", Toast.LENGTH_LONG).show()
+            }
         }.show()
     }
 
@@ -557,11 +610,42 @@ class HomeActivity : AppCompatActivity() {
     }
     private fun populateHomeSettings(parent: LinearLayout) {
         val panel = SettingsPanel(this)
-        panel.section("Edit Home", R.drawable.ic_edit) {
-            panel.toggle(this, "Arrange tiles and widgets", tiles.editMode) { setEditMode(it) }
+        panel.section("Rotation", R.drawable.ic_rotation) {
+            panel.text(this, "Rotation works in AniHome without extra access. Allow system control to apply it to other apps too.")
+            addView(ArtworkUi.textChip(this@HomeActivity, "Allow system rotation control") {
+                runCatching { startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:$packageName"))) }
+            })
+            addView(ArtworkUi.textChip(this@HomeActivity, "Follow device rotation setting") { RotationControl.followDevice(this@HomeActivity) })
         }
         panel.section("Dock", R.drawable.ic_recents) {
-            panel.toggle(this, "Show recent apps button", homePreferences.getBoolean("show_recents_button", true)) {
+            panel.toggle(this, "Show search/browser icon", homePreferences.getBoolean("show_dock_search", true)) {
+                homePreferences.edit().putBoolean("show_dock_search", it).apply()
+                configureRail()
+            }
+            panel.text(this, "Dock browser")
+            val browsers = DockBrowser.choices(this@HomeActivity)
+            val browserAdapter = object : android.widget.ArrayAdapter<String>(this@HomeActivity, android.R.layout.simple_spinner_item, browsers.map { it.label }) {
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View = super.getView(position, convertView, parent).apply {
+                    (this as android.widget.TextView).setTextColor(-1); textSize = 13f; minHeight = dp(48); gravity = Gravity.CENTER_VERTICAL
+                }
+                override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View = super.getDropDownView(position, convertView, parent).apply {
+                    (this as android.widget.TextView).setTextColor(-1); textSize = 13f; setBackgroundColor(0xff202020.toInt()); minHeight = dp(48)
+                }
+            }.apply { setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+            addView(androidx.appcompat.widget.AppCompatSpinner(this@HomeActivity).apply {
+                adapter = browserAdapter; contentDescription = "Dock browser"
+                setSelection(browsers.indexOfFirst { it.packageName == DockBrowser.selected(this@HomeActivity) }.coerceAtLeast(0))
+                onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        if (DockBrowser.selected(this@HomeActivity) != browsers[position].packageName) {
+                            DockBrowser.select(this@HomeActivity, browsers[position].packageName); configureRail()
+                        }
+                    }
+                    override fun onNothingSelected(parent: android.widget.AdapterView<*>?) = Unit
+                }
+            }, LinearLayout.LayoutParams(-1, dp(48)))
+            addView(ArtworkUi.textChip(this@HomeActivity, "Choose pinned apps") { notificationPanel.dismiss(); showDockPicker() })
+            panel.toggle(this, "Show recent apps button", homePreferences.getBoolean("show_recents_button", AdaptiveLayout.tablet(this@HomeActivity))) {
                 homePreferences.edit().putBoolean("show_recents_button", it).apply()
                 configureRail()
             }
@@ -571,10 +655,10 @@ class HomeActivity : AppCompatActivity() {
                 homePreferences.edit().putBoolean("double_tap_lock", it).apply()
             }
             HomeInteractionPolicy.Swipe.entries.forEach { direction ->
-                val row = LinearLayout(this@HomeActivity).apply { gravity = Gravity.CENTER_VERTICAL }
+                val row = LinearLayout(this@HomeActivity).apply { gravity = Gravity.CENTER_VERTICAL; orientation = if (AdaptiveLayout.tablet(this@HomeActivity)) LinearLayout.HORIZONTAL else LinearLayout.VERTICAL }
                 row.addView(android.widget.TextView(this@HomeActivity).apply {
                     text = direction.label; textSize = 13f; setTextColor(-1)
-                }, LinearLayout.LayoutParams(0, dp(48), 1f))
+                }, if (AdaptiveLayout.tablet(this@HomeActivity)) LinearLayout.LayoutParams(0, dp(48), 1f) else LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(10) })
                 val actions = HomeInteractionPolicy.Action.entries
                 val adapter = object : android.widget.ArrayAdapter<String>(this@HomeActivity, android.R.layout.simple_spinner_item, actions.map { it.label }) {
                     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View = super.getView(position, convertView, parent).apply { (this as android.widget.TextView).setTextColor(-1); textSize = 13f }
@@ -583,7 +667,7 @@ class HomeActivity : AppCompatActivity() {
                 row.addView(androidx.appcompat.widget.AppCompatSpinner(this@HomeActivity).apply {
                     this.adapter = adapter
                     contentDescription = "${direction.label} gesture action"
-                    val selected = HomeInteractionPolicy.action(homePreferences.getString("gesture_action_${direction.name}", null), direction)
+                    val selected = HomeInteractionPolicy.action(homePreferences.getString("gesture_action_${direction.name}", null), direction, AdaptiveLayout.tablet(this@HomeActivity))
                     setSelection(actions.indexOf(selected))
                     onItemSelectedListener = object : android.widget.AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(parent: android.widget.AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -591,7 +675,7 @@ class HomeActivity : AppCompatActivity() {
                         }
                         override fun onNothingSelected(parent: android.widget.AdapterView<*>?) = Unit
                     }
-                }, LinearLayout.LayoutParams(0, dp(48), 1.25f))
+                }, if (AdaptiveLayout.tablet(this@HomeActivity)) LinearLayout.LayoutParams(0, dp(48), 1.25f) else LinearLayout.LayoutParams(-1, dp(48)))
                 addView(row)
             }
         }
@@ -633,7 +717,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun showMoreMenu(anchor: View) {
         HomeMenu.show(anchor, "Home controls", listOf(
-            HomeMenu.Item(2, "Settings", R.drawable.ic_settings, "Edit Home, layout and app names") { showSettingsMenu(anchor) },
+            HomeMenu.Item(2, "Settings", R.drawable.ic_settings, "Layout and app names") { showSettingsMenu(anchor) },
             HomeMenu.Item(3, "Screen off", R.drawable.ic_screen_off, "Lock the screen") { systemAction(AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN) },
             HomeMenu.Item(4, "Notifications", R.drawable.ic_notifications, "View alerts in AniHome") { notificationPanel.show() },
             HomeMenu.Item(5, "Recent apps", R.drawable.ic_recents, "Switch between open apps") { systemAction(AccessibilityService.GLOBAL_ACTION_RECENTS) },
