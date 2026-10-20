@@ -190,7 +190,7 @@ class HomeActivity : AppCompatActivity() {
         fun add(parent: LinearLayout, view: View, size: Int = controlSize) {
             view.visibility = View.VISIBLE
             if (view is android.widget.ImageButton) {
-                val artwork = if (view === binding.btnSearch) 28 else 36
+                val artwork = 36
                 val inset = dp((size - artwork) / 2)
                 view.setPadding(inset, inset, inset, inset)
             }
@@ -199,6 +199,7 @@ class HomeActivity : AppCompatActivity() {
         dockStatus.onPowerIndicatorsChanged = { _ ->
             clock.textSize = 16f
         }
+        clock.gravity = if (vertical) Gravity.CENTER else Gravity.START or Gravity.CENTER_VERTICAL
         clock.includeFontPadding = false
         clock.setOnClickListener { notificationPanel.show() }
         clock.tooltipText = "Notifications"
@@ -209,16 +210,18 @@ class HomeActivity : AppCompatActivity() {
                 addView(clock, LinearLayout.LayoutParams(-1, 0, 1f))
                 addView(dockStatus, LinearLayout.LayoutParams(-1, dp(28)))
             } else {
-                setPadding(0, 0, dp(16), 0)
                 addView(dockStatus, LinearLayout.LayoutParams(dp(28), -1))
-                addView(clock, LinearLayout.LayoutParams(0, -1, 1f))
+                addView(clock, LinearLayout.LayoutParams(dp(56), -1).apply { marginStart = dp(2) })
+                addView(notificationBadge, LinearLayout.LayoutParams(dp(20), dp(20)).apply {
+                    gravity = Gravity.TOP; topMargin = dp(2); marginStart = -dp(10)
+                })
             }
         }
         val clockArea = FrameLayout(this).apply {
             addView(clockBlock, FrameLayout.LayoutParams(-1, -1))
-            addView(notificationBadge, FrameLayout.LayoutParams(-2, dp(20), Gravity.TOP or Gravity.END))
+            if (vertical) addView(notificationBadge, FrameLayout.LayoutParams(-2, dp(20), Gravity.TOP or Gravity.END))
         }
-        rail.addView(clockArea, LinearLayout.LayoutParams(dp(if (vertical) 52 else 116), dp(if (vertical) 76 else 48)))
+        rail.addView(clockArea, LinearLayout.LayoutParams(dp(if (vertical) 52 else 96), dp(if (vertical) 76 else 48)))
         binding.btnSearch.setImageResource(R.drawable.ic_google)
         binding.btnSearch.contentDescription = "Search or open address"
         val browser = DockBrowser.selected(this)
@@ -246,7 +249,7 @@ class HomeActivity : AppCompatActivity() {
             add(group, binding.btnAdd); add(group, binding.btnEdit)
         } else {
             val page = resources.getDimensionPixelSize(R.dimen.page_padding) / resources.displayMetrics.density
-            val length = if (vertical) resources.configuration.screenHeightDp - (page * 2).toInt() - 40 else resources.configuration.screenWidthDp - (page * 2).toInt() - 40
+            val length = if (vertical) resources.configuration.screenHeightDp - (page * 2).toInt() - 40 else resources.configuration.screenWidthDp - (page * 2).toInt() - 20
             val count = AdaptiveLayout.dockCapacity(length, vertical, showRecents, false, showSearch)
             DockApps.pins(this).take(count).forEach { component ->
                 val button = ArtworkUi.plainIcon(this, R.drawable.ic_apps, "Open pinned app") {
