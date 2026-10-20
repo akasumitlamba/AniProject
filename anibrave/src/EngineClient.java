@@ -66,7 +66,7 @@ final class EngineClient implements Runnable {
     private int mode(Page p) { return context.getSharedPreferences("anibrave_sites",0).getInt("mode:"+SiteKey.of(root(p).url),0); }
     private void configure(Page p,int id) throws Exception {
         if(SiteKey.of(root(p).url).isEmpty()) return;
-        synchronized(PlaybackSettings.class){send("Runtime.evaluate",json("expression",source+";globalThis.__aniBrave.configure("+rate(p)+","+context.getSharedPreferences("anibrave_sites",0).getLong("rateRevision:"+SiteKey.of(root(p).url),0)+");","contextId",id),p.session);}
+        synchronized(PlaybackSettings.class){send("Runtime.evaluate",json("expression",source+";globalThis.__aniBrave.configure("+rate(p)+","+context.getSharedPreferences("anibrave_sites",0).getLong("rateRevision:"+SiteKey.of(root(p).url),0)+","+context.getSharedPreferences("anibrave_ui",0).getInt("buffer_seconds",180)+","+context.getSharedPreferences("anibrave_ui",0).getBoolean("buffer_guard",true)+");","contextId",id),p.session);}
     }
     private void view(Page p) throws Exception {
         if(SiteKey.of(root(p).url).isEmpty()) return;
@@ -95,7 +95,7 @@ final class EngineClient implements Runnable {
     }
     void refresh(String site,boolean reload) {
         try {
-            for(Page p:pages.values()) if(SiteKey.of(root(p).url).equals(site)) {
+            for(Page p:pages.values()) if(site==null||SiteKey.of(root(p).url).equals(site)) {
                 for(int id:p.contexts) configure(p,id);
                 if(reload) { view(p); if(p.type.equals("page")) send("Page.reload",json("ignoreCache",false),p.session); }
             }
@@ -225,6 +225,7 @@ final class EngineClient implements Runnable {
             else if(data.optString("type").equals("resize")) view(root(p));
             else if(data.optString("type").equals("fullscreen")) AniRuntime.fullscreen(url,data.optBoolean("enabled"));
             else if(data.optString("type").equals("nativeRate")) AniRuntime.nativeRate(url,data.optDouble("rate",0),data.optLong("revision",-1));
+            else if(data.optString("type").equals("bufferGuard")) AniRuntime.engineWarning(data.optBoolean("waiting")?"Building a playback buffer…":"Buffer is not growing. Tap Play or lower video quality.");
             else if(data.optString("type").equals("rateRejected")) AniRuntime.engineWarning("This player is rejecting the saved speed");
         }
     }

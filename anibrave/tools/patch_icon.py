@@ -5,6 +5,7 @@ variables. The original certificate and every DEX/native library must match.
 """
 import argparse
 import hashlib
+import json
 import os
 from pathlib import Path
 import re
@@ -38,6 +39,12 @@ def runtime(apk):
                 or (name.startswith('lib/') and name.endswith('.so'))}
 
 
+def require_engine_version(badging, tag):
+    match = re.search(r"versionName='[^']+-brave-([^']+)'", badging)
+    if not match or match.group(1) != tag.removeprefix('v'):
+        raise RuntimeError('Feature source and input engine differ; use a full-engine build')
+
+
 def main():
     root = Path(__file__).resolve().parents[2]
     parser = argparse.ArgumentParser(description=__doc__)
@@ -57,6 +64,9 @@ def main():
     if not os.environ.get('ANIBRAVE_KS_PASS'):
         raise RuntimeError('Set ANIBRAVE_KS_PASS privately before signing')
     os.environ.setdefault('ANIBRAVE_KEY_PASS', os.environ['ANIBRAVE_KS_PASS'])
+    if args.feature_dex:
+        badging = run(args.build_tools/'aapt2', 'dump', 'badging', args.input, capture=True)
+        require_engine_version(badging, json.loads((root/'anibrave/upstream.json').read_text())['tag'])
     signer = args.build_tools/'apksigner'
     original_certificate = certificate(signer, args.input)
     original_runtime = runtime(args.input)

@@ -44,10 +44,13 @@ class AppDrawerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        @Suppress("DEPRECATION")
+        overridePendingTransition(0, 0)
         RotationControl.applyHome(this)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         binding = ActivityAppDrawerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        if (savedInstanceState == null) MotionUi.enter(binding.root, intent.getStringExtra("motion_direction") ?: "LEFT")
         store = TileStore(this); preferences = DrawerPreferences(this)
         selected.addAll(savedInstanceState?.getStringArrayList("selected").orEmpty())
         if (savedInstanceState == null && dockPickMode) selected.addAll(DockApps.pins(this).map { "${it.packageName}/${it.className}" })
@@ -175,7 +178,10 @@ class AppDrawerActivity : AppCompatActivity() {
         val recent = android.widget.ScrollView(this).apply { addView(recentBody); visibility = View.GONE }
         val sheet = android.widget.LinearLayout(this).apply {
             orientation = android.widget.LinearLayout.VERTICAL
-            setBackgroundColor(0xff1c1c1c.toInt())
+            background = android.graphics.drawable.GradientDrawable().apply {
+                setColor(0xff1c1c1c.toInt()); cornerRadius = ArtworkUi.dp(context, 16).toFloat()
+            }
+            clipToOutline = true
         }
         val header = android.widget.LinearLayout(this).apply {
             orientation = android.widget.LinearLayout.VERTICAL

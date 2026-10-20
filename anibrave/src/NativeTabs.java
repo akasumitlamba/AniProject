@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/** Version-pinned bridge to Brave 1.97.56's real tab models. UI thread only. */
+/** Version-pinned bridge to Brave 1.97.59's real tab models. UI thread only. */
 final class NativeTabs {
     static final class Entry {
         final int id;
@@ -115,9 +115,9 @@ final class NativeTabs {
             Class<?> tabType=Class.forName("org.chromium.chrome.browser.tab.Tab");
             // Use the same removal pipeline as the tab UI: preserves undo and
             // native shared-group confirmation, unlike JNI closeTab().
-            Object builder=Class.forName("hcj").getMethod("b",tabType).invoke(null,tab);
+            Object builder=Class.forName("icj").getMethod("b",tabType).invoke(null,tab);
             Object params=call(builder,"a"),remover=call(model,"r1");
-            Class.forName("a1k").getMethod("a",Class.forName("hcj")).invoke(remover,params);
+            Class.forName("b1k").getMethod("a",Class.forName("icj")).invoke(remover,params);
             return true;
         }catch(Exception e){throw e instanceof Failure?(Failure)e:new Failure(e);}
     }

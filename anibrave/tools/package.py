@@ -1,8 +1,9 @@
 from pathlib import Path
-import zipfile, hashlib, json
+import zipfile, hashlib, json, os
 
 BASE=Path(__file__).resolve().parents[1]
-compiled=BASE/'compiled'
+WORK=Path(os.environ.get('ANIBRAVE_ENGINE_WORK',str(BASE)))
+compiled=WORK/'compiled'
 out=compiled/'AniBrave-unsigned.apk'
 with zipfile.ZipFile(compiled/'resources.apk') as source, zipfile.ZipFile(out,'w') as target:
     for item in source.infolist():
@@ -12,7 +13,7 @@ with zipfile.ZipFile(compiled/'resources.apk') as source, zipfile.ZipFile(out,'w
     for path in sorted((compiled/'dex').glob('classes*.dex')):
         target.write(path,path.name,compress_type=zipfile.ZIP_DEFLATED)
 
-with zipfile.ZipFile(BASE/'downloads'/'Bravearm64Universal.apk') as original,zipfile.ZipFile(out) as result:
+with zipfile.ZipFile(Path(os.environ.get('ANIBRAVE_UPSTREAM_APK',str(BASE/'downloads'/'Bravearm64Universal.apk')))) as original,zipfile.ZipFile(out) as result:
     native=[name for name in original.namelist() if name.startswith('lib/') and name.endswith('.so')]
     for name in native:
         assert hashlib.sha256(original.read(name)).digest()==hashlib.sha256(result.read(name)).digest(),f'Native library changed: {name}'

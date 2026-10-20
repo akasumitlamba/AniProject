@@ -18,8 +18,8 @@ an engine proposal is open, the bot does not open more. A closed proposal for th
 same version is not recreated. Current controller/Python tests run before a proposal;
 these baseline checks are **not** proof that the proposed engine supports our hooks.
 The installed app and tested production pin remain unchanged. No APK is built,
-signed, auto-merged, published or installed by this workflow. Actions creates PRs
-only in the private AniBrowser workspace, avoiding duplicate public automation.
+signed, auto-merged, published or installed by this workflow. The configured maintenance repository owns update proposals; avoid duplicate
+automation when publishing a separate source mirror.
 
 ## Completing an upgrade
 

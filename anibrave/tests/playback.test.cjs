@@ -4,16 +4,16 @@ const vm=require('node:vm');
 const fs=require('node:fs');
 const source=fs.readFileSync(require('node:path').join(__dirname,'../src/playback.js'),'utf8');
 function fixture(){
-  const listeners=new Map(), messages=[], timers=new Map(), intervals=[];let clock=10000, next=0;
+  const listeners=new Map(), messages=[], bridge=[], timers=new Map(), intervals=[];let clock=10000, next=0;
   class Clock extends Date{static now(){return clock;}}
   const video={tagName:'VIDEO',isConnected:true,playbackRate:1,defaultPlaybackRate:1};
   const document={fullscreenElement:null,scrollingElement:{scrollTop:0},title:'Episode',
     querySelectorAll(selector){return selector==='video,audio'?[video]:[];},
     addEventListener(name,fn){const list=listeners.get(name)||[];list.push(fn);listeners.set(name,list);}};
-  const window={addEventListener:(name,fn)=>document.addEventListener(name,fn)};
+  const window={postMessage:data=>bridge.push(data),addEventListener:(name,fn)=>document.addEventListener(name,fn)};
   const context=vm.createContext({document,window,location:{href:'https://example.com/episode'},Date:Clock,setInterval:fn=>{intervals.push(fn);return intervals.length;},clearInterval:()=>{},setTimeout:(fn,ms)=>{timers.set(++next,{fn,at:clock+ms});return next;},clearTimeout:id=>timers.delete(id),aniBraveNative:payload=>messages.push(JSON.parse(payload))});
   vm.runInContext(source,context);
-  return {context,video,messages,document,tick(ms){clock+=ms;for(const [id,t] of [...timers])if(t.at<=clock){timers.delete(id);t.fn();}},recover(){intervals.forEach(fn=>fn());},fire:(name,event={target:video})=>(listeners.get(name)||[]).forEach(fn=>fn(event))};
+  return {context,video,messages,bridge,document,tick(ms){clock+=ms;for(const [id,t] of [...timers])if(t.at<=clock){timers.delete(id);t.fn();}},recover(){intervals.forEach(fn=>fn());},fire:(name,event={target:video})=>(listeners.get(name)||[]).forEach(fn=>fn(event))};
 }
 test('saved speed applies immediately and survives player metadata/loading',()=>{
   const f=fixture();f.context.__aniBrave.configure(1.75);assert.equal(f.video.playbackRate,1.75);
@@ -115,7 +115,7 @@ test('late first-level and nested shadow players inherit saved speed without dup
   outer.querySelectorAll=s=>s==='*'?[{shadowRoot:inner}]:[];
   for(let i=0;i<12;i++)f.recover();
   assert.equal(replacement.playbackRate,1.75);
-  assert.equal(registrations,12);
+  assert.equal(registrations,18);
 });
 
 test('saved speed reaches a first-level shadow player attached after initialization',()=>{
@@ -125,4 +125,42 @@ test('saved speed reaches a first-level shadow player attached after initializat
   f.document.querySelectorAll=s=>s==='*'?[{shadowRoot:root}]:[f.video];
   for(let i=0;i<6;i++)f.recover();
   assert.equal(video.playbackRate,2);
+});
+
+function bufferFixture(){
+ const f=fixture();let end=10;let pauses=0,plays=0;
+ Object.assign(f.video,{duration:120,currentTime:10,currentSrc:'episode.mp4',paused:false,seeking:false,preload:'metadata',buffered:{length:1,start:()=>0,end:()=>end},pause(){this.paused=true;pauses++;f.fire('pause');},play(){this.paused=false;plays++;return Promise.resolve();}});
+ return Object.assign(f,{setEnd:n=>end=n,pauses:()=>pauses,plays:()=>plays});
+}
+test('buffer preference requests preload without reloading media and can restore site default',()=>{
+ const f=bufferFixture();f.context.__aniBrave.configure(1,0,180,false);assert.equal(f.video.preload,'auto');
+ f.context.__aniBrave.configure(1,0,0,false);assert.equal(f.video.preload,'metadata');assert.equal(f.pauses(),0);
+});
+test('buffer guard waits for a rate-aware cushion then resumes its own pause once',()=>{
+ const f=bufferFixture();f.context.__aniBrave.configure(2,0,180,true);f.fire('waiting');assert.equal(f.pauses(),1);
+ f.setEnd(30);f.recover();assert.equal(f.plays(),0);f.setEnd(40);f.recover();assert.equal(f.plays(),1);f.recover();assert.equal(f.plays(),1);
+});
+test('trusted input cancels automatic buffer resume',()=>{
+ const f=bufferFixture();f.context.__aniBrave.configure(1,0,180,true);f.fire('waiting');f.fire('pointerdown',{isTrusted:true,target:{closest:()=>null}});f.setEnd(50);f.recover();assert.equal(f.plays(),0);
+});
+test('buffer guard does not pause live streams or disabled sessions',()=>{
+ const f=bufferFixture();f.context.__aniBrave.configure(1,0,180,false);f.fire('waiting');assert.equal(f.pauses(),0);
+ f.video.duration=Infinity;f.context.__aniBrave.configure(1,0,180,true);f.fire('waiting');assert.equal(f.pauses(),0);
+});
+test('guard stops at a bounded deadline without forcing unbuffered playback',()=>{
+ const f=bufferFixture();f.context.__aniBrave.configure(1,0,180,true);f.fire('waiting');f.tick(21000);f.recover();assert.equal(f.plays(),0);assert.ok(f.messages.some(m=>m.type==='bufferGuard'&&!m.waiting));f.setEnd(60);f.recover();assert.equal(f.plays(),0);
+});
+test('source change, hiding or seeking never causes a stale automatic resume',()=>{
+ for(const change of [f=>f.video.currentSrc='next.mp4',f=>f.document.visibilityState='hidden',f=>f.video.seeking=true]){
+  const f=bufferFixture();f.context.__aniBrave.configure(1,0,180,true);f.fire('waiting');change(f);f.setEnd(60);f.recover();assert.equal(f.plays(),0);
+ }
+});
+
+test('a capped player resumes from a useful plateau before the full guard deadline',()=>{
+ const f=bufferFixture();f.context.__aniBrave.configure(1,0,180,true);f.fire('waiting');f.setEnd(15);f.recover();assert.equal(f.plays(),0);f.tick(4000);f.recover();assert.equal(f.plays(),1);
+});
+
+test('VOD becoming live restores preload and sends player-buffer restoration',()=>{
+ const f=bufferFixture();f.context.__aniBrave.configure(1,0,180,true);assert.equal(f.bridge.filter(m=>m.type==='set-buffer').at(-1).seconds,180);
+ f.video.duration=Infinity;f.fire('durationchange');assert.equal(f.bridge.filter(m=>m.type==='set-buffer').at(-1).seconds,0);assert.equal(f.video.preload,'metadata');assert.equal(f.pauses(),0);
 });

@@ -5,9 +5,16 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
 from app_resources import ANDROID as A, configure_tasks, write_icon_placement
+from patch_icon import require_engine_version
 
 
 class AppResourcesTest(unittest.TestCase):
+    def test_feature_update_refuses_a_different_engine(self):
+        require_engine_version("versionName='0.1.5-brave-1.97.59'", 'v1.97.59')
+        for value in ["versionName='0.1.4-brave-1.97.56'", "versionName='1.97.59'", '']:
+            with self.assertRaises(RuntimeError):
+                require_engine_version(value, 'v1.97.59')
+
     def test_retained_root_is_internal_separate_and_idempotent(self):
         app = ET.fromstring('<application><activity name="unrelated"/></application>')
         configure_tasks(app)

@@ -1,6 +1,6 @@
 # AniBrave
 
-Personal Android browser based on the official Brave 1.97.56 ARM64 APK (Chromium 155.0.8059.40). Install identity: `app.anibrave.main`. Launcher name: **AniBrave**. This installs alongside official Brave. AniBrowser Full (Firefox/GeckoView) and Lite have been removed from this repository. It has an independent profile: cookies are shared between AniBrave tabs and its shortcuts, not imported from other installed browsers.
+Personal Android browser based on the official Brave 1.97.59 ARM64 APK (Chromium 155.0.8059.85). Install identity: `app.anibrave.main`. Launcher name: **AniBrave**. This installs alongside official Brave. AniBrowser Full (Firefox/GeckoView) and Lite have been removed from this repository. It has an independent profile: cookies are shared between AniBrave tabs and its shortcuts, not imported from other installed browsers.
 
 The native engine and Shields libraries remain byte-for-byte identical to the verified upstream APK. This is a locally compiled Java/JavaScript customization and repackaging of that APK, not a full Chromium source build. It uses a separate personal signing key. A daily GitHub Actions check prepares draft engine-upgrade proposals; compatibility testing, signing and installation remain explicit steps (see [engine updates](docs/engine-updates.md)). It is an experimental personal build; physical tablet startup and settings application have been checked, but universal streaming compatibility is not claimed.
 
@@ -51,16 +51,16 @@ The internal controller uses Chromium's DevTools protocol through an abstract Un
 
 ## Upstream and notices
 
-- [Brave 1.97.56 release](https://github.com/brave/brave-browser/releases/tag/v1.97.56)
-- [Corresponding Brave source](https://github.com/brave/brave-core/tree/v1.97.56), checked-out commit `b01cdf43be4b4d5559bf7e58229e666e24454f50`
-- [Chromium source](https://chromium.googlesource.com/chromium/src/+/155.0.8059.40/)
-- [Brave source license](https://github.com/brave/brave-core/blob/v1.97.56/LICENSE)
+- [Brave 1.97.59 release](https://github.com/brave/brave-browser/releases/tag/v1.97.59)
+- [Corresponding Brave source](https://github.com/brave/brave-core/tree/v1.97.59), tag commit `c7357bfd2a76c2467ba1ae62593a81ae92c05205`
+- [Chromium source](https://chromium.googlesource.com/chromium/src/+/155.0.8059.85/)
+- [Brave source license](https://github.com/brave/brave-core/blob/v1.97.59/LICENSE)
 
 Existing native and browser notices are retained in the app. Customization sources in this folder are MPL-2.0. AniBrave is independent and is not an official Brave Software product. Brave, Chromium, apktool, smali/dexlib2 and their dependencies retain their respective licenses and trademarks.
 
 ## Local anime history
 
-Tracking belongs to AniBrave. Updates preserve the browser profile when signed with the same identity. See [TRACKING.md](TRACKING.md) for progress gating, cross-site reminders, local import, privacy, build verification and acceptance limits. The current update is 0.1.3 (Brave 1.97.56), versionCode 429705616.
+Tracking belongs to AniBrave. Updates preserve the browser profile when signed with the same identity. See [TRACKING.md](TRACKING.md) for progress gating, cross-site reminders, local import, privacy, build verification and acceptance limits. The current update is 0.1.5 (Brave 1.97.59), versionCode 429705618.
 
 ## Episode reminders and protected playback
 
@@ -103,6 +103,14 @@ opaque alphabetic suffixes can remain until the authoritative heading is availab
 
 ## Combined release
 
-AniBrave 0.1.3 is included with AniHome 0.8.20 and desktop extension 0.1.3 in the
-[AniProject 2026.10.20 release](https://github.com/akasumitlamba/AniProject/releases/tag/aniproject-2026.10.20-r3).
+AniBrave 0.1.5 is included with AniHome 0.8.21 and desktop extension 0.1.3 in the
+[AniProject 2026.10.21 release](https://github.com/akasumitlamba/AniProject/releases/tag/aniproject-2026.10.21).
 The Android update retains the existing signing identity and profile.
+
+## Streaming buffer
+
+[Streaming buffer](docs/buffering.md) requests more media ahead across sites and provides a bounded, cancelable buffer-guard fallback after stalls. It preserves the site player and does not guarantee full-episode loading on unsupported players. Fullscreen shortcut tools omit shortcut creation because the current window is already immersive.
+
+## Full engine build on Linux
+
+Use `python3 anibrave/tools/build_engine.py --input <verified-official-arm64-apk> --output <signed-output.apk> --keystore <existing-private-key>`. Set JDK17 on PATH and the signing password environment described above. The tool reads `upstream.json` and `version.json`, verifies locked build tools and the upstream APK hash, isolates decoded caches by engine hash, applies version-pinned hooks, preserves native libraries and signs locally. SDK37.1/build-tools37.0.0 are required. Never reuse decoded outputs from another engine version.

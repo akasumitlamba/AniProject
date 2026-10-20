@@ -55,6 +55,10 @@ class HomeNotifications : NotificationListenerService() {
             val service = connected ?: return result(false)
             service.cancel(setOf(key), result)
         }
+        fun snooze(key: String): Boolean {
+            val service = connected ?: return false
+            return runCatching { service.snoozeNotification(key, 60 * 60 * 1000L); true }.getOrDefault(false)
+        }
         fun clearAll(result: (Boolean) -> Unit = {}) {
             val service = connected ?: return result(false)
             service.cancel(service.current.keys.toSet(), result)

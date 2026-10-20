@@ -2,13 +2,16 @@
 from pathlib import Path
 from app_resources import configure_tasks, write_icon_placement
 import re
+import os
+import json
 import shutil
 import xml.etree.ElementTree as ET
 
 BASE = Path(__file__).resolve().parents[1]
-DECODED = BASE / 'decoded' / 'smali_classes5'
-PATCH = BASE / 'compiled' / 'patches'
-RES = BASE / 'resources'
+WORK = Path(os.environ.get('ANIBRAVE_ENGINE_WORK', str(BASE)))
+DECODED = WORK / 'decoded' / 'smali_classes5'
+PATCH = WORK / 'compiled' / 'patches'
+RES = WORK / 'resources'
 NS = 'http://schemas.android.com/apk/res/android'
 ET.register_namespace('android', NS)
 
@@ -54,7 +57,7 @@ def prefix(text):
     before='const-string v4, "chrome"'
     if text.count(before)!=1:raise RuntimeError('DevTools socket prefix changed')
     return text.replace(before,'const-string v4, "anibrave"')
-rewrite('ukf.smali',prefix)
+rewrite('vkf.smali',prefix)
 
 def activity(text):
     text=inject(text,'public final onResume()V','    invoke-static/range {p0 .. p0}, Lapp/anibrave/AniRuntime;->resume(Landroid/app/Activity;)V')
@@ -68,7 +71,10 @@ rewrite('org/chromium/chrome/browser/customtabs/FullScreenCustomTabActivity.smal
 manifest=RES/'AndroidManifest.xml'
 tree=ET.parse(manifest);root=tree.getroot()
 root.set('package','app.anibrave.main')
-root.set('{'+NS+'}versionName','0.1.2-brave-1.97.56')
+upstream=json.loads((BASE/'upstream.json').read_text())
+version=json.loads((BASE/'version.json').read_text())
+root.set('{'+NS+'}versionName',version['name']+'-brave-'+upstream['tag'][1:])
+root.set('{'+NS+'}versionCode',str(version['code']))
 app=root.find('application')
 app.set('{'+NS+'}label','AniBrave')
 app.set('{'+NS+'}allowBackup','false')

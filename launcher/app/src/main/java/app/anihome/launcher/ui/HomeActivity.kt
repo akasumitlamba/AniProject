@@ -339,9 +339,9 @@ class HomeActivity : AppCompatActivity() {
                 if (action == HomeInteractionPolicy.Action.NONE) return false
                 gestureConsumed = true
                 when (action) {
-                    HomeInteractionPolicy.Action.APPS -> startActivity(Intent(this@HomeActivity, AppDrawerActivity::class.java))
+                    HomeInteractionPolicy.Action.APPS -> startActivity(Intent(this@HomeActivity, AppDrawerActivity::class.java).putExtra("motion_direction", swipe.name))
                     HomeInteractionPolicy.Action.RECENTS -> systemAction(AccessibilityService.GLOBAL_ACTION_RECENTS)
-                    HomeInteractionPolicy.Action.NOTIFICATIONS -> notificationPanel.show()
+                    HomeInteractionPolicy.Action.NOTIFICATIONS -> notificationPanel.show(swipe.name)
                     HomeInteractionPolicy.Action.SEARCH -> showSearch()
                     HomeInteractionPolicy.Action.LOCK -> systemAction(AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN)
                     HomeInteractionPolicy.Action.NONE -> Unit

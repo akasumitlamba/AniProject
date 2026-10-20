@@ -280,9 +280,9 @@ public final class AniRuntime {
         if(!immersive){
             if(anchor==null)return;
             PopupMenu menu=new PopupMenu(a,anchor);
-            menu.getMenu().add(0,1,0,"Playback speed");menu.getMenu().add(0,2,1,"Site view");menu.getMenu().add(0,3,2,"Fullscreen shortcut");menu.getMenu().add(0,4,3,"Watched anime");
+            menu.getMenu().add(0,1,0,"Playback speed");menu.getMenu().add(0,2,1,"Site view");menu.getMenu().add(0,3,2,"Fullscreen shortcut");menu.getMenu().add(0,4,3,"Watched anime");menu.getMenu().add(0,6,4,"Streaming buffer");
             menu.getMenu().add(0,5,4,"Tab layout settings");
-            menu.setOnMenuItemClickListener(item->{if(item.getItemId()==5)VerticalTabs.settings(a,()->tabLayoutChanged(a));else if(item.getItemId()==1)speed(a);else if(item.getItemId()==2)view(a);else if(item.getItemId()==4)library(a);else shortcut(a);return true;});menu.show();return;
+            menu.setOnMenuItemClickListener(item->{if(item.getItemId()==5)VerticalTabs.settings(a,()->tabLayoutChanged(a));else if(item.getItemId()==1)speed(a);else if(item.getItemId()==2)view(a);else if(item.getItemId()==4)library(a);else if(item.getItemId()==6)buffering(a);else shortcut(a);return true;});menu.show();return;
         }
         revealShortcutTools(a);
     }
@@ -293,8 +293,8 @@ public final class AniRuntime {
         shortcutActions=new LinearLayout(a);shortcutActions.setOrientation(LinearLayout.VERTICAL);
         GradientDrawable panel=new GradientDrawable();panel.setColor(0xf2222228);panel.setCornerRadius(dp(a,16));
         shortcutActions.setBackground(panel);shortcutActions.setElevation(dp(a,8));shortcutActions.setPadding(dp(a,8),dp(a,8),dp(a,8),dp(a,8));
-        String[] labels={"Playback speed","Site view","Fullscreen shortcut","Watched anime"};
-        Runnable[] clicks={()->speed(a),()->view(a),()->shortcut(a),()->library(a)};
+        String[] labels={"Playback speed","Streaming buffer","Site view","Watched anime"};
+        Runnable[] clicks={()->speed(a),()->buffering(a),()->view(a),()->library(a)};
         for(int i=0;i<labels.length;i++){
             Button button=action(a,labels[i],clicks[i]);button.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
             shortcutActions.addView(button,new LinearLayout.LayoutParams(dp(a,200),dp(a,48)));
@@ -337,6 +337,18 @@ public final class AniRuntime {
             PlaybackSettings.set(context,site,values.get(index));
             EngineClient e=engine;if(e!=null)IO.execute(()->e.refresh(site,false));dialog.dismiss();
         }).setNegativeButton("Close",null).setNeutralButton("Status",(d,w)->Toast.makeText(a,status,Toast.LENGTH_LONG).show()).show();
+    }
+    private static void buffering(Activity a){
+        HIDE.run();android.content.SharedPreferences prefs=a.getSharedPreferences("anibrave_ui",0);
+        int[] values={0,60,180,300,600};String[] labels={"Site default","1 minute ahead","3 minutes ahead","5 minutes ahead","10 minutes ahead"};
+        int selected=2;for(int i=0;i<values.length;i++)if(values[i]==prefs.getInt("buffer_seconds",180))selected=i;
+        LinearLayout body=new LinearLayout(a);body.setOrientation(LinearLayout.VERTICAL);body.setPadding(dp(a,24),dp(a,12),dp(a,24),0);
+        TextView note=new TextView(a);note.setText("Applies to all sites. Requests a larger buffer where the player supports it; site and memory limits still apply.");body.addView(note);
+        CheckBox guard=new CheckBox(a);guard.setText("Buffer guard: wait for a cushion after a stall");guard.setChecked(prefs.getBoolean("buffer_guard",true));
+        guard.setOnCheckedChangeListener((button,checked)->{prefs.edit().putBoolean("buffer_guard",checked).apply();EngineClient e=engine;if(e!=null)IO.execute(()->e.refresh(null,false));});body.addView(guard);
+        new AlertDialog.Builder(a,android.R.style.Theme_Material_Dialog_Alert).setTitle("Streaming buffer · all sites").setView(body)
+            .setSingleChoiceItems(labels,selected,(d,index)->{prefs.edit().putInt("buffer_seconds",values[index]).apply();EngineClient e=engine;if(e!=null)IO.execute(()->e.refresh(null,false));})
+            .setPositiveButton("Done",null).show();
     }
     private static void view(Activity a){
         String site=requireSite(a);if(site.isEmpty())return;HIDE.run();String[] labels={"Mobile","Desktop identity · mobile layout","Desktop"};

@@ -36,7 +36,7 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
     }
     private fun dp(n: Int) = ArtworkUi.dp(activity, n)
     fun showSettings() { show(); quickSettings.showSettings() }
-    fun show() {
+    fun show(direction: String = "RIGHT") {
         if (dialog?.isShowing == true) return
         val root = LinearLayout(activity).apply {
             orientation = LinearLayout.VERTICAL; setPadding(dp(10), dp(2), dp(10), dp(4)); setBackgroundColor(0xff141414.toInt())
@@ -67,12 +67,14 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
         val adapter = Cards()
         clear.setOnClickListener {
             expandedKeys.clear()
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemRangeChanged(0, adapter.itemCount)
             HomeNotifications.clearAll { success ->
                 if (!success && isShowing) Toast.makeText(activity, "Some notifications could not be dismissed", Toast.LENGTH_SHORT).show()
             }
         }
-        val list = RecyclerView(activity).apply { layoutManager = LinearLayoutManager(activity); this.adapter = adapter; itemAnimator = null }
+        val list = RecyclerView(activity).apply { layoutManager = LinearLayoutManager(activity); this.adapter = adapter; itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator().apply {
+            addDuration = 140; removeDuration = 160; moveDuration = 160; changeDuration = 0; supportsChangeAnimations = false
+        } }
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(view: RecyclerView, from: RecyclerView.ViewHolder, to: RecyclerView.ViewHolder) = false
             override fun getSwipeDirs(view: RecyclerView, holder: RecyclerView.ViewHolder): Int {
@@ -105,9 +107,10 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
         sheet.setCancelable(true)
         sheet.setCanceledOnTouchOutside(true)
         sheet.setOnDismissListener { quickSettings.detach(); collector?.cancel(); collector = null; adapter.items = emptyList(); expandedKeys.clear(); dialog = null }
-        sheet.window?.let { SidePanelLayout.apply(activity, it) }
+        sheet.window?.let { SidePanelLayout.apply(activity, it); it.setWindowAnimations(0) }
         sheet.show()
-        sheet.window?.let { SidePanelLayout.apply(activity, it) }
+        sheet.window?.let { SidePanelLayout.apply(activity, it); it.setWindowAnimations(0) }
+        MotionUi.enter(root, direction)
         androidx.core.view.ViewCompat.requestApplyInsets(root)
         if (HomeNotifications.enabled(activity) && !HomeNotifications.isConnected()) runCatching { HomeNotifications.reconnect(activity) }
         collector = activity.lifecycleScope.launch {
@@ -116,7 +119,7 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
                     NotificationPolicy.Entry(it.key, it.groupKey, it.notification.flags and Notification.FLAG_GROUP_SUMMARY != 0, it.isClearable)
                 })
                 expandedKeys.retainAll(visible)
-                adapter.items = notifications.filter { it.key in visible }; adapter.notifyDataSetChanged()
+                adapter.submit(notifications.filter { it.key in visible })
                 val enabled = HomeNotifications.enabled(activity)
                 state.text = when {
                     !enabled -> "Allow notification access to see alerts here. Everything stays on this device."
@@ -147,6 +150,16 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
     }
     private inner class Cards : RecyclerView.Adapter<Card>() {
         var items = emptyList<StatusBarNotification>()
+        fun submit(next: List<StatusBarNotification>) {
+            val previous = items
+            val diff = androidx.recyclerview.widget.DiffUtil.calculateDiff(object : androidx.recyclerview.widget.DiffUtil.Callback() {
+                override fun getOldListSize() = previous.size
+                override fun getNewListSize() = next.size
+                override fun areItemsTheSame(old: Int, new: Int) = previous[old].key == next[new].key
+                override fun areContentsTheSame(old: Int, new: Int) = false
+            })
+            items = next; diff.dispatchUpdatesTo(this)
+        }
         override fun getItemCount() = items.size
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Card {
             val root = LinearLayout(activity).apply {
@@ -210,12 +223,30 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
             }
             updateExpanded()
             holder.expand.setOnClickListener {
+                MotionUi.expand(holder.itemView.parent as ViewGroup)
                 if (!expandedKeys.add(sbn.key)) expandedKeys.remove(sbn.key)
                 updateExpanded()
+            }
+            holder.itemView.setOnLongClickListener {
+                val menu = PopupMenu(activity, holder.itemView)
+                menu.menu.add("Notification settings").setOnMenuItemClickListener {
+                    val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS)
+                        .putExtra(Settings.EXTRA_APP_PACKAGE, sbn.packageName)
+                        .putExtra(Settings.EXTRA_CHANNEL_ID, n.channelId)
+                    runCatching { activity.startActivity(intent); dismiss() }
+                        .onFailure { Toast.makeText(activity, "Notification settings unavailable", Toast.LENGTH_SHORT).show() }
+                    true
+                }
+                menu.menu.add("Snooze for 1 hour").setOnMenuItemClickListener {
+                    if (!HomeNotifications.snooze(sbn.key)) Toast.makeText(activity, "This notification cannot be snoozed", Toast.LENGTH_SHORT).show()
+                    true
+                }
+                menu.show(); true
             }
             holder.itemView.setOnClickListener {
                 val open = n.contentIntent
                 if (open == null) {
+                    MotionUi.expand(holder.itemView.parent as ViewGroup)
                     if (!expandedKeys.add(sbn.key)) expandedKeys.remove(sbn.key)
                     updateExpanded()
                 } else open.let { intent ->

@@ -197,14 +197,15 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
     private fun render() {
         val parent = content ?: return
         (rotationTile as? ImageButton)?.setImageResource(when (rotationMode()) {
-            "Portrait" -> app.anihome.launcher.R.drawable.ic_portrait
+            "Fixed" -> app.anihome.launcher.R.drawable.ic_lock
             "Landscape" -> app.anihome.launcher.R.drawable.ic_landscape
             else -> app.anihome.launcher.R.drawable.ic_rotation
         })
-        rotationTile?.contentDescription = "Rotation, ${rotationMode()}. Tap to cycle Portrait, Landscape, Auto"
+        rotationTile?.contentDescription = "Rotation, ${rotationMode()}. Tap to toggle Auto and Fixed"
         if (selected == "Settings" && renderedSection == "Settings") return
         if (wifiDraft != null) return // Radio broadcasts must not destroy an in-progress password.
         val previousScroll = if (renderedSection == selected) scrollView?.scrollY ?: 0 else 0
+        if (renderedSection != selected) MotionUi.expand(parent)
         renderedSection = selected
         parent.removeAllViews()
         if (selected != null) parent.addView(View(activity).apply { setBackgroundColor(0xff484848.toInt()) }, LinearLayout.LayoutParams(-1, dp(1)))
@@ -237,7 +238,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         val controls = LinearLayout(activity)
         listOf("Wi-Fi", "Bluetooth", "Rotation", "Settings").forEach { name ->
             val column = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL }
-            val icon = when (name) { "Wi-Fi" -> app.anihome.launcher.R.drawable.ic_wifi; "Bluetooth" -> app.anihome.launcher.R.drawable.ic_bluetooth; "Settings" -> app.anihome.launcher.R.drawable.ic_settings; else -> when (rotationMode()) { "Portrait" -> app.anihome.launcher.R.drawable.ic_portrait; "Landscape" -> app.anihome.launcher.R.drawable.ic_landscape; else -> app.anihome.launcher.R.drawable.ic_rotation } }
+            val icon = when (name) { "Wi-Fi" -> app.anihome.launcher.R.drawable.ic_wifi; "Bluetooth" -> app.anihome.launcher.R.drawable.ic_bluetooth; "Settings" -> app.anihome.launcher.R.drawable.ic_settings; else -> when (rotationMode()) { "Fixed" -> app.anihome.launcher.R.drawable.ic_lock; "Landscape" -> app.anihome.launcher.R.drawable.ic_landscape; else -> app.anihome.launcher.R.drawable.ic_rotation } }
             val tile = ImageButton(activity).apply {
                 setImageResource(icon)
                 imageTintList = android.content.res.ColorStateList.valueOf(if (selected == name) -1 else 0xffbbbbbb.toInt())
@@ -246,7 +247,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
                 background = GradientDrawable().apply { setColor(if (selected == name) 0xff383838.toInt() else android.graphics.Color.TRANSPARENT); cornerRadius = dp(12).toFloat() }
                 foreground = ContextCompat.getDrawable(activity, app.anihome.launcher.R.drawable.bg_drawer_item)
                 clipToOutline = true; isFocusable = true
-                contentDescription = if (name == "Rotation") "Rotation, ${rotationMode()}. Tap to cycle Portrait, Landscape, Auto"
+                contentDescription = if (name == "Rotation") "Rotation, ${rotationMode()}. Tap to toggle Auto and Fixed"
                     else "$name, ${if (selected == name) "expanded" else "collapsed"}"
                 setOnClickListener {
                     if (name == "Rotation") cycleRotation()
@@ -301,6 +302,9 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
     private fun radioHeader(body: LinearLayout, name: String, enabled: Boolean, toggle: (Boolean) -> Unit) {
         val header = LinearLayout(activity).apply { gravity = Gravity.CENTER_VERTICAL; setPadding(dp(12), 0, 0, 0) }
         header.addView(ArtworkUi.title(activity, name).apply { textSize = 14f }, LinearLayout.LayoutParams(0, dp(40), 1f))
+        header.addView(ArtworkUi.plainIcon(activity, app.anihome.launcher.R.drawable.ic_settings, "$name options") {
+            open(if (name == "Wi-Fi") Settings.ACTION_WIFI_SETTINGS else Settings.ACTION_BLUETOOTH_SETTINGS)
+        }, LinearLayout.LayoutParams(dp(40), dp(40)))
         header.addView(ArtworkUi.plainIcon(activity, app.anihome.launcher.R.drawable.ic_refresh, "Search $name") { scan() }, LinearLayout.LayoutParams(dp(40), dp(40)))
         header.addView(androidx.appcompat.widget.SwitchCompat(activity).apply {
             isChecked = enabled; contentDescription = "$name power"; minHeight = dp(40)
@@ -452,13 +456,14 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
             }
         }
     }
-    private fun rotationMode(): String = RotationControl.mode(activity)
+    private fun rotationMode(): String = if (RotationControl.mode(activity) == "Auto") "Auto" else "Fixed"
     private fun cycleRotation() {
-        val next = when (rotationMode()) { "Portrait" -> "Landscape"; "Landscape" -> "Auto"; else -> "Portrait" }
+        if (radioBusy) return
+        val next = if (rotationMode() == "Auto") "Fixed" else "Auto"
         RotationControl.select(activity, next)
         if (bridge.ready) {
-            val angle = if (next == "Landscape") (RotationControl.portraitAngle(activity) + 1) % 2 else RotationControl.portraitAngle(activity)
-            privileged({ it.applyRotation(when (next) { "Portrait" -> 1; "Landscape" -> 2; else -> 0 }, angle) }) {
+            val angle = RotationControl.fixedAngle(activity)
+            privileged({ it.applyRotation(if (next == "Auto") 0 else 1, angle) }) {
                 status = if (it == "OK") "" else it
                 render()
             }

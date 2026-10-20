@@ -39,7 +39,7 @@ accessibility descriptions/tooltips. Rows are recycled while scrolling.
 
 ## Implementation constraints
 
-`NativeTabs.java` is deliberately pinned to the shipped **Brave 1.97.56** Java
+`NativeTabs.java` is deliberately pinned to the shipped **Brave 1.97.59** Java
 engine. The rail owns no separate tabs or sessions. It queries the current native
 model, resolves stable tab IDs again on each action and calls the native removal
 pipeline rather than deleting a CDP page. Private models have a lazy wrapper;

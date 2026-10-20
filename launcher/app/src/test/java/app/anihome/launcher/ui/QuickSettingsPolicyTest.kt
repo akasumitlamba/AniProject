@@ -4,6 +4,10 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class QuickSettingsPolicyTest {
+    @Test fun fixedRotationPreservesAllFourAnglesOnBothNaturalDisplays() {
+        assertEquals(listOf(1, 0, 9, 8), (0..3).map { QuickSettingsPolicy.fixedOrientation(it, 0) })
+        assertEquals(listOf(0, 1, 8, 9), (0..3).map { QuickSettingsPolicy.fixedOrientation(it, 1) })
+    }
     @Test fun connectedThenRecentThenPairedWithoutTruncation() {
         val entries = (0..30).map { QuickSettingsPolicy.Device("$it", "Device $it", it == 25, if (it == 18) 99 else 0, it == 7) }
         val sorted = QuickSettingsPolicy.ordered(entries)

@@ -3,7 +3,7 @@
   if (globalThis.__aniBrave) return;
   const media = new Set(), roots = new WeakSet(), states = new WeakMap();
   let rate = 1, revision = 0, configured = false, serial = 0, inputUntil = 0;
-  let lastScroll = 0, lastReveal = 0;
+  let lastScroll = 0, lastReveal = 0, bufferSeconds = 0, bufferGuard = false;
   const near = (a,b) => Math.abs(a-b) < .001;
   const valid = n => Number.isFinite(n) && n >= .25 && n <= 4;
   const now = () => Date.now();
@@ -25,10 +25,52 @@
     }
     return states.get(video);
   }
+  function ahead(video) {
+    try { for(let i=0;i<video.buffered.length;i++)if(video.buffered.start(i)<=video.currentTime+.1 && video.buffered.end(i)>video.currentTime)return video.buffered.end(i)-video.currentTime; } catch(_){}
+    return 0;
+  }
+  function cancelGuard(video) { const s=states.get(video);if(s)s.guard=null; }
+  function buffer(video,s,reset) {
+    if(!main(video))return;
+    if(document.visibilityState==='hidden'&&video.paused){cancelGuard(video);return;}
+    const time=now();
+    if(video.duration===Infinity){
+      cancelGuard(video);
+      if(video.preload==='auto'&&s.originalPreload!==undefined)video.preload=s.originalPreload;
+      if(reset||s.bufferValue!==0){s.bufferValue=0;window.postMessage?.({source:'anibrave-app',type:'set-buffer',id:++serial,media:s.id,seconds:0},'*');}
+      return;
+    }
+    if(s.originalPreload===undefined)s.originalPreload=video.preload;
+    if(bufferSeconds>0){if(video.preload!=='auto')video.preload='auto';}
+    else if(video.preload==='auto'&&s.originalPreload!==undefined)video.preload=s.originalPreload;
+    if(reset||s.bufferValue!==bufferSeconds||time-(s.bufferAt||0)>5000){
+      s.bufferValue=bufferSeconds;s.bufferAt=time;
+      window.postMessage?.({source:'anibrave-app',type:'set-buffer',id:++serial,media:s.id,seconds:bufferSeconds},'*');
+    }
+    const g=s.guard;if(!g)return;
+    if(!bufferGuard||document.visibilityState==='hidden'||video.ended||video.seeking||!video.isConnected||video.currentSrc!==g.source||Math.abs(video.currentTime-g.position)>.5){cancelGuard(video);return;}
+    const target=Math.min(30,15*Math.max(1,rate),Math.max(0,video.duration-video.currentTime));
+    const available=ahead(video);
+    if(available>(g.available||0)+.25){g.available=available;g.grewAt=time;}
+    const plateau=available>=Math.min(3,target)&&time-g.grewAt>=3500;
+    if(available>=target || plateau || time-g.at>=20000){
+      cancelGuard(video);s.guardCooldown=time+30000;
+      // Resume only the pause owned by this guard; trusted interaction cancels it.
+      if(video.paused&&ahead(video)>=Math.min(3,target))try{Promise.resolve(video.play()).catch(()=>{});}catch(_){}
+      else if(video.paused)send({type:'bufferGuard',waiting:false});
+    }
+  }
+  function waitForBuffer(video) {
+    if(!bufferGuard||!main(video)||video.paused||video.seeking||!Number.isFinite(video.duration)||video.duration<=0||ahead(video)>.25)return;
+    const s=state(video);if(s.guard||now()<(s.guardCooldown||0)||typeof video.pause!=='function')return;
+    s.guard={source:video.currentSrc,position:video.currentTime,at:now(),grewAt:now(),available:0,ownPause:true};
+    video.pause();send({type:'bufferGuard',waiting:true});
+  }
   function apply(video, reset=false) {
     if (!video?.isConnected) {media.delete(video);return;}
     if (!configured || ad(video)) return;
     const s=state(video), time=now();
+    buffer(video,s,reset);
     if(reset){clearTimeout(s.pending);s.pending=0;}else if(s.pending)return;
     if (reset || time-s.window>5000) {s.attempts=0;s.window=time;}
     if (near(video.playbackRate,rate) && !reset) return;
@@ -70,9 +112,12 @@
       return;
     }
     roots.add(root);
-    for(const name of ['loadstart','loadedmetadata','playing','emptied','durationchange','ratechange'])root.addEventListener(name,event=>{
+    for(const name of ['loadstart','loadedmetadata','playing','emptied','durationchange','ratechange','waiting','pause','seeking'])root.addEventListener(name,event=>{
       const video=event.composedPath?.()[0] || event.target;
       if(!video || !/^(VIDEO|AUDIO)$/.test(video.tagName))return;
+      if(name==='waiting'){waitForBuffer(video);return;}
+      if(name==='pause'){const s=states.get(video);if(s?.guard){if(s.guard.ownPause)s.guard.ownPause=false;else cancelGuard(video);}return;}
+      if(name==='seeking'||name==='loadstart'||name==='emptied'||name==='playing')cancelGuard(video);
       if(name==='ratechange'){media.add(video);changed(video);}else track(video,name!=='playing');
     },true);
     for(const v of root.querySelectorAll('video,audio'))track(v,false);
@@ -87,6 +132,7 @@
   }
   for(const name of ['pointerdown','keydown'])document.addEventListener(name,event=>{
     if(!event.isTrusted)return;
+    for(const video of media)cancelGuard(video);
     // Exclude ordinary page scrolling/navigation from native rate selection.
     const target=event.composedPath?.()[0] || event.target;
     const control=target?.closest?.('button,[role="button"],[role="menuitem"],[role="menuitemradio"],[role="slider"],[class*="speed"],[data-testid*="speed"]');
@@ -95,9 +141,12 @@
     if(numericChoice || (control && /speed|\bnormal\b|\b\d+(?:\.\d+)?\s*[x×]/i.test(label)) || (name==='keydown' && ['<','>'].includes(event.key)))inputUntil=now()+1800;
   },true);
   globalThis.__aniBrave = {
-    configure(value,stamp=0) {
+    configure(value,stamp=0,seconds=0,guard=false) {
       if(!valid(value)||!Number.isSafeInteger(stamp)||stamp<revision)return;
-      const fresh=!configured||!near(rate,value)||stamp!==revision;
+      if(!Number.isInteger(seconds)||seconds<0||seconds>600||typeof guard!=='boolean')return;
+      const fresh=!configured||!near(rate,value)||stamp!==revision||bufferSeconds!==seconds;
+      bufferSeconds=seconds;bufferGuard=guard;
+      if(!guard)for(const video of media)cancelGuard(video);
       rate=value;revision=stamp;configured=true;
       for(const video of media)apply(video,fresh);
     },
@@ -139,7 +188,7 @@
       touchY = null; send({type: 'reveal'});
     }
   }, {passive: true});
-  window.addEventListener('pagehide', event => {for(const v of media)clearTimeout(state(v).pending);if(!event.persisted){media.clear();clearInterval(recovery);}});
+  window.addEventListener('pagehide', event => {for(const v of media){clearTimeout(state(v).pending);cancelGuard(v);}if(!event.persisted){media.clear();clearInterval(recovery);}});
   window.addEventListener('pageshow', () => {for(const v of document.querySelectorAll('video,audio'))track(v,true);});
   window.addEventListener('resize', () => send({type: 'resize'}), {passive: true});
 })();

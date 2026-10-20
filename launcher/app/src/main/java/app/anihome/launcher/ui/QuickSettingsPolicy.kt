@@ -7,6 +7,12 @@ internal object QuickSettingsPolicy {
         compareByDescending<Device> { it.connected }.thenByDescending { it.lastConnected }
             .thenByDescending { it.paired }.thenBy(String.CASE_INSENSITIVE_ORDER) { it.name }
     )
+    fun fixedOrientation(angle: Int, portraitAngle: Int): Int = when (angle) {
+        portraitAngle -> android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        (portraitAngle + 2) % 4 -> android.content.pm.ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT
+        (portraitAngle + 1) % 2 -> android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        else -> android.content.pm.ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
+    }
     // A tablet can have a natural landscape display; rotation 0 is not always portrait.
     fun lockRotation(landscape: Boolean, currentLandscape: Boolean, displayRotation: Int): Int {
         val naturalLandscape = currentLandscape == (displayRotation % 2 == 0)

@@ -175,8 +175,25 @@ final class VerticalTabs {
         button.setPadding(dp(12),0,dp(12),0);button.setBackground(touch(Color.TRANSPARENT,8));
         button.setFocusable(true);button.setContentDescription(title);button.setTooltipText(title);button.setOnClickListener(v->click.run());return button;
     }
+    private boolean nativeControlAt(View view,float x,float y,int depth){
+        if(depth>24||!view.isShown())return false;
+        int[] location=new int[2];view.getLocationOnScreen(location);
+        if(x<location[0]||y<location[1]||x>=location[0]+view.getWidth()||y>=location[1]+view.getHeight())return false;
+        if(view instanceof ViewGroup){
+            ViewGroup group=(ViewGroup)view;
+            for(int i=group.getChildCount()-1;i>=0;i--)if(nativeControlAt(group.getChildAt(i),x,y,depth+1))return true;
+        }
+        // Web page controls are compositor virtual nodes, not Android widgets.
+        // Let native Undo/snackbar actions and browser buttons receive their tap.
+        return view.isEnabled()&&view.isClickable()&&(view instanceof TextView||view instanceof ImageView);
+    }
     private void create(){
-        scrim=new View(activity);scrim.setBackgroundColor(0x44000000);scrim.setContentDescription("Collapse tabs");
+        scrim=new View(activity){
+            @Override public boolean dispatchTouchEvent(MotionEvent event){
+                if(event.getActionMasked()==MotionEvent.ACTION_DOWN&&nativeControlAt(content,event.getRawX(),event.getRawY(),0))return false;
+                return super.dispatchTouchEvent(event);
+            }
+        };scrim.setBackgroundColor(0x44000000);scrim.setContentDescription("Collapse tabs");
         scrim.setOnClickListener(v->expand(false));decor.addView(scrim,new FrameLayout.LayoutParams(-1,-1));
         rail=new LinearLayout(activity){
             private final android.graphics.Paint line=new android.graphics.Paint();
