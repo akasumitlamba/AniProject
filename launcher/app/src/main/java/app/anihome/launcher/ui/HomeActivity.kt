@@ -138,7 +138,7 @@ class HomeActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                app.anihome.launcher.notifications.HomeNotifications.notifications.collect { active ->
+                app.anihome.launcher.notifications.HomeNotifications.badges.collect { active ->
                     val keys = app.anihome.launcher.notifications.NotificationPolicy.visible(active.map {
                         app.anihome.launcher.notifications.NotificationPolicy.Entry(it.key, it.groupKey, it.notification.flags and android.app.Notification.FLAG_GROUP_SUMMARY != 0, it.isClearable)
                     })

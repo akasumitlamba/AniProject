@@ -23,20 +23,31 @@ class HomeNotifications : NotificationListenerService() {
     }
     override fun onNotificationPosted(sbn: StatusBarNotification) { current[sbn.key] = sbn; publish() }
     override fun onNotificationRemoved(sbn: StatusBarNotification) { current.remove(sbn.key); publish() }
+    override fun onNotificationRankingUpdate(rankingMap: RankingMap) { publish() }
     override fun onListenerDisconnected() { clear() }
     override fun onDestroy() { clear(); super.onDestroy() }
     private fun clear() {
         handler.removeCallbacksAndMessages(null)
         current.clear()
-        if (connected === this) { connected = null; state.value = emptyList(); connectionState.value = false }
+        if (connected === this) { connected = null; state.value = emptyList(); badgeState.value = emptyList(); connectionState.value = false }
     }
-    private fun publish() { state.value = current.values.sortedByDescending { it.postTime } }
+    private fun publish() {
+        val items = current.values.sortedByDescending { it.postTime }
+        state.value = items
+        val ranks = currentRanking
+        badgeState.value = items.filter { item ->
+            val ranking = Ranking()
+            !ranks.getRanking(item.key, ranking) || ranking.canShowBadge()
+        }
+    }
     companion object {
         @Volatile private var connected: HomeNotifications? = null
         private val connectionState = MutableStateFlow(false)
         val connection = connectionState.asStateFlow()
         private val state = MutableStateFlow<List<StatusBarNotification>>(emptyList())
         val notifications = state.asStateFlow()
+        private val badgeState = MutableStateFlow<List<StatusBarNotification>>(emptyList())
+        val badges = badgeState.asStateFlow()
         fun enabled(context: Context) = context.packageName in NotificationManagerCompat.getEnabledListenerPackages(context)
         fun isConnected() = connected != null
         fun reconnect(context: Context) { requestRebind(ComponentName(context, HomeNotifications::class.java)) }
