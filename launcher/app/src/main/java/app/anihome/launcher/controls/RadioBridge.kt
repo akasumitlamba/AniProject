@@ -18,18 +18,19 @@ internal class RadioBridge(private val activity: AppCompatActivity, private val 
     private val bindingTimeout: Runnable = Runnable {
         if (binding) {
             runCatching { Shizuku.unbindUserService(args, connection, true) }
-            binding = false; changed()
+            binding = false; changed(); retryConnection()
         }
     }
-    private fun managerStopped() = runCatching {
-        activity.packageManager.getApplicationInfo("moe.shizuku.privileged.api", 0).flags and android.content.pm.ApplicationInfo.FLAG_STOPPED != 0
-    }.getOrDefault(false)
+    private var destroyed = false
+    private var retryCount = 0
+    private val retry = Runnable { bind() }
+    private fun retryConnection() {
+        if (!destroyed && retryCount++ < 2) handler.postDelayed(retry, 1500)
+    }
     fun reconnect() {
-        if (!ready && binding) {
-            handler.removeCallbacks(bindingTimeout)
-            runCatching { Shizuku.unbindUserService(args, connection, true) }
-            binding = false
-        }
+        if (ready || binding || destroyed) return
+        retryCount = 0
+        handler.removeCallbacks(retry)
         bind()
     }
     val connecting get() = binding
@@ -38,9 +39,9 @@ internal class RadioBridge(private val activity: AppCompatActivity, private val 
     private val connection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, binder: IBinder) {
             handler.removeCallbacks(bindingTimeout)
-            service = IRadioService.Stub.asInterface(binder); binding = false; changed()
+            service = IRadioService.Stub.asInterface(binder); binding = false; retryCount = 0; changed()
         }
-        override fun onServiceDisconnected(name: ComponentName) { service = null; binding = false; changed() }
+        override fun onServiceDisconnected(name: ComponentName) { service = null; binding = false; changed(); retryConnection() }
     }
     private val received = Shizuku.OnBinderReceivedListener { bind() }
     private val dead = Shizuku.OnBinderDeadListener { service = null; binding = false; changed() }
@@ -54,26 +55,26 @@ internal class RadioBridge(private val activity: AppCompatActivity, private val 
         Shizuku.addRequestPermissionResultListener(permission)
     }
     private fun bind() {
-        if (ready || binding || managerStopped()) return
+        if (ready || binding || destroyed) return
         runCatching {
             if (Shizuku.pingBinder() && Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED) {
                 binding = true; Shizuku.bindUserService(args, connection)
                 handler.postDelayed(bindingTimeout, 10000)
             }
-        }.onFailure { binding = false; changed() }
+        }.onFailure { binding = false; changed(); retryConnection() }
     }
     fun authorize(): Boolean {
         return runCatching {
-            if (!Shizuku.pingBinder() || managerStopped()) return@runCatching false
+            if (!Shizuku.pingBinder()) return@runCatching false
             if (Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED) {
-                // A live server can outlast the manager provider on OEM firmware. Bring the
-                // manager forward on explicit recovery, then rebind when the sheet reattaches.
-                if (!ready) return@runCatching false
+                reconnect()
             } else Shizuku.requestPermission(420)
             true
         }.getOrDefault(false)
     }
     override fun onDestroy(owner: LifecycleOwner) {
+        destroyed = true
+        handler.removeCallbacks(retry)
         handler.removeCallbacks(bindingTimeout)
         Shizuku.removeBinderReceivedListener(received); Shizuku.removeBinderDeadListener(dead)
         Shizuku.removeRequestPermissionResultListener(permission)

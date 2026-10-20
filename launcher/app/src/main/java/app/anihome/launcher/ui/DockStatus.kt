@@ -78,6 +78,11 @@ internal class DockStatus(context: Context) : LinearLayout(context) {
         val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED).apply { addAction(USB_STATE) }
         ContextCompat.registerReceiver(context.applicationContext, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED)
         registered = true
+        // Seed immediately from Android's sticky broadcasts; no privileged service is needed.
+        listOf(Intent.ACTION_BATTERY_CHANGED, USB_STATE).forEach { action ->
+            runCatching { context.applicationContext.registerReceiver(null, IntentFilter(action)) }
+                .getOrNull()?.let { receiver.onReceive(context.applicationContext, it) }
+        }
     }
     fun stop() {
         if (registered) { context.applicationContext.unregisterReceiver(receiver); registered = false }
