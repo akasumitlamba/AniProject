@@ -6,6 +6,8 @@ import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.*
 import rikka.shizuku.Shizuku
 
 /** The caller must opt in to Shizuku; missing/revoked privileges never masquerade as success. */
@@ -18,7 +20,19 @@ internal class RadioBridge(private val activity: AppCompatActivity, private val 
     private val bindingTimeout: Runnable = Runnable {
         if (binding) {
             runCatching { Shizuku.unbindUserService(args, connection, true) }
-            binding = false; changed(); retryConnection()
+            binding = false; managerWarmed = false; changed(); retryConnection()
+        }
+    }
+    private var warming = false
+    private var managerWarmed = false
+    private val finishWarm = Runnable {
+        activity.lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                runCatching { ShizukuBroker.refresh() }.onFailure {
+                    android.util.Log.w("AniHomeRadio", "Broker recovery failed", it)
+                }
+            }
+            warming = false; bind()
         }
     }
     private var destroyed = false
@@ -28,12 +42,13 @@ internal class RadioBridge(private val activity: AppCompatActivity, private val 
         if (!destroyed && retryCount++ < 2) handler.postDelayed(retry, 1500)
     }
     fun reconnect() {
-        if (ready || binding || destroyed) return
+        if (ready || binding || warming || destroyed) return
         retryCount = 0
+        managerWarmed = false
         handler.removeCallbacks(retry)
         bind()
     }
-    val connecting get() = binding
+    val connecting get() = binding || warming
     private val args = Shizuku.UserServiceArgs(ComponentName(activity, RadioService::class.java))
         .daemon(false).processNameSuffix("radios").tag("anihome-radios").version(19)
     private val connection: ServiceConnection = object : ServiceConnection {
@@ -55,13 +70,23 @@ internal class RadioBridge(private val activity: AppCompatActivity, private val 
         Shizuku.addRequestPermissionResultListener(permission)
     }
     private fun bind() {
-        if (ready || binding || destroyed) return
+        if (ready || binding || warming || destroyed) return
         runCatching {
             if (Shizuku.pingBinder() && Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED) {
+                if (!managerWarmed) {
+                    managerWarmed = true; warming = true
+                    // Its exported binder-request receiver wakes the broker in the background.
+                    // The server must already be running and permission already granted.
+                    activity.sendBroadcast(Intent("rikka.shizuku.intent.action.REQUEST_BINDER")
+                        .setPackage("moe.shizuku.privileged.api")
+                        .addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES))
+                    handler.postDelayed(finishWarm, 1000)
+                    return
+                }
                 binding = true; Shizuku.bindUserService(args, connection)
                 handler.postDelayed(bindingTimeout, 10000)
             }
-        }.onFailure { binding = false; changed(); retryConnection() }
+        }.onFailure { warming = false; binding = false; changed(); retryConnection() }
     }
     fun authorize(): Boolean {
         return runCatching {
@@ -75,6 +100,7 @@ internal class RadioBridge(private val activity: AppCompatActivity, private val 
     override fun onDestroy(owner: LifecycleOwner) {
         destroyed = true
         handler.removeCallbacks(retry)
+        handler.removeCallbacks(finishWarm)
         handler.removeCallbacks(bindingTimeout)
         Shizuku.removeBinderReceivedListener(received); Shizuku.removeBinderDeadListener(dead)
         Shizuku.removeRequestPermissionResultListener(permission)
