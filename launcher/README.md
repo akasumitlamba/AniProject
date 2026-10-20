@@ -1,12 +1,12 @@
 # AniHome Launcher
 
-AniHome is an Android HOME launcher with a TV-style grid of apps and websites over the system wallpaper. Websites open through AniBrave's immersive shortcut activity, sharing its browser profile. Package: `app.anihome.launcher`; Android 8.0+; current source version 0.8.19.
+AniHome is an Android HOME launcher with a TV-style grid of apps and websites over the system wallpaper. Websites open through AniBrave's immersive shortcut activity, sharing its browser profile. Package: `app.anihome.launcher`; Android 8.0+; current source version 0.8.20.
 
 ## Home and app drawer
 
 - Android pinned shortcuts are supported: confirm Add to Home in the requesting browser/app. Shortcuts retain their original app destination, including fullscreen browser launches, and remain separate from normal app tiles.
 - App/site banners support custom artwork, drag ordering, optional names and contrasting notification-count tags.
-- Tap the dock clock/date for notifications. Battery percentage appears directly below the time/date, with a separate gold charging bolt while actively charging. Its level fill and outline are red at 20% or below, yellow at 21–49%, and green from 50%. The USB icon appears only while USB is connected. Google/search sits beside it; remaining room shows chosen app pins. Add appears only in edit mode. Settings can hide the Recents button independently of gestures, choose the dock browser with its matching icon, or hide search entirely. Pinned icons use a consistent circular mask. Landscape uses a side dock on phones and tablets. The app-menu button has solid grid blocks inside a transparent outlined circle.
+- Tap the dock clock/date for notifications. The count sits next to the time, with the date below. Battery percentage appears beside the clock in a bottom dock and below it in a side dock, with a separate gold charging bolt while actively charging. Its level fill and outline are red at 20% or below, yellow at 21–49%, and green from 50%. The USB icon appears only while USB is connected. Google/search sits beside it; remaining room shows chosen app pins. Add appears only in edit mode. Settings can hide the Recents button independently of gestures, choose the dock browser with its matching icon, or hide search entirely. Pinned icons use a consistent circular mask. Landscape uses a side dock on phones and tablets. The app-menu button has solid grid blocks inside a transparent outlined circle.
 - Double tap empty Home to lock (optional Accessibility control); long press empty Home, including margins, to enter Edit Home. Drag banners or hold a widget’s Edit header to rearrange; tap the dock checkmark to finish. Double tap is disabled while editing and can be turned off in Gestures.
 - Configure up, down, left and right swipes independently. Tablet defaults: up opens Recents, left opens Apps, right opens Notifications, down has no action. Phone defaults: up opens Apps and down opens Notifications; horizontal swipes have no action. Saved choices are preserved.
 - Phone drawer: a full-width app grid adapts to cell width and text size, with a separated suggestion row on tall screens. Recent files expands from an integrated handle/header to half the usable screen. Each file offers Open, Share and File info; sharing opens Android’s chooser without sending automatically.
@@ -17,9 +17,9 @@ AniHome is an Android HOME launcher with a TV-style grid of apps and websites ov
 
 ## Validation — 20 October 2026
 
-Version 0.8.19 passed 100 JVM tests, release lint, and debug/release assembly. Physical-phone checks covered portrait/landscape rotation, the landscape side dock and 360dp sidebar cap, app-grid geometry, dock pin selection/persistence/launch, and recent-file expansion, metadata and Android sharing. Tablet-emulator checks covered both drawer orientations. Dock browser selection, browser launch, search visibility and preference persistence were checked in the emulator.
+Version 0.8.20 passed 100 JVM tests, release lint, and signed release assembly. Physical-phone checks covered portrait/landscape rotation, the landscape side dock and 360dp sidebar cap, app-grid geometry, dock pin selection/persistence/launch, and recent-file expansion, metadata and Android sharing. Tablet-emulator checks covered both drawer orientations. Dock browser selection, browser launch, search visibility and preference persistence were checked in the emulator.
 
-Auto mode enables Android sensor rotation; physical sensor movement and every vendor’s firmware have not been exhaustively tested. Another app that forces orientation can override AniHome’s requests. System-wide rotation needs the optional Android modify-system-settings permission; local launcher rotation does not.
+Auto mode enables Android sensor rotation; physical sensor movement and every vendor’s firmware have not been exhaustively tested. System-wide rotation needs optional Android modify-system-settings access. Direct Shizuku controls additionally lock the display against app and Recents orientation requests; Auto releases that display lock. Unsupported firmware reports an error instead of assuming enforcement succeeded. Local launcher rotation does not need extra access.
 
 ## Notifications and quick settings
 

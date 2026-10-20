@@ -2,7 +2,7 @@
 
 Personal Android browser based on the official Brave 1.97.56 ARM64 APK (Chromium 155.0.8059.40). Install identity: `app.anibrave.main`. Launcher name: **AniBrave**. This installs alongside official Brave. AniBrowser Full (Firefox/GeckoView) and Lite have been removed from this repository. It has an independent profile: cookies are shared between AniBrave tabs and its shortcuts, not imported from other installed browsers.
 
-The native engine and Shields libraries remain byte-for-byte identical to the verified upstream APK. This is a locally compiled Java/JavaScript customization and repackaging of that APK, not a full Chromium source build. It uses a separate personal signing key and needs manual updates. It is an experimental personal build; physical tablet startup and settings application have been checked, but universal streaming compatibility is not claimed.
+The native engine and Shields libraries remain byte-for-byte identical to the verified upstream APK. This is a locally compiled Java/JavaScript customization and repackaging of that APK, not a full Chromium source build. It uses a separate personal signing key. A daily GitHub Actions check prepares draft engine-upgrade proposals; compatibility testing, signing and installation remain explicit steps (see [engine updates](docs/engine-updates.md)). It is an experimental personal build; physical tablet startup and settings application have been checked, but universal streaming compatibility is not claimed.
 
 ## Included scope
 
@@ -103,6 +103,6 @@ opaque alphabetic suffixes can remain until the authoritative heading is availab
 
 ## Combined release
 
-AniBrave 0.1.3 is included with AniHome 0.8.19 and desktop extension 0.1.3 in the
-[AniProject 2026.10.20 release](https://github.com/akasumitlamba/AniProject/releases/tag/aniproject-2026.10.20-r2).
+AniBrave 0.1.3 is included with AniHome 0.8.20 and desktop extension 0.1.3 in the
+[AniProject 2026.10.20 release](https://github.com/akasumitlamba/AniProject/releases/tag/aniproject-2026.10.20-r3).
 The Android update retains the existing signing identity and profile.

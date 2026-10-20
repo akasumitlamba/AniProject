@@ -19,11 +19,12 @@ Run 'javac' @('-d','anibrave/compiled/test-classes','anibrave/src/EngineHttp.jav
 Run 'java' @('-cp','anibrave/compiled/test-classes','app.anibrave.EngineHttpTest')
 if ($TestsOnly) { return }
 if (!(Test-Path -LiteralPath $androidJar)) { throw 'Android SDK 37.1 is required in .tools/sdk' }
+$upstream = Get-Content anibrave/upstream.json -Raw | ConvertFrom-Json
 $apk = 'anibrave/downloads/Bravearm64Universal.apk'
 if (!(Test-Path -LiteralPath $apk)) {
-    Run 'gh' @('release','download','v1.97.56','--repo','brave/brave-browser','--pattern','Bravearm64Universal.apk','--dir','anibrave/downloads')
+    Run 'gh' @('release','download',$upstream.tag,'--repo',$upstream.repository,'--pattern',$upstream.asset,'--dir','anibrave/downloads')
 }
-if ((Get-FileHash $apk).Hash -ne '9B02840FB94DC172D3BF0073CE6877372BEA0E311BABA7952E4A0563DF88AE89') { throw 'Upstream Brave APK checksum mismatch' }
+if ((Get-FileHash $apk).Hash.ToLowerInvariant() -ne $upstream.sha256) { throw 'Upstream Brave APK checksum mismatch' }
 $jars = @{
     'apktool.jar'='https://github.com/iBotPeaches/Apktool/releases/download/v3.0.3/apktool_3.0.3.jar'
     'dexlib2.jar'='https://repo.maven.apache.org/maven2/org/smali/dexlib2/2.5.2/dexlib2-2.5.2.jar'

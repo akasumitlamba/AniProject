@@ -6,5 +6,6 @@ interface IRadioService {
     boolean connectBluetooth(IBinder profileBinder, int profile, String address) = 3;
     boolean setBluetoothPower(boolean enabled) = 4;
     int bluetoothConnectTransaction(int profile) = 5;
+    String applyRotation(int mode, int angle) = 6;
     void destroy() = 16777114;
 }

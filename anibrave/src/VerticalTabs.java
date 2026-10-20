@@ -333,11 +333,25 @@ final class VerticalTabs {
                 p.width=panel;p.height=targetHeight;p.leftMargin=railLeft;p.topMargin=railTop;rail.setLayoutParams(p);
             }
             boolean overlay=!fullscreen&&expanded&&TabLayoutPolicy.reserved(width,true)==TabLayoutPolicy.COMPACT;
-            scrim.setVisibility(overlay?View.VISIBLE:View.GONE);
+            // An expanded rail dismisses from the page on wide layouts too.
+            // Keep the native address bar outside this touch surface, and consume
+            // the dismissing tap so it cannot accidentally activate a page link.
+            scrim.setBackgroundColor(overlay?0x44000000:Color.TRANSPARENT);
+            scrim.setVisibility(!fullscreen&&expanded?View.VISIBLE:View.GONE);
             if(overlay&&!overlayVisible)rail.requestFocus();
             overlayVisible=overlay;
             FrameLayout.LayoutParams s=(FrameLayout.LayoutParams)scrim.getLayoutParams();
-            if(s.height!=p.height||s.topMargin!=p.topMargin){s.height=p.height;s.topMargin=p.topMargin;scrim.setLayoutParams(s);}
+            int pageTop=p.topMargin;
+            if(controls!=null&&controls.isShown()){
+                int[] controlsPosition=new int[2];controls.getLocationInWindow(controlsPosition);
+                pageTop=Math.max(pageTop,controlsPosition[1]+controls.getHeight());
+            }
+            int pageLeft=p.leftMargin+p.width;
+            int pageHeight=Math.max(0,p.topMargin+p.height-pageTop);
+            int pageWidth=Math.max(0,decor.getWidth()-pageLeft);
+            if(s.width!=pageWidth||s.height!=pageHeight||s.leftMargin!=pageLeft||s.topMargin!=pageTop){
+                s.width=pageWidth;s.height=pageHeight;s.leftMargin=pageLeft;s.topMargin=pageTop;scrim.setLayoutParams(s);
+            }
 
         } finally { updating=false; }
     }

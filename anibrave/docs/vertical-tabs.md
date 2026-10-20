@@ -22,8 +22,10 @@ In Vertical mode:
   removed only in Vertical mode, including their reserved widths. The browser
   menu, navigation, address field and Shields remain.
 - Wide windows reserve 240dp for expanded titles and at least 600dp for the page.
-  Narrow windows reserve only 56dp; expanded titles overlay the page. Outside tap,
-  Back or choosing a tab collapses that overlay. Short windows hide New tab (available inside native overview)
+  Narrow windows reserve only 56dp; expanded titles overlay the page. Tapping the
+  page collapses expanded titles in both layouts, consuming that first tap without
+  activating page links. The native address bar remains directly usable. Back or
+  choosing a tab also collapses the narrow overlay. Short windows hide New tab (available inside native overview)
   to keep overview and features accessible with a keyboard or landscape.
 - Native fullscreen hides the sidebar and returns its width to the page. Native
   overview/modal/private-lock surfaces suppress the sidebar; cached titles are

@@ -197,31 +197,47 @@ class HomeActivity : AppCompatActivity() {
             parent.addView(view, LinearLayout.LayoutParams(dp(size), dp(size)))
         }
         dockStatus.onPowerIndicatorsChanged = { _ ->
-            clock.textSize = 16f
+            clock.textSize = if (vertical) 13f else 16f
         }
         clock.gravity = if (vertical) Gravity.CENTER else Gravity.START or Gravity.CENTER_VERTICAL
+        clock.format24Hour = "HH:mm"
+        clock.format12Hour = "h:mm"
+        notificationBadge.textSize = if (vertical) 9f else 11f
+        notificationBadge.minWidth = dp(if (vertical) 16 else 20)
+        notificationBadge.setPadding(dp(if (vertical) 1 else 4), 0, dp(if (vertical) 1 else 4), 0)
         clock.includeFontPadding = false
         clock.setOnClickListener { notificationPanel.show() }
         clock.tooltipText = "Notifications"
+        val timeAndDate = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = if (vertical) Gravity.CENTER else Gravity.START or Gravity.CENTER_VERTICAL
+            addView(LinearLayout(this@HomeActivity).apply {
+                orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL
+                addView(clock, LinearLayout.LayoutParams(-2, -1))
+                addView(notificationBadge, LinearLayout.LayoutParams(-2, dp(if (vertical) 16 else 20)).apply { marginStart = dp(2) })
+            }, LinearLayout.LayoutParams(-2, dp(22)))
+            addView(android.widget.TextClock(this@HomeActivity).apply {
+                format24Hour = "dd MMM"; format12Hour = "dd MMM"
+                setTextColor(-1); textSize = if (vertical) 14f else 16f
+                gravity = if (vertical) Gravity.CENTER else Gravity.START or Gravity.CENTER_VERTICAL
+                includeFontPadding = false; setOnClickListener { notificationPanel.show() }
+            }, LinearLayout.LayoutParams(if (vertical) -1 else -2, dp(22)))
+        }
         val clockBlock = LinearLayout(this).apply {
             orientation = if (vertical) LinearLayout.VERTICAL else LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER
             if (vertical) {
-                addView(clock, LinearLayout.LayoutParams(-1, 0, 1f))
+                addView(timeAndDate, LinearLayout.LayoutParams(-1, dp(44)))
                 addView(dockStatus, LinearLayout.LayoutParams(-1, dp(28)))
             } else {
                 addView(dockStatus, LinearLayout.LayoutParams(dp(28), -1))
-                addView(clock, LinearLayout.LayoutParams(dp(56), -1).apply { marginStart = dp(2) })
-                addView(notificationBadge, LinearLayout.LayoutParams(dp(20), dp(20)).apply {
-                    gravity = Gravity.TOP; topMargin = dp(2); marginStart = -dp(10)
-                })
+                addView(timeAndDate, LinearLayout.LayoutParams(-2, -1).apply { marginStart = dp(2) })
             }
         }
         val clockArea = FrameLayout(this).apply {
             addView(clockBlock, FrameLayout.LayoutParams(-1, -1))
-            if (vertical) addView(notificationBadge, FrameLayout.LayoutParams(-2, dp(20), Gravity.TOP or Gravity.END))
         }
-        rail.addView(clockArea, LinearLayout.LayoutParams(dp(if (vertical) 52 else 96), dp(if (vertical) 76 else 48)))
+        rail.addView(clockArea, LinearLayout.LayoutParams(if (vertical) dp(52) else -2, dp(if (vertical) 76 else 48)))
         binding.btnSearch.setImageResource(R.drawable.ic_google)
         binding.btnSearch.contentDescription = "Search or open address"
         val browser = DockBrowser.selected(this)

@@ -456,6 +456,15 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
     private fun cycleRotation() {
         val next = when (rotationMode()) { "Portrait" -> "Landscape"; "Landscape" -> "Auto"; else -> "Portrait" }
         RotationControl.select(activity, next)
+        if (bridge.ready) {
+            val angle = if (next == "Landscape") (RotationControl.portraitAngle(activity) + 1) % 2 else RotationControl.portraitAngle(activity)
+            privileged({ it.applyRotation(when (next) { "Portrait" -> 1; "Landscape" -> 2; else -> 0 }, angle) }) {
+                status = if (it == "OK") "" else it
+                render()
+            }
+        } else if (!Settings.System.canWrite(activity)) {
+            status = "Allow system rotation control to apply this outside AniHome."
+        }
         (activity as? HomeActivity)?.applyRotationFromPanel() ?: RotationControl.applyHome(activity)
         render()
     }
