@@ -26,6 +26,8 @@ final class ContinuationController {
     private static String resumeTarget="",resumeUrl="";
     private static int resumeScope=-1;
     private static final Runnable timeout=()->action("dismiss");
+    private static final Runnable pendingTimeout=()->{JSONObject p=pending();if(p!=null){if(p.optLong("expires")<=System.currentTimeMillis())forgetPresentation(null);else scheduleExpiry(p);}};
+    private static void scheduleExpiry(JSONObject p){UI.removeCallbacks(pendingTimeout);if(p!=null)UI.postDelayed(pendingTimeout,Math.max(0,p.optLong("expires")-System.currentTimeMillis()));}
     private static ContinuationStore store(Activity a){if(store==null)store=new ContinuationStore(a.getApplicationContext());return store;}
     private static Object currentTab(Activity a){try{return a.getClass().getMethod("m4").invoke(a);}catch(Exception e){return null;}}
     private static int scope(Object t){try{return ((Number)t.getClass().getMethod("getId").invoke(t)).intValue();}catch(Exception e){return -1;}}
@@ -60,7 +62,7 @@ final class ContinuationController {
     private static void render(){
         if(!valid(owner,tab,url)){hide();return;}JSONObject e=entry();if(e==null){hide();return;}JSONObject p=pending();
         String sig=e.optString("key")+"|"+(p!=null)+"|"+(p!=null&&p.optBoolean("applied"))+"|"+notice;
-        if(sig.equals(signature)&&card!=null)return;
+        if(sig.equals(signature)&&card!=null){scheduleExpiry(p);return;}
         hide();signature=sig;Activity a=owner;card=new LinearLayout(a);card.setOrientation(LinearLayout.VERTICAL);card.setPadding(dp(a,12),dp(a,8),dp(a,12),dp(a,12));
         GradientDrawable bg=new GradientDrawable();bg.setColor(0xfa24211f);bg.setCornerRadius(dp(a,12));card.setBackground(bg);card.setElevation(dp(a,6));
         LinearLayout header=new LinearLayout(a);header.setGravity(Gravity.CENTER_VERTICAL);
@@ -74,7 +76,7 @@ final class ContinuationController {
         controls.addView(here,new LinearLayout.LayoutParams(0,dp(a,44),1));Button old=button(a,"Open previous site",()->action("previous"));LinearLayout.LayoutParams oldParams=new LinearLayout.LayoutParams(0,dp(a,44),1);oldParams.leftMargin=dp(a,6);controls.addView(old,oldParams);card.addView(controls);
         FrameLayout decor=(FrameLayout)a.getWindow().getDecorView();View content=a.findViewById(android.R.id.content);int reserve=content==null?0:content.getPaddingLeft();
         FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(Math.min(dp(a,360),Math.max(dp(a,240),decor.getWidth()-reserve-dp(a,24))),-2,Gravity.BOTTOM|Gravity.LEFT);params.leftMargin=reserve+dp(a,12);WindowInsets insets=decor.getRootWindowInsets();params.bottomMargin=dp(a,16)+(insets==null?0:insets.getSystemWindowInsetBottom());decor.addView(card,params);decorOwner=decor;privacy=()->{if(!valid(owner,tab,url))hide();return true;};decor.getViewTreeObserver().addOnPreDrawListener(privacy);
-        if(p==null){int ms=12000;android.view.accessibility.AccessibilityManager am=(android.view.accessibility.AccessibilityManager)a.getSystemService(Context.ACCESSIBILITY_SERVICE);if(am!=null)ms=am.getRecommendedTimeoutMillis(ms,3);UI.postDelayed(timeout,ms);}
+        if(p==null){int ms=12000;android.view.accessibility.AccessibilityManager am=(android.view.accessibility.AccessibilityManager)a.getSystemService(Context.ACCESSIBILITY_SERVICE);if(am!=null)ms=am.getRecommendedTimeoutMillis(ms,3);UI.postDelayed(timeout,ms);}else scheduleExpiry(p);
     }
     private static void action(String command){
         Activity a=owner;Object t=tab;String page=url,targetId=target;JSONObject e=entry(),id=identity;if(e==null||!valid(a,t,page))return;
@@ -118,7 +120,7 @@ final class ContinuationController {
         if(!success){notice="This player could not restore the position. Use the saved time manually.";render();return;}
         Activity a=owner;Object t=tab;IO.execute(()->{store(a).markApplied(scope(t));UI.post(()->{if(valid(a,t,page)){notice="Position restored. Press Play when ready.";refresh(a,t,page,targetId,identity);}});});
     });}
-    static void hide(){UI.removeCallbacks(timeout);if(decorOwner!=null&&privacy!=null&&decorOwner.getViewTreeObserver().isAlive())decorOwner.getViewTreeObserver().removeOnPreDrawListener(privacy);decorOwner=null;privacy=null;if(card!=null&&card.getParent() instanceof ViewGroup)((ViewGroup)card.getParent()).removeView(card);card=null;signature="";}
+    static void hide(){UI.removeCallbacks(timeout);UI.removeCallbacks(pendingTimeout);if(decorOwner!=null&&privacy!=null&&decorOwner.getViewTreeObserver().isAlive())decorOwner.getViewTreeObserver().removeOnPreDrawListener(privacy);decorOwner=null;privacy=null;if(card!=null&&card.getParent() instanceof ViewGroup)((ViewGroup)card.getParent()).removeView(card);card=null;signature="";}
     private static void forgetPresentation(String key){JSONObject e=entry();if(key==null||(e!=null&&key.equals(e.optString("key")))){if(engine!=null&&valid(owner,tab,url))engine.continuationState(target,url,new JSONObject());pause();}}
     static void pause(){hide();owner=null;tab=null;target="";state=null;identity=null;notice="";resumeTarget="";resumeUrl="";}
     static void library(Activity a){
