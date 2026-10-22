@@ -129,23 +129,25 @@ class TileStore(context: Context) {
         previous?.let { IconCache.invalidateFile(it); if (it != path) File(it).delete() }
     }
 
-    fun remove(id: Long) {
-        val removed = byId(id)
-        byId(id)?.artworkPath?.let { IconCache.invalidateFile(it); File(it).delete() }
-        byId(id)?.iconPath?.let { runCatching { File(it).delete() } }
-        db.delete(TABLE, "id=?", arrayOf(id.toString()))
-        if (removed?.isShortcut == true) runCatching {
-            val user = app.getSystemService(android.os.UserManager::class.java).getUserForSerialNumber(removed.shortcutUser ?: -1) ?: return@runCatching
-            val remaining = all().filter { it.packageName == removed.packageName && it.shortcutUser == removed.shortcutUser }.mapNotNull { it.shortcutId }
+    fun remove(id: Long, updatePins: Boolean = true) {
+        val removed = byId(id) ?: return
+        if (removed.isShortcut && updatePins) {
+            val user = app.getSystemService(android.os.UserManager::class.java)
+                .getUserForSerialNumber(removed.shortcutUser ?: -1)
+                ?: error("Shortcut profile is unavailable")
+            val remaining = all().filter { it.id != id && it.packageName == removed.packageName && it.shortcutUser == removed.shortcutUser }.mapNotNull { it.shortcutId }
             app.getSystemService(android.content.pm.LauncherApps::class.java).pinShortcuts(removed.packageName!!, remaining, user)
         }
+        db.delete(TABLE, "id=?", arrayOf(id.toString()))
+        removed.artworkPath?.let { IconCache.invalidateFile(it); File(it).delete() }
+        removed.iconPath?.let { runCatching { File(it).delete() } }
     }
 
     fun removePackage(packageName: String): Int {
         val removed = db.query(TABLE, arrayOf("id"), "package_name=?", arrayOf(packageName), null, null, null).use { c ->
             buildList { while (c.moveToNext()) add(c.getLong(0)) }
         }
-        removed.forEach(::remove)
+        removed.forEach { remove(it, updatePins = false) }
         return removed.size
     }
 

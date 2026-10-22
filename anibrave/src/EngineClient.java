@@ -210,15 +210,15 @@ final class EngineClient implements Runnable {
             JSONObject data=new JSONObject(payload);
             String url=root(p).url;
             if(data.optString("type").equals("watchPage")){
-                if(TrackingPrivacy.normalContext(defaultBrowserContext,p.browserContext)&&p.type.equals("page")&&p.parent==null&&data.optString("url").equals(p.url)){
-                    if(data.optInt("episode")>0&&(p.watchPage==null||!p.watchPage.optString("url").equals(p.url)||p.watchPage.optInt("episode")!=data.optInt("episode")))p.watchIdentityAt=System.currentTimeMillis();
+                if(TrackingPrivacy.normalContext(defaultBrowserContext,p.browserContext)&&p.type.equals("page")&&p.parent==null&&WatchUrl.same(data.optString("url"),p.url)){
+                    if(data.optInt("episode")>0&&(p.watchPage==null||!WatchUrl.same(p.watchPage.optString("url"),p.url)||p.watchPage.optInt("episode")!=data.optInt("episode")))p.watchIdentityAt=System.currentTimeMillis();
                     if(data.optInt("episode")>0)p.watchPage=data;
-                    else if(p.watchPage!=null&&!p.watchPage.optString("url").equals(p.url))p.watchPage=null;
+                    else if(p.watchPage!=null&&!WatchUrl.same(p.watchPage.optString("url"),p.url))p.watchPage=null;
                     AniRuntime.watchPage(p.url,p.watchPage);
                 }
             }else if(data.optString("type").equals("watchProgress")){
                 Page top=root(p);JSONObject episode=top.watchPage;
-                if(TrackingPrivacy.normalContext(defaultBrowserContext,top.browserContext)&&episode!=null&&episode.optString("url").equals(top.url)&&data.optInt("playedSeconds")>=15&&System.currentTimeMillis()-top.watchIdentityAt>=15000){
+                if(TrackingPrivacy.normalContext(defaultBrowserContext,top.browserContext)&&episode!=null&&WatchUrl.same(episode.optString("url"),top.url)&&data.optInt("playedSeconds")>=15&&System.currentTimeMillis()-top.watchIdentityAt>=15000){
                     AniRuntime.watched(top.url,episode,data.optInt("position"),data.optInt("duration"));
                 }
             }else if(data.optString("type").equals("reveal")) AniRuntime.reveal(url);

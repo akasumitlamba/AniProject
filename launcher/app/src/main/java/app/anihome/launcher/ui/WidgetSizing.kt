@@ -4,6 +4,11 @@ import kotlin.math.ceil
 import kotlin.math.floor
 
 internal object WidgetSizing {
+    fun dragCells(start: Int, deltaPixels: Float, cellPixels: Float, minimum: Int, maximum: Int): Int {
+        require(cellPixels > 0 && minimum <= maximum)
+        return (start + kotlin.math.round(deltaPixels / cellPixels).toInt()).coerceIn(minimum, maximum)
+    }
+
     fun cellsFromPixels(minimumPixels: Int, density: Float, cellDp: Float, available: Int): Int {
         require(density > 0 && cellDp > 0 && available > 0)
         return ceil(minimumPixels / density / cellDp).toInt().coerceIn(1, available)

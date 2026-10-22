@@ -11,7 +11,7 @@ class AdaptiveLayoutTest {
         assertEquals(4, AdaptiveLayout.columns(454f, 1f, 4, 96f))
     }
     @Test fun dockReservesClockSearchAndNavigationBeforePins() {
-        assertEquals(3, AdaptiveLayout.dockCapacity(332, false, false, false))
+        assertEquals(2, AdaptiveLayout.dockCapacity(332, false, false, false))
         assertEquals(2, AdaptiveLayout.dockCapacity(332, false, true, false))
         assertEquals(0, AdaptiveLayout.dockCapacity(240, false, true, true))
         assertEquals(5, AdaptiveLayout.dockCapacity(900, true, true, false))

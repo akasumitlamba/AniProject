@@ -34,6 +34,7 @@ final class VerticalTabs {
     private boolean lastExpanded;
     private boolean overlayVisible, nativeOverlay;
     private int addedTopInset;
+    private int pageWidth=-1,pageHeight=-1;
     private final Map<View,Integer> toolbarVisibility=new IdentityHashMap<>(),toolbarWidths=new IdentityHashMap<>();
     private ViewTreeObserver.OnPreDrawListener privacyListener;
     private TabAdapter adapter;
@@ -90,7 +91,9 @@ final class VerticalTabs {
         decor.getViewTreeObserver().addOnGlobalLayoutListener(layoutListener);
         privacyListener=()->{
             toolbarControls();
-            try{hideStripLayer();}catch(Exception e){android.util.Log.w("AniBrave","Native strip layer unavailable",e);fail();return false;}
+            // Reconcile replacement native coordinators before drawing. Transient
+            // startup/attachment failures are retried by the timed refresh loop.
+            try{strip(false);}catch(Exception ignored){}
             boolean blocked=blocked();
             if(blocked!=nativeOverlay){nativeOverlay=blocked;fingerprint="";
                 if(blocked)clearRows();
@@ -109,7 +112,8 @@ final class VerticalTabs {
     private static Object field(Object owner, String name) throws Exception {
         return owner.getClass().getField(name).get(owner);
     }
-    private void strip() throws Exception {
+    private void strip() throws Exception {strip(true);}
+    private void strip(boolean reconcileHeight) throws Exception {
         View control=find("control_container");
         if(control==null) return;
         Object compositor=field(control,"z");
@@ -125,14 +129,17 @@ final class VerticalTabs {
         }
         // Native scroll/resize policy must also know the strip is hidden; a
         // zero height alone leaves its compositor layer alive while scrolling.
-        if(!(Boolean)field(controller,"p"))transition.getClass().getMethod("e",boolean.class).invoke(transition,true);
+        boolean changed=!(Boolean)field(controller,"p");
+        if(changed)transition.getClass().getMethod("e",boolean.class).invoke(transition,true);
         hideStripLayer();
-        if(((Number)field(controller,"m")).intValue()!=0)NativeStrip.request(activity,control,controller,0,handler);
-        else NativeStrip.cancel(controller);
+        // e(true) already schedules the native capture. Only the 750ms refresh
+        // retries a stalled height; pre-draw must not enqueue captures per frame.
+        if(reconcileHeight&&!changed&&((Number)field(controller,"m")).intValue()!=0)
+            NativeStrip.request(activity,control,controller,0,handler);
     }
     private void hideStripLayer() throws Exception {
         if(stripController==null)return;
-        Object layer=field(field(stripController,"a"),"C");
+        Object layer=NativeStrip.layer(stripController);
         if(layer==null)return; // Native compositor may attach after toolbar initialization.
         if(layer!=stripLayer){
             restoreStripLayer();stripLayer=layer;
@@ -339,6 +346,11 @@ final class VerticalTabs {
             addedTopInset=top-nativeTop;
             if(content.getPaddingLeft()!=left+reserve||content.getPaddingTop()!=top)
                 content.setPadding(left+reserve,top,right,bottom);
+            int availableWidth=content.getWidth()-content.getPaddingLeft()-content.getPaddingRight();
+            int availableHeight=content.getHeight()-content.getPaddingTop()-content.getPaddingBottom();
+            if(pageWidth!=availableWidth||pageHeight!=availableHeight){
+                pageWidth=availableWidth;pageHeight=availableHeight;AniRuntime.pageBoundsChanged();
+            }
             int railTop=Math.max(position[1]+top,safeTop);
             int railLeft=Math.max(position[0]+left,safeLeft);
             int targetHeight=Math.max(0,Math.min(position[1]+content.getHeight()-bottom,decor.getHeight()-safeBottom)-railTop);
@@ -380,7 +392,7 @@ final class VerticalTabs {
         if(decor.getViewTreeObserver().isAlive()){decor.getViewTreeObserver().removeOnGlobalLayoutListener(layoutListener);decor.getViewTreeObserver().removeOnPreDrawListener(privacyListener);}
         if(rail!=null)decor.removeView(rail);if(scrim!=null)decor.removeView(scrim);
         content.setPadding(left,Math.max(0,content.getPaddingTop()-addedTopInset),content.getPaddingRight(),content.getPaddingBottom());
-        addedTopInset=0;
+        addedTopInset=0;AniRuntime.pageBoundsChanged();
         for(Map.Entry<View,Integer> button:toolbarVisibility.entrySet()){
             View view=button.getKey();ViewGroup.LayoutParams params=view.getLayoutParams();params.width=toolbarWidths.get(view);view.setLayoutParams(params);view.setVisibility(button.getValue());
         }

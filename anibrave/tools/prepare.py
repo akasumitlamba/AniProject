@@ -1,6 +1,7 @@
 """Version-pinned integration hooks. Fail rather than guessing changed upstream bytecode."""
 from pathlib import Path
 from app_resources import configure_tasks, write_icon_placement
+from upstream_hooks import remove_shortcut_close, bootstrap_shortcut_controls
 import re
 import os
 import json
@@ -65,7 +66,7 @@ def activity(text):
 rewrite('org/chromium/chrome/browser/ChromeTabbedActivity.smali',activity)
 rewrite('org/chromium/content_public/browser/LoadUrlParams.smali',lambda text:inject(text,'public constructor <init>(ILjava/lang/String;)V','''    invoke-static/range {p2 .. p2}, Lapp/anibrave/AniRuntime;->blankNewTab(Ljava/lang/String;)Ljava/lang/String;
     move-result-object p2'''))
-rewrite('org/chromium/chrome/browser/customtabs/FullScreenCustomTabActivity.smali',lambda text:inject(text,'public final O3()V','    invoke-static/range {p0 .. p0}, Lapp/anibrave/AniRuntime;->resume(Landroid/app/Activity;)V'))
+rewrite('org/chromium/chrome/browser/customtabs/FullScreenCustomTabActivity.smali',lambda text:inject(bootstrap_shortcut_controls(remove_shortcut_close(text)),'public final O3()V','    invoke-static/range {p0 .. p0}, Lapp/anibrave/AniRuntime;->resume(Landroid/app/Activity;)V'))
 
 # Preserve classes/component names; change install identity, permissions, provider authorities.
 manifest=RES/'AndroidManifest.xml'

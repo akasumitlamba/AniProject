@@ -88,8 +88,11 @@ const path=require('path'),fs=require('fs'),os=require('os'),assert=require('ass
 
  await page.evaluate(()=>{window.__nativeOnly=false;});
  await setSpeed(5);await settled(5);assert.equal(await storedSpeed(),5);
+ // A Play click does not authorize an automatic player clamp to replace 5×.
+ await page.evaluate(()=>{const b=document.createElement('button');b.id='plain-play';b.textContent='Play';b.onclick=()=>document.querySelector('video').playbackRate=1;document.body.append(b);});
+ await page.locator('#plain-play').click();await settled(5);assert.equal(await storedSpeed(),5);
  // A genuine site speed selection still takes over, even after a forced override.
- await page.evaluate(()=>{const b=document.createElement('button');b.id='lower-rate';b.textContent='Site rate 1.5';b.onclick=()=>document.getElementById('movie_player').setPlaybackRate(1.5);document.body.append(b);});
+ await page.evaluate(()=>{const b=document.createElement('button');b.id='lower-rate';b.textContent='Playback speed 1.5×';b.onclick=()=>document.getElementById('movie_player').setPlaybackRate(1.5);document.body.append(b);});
  await page.locator('#lower-rate').click();await settled(1.5);assert.equal(await storedSpeed(),1.5);
  await setSpeed(5);await settled(5);
  await page.evaluate(()=>document.getElementById('movie_player').classList.add('ad-showing'));

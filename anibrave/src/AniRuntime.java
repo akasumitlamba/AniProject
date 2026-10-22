@@ -29,7 +29,7 @@ public final class AniRuntime {
     private static int reminderEpisode;
     private static final ReminderPresentation reminderPresentation=new ReminderPresentation();
     private static final Runnable AUTO_HIDE_REMINDER=()->removeWatchReminder();
-    private static final Runnable CHECK_REMINDER=new Runnable(){public void run(){captureLocation(active.get());reminderPresentation.enter(currentUrl());if(watchReminder!=null&&!reminderUrl.equals(currentUrl()))removeWatchReminder();if(alive(active.get()))UI.postDelayed(this,2000);}};
+    private static final Runnable CHECK_REMINDER=new Runnable(){public void run(){captureLocation(active.get());String url=currentUrl();reminderPresentation.enter(url);if(watchReminder!=null&&!url.isEmpty()&&!WatchUrl.same(reminderUrl,url))removeWatchReminder();if(alive(active.get()))UI.postDelayed(this,2000);}};
     private static EngineClient engine;
     private static Object server;
     private static long serverPointer;
@@ -204,9 +204,16 @@ public final class AniRuntime {
         android.util.DisplayMetrics dm=new android.util.DisplayMetrics();dm.setTo(context.getResources().getDisplayMetrics());
         Activity a=active.get();
         if(alive(a)){
-            a.getWindowManager().getDefaultDisplay().getRealMetrics(dm);
+            View page=a.findViewById(android.R.id.content);
+            if(page!=null&&page.getWidth()>0&&page.getHeight()>0){
+                dm.widthPixels=Math.max(1,page.getWidth()-page.getPaddingLeft()-page.getPaddingRight());
+                dm.heightPixels=Math.max(1,page.getHeight()-page.getPaddingTop()-page.getPaddingBottom());
+            }
         }
         return dm;
+    }
+    static void pageBoundsChanged(){
+        EngineClient e=engine;if(e!=null)IO.execute(()->e.viewportChanged(videoFullscreen()));
     }
     static String currentUrl() {
         Activity a=active.get();if(!alive(a))return "";
@@ -224,7 +231,9 @@ public final class AniRuntime {
         if(context==null||a==null||a.isDestroyed()||!normalProfile(a))return;
         String url=currentUrlFor(a);
         // Returning to an unchanged older window must not overwrite a newer visit.
-        if(!url.equals(lastLocations.put(a,url)))ResumeStore.save(context,url);
+        if(!ResumeLocation.valid(url))return;
+        lastLocations.put(a,url);
+        ResumeStore.capture(context,a.getTaskId(),url);
     }
     private static String currentUrlFor(Activity a){
         try{Object tab=a.getClass().getMethod("m4").invoke(a);Object url=tab.getClass().getMethod("getUrl").invoke(tab);return (String)url.getClass().getField("a").get(url);}catch(Exception e){return "";}
@@ -364,7 +373,7 @@ public final class AniRuntime {
     }
     static void watchPage(String url,JSONObject page){
         UI.post(()->{
-            if(!url.equals(currentUrl())||!normalProfile(active.get()))return;
+            if(!WatchUrl.same(url,currentUrl())||!normalProfile(active.get()))return;
             if(page==null){removeWatchReminder();return;}
             String key=AnimeIdentity.key(page.optString("title"));
             IO.execute(()->{AnimeHistory.Summary summary=history.summary(key);UI.post(()->displayReminder(url,summary));});
@@ -372,7 +381,7 @@ public final class AniRuntime {
     }
     static void watched(String url,JSONObject page,int position,int duration){
         UI.post(()->{
-            if(!url.equals(currentUrl())||duration<60||!normalProfile(active.get()))return;
+            if(!WatchUrl.same(url,currentUrl())||duration<60||!normalProfile(active.get()))return;
             String title=page.optString("title"),host=SiteKey.of(url);int episode=page.optInt("episode");
             host=SiteKey.watchHost(url);if(host.isEmpty())return;
             final String watchHost=host;
@@ -380,10 +389,10 @@ public final class AniRuntime {
         });
     }
     private static void displayReminder(String url,AnimeHistory.Summary summary){
-        Activity a=active.get();if(!alive(a)||!url.equals(currentUrl())||!normalProfile(a))return;
+        Activity a=active.get();String pageUrl=currentUrl();if(!alive(a)||!WatchUrl.same(url,pageUrl)||!normalProfile(a))return;
         if(summary==null||summary.episode<1||summary.dismissed){removeWatchReminder();return;}
-        if(!reminderPresentation.accept(url,summary.key,summary.episode))return;
-        removeWatchReminder();reminderUrl=url;reminderKey=summary.key;reminderEpisode=summary.episode;
+        if(!reminderPresentation.accept(pageUrl,summary.key,summary.episode))return;
+        removeWatchReminder();reminderUrl=pageUrl;reminderKey=summary.key;reminderEpisode=summary.episode;
         watchReminder=new LinearLayout(a);watchReminder.setGravity(Gravity.CENTER_VERTICAL);watchReminder.setPadding(dp(a,8),dp(a,6),dp(a,8),dp(a,6));
         GradientDrawable background=new GradientDrawable();background.setColor(0xf0202028);background.setCornerRadius(dp(a,14));watchReminder.setBackground(background);watchReminder.setElevation(dp(a,8));
         TextView label=new TextView(a);label.setText("You were on episode "+summary.episode+" of "+summary.title);label.setTextColor(Color.WHITE);label.setTextSize(14);label.setPadding(dp(a,8),dp(a,8),dp(a,8),dp(a,8));label.setMaxLines(3);label.setOnClickListener(v->{removeWatchReminder();watchLog(a,summary.key,summary.title);});

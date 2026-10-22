@@ -34,7 +34,11 @@
   }
   // A real site-control selection can replace the extension choice. Scripted clamps cannot.
   for (const type of ['pointerdown', 'keydown']) document.addEventListener(type, event => {
-    if (event.isTrusted) for (const v of guarded.keys()) release(v);
+    if (!event.isTrusted) return;
+    const control = event.target?.closest?.('button,[role="button"],[role="menuitem"],[role="menuitemradio"],[role="slider"],[class*="speed"],[data-testid*="speed"]');
+    const label = `${control?.textContent || ''} ${control?.getAttribute?.('aria-label') || ''} ${control?.getAttribute?.('title') || ''}`.trim();
+    const numeric = ['menuitem', 'menuitemradio', 'slider'].includes(control?.getAttribute?.('role')) && /^\d+(?:\.\d+)?$/.test(label);
+    if (numeric || (control && /speed|\bnormal\b|\b\d+(?:\.\d+)?\s*[x×]/i.test(label)) || (type === 'keydown' && ['<', '>'].includes(event.key))) for (const v of guarded.keys()) release(v);
   }, true);
   function forceMedia(v, requested) {
     if (!nativeRate?.get || !nativeRate?.set) return;

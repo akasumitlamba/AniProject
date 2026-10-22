@@ -25,6 +25,31 @@ object IconCache {
         return bitmap
     }
 
+    /** Dock-only normalization: adaptive layers and legacy art share a real circular silhouette. */
+    fun dockIcon(context: Context, packageName: String, activityName: String?): Bitmap? {
+        val key = "dock:$packageName/$activityName"
+        cache.get(key)?.let { return it }
+        val icon = InstalledApps.icon(context, packageName, activityName)?.mutate() ?: return null
+        val size = sizePx(context)
+        val bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        val circle = android.graphics.Path().apply { addCircle(size / 2f, size / 2f, size / 2f, android.graphics.Path.Direction.CW) }
+        canvas.clipPath(circle)
+        canvas.drawColor(0xff303030.toInt())
+        if (icon is android.graphics.drawable.AdaptiveIconDrawable) {
+            val inset = size / 4
+            listOf(icon.background, icon.foreground).forEach { layer ->
+                layer?.setBounds(-inset, -inset, size + inset, size + inset)
+                layer?.draw(canvas)
+            }
+        } else {
+            icon.setBounds(0, 0, size, size)
+            icon.draw(canvas)
+        }
+        cache.put(key, bitmap)
+        return bitmap
+    }
+
     fun fileIcon(path: String): Bitmap? {
         val key = "file:$path"
         cache.get(key)?.let { return it }
@@ -40,7 +65,7 @@ object IconCache {
     }
 
     fun invalidate(packageName: String) {
-        cache.snapshot().keys.filter { it.startsWith("app:$packageName/") }.forEach(cache::remove)
+        cache.snapshot().keys.filter { it.startsWith("app:$packageName/") || it.startsWith("dock:$packageName/") }.forEach(cache::remove)
     }
 
     fun invalidateFile(path: String) { cache.remove("file:$path") }

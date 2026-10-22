@@ -62,6 +62,18 @@ public final class HistoryInstrumentation extends Instrumentation {
                 check(rejected,"invalid import rejected");
                 check(history.summary("example").episode==5,"failed import rolls back show update");
                 try(Cursor c=history.getReadableDatabase().rawQuery("SELECT max_episode FROM site_progress",null)){c.moveToFirst();check(c.getInt(0)==12,"failed import rolls back site update");}
+                long dismissedAt=System.currentTimeMillis();history.dismiss("example");
+                try(Cursor c=history.getReadableDatabase().rawQuery("SELECT updated_at FROM anime WHERE key='example'",null)){c.moveToFirst();check(c.getLong(0)>=dismissedAt,"dismissal timestamps local summary");}
+                history.importHistory(export(now+2000,5));
+                check(history.summary("example").dismissed,"newer same-episode import retains local dismissal");
+                history.importHistory(export(now+3000,6));
+                check(!history.summary("example").dismissed,"different imported episode can re-arm reminder");
+                history.record("Revisit",5,"hianime.to","https://hianime.to/watch/revisit",100,1200);
+                history.record("Revisit",6,"hianime.to","https://hianime.to/watch/revisit",100,1200);
+                history.record("Revisit",5,"HIANIME.TO","https://hianime.to/watch/revisit",200,1200);
+                try(Cursor c=history.getReadableDatabase().rawQuery("SELECT count(*) FROM episode_log WHERE anime_key='revisit' AND episode=5",null)){c.moveToFirst();check(c.getInt(0)==1,"return to an episode coalesces same sitting despite an intervening episode and host case");}
+                try(Cursor c=history.getReadableDatabase().rawQuery("SELECT count(*) FROM episode_log WHERE anime_key='revisit'",null)){c.moveToFirst();check(c.getInt(0)==2,"different episodes keep separate log rows");}
+                check(history.summary("revisit").episode==5,"return updates latest summary");
                 check(history.record("The 100",9,"hianime.to","https://hianime.to/watch/numeric",90,1200)!=null,"numeric title saved");
                 check(history.record("86",3,"hianime.to","https://hianime.to/watch/86",90,1200)!=null,"two-digit title saved");
                 history.dismiss("100");check(history.summary("100").dismissed,"explicit dismissal saved");
@@ -71,6 +83,19 @@ public final class HistoryInstrumentation extends Instrumentation {
                 check(!history.summary("100").dismissed,"new episode re-arms reminder");
             }
             try(AnimeHistory reopened=new AnimeHistory(getTargetContext())){check(reopened.summary("100").episode==10,"history survives database reopen");}
+            String seed="https://hianime.to/",ep5="https://hianime.to/watch/example?ep=5",ep6="https://hianime.to/watch/example?ep=6";
+            getTargetContext().getSharedPreferences("anibrave_resume",0).edit().clear().commit();
+            ResumeStore.capture(getTargetContext(),1,ep5);ResumeStore.capture(getTargetContext(),2,ep6);
+            check(ResumeStore.resolve(getTargetContext(),seed).equals(ep6),"newest task location is saved");
+            ResumeStore.capture(getTargetContext(),1,ep5);
+            check(ResumeStore.resolve(getTargetContext(),seed).equals(ep6),"unchanged older task cannot overwrite newer task");
+            ResumeStore.capture(getTargetContext(),1,"");ResumeStore.capture(getTargetContext(),1,"about:blank");ResumeStore.capture(getTargetContext(),1,ep5);
+            check(ResumeStore.resolve(getTargetContext(),seed).equals(ep6),"invalid reads do not erase task memo or resave old location");
+            android.content.Context recreated=getTargetContext().createPackageContext(getTargetContext().getPackageName(),0);
+            ResumeStore.capture(recreated,1,ep5);
+            check(ResumeStore.resolve(recreated,seed).equals(ep6),"recreated context loads persistent task memo");
+            String ep7="https://hianime.to/watch/example?ep=7";ResumeStore.capture(recreated,1,ep7);
+            check(ResumeStore.resolve(recreated,seed).equals(ep7),"real navigation in an older task still updates resume");
             runOnMainSync(()->{
                 try {
                     FakeActivity activity=new FakeActivity();NativeTabs tabs=new NativeTabs(activity);

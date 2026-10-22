@@ -13,7 +13,7 @@ jdk=args.java_home/'bin';bt=args.sdk/'build-tools/37.0.0';android=args.sdk/'plat
 environment=dict(os.environ, ANI_QA_SIGN_PASS=secrets.token_urlsafe(32))
 def run(*a):subprocess.run([str(x) for x in a],check=True,env=environment)
 classes=work/'classes';classes.mkdir(exist_ok=True)
-run(jdk/'javac','--release','17','-cp',android,'-d',classes,*[root/'anibrave/src'/n for n in ['AnimeHistory.java','AnimeIdentity.java','NativeTabs.java']],root/'anibrave/tests/android/HistoryInstrumentation.java')
+run(jdk/'javac','--release','17','-cp',android,'-d',classes,*[root/'anibrave/src'/n for n in ['AnimeHistory.java','AnimeIdentity.java','NativeTabs.java','ResumeStore.java','ResumeLocation.java','SiteKey.java']],root/'anibrave/tests/android/HistoryInstrumentation.java')
 run(jdk/'jar','cf',work/'test.jar','-C',classes,'.')
 run(bt/'d8','--min-api','29','--lib',android,'--output',work,work/'test.jar')
 run(bt/'aapt2','link','-o',work/'test.apk','-I',android,'--manifest',root/'anibrave/tests/android/AndroidManifest.xml')

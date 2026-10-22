@@ -4,6 +4,14 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class WidgetSizingTest {
+    @Test fun edgeDragSnapsAndRespectsProviderLimits() {
+        assertEquals(2, WidgetSizing.dragCells(2, 20f, 100f, 1, 4))
+        assertEquals(3, WidgetSizing.dragCells(2, 70f, 100f, 1, 4))
+        assertEquals(1, WidgetSizing.dragCells(2, -150f, 100f, 1, 4))
+        assertEquals(4, WidgetSizing.dragCells(2, 700f, 100f, 1, 4))
+        assertEquals(2, WidgetSizing.dragCells(2, 700f, 100f, 2, 2))
+    }
+
     @Test fun providerMaximumRoundsDownWithoutBreakingMinimum() {
         assertEquals(2, WidgetSizing.maximumCells(719, 2f, 120f, 1, 8))
         assertEquals(3, WidgetSizing.maximumCells(100, 2f, 120f, 3, 8))

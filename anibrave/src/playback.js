@@ -89,7 +89,7 @@
     const s=state(video), time=now(), chosen=video.playbackRate, expected=revision;
     // Only a real player-control interaction can replace a saved choice. Startup,
     // autoplay, episode/source changes and scripted menu clamps reapply it.
-    if (time<inputUntil && time-s.applied>150 && time-s.loading>600 && (video.readyState??4)>=2) {
+    if (time<inputUntil) {
       clearTimeout(s.pending);
       s.pending=setTimeout(()=>{
         s.pending=0;

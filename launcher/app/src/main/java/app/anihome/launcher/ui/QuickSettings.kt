@@ -35,9 +35,10 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
     private var status = ""
     private var wifiDraft: ScanResult? = null
     private var scrollView: LimitedScroll? = null
-    private val bridge = RadioBridge(activity) { Handler(Looper.getMainLooper()).post { if (listening) render() } }
+    private val bridge: RadioBridge = RadioBridge(activity) { Handler(Looper.getMainLooper()).post { if (listening) { if (!bridge.ready) interruptBluetooth("Direct Bluetooth access disconnected. Reconnect and retry."); render() } } }
     private var radioBusy = false
-    private var lastWifiScanAt = 0L
+    private val wifiScanRevision = OperationRevision()
+    private val bluetoothAttempt = OperationRevision()
     private var connectingNetwork: String? = null
     private var needsPasswordFor: String? = null
     private val scanTimeout = Runnable { if (listening && status == "Searching…") { status = "Scan timed out. Tap refresh to retry."; render() } }
@@ -87,7 +88,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
             runCatching { proxy.connectedDevices.forEach { remember(it); connected.add(it.address) } }
             render()
         }
-        override fun onServiceDisconnected(profile: Int) { profiles.remove(profile) }
+        override fun onServiceDisconnected(profile: Int) { profiles.remove(profile); interruptBluetooth("Bluetooth connection service disconnected. Tap to retry."); if (listening) render() }
     }
     private val observer = object : ContentObserver(Handler(Looper.getMainLooper())) {
         override fun onChange(selfChange: Boolean) { RotationControl.applyHome(activity); render() }
@@ -98,7 +99,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
             runCatching {
                 when (intent.action) {
                     BluetoothAdapter.ACTION_STATE_CHANGED -> if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR) == BluetoothAdapter.STATE_OFF) {
-                        connected.clear(); found.clear(); scanningBluetooth = false; status = "Bluetooth is off"
+                        interruptBluetooth("Bluetooth is off"); connected.clear(); found.clear(); scanningBluetooth = false; status = "Bluetooth is off"
                     }
                     BluetoothDevice.ACTION_BOND_STATE_CHANGED -> device?.let {
                         if (pendingBluetooth == it.address && it.bondState == BluetoothDevice.BOND_BONDED) connectBluetooth(it)
@@ -115,7 +116,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
                     WifiManager.SUPPLICANT_STATE_CHANGED_ACTION -> if (intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1) == WifiManager.ERROR_AUTHENTICATING) {
                         needsPasswordFor = connectingNetwork; connectingNetwork = null; status = "Password rejected. Tap the network to update it."
                     }
-                    WifiManager.SCAN_RESULTS_AVAILABLE_ACTION -> { lastWifiScanAt = SystemClock.elapsedRealtime(); handler.removeCallbacks(scanTimeout); status = if (intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, true)) "" else "Showing last results; scan was limited by Android." }
+                    WifiManager.SCAN_RESULTS_AVAILABLE_ACTION -> { wifiScanRevision.invalidate(); handler.removeCallbacks(scanTimeout); status = if (intent.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, true)) "" else "Showing last results; scan was limited by Android." }
                 }
             }
             render()
@@ -156,6 +157,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
     fun detach() {
         handler.removeCallbacks(bluetoothTimeout)
         pendingBluetooth = null
+        bluetoothAttempt.invalidate()
         listening = false
         handler.removeCallbacks(scanTimeout)
         runCatching { activity.unregisterReceiver(receiver) }
@@ -282,10 +284,10 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         } else {
             handler.removeCallbacks(scanTimeout)
             if (bridge.ready) {
-                val requestedAt = SystemClock.elapsedRealtime()
+                val requestedRevision = wifiScanRevision.snapshot()
                 status = "Searching…"; render()
                 privileged({ if (runCatching { it.scanWifi() }.getOrDefault(false)) "Searching…" else frameworkWifiScan() }) {
-                    status = if (lastWifiScanAt >= requestedAt) "" else it
+                    if (wifiScanRevision.isCurrent(requestedRevision)) status = it
                     render(); if (status == "Searching…") handler.postDelayed(scanTimeout, 12000)
                 }
                 return
@@ -388,6 +390,11 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         }
         row(body, "Back to networks") { wifiDraft = null; render() }
     }
+    private fun interruptBluetooth(message: String) {
+        bluetoothAttempt.invalidate()
+        handler.removeCallbacks(bluetoothTimeout)
+        if (pendingBluetooth != null) { pendingBluetooth = null; status = message }
+    }
     private fun connectBluetooth(device: BluetoothDevice) {
         bluetooth?.cancelDiscovery()
         if (!bridge.ready) {
@@ -401,12 +408,13 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
             status = "Direct Bluetooth access is not ready. Reconnect Shizuku and retry."
             render(); return
         }
+        val attempt = bluetoothAttempt.invalidate()
         pendingBluetooth = device.address; status = "Connecting…"; render()
         radioBusy = true
         activity.lifecycleScope.launch {
             val accepted = try { app.anihome.launcher.controls.BluetoothConnections.connect(activity, service, device.address) }
                 finally { radioBusy = false }
-            if (!listening) return@launch
+            if (!listening || !bluetoothAttempt.isCurrent(attempt)) return@launch
             status = if (device.address in connected) "" else if (accepted) "Connecting…" else "Connection could not start. Check the device is awake and in range, then retry."
             if (!accepted) pendingBluetooth = null
             handler.removeCallbacks(bluetoothTimeout)

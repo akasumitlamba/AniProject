@@ -73,8 +73,13 @@ final class NativeTabs {
                         .invoke(null,tab,true);
                     if(favicon!=null&&favicon.isRecycled())favicon=null;
                 }catch(Exception ignored){} // Missing icons must never disable native tab controls.
-                Bitmap previous=icons.get(id);
-                if(favicon!=null&&previous!=null&&!previous.isRecycled()&&favicon.sameAs(previous))favicon=previous;
+                // Native favicon owners may recycle a bitmap between either call.
+                // Keep an owned immutable copy; isolate both comparison and copying.
+                try {
+                    Bitmap previous=icons.get(id);
+                    if(favicon!=null)favicon=previous!=null&&!previous.isRecycled()&&favicon.sameAs(previous)
+                        ?previous:favicon.copy(Bitmap.Config.ARGB_8888,false);
+                }catch(RuntimeException ignored){favicon=null;}
                 if(favicon==null)icons.remove(id);else icons.put(id,favicon);
                 live.add(id);
                 entries.add(new Entry(id,title==null||title.trim().isEmpty()?"New tab":title,incognito,i==index,favicon));

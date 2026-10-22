@@ -6,11 +6,11 @@ AniProject contains **AniHome**, an Android home-screen launcher, and **AniBrave
 
 | Product | Download | Requirements |
 | --- | --- | --- |
-| AniHome 0.8.21 | [Download launcher](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.21/AniHome-Launcher-0.8.21-release.apk) | Android 8+ |
-| AniBrave 0.1.5 | [Download browser](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.21/AniBrave-0.1.5-arm64-v8a.apk) | Android 10+, ARM64 |
-| AniBrave desktop 0.1.3 | [Download extension](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.21/AniBrave-Extension-0.1.3.zip) | Brave desktop |
+| AniHome 0.8.22 | [Download launcher](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.22/AniHome-Launcher-0.8.22-release.apk) | Android 8+ |
+| AniBrave 0.1.6 | [Download browser](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.22/AniBrave-0.1.6-arm64-v8a.apk) | Android 10+, ARM64 |
+| AniBrave desktop 0.1.4 | [Download extension](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.22/AniBrave-Extension-0.1.4.zip) | Brave desktop |
 
-[Download all three applications together](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.21/AniProject-2026.10.21-All-Apps.zip), or use the individual downloads above.
+[Download all three applications together](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.22/AniProject-2026.10.21-All-Apps.zip), or use the individual downloads above.
 
 For updates, install the matching signed APK over the existing app. Keep the same signing identity; do not uninstall or clear app data.
 

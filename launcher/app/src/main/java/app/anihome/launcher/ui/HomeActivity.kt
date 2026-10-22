@@ -1,5 +1,6 @@
 package app.anihome.launcher.ui
 
+import kotlinx.coroutines.sync.withLock
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -187,6 +188,18 @@ class HomeActivity : AppCompatActivity() {
             gravity = if (vertical) Gravity.END else Gravity.BOTTOM
         }
         rail.setPadding(dp(if (vertical) 2 else 6), dp(4), dp(if (vertical) 2 else 6), dp(4))
+        fun roundDockIcon(button: android.widget.ImageButton) {
+            val inset = dp((controlSize - 36) / 2)
+            button.scaleType = android.widget.ImageView.ScaleType.FIT_CENTER
+            button.setPadding(inset, inset, inset, inset)
+            button.outlineProvider = object : android.view.ViewOutlineProvider() {
+                override fun getOutline(view: View, outline: android.graphics.Outline) {
+                    outline.setOval(inset, inset, view.width - inset, view.height - inset)
+                }
+            }
+            button.clipToOutline = true
+            button.invalidateOutline()
+        }
         fun add(parent: LinearLayout, view: View, size: Int = controlSize) {
             view.visibility = View.VISIBLE
             if (view is android.widget.ImageButton) {
@@ -196,8 +209,10 @@ class HomeActivity : AppCompatActivity() {
             }
             parent.addView(view, LinearLayout.LayoutParams(dp(size), dp(size)))
         }
-        dockStatus.onPowerIndicatorsChanged = { _ ->
-            clock.textSize = if (vertical) 13f else 16f
+        dockStatus.onPowerIndicatorsChanged = { powerVisible ->
+            if (vertical) androidx.core.widget.TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
+                clock, 11, if (powerVisible) 13 else 16, 1, android.util.TypedValue.COMPLEX_UNIT_SP
+            ) else clock.textSize = 16f
         }
         clock.gravity = if (vertical) Gravity.CENTER else Gravity.START or Gravity.CENTER_VERTICAL
         clock.format24Hour = "HH:mm"
@@ -213,9 +228,9 @@ class HomeActivity : AppCompatActivity() {
             gravity = if (vertical) Gravity.CENTER else Gravity.START or Gravity.CENTER_VERTICAL
             addView(LinearLayout(this@HomeActivity).apply {
                 orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL
-                addView(clock, LinearLayout.LayoutParams(-2, -1))
+                addView(clock, if (vertical) LinearLayout.LayoutParams(0, -1, 1f) else LinearLayout.LayoutParams(-2, -1))
                 addView(notificationBadge, LinearLayout.LayoutParams(-2, dp(if (vertical) 16 else 20)).apply { marginStart = dp(2) })
-            }, LinearLayout.LayoutParams(-2, dp(22)))
+            }, LinearLayout.LayoutParams(if (vertical) -1 else -2, dp(22)))
             addView(android.widget.TextClock(this@HomeActivity).apply {
                 format24Hour = "dd MMM"; format12Hour = "dd MMM"
                 setTextColor(-1); textSize = if (vertical) 14f else 16f
@@ -246,9 +261,10 @@ class HomeActivity : AppCompatActivity() {
             binding.btnSearch.contentDescription = "Search or open address with $label"
             packageManager.getLaunchIntentForPackage(browser)?.component?.let { component ->
                 lifecycleScope.launch {
-                    val icon = withContext(Dispatchers.IO) { IconCache.appIcon(applicationContext, component.packageName, component.className) }
-                    if (DockBrowser.selected(this@HomeActivity) == browser && binding.btnSearch.isAttachedToWindow) {
-                        binding.btnSearch.setImageDrawable(androidx.core.graphics.drawable.RoundedBitmapDrawableFactory.create(resources, icon).apply { isCircular = true; setAntiAlias(true) })
+                    val icon = withContext(Dispatchers.IO) { IconCache.dockIcon(applicationContext, component.packageName, component.className) }
+                    if (DockBrowser.selected(this@HomeActivity) == browser && !isDestroyed && icon != null) {
+                        binding.btnSearch.setImageBitmap(icon)
+                        roundDockIcon(binding.btnSearch)
                     }
                 }
             }
@@ -284,10 +300,14 @@ class HomeActivity : AppCompatActivity() {
                     )); true
                 }
                 lifecycleScope.launch {
-                    val icon = withContext(Dispatchers.IO) { IconCache.appIcon(applicationContext, component.packageName, component.className) }
-                    if (button.isAttachedToWindow) button.setImageDrawable(androidx.core.graphics.drawable.RoundedBitmapDrawableFactory.create(resources, icon).apply { isCircular = true; setAntiAlias(true) })
+                    val icon = withContext(Dispatchers.IO) { IconCache.dockIcon(applicationContext, component.packageName, component.className) }
+                    if (!isDestroyed && icon != null) { button.setImageBitmap(icon); roundDockIcon(button) }
                 }
                 add(group, button)
+                button.layoutParams = (button.layoutParams as LinearLayout.LayoutParams).apply {
+                    if (vertical) { topMargin = dp(3); bottomMargin = dp(3) }
+                    else { marginStart = dp(3); marginEnd = dp(3) }
+                }
             }
         }
         if (vertical) rail.addView(NestedScrollView(this).apply { isFillViewport = true; isVerticalScrollBarEnabled = false; addView(group, ViewGroup.LayoutParams(-1, -2)) }, LinearLayout.LayoutParams(-1, 0, 1f))
@@ -316,15 +336,26 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private var emptyGesture = false
+    private var editExitAt = 0L
     private var gestureConsumed = false
     private var gestureAtTop = false
     private var pointerY = 0f
     private var dragging = false
+    private var tileOrderEpoch = 0L
+    private var tileOrderWrites = 0
+    private val tileOrderMutex = kotlinx.coroutines.sync.Mutex()
     private val gestures by lazy {
         GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onDown(event: MotionEvent) = true
+            override fun onSingleTapUp(event: MotionEvent): Boolean {
+                if (!emptyGesture || !tiles.editMode || dragging || gestureConsumed) return false
+                gestureConsumed = true
+                editExitAt = android.os.SystemClock.uptimeMillis()
+                setEditMode(false)
+                return true
+            }
             override fun onDoubleTap(event: MotionEvent): Boolean {
-                if (tiles.editMode || !homePreferences.getBoolean("double_tap_lock", true)) return false
+                if (tiles.editMode || android.os.SystemClock.uptimeMillis() - editExitAt < android.view.ViewConfiguration.getDoubleTapTimeout() || !homePreferences.getBoolean("double_tap_lock", true)) return false
                 gestureConsumed = true
                 systemAction(AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN)
                 return true
@@ -365,7 +396,10 @@ class HomeActivity : AppCompatActivity() {
             if (tiles.editMode && contains(tile, x, y)) return false
             if (contains(tile.findViewById(R.id.card_frame), x, y) || contains(tile.findViewById(R.id.label), x, y)) return false
         }
-        for (i in 0 until binding.widgetGrid.childCount) if (contains(binding.widgetGrid.getChildAt(i), x, y)) return false
+        for (i in 0 until binding.widgetGrid.childCount) {
+            val container = binding.widgetGrid.getChildAt(i) as? ViewGroup ?: continue
+            for (j in 0 until container.childCount) if (contains(container.getChildAt(j), x, y)) return false
+        }
         return true
     }
     private fun cancelHomeTouch(event: MotionEvent) {
@@ -475,10 +509,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun reload() {
+        val epoch = tileOrderEpoch
         lifecycleScope.launch {
             val items = withContext(Dispatchers.IO) { store.all() }
             legacyHistoryAvailable = withContext(Dispatchers.IO) { HistoryMigration.hasHistory(this@HomeActivity) }
-            if (dragging) return@launch
+            if (dragging || tileOrderWrites > 0 || epoch != tileOrderEpoch) return@launch
             tiles.submitList(items)
             binding.empty.visibility = if (items.isEmpty() && !widgets.hasWidgets) View.VISIBLE else View.GONE
             withContext(Dispatchers.IO) { backfillColors(items) }
@@ -554,7 +589,7 @@ class HomeActivity : AppCompatActivity() {
             }
         }
         Toast.makeText(this, R.string.app_missing, Toast.LENGTH_SHORT).show()
-        if (!InstalledApps.isInstalled(this, pkg)) lifecycleScope.launch(Dispatchers.IO) { store.remove(tile.id); TileEvents.notifyChanged() }
+        if (!InstalledApps.isInstalled(this, pkg)) lifecycleScope.launch(Dispatchers.IO) { store.remove(tile.id, updatePins = false); TileEvents.notifyChanged() }
     }
 
     // ----- tile management -----
@@ -603,7 +638,12 @@ class HomeActivity : AppCompatActivity() {
             .setMessage(R.string.action_remove)
             .setNegativeButton(R.string.action_cancel, null)
             .setPositiveButton(R.string.action_remove) { _, _ ->
-                lifecycleScope.launch(Dispatchers.IO) { store.remove(tile.id); TileEvents.notifyChanged() }
+                lifecycleScope.launch {
+                    val result = withContext(Dispatchers.IO) { runCatching { store.remove(tile.id) } }
+                    result.onSuccess { TileEvents.notifyChanged() }.onFailure {
+                        Toast.makeText(this@HomeActivity, "Could not remove shortcut. Please retry.", Toast.LENGTH_LONG).show()
+                    }
+                }
             }
             .show()
     }
@@ -825,6 +865,7 @@ class HomeActivity : AppCompatActivity() {
         override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
             super.onSelectedChanged(viewHolder, actionState)
             if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+                tileOrderEpoch++
                 setDragScrolling(true)
             } else stopDragScroll()
         }
@@ -833,7 +874,13 @@ class HomeActivity : AppCompatActivity() {
             super.clearView(recyclerView, viewHolder)
             stopDragScroll()
             val order = tiles.currentList.map { it.id }
-            lifecycleScope.launch(Dispatchers.IO) { store.reorder(order) }
+            tileOrderEpoch++
+            tileOrderWrites++
+            lifecycleScope.launch {
+                try { withContext(Dispatchers.IO) { tileOrderMutex.withLock { store.reorder(order) } } }
+                catch (_: Exception) { Toast.makeText(this@HomeActivity, "Could not save Home order. Please retry.", Toast.LENGTH_LONG).show() }
+                finally { tileOrderWrites--; tileOrderEpoch++; reload() }
+            }
         }
     }
 }

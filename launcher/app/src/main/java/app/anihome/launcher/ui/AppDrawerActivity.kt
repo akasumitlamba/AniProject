@@ -276,7 +276,7 @@ class AppDrawerActivity : AppCompatActivity() {
         fav.addView(RecyclerView(this).apply {
             adapter = if (landscape) favorites else frequent
             layoutManager = GridLayoutManager(this@AppDrawerActivity, 2)
-            fitColumns(this, 2)
+            if (landscape) fitColumns(this, 2)
         }, android.widget.LinearLayout.LayoutParams(-1, 0, 1f))
         container.addView(fav, if (landscape) android.widget.LinearLayout.LayoutParams(0, -1, .25f) else android.widget.LinearLayout.LayoutParams(-1, -2))
         val apps = column("All applications")

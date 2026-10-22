@@ -22,6 +22,11 @@ object Seed {
     suspend fun ensure(context: Context, store: TileStore) {
         val prefs = context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
         if (prefs.getInt(KEY_VERSION, 0) >= VERSION) return
+        // A completed older seed is user-owned: missing defaults may have been removed deliberately.
+        if (!SeedPolicy.installDefaults(prefs.getInt(KEY_VERSION, 0), prefs.getBoolean("seeded", false))) {
+            prefs.edit().putInt(KEY_VERSION, VERSION).remove("seeded").apply()
+            return
+        }
         defaults.forEach { (url, label) ->
             val host = hostOf(url) ?: return@forEach
             if (store.hasHost(host)) return@forEach

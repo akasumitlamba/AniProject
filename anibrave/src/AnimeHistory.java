@@ -23,7 +23,7 @@ final class AnimeHistory extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db,int old,int next){throw new IllegalStateException("Unknown history schema");}
     synchronized Summary summary(String key){try(Cursor c=getReadableDatabase().rawQuery("SELECT key,title,last_episode,last_host,reminder_dismissed FROM anime WHERE key=?",new String[]{key})){return c.moveToFirst()?new Summary(c):null;}}
     synchronized List<Summary> library(){List<Summary> result=new ArrayList<>();try(Cursor c=getReadableDatabase().rawQuery("SELECT key,title,last_episode,last_host,reminder_dismissed FROM anime ORDER BY updated_at DESC",null)){while(c.moveToNext())result.add(new Summary(c));}return result;}
-    synchronized void dismiss(String key){ContentValues v=new ContentValues();v.put("reminder_dismissed",1);getWritableDatabase().update("anime",v,"key=?",new String[]{key});}
+    synchronized void dismiss(String key){ContentValues v=new ContentValues();v.put("reminder_dismissed",1);v.put("updated_at",System.currentTimeMillis());getWritableDatabase().update("anime",v,"key=?",new String[]{key});}
     synchronized String log(String key){StringBuilder text=new StringBuilder();java.text.DateFormat date=java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.MEDIUM,java.text.DateFormat.SHORT);try(Cursor c=getReadableDatabase().rawQuery("SELECT episode,host,watched_at FROM episode_log WHERE anime_key=? ORDER BY watched_at DESC",new String[]{key})){while(c.moveToNext()){if(text.length()>0)text.append("\n\n");text.append(date.format(new Date(c.getLong(2)))).append("\n").append(c.getString(1)).append(" · Episode ").append(c.getInt(0));}}return text.length()==0?"No watched episodes yet":text.toString();}
     synchronized Summary record(String title,int episode,String host,String url,int position,int duration){
         String key=AnimeIdentity.key(title);if(key.isEmpty()||episode<1||episode>9999)return null;
@@ -33,7 +33,7 @@ final class AnimeHistory extends SQLiteOpenHelper {
             if(old==null){v.put("key",key);db.insertOrThrow("anime",null,v);}else db.update("anime",v,"key=?",new String[]{key});
             int max=episode;try(Cursor c=db.rawQuery("SELECT max_episode FROM site_progress WHERE anime_key=? AND host=?",new String[]{key,host})){if(c.moveToFirst())max=Math.max(max,c.getInt(0));}
             v=new ContentValues();v.put("anime_key",key);v.put("host",host);v.put("max_episode",max);v.put("last_episode",episode);v.put("last_url",url);v.put("position_sec",position);v.put("duration_sec",duration);v.put("updated_at",now);db.insertWithOnConflict("site_progress",null,v,SQLiteDatabase.CONFLICT_REPLACE);
-            long id=0,time=0;int previous=0;String oldHost="";try(Cursor c=db.rawQuery("SELECT id,episode,host,watched_at FROM episode_log WHERE anime_key=? ORDER BY watched_at DESC LIMIT 1",new String[]{key})){if(c.moveToFirst()){id=c.getLong(0);previous=c.getInt(1);oldHost=c.getString(2);time=c.getLong(3);}}
+            long id=0,time=0;int previous=0;String oldHost="";try(Cursor c=db.rawQuery("SELECT id,episode,host,watched_at FROM episode_log WHERE anime_key=? AND episode=? AND host=? COLLATE NOCASE ORDER BY watched_at DESC LIMIT 1",new String[]{key,Integer.toString(episode),host})){if(c.moveToFirst()){id=c.getLong(0);previous=c.getInt(1);oldHost=c.getString(2);time=c.getLong(3);}}
             v=new ContentValues();v.put("anime_key",key);v.put("episode",episode);v.put("host",host);v.put("url",url);v.put("watched_at",now);
             if(id==0||AnimeIdentity.newSitting(previous,oldHost,time,episode,host,now))db.insertOrThrow("episode_log",null,v);else db.update("episode_log",v,"id=?",new String[]{Long.toString(id)});
             db.setTransactionSuccessful();
@@ -59,7 +59,10 @@ final class AnimeHistory extends SQLiteOpenHelper {
         try{
             for(int i=0;i<anime.length();i++){
                 JSONObject row=anime.getJSONObject(i);String key=bounded(row,"key",100,false);long time=timestamp(row,"updated_at");ContentValues v=new ContentValues();v.put("title",bounded(row,"title",500,false));v.put("last_episode",episode(row,"last_episode"));v.put("last_host",bounded(row,"last_host",253,true));v.put("last_url",url(row,"last_url"));v.put("updated_at",time);v.put("muted",row.optInt("muted",0)==1?1:0);v.put("reminder_dismissed",row.optInt("reminder_dismissed",0)==1?1:0);
-                long existing=-1;try(Cursor c=db.rawQuery("SELECT updated_at FROM anime WHERE key=?",new String[]{key})){if(c.moveToFirst())existing=c.getLong(0);}
+                long existing=-1;try(Cursor c=db.rawQuery("SELECT updated_at,last_episode,reminder_dismissed FROM anime WHERE key=?",new String[]{key})){if(c.moveToFirst()){
+                    existing=c.getLong(0);
+                    if(AnimeIdentity.staysDismissed(c.getInt(2)!=0,c.getInt(1),v.getAsInteger("last_episode")))v.put("reminder_dismissed",1);
+                }}
                 if(existing<0){v.put("key",key);db.insertOrThrow("anime",null,v);result.shows++;}else if(time>existing){db.update("anime",v,"key=?",new String[]{key});result.shows++;}
             }
             for(int i=0;i<sites.length();i++){

@@ -10,7 +10,7 @@ internal object AdaptiveLayout {
         floor(widthDp / (cellDp * fontScale.coerceIn(1f, 1.6f))).toInt().coerceIn(1, maximum)
     fun dockCapacity(lengthDp: Int, vertical: Boolean, recents: Boolean, editing: Boolean, search: Boolean = true): Int {
         val fixed = 80 + (if (search) 44 else 0) + 44 + (if (recents) 44 else 0) + (if (editing) 88 else 0) + 16
-        return ((lengthDp - fixed) / (if (vertical) 52 else 44)).coerceIn(0, 5)
+        return ((lengthDp - fixed) / (if (vertical) 58 else 50)).coerceIn(0, 5)
     }
     fun expandedHeight(sheetHeightDp: Int, portrait: Boolean): Int =
         (sheetHeightDp * if (portrait) .66f else .58f).toInt().coerceAtMost((sheetHeightDp - 130).coerceAtLeast(80))

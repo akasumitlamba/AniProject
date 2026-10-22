@@ -1,26 +1,18 @@
 (() => {
   'use strict';
-  // Speed policy mirrors core.js (content scripts cannot import modules).
+  // Speed normalization mirrors core.js (content scripts cannot import modules).
   const normalizeSpeed = speed => {
     if (typeof speed !== 'number' || !Number.isFinite(speed)) return null;
     const rounded = Math.round((speed + Number.EPSILON) * 100) / 100;
     return rounded >= .25 && rounded <= 5 ? rounded : null;
   };
   const speedsMatch = (a, b) => typeof a === 'number' && typeof b === 'number' && Math.abs(a - b) < .01;
-  const rateDecision = ({mediaRate, savedRate, suppressRate, withinSuppress, withinHold, adActive, main}) => {
-    const rate = normalizeSpeed(mediaRate), saved = normalizeSpeed(savedRate);
-    if (rate == null || saved == null) return 'ignore';
-    if (speedsMatch(rate, saved)) return 'ignore';
-    if (withinSuppress && speedsMatch(rate, normalizeSpeed(suppressRate))) return 'ignore';
-    if (adActive || !main) return 'ignore';
-    return withinHold ? 'enforce' : 'adopt';
-  };
+
 
   let speed = 1, speedStamp = 0, site = '', history = [], currentURL = location.href, currentIdentity = null, ready = false;
   let saveTimer = 0, refreshToken = 0, pageMsg = 0;
   const media = new Set(), roots = new WeakSet(), counters = new WeakMap(), reminded = new Set();
-  const hold = new WeakMap(), pushes = new WeakMap(), watchedAds = new WeakSet();
-  const HOLD_MS = 600;
+  const watchedAds = new WeakSet();
   const send = async data => { try { const r = await chrome.runtime.sendMessage(data); return r?.ok ? r.value : null; } catch { return null; } };
 
   function shadowOf(el) {
@@ -49,7 +41,7 @@
   }
   function isMain(v) {
     if (!isControlled(v)) return false;
-    if (v.tagName === 'AUDIO') return true;
+    if (v.tagName === 'AUDIO') return ![...media].some(other => other.tagName === 'VIDEO' && other.isConnected && !adBlocked(other) && other.clientWidth * other.clientHeight > 0);
     const area = v.clientWidth * v.clientHeight;
     let best = area;
     for (const other of media) {
@@ -67,9 +59,15 @@
   }
   const bridgeRequests = new Map(), inFlight = new WeakMap(), mediaIds = new WeakMap();
   let mediaId = 0, inputUntil = 0, earlyChoice = null;
-  // A real site click/key wins even during the short player startup window.
+  // Only playback-speed controls authorize adopting the site's new rate.
   for (const type of ['pointerdown', 'keydown']) document.addEventListener(type, event => {
-    if (event.isTrusted) inputUntil = performance.now() + 1000;
+    if (!event.isTrusted) return;
+    const target = event.target;
+    const control = target?.closest?.('button,[role="button"],[role="menuitem"],[role="menuitemradio"],[role="slider"],[class*="speed"],[data-testid*="speed"]');
+    const label = `${control?.textContent || ''} ${control?.getAttribute?.('aria-label') || ''} ${control?.getAttribute?.('title') || ''}`.trim();
+    const role = control?.getAttribute?.('role');
+    const numeric = ['menuitem', 'menuitemradio', 'slider'].includes(role) && /^\d+(?:\.\d+)?$/.test(label);
+    if (numeric || (control && /speed|\bnormal\b|\b\d+(?:\.\d+)?\s*[x×]/i.test(label)) || (type === 'keydown' && ['<', '>'].includes(event.key))) inputUntil = performance.now() + 1800;
   }, true);
   window.addEventListener('message', event => {
     if (event.source !== window || event.data?.source !== 'anibrave-page' || event.data.type !== 'player-rate') return;
@@ -105,7 +103,7 @@
       const settled = await syncPlayers(v, requested);
       // An acknowledgement belongs to the request, not whichever choice is current now.
       if (inFlight.get(v) !== task || stamp !== speedStamp || !speedsMatch(requested, speed) || !isControlled(v)) return;
-      if (!speedsMatch(settled, requested)) { adopt(settled); return; }
+      // A player's clamped acknowledgement is not a user speed choice.
       if (v.defaultPlaybackRate !== speed) v.defaultPlaybackRate = speed;
       if (!speedsMatch(v.playbackRate, speed)) v.playbackRate = speed;
     } catch { /* element detached or player rejected a rate */ }
@@ -128,28 +126,17 @@
   }
   function onRate(v) {
     if (!ready) { if (performance.now() < inputUntil && isMain(v)) earlyChoice = normalizeSpeed(v.playbackRate); return; }
-    const pending = inFlight.get(v);
-    if (pending && performance.now() >= inputUntil) return;
-    const decision = rateDecision({
-      mediaRate: v.playbackRate, savedRate: speed,
-      suppressRate: null, withinSuppress: false,
-      withinHold: performance.now() < (hold.get(v) || 0) && performance.now() >= inputUntil,
-      adActive: adBlocked(v), main: isMain(v)
-    });
-    if (decision === 'ignore') return;
-    if (decision === 'adopt') { pushes.set(v, 0); adopt(v.playbackRate); return; }
-    const n = (pushes.get(v) || 0) + 1;
-    pushes.set(v, n);
-    if (n > 2) { const next = normalizeSpeed(v.playbackRate); if (next != null) adopt(next); return; }
-    apply(v);
+    if (!isMain(v) || normalizeSpeed(v.playbackRate) == null) return;
+    if (performance.now() < inputUntil) adopt(v.playbackRate);
+    else apply(v);
   }
+
   function track(node) {
     if (!node?.matches?.('video,audio') || media.has(node)) return;
     media.add(node);
-    hold.set(node, performance.now() + HOLD_MS);
     node.addEventListener('ratechange', () => onRate(node));
     node.addEventListener('loadedmetadata', () => { if (isControlled(node)) apply(node); });
-    node.addEventListener('loadstart', () => { hold.set(node, performance.now() + HOLD_MS); pushes.set(node, 0); if (isControlled(node)) apply(node); });
+    node.addEventListener('loadstart', () => { if (isControlled(node)) apply(node); });
     node.addEventListener('timeupdate', () => progress(node));
     if (isControlled(node)) apply(node);
   }
@@ -167,15 +154,16 @@
       if (nested) scan(nested);
     });
     const hosts = node.querySelectorAll('*');
-    if (hosts.length > 500) return;
     hosts.forEach(el => { const nested = shadowOf(el); if (nested) scan(nested); });
   }
   function scan(root) {
-    if (!root || roots.has(root)) return;
+    if (!root) return;
+    const observed = roots.has(root);
     roots.add(root);
     if (root.nodeType === 9) { if (root.documentElement) inspect(root.documentElement); }
     else if (root.nodeType === 11) { for (const child of root.children || []) inspect(child); }
     else inspect(root);
+    if (observed) return;
     try {
       new MutationObserver(records => {
         for (const record of records) for (const node of record.addedNodes) inspect(node);
@@ -196,19 +184,27 @@
       episode = /\/watch\//.test(location.pathname) ? parse(heading) || parse(fallback) : 0;
       season = Number(((heading + ' ' + fallback).match(/\bS(?:eason\s*)?(\d+)\s*(?:E|Episode)/i) || [])[1] || 1);
     } else if (/(^|\.)(hianime|hianimez)\.to$/.test(host)) {
+      if (!/^\/watch\//.test(location.pathname) && !/^\/[a-z0-9-]+-\d+\/?$/i.test(location.pathname)) return null;
       title = text('.film-name a') || text('.film-name') || text('.anisc-detail h2');
       const active = document.querySelector('.ep-item.active, [data-number].active');
-      episode = active ? Number(active.getAttribute('data-number')) || parse(active.textContent) : 0;
+      episode = /^\/watch\//.test(location.pathname) && active ? Number(active.getAttribute('data-number')) || parse(active.textContent) : 0;
     } else if (/(^|\.)anikototv\.to$/.test(host)) {
       const path = location.pathname.match(/^\/watch\/([^/]+)\/ep-?(\d{1,4})(?:\/|$)/i);
       if (path) { let slug = path[1]; try { slug = decodeURIComponent(slug); } catch { /* malformed URL */ } title = heading || slug.replace(/-/g, ' '); episode = Number(path[2]); }
     }
     return title ? {title: title.replace(/^watch\s+/i, '').trim(), episode, season} : null;
   }
+  function pageIdentity() {
+    if (currentURL !== location.href) { currentURL = location.href; currentIdentity = null; }
+    const found = identity();
+    if (found && (!watchPage() || found.episode > 0 || !currentIdentity?.episode)) currentIdentity = found;
+    return currentIdentity;
+  }
+  const watchPage = () => /^\/watch\//.test(location.pathname);
   const key = t => t.normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
   function remind() {
     if (window !== top || !ready || !document.body) return;
-    const id = identity(); currentIdentity = id;
+    const id = pageIdentity();
     const supported = /(^|\.)(crunchyroll\.com|hianime\.to|hianimez\.to|anikototv\.to)$/.test(location.hostname);
     const entries = id ? history.filter(e => e.key === key(id.title)) : (supported ? history : history.filter(e => e.host === site)).slice(0, 3);
     if (!entries.length) { document.getElementById('anibrave-memory-card')?.remove(); return; }
@@ -221,11 +217,11 @@
   }
   function progress(v) {
     if (!ready || v.tagName !== 'VIDEO' || !isMain(v) || adBlocked(v)) return; const now = Date.now(), old = counters.get(v), position = v.currentTime;
-    const identified = window === top ? identity() : null;
-    const signature = location.href + '|' + v.currentSrc + '|' + (identified ? JSON.stringify(identified) : ''); let seconds = old?.signature === signature ? old.seconds : 0;
-    if (old?.signature === signature && !v.paused && !v.seeking && v.duration >= 60) { const wall = (now - old.time) / 1000, delta = position - old.position; if (wall > 0 && wall < 5 && delta > 0 && delta <= wall * Math.max(1, v.playbackRate) + 1) seconds += Math.min(wall, delta / Math.max(.25, v.playbackRate)); }
+    const identified = window === top ? pageIdentity() : null;
+    const signature = location.href + '|' + (identified?.episode || 0) + '|' + (identified?.season || 1); let seconds = old?.signature === signature ? old.seconds : 0;
+    if (old?.signature === signature && !v.paused && !v.seeking && v.duration >= 60) { const wall = (now - old.time) / 1000, delta = position - old.position; if (wall > 0 && wall <= 10 && delta > 0 && delta <= wall * Math.max(1, v.playbackRate) + 1) seconds += Math.min(wall, delta / Math.max(.25, v.playbackRate)); }
     const sent = old?.signature === signature ? old.sent : 0; counters.set(v, {time: now, position, signature, seconds, sent});
-    if (seconds >= 15 && now - sent > 30000) { counters.get(v).sent = now; if (window === top) { const id = identity(); if (id?.episode) send({type: 'save', ...id, position}); } else send({type: 'progress', position}); }
+    if (seconds >= 15 && now - sent > 30000) { counters.get(v).sent = now; if (window === top) { const id = pageIdentity(); if (watchPage() && id?.episode) send({type: 'save', ...id, position}); } else send({type: 'progress', position}); }
   }
   async function refresh(applyStoredSpeed) {
     const token = ++refreshToken;
@@ -246,7 +242,7 @@
     for (const v of media) if (needsApply(v)) apply(v);
     remind();
   }
-  chrome.runtime.onMessage.addListener(m => { if (m.type === 'playerProgress' && window === top) { const id = identity(); if (id?.episode) send({type: 'save', ...id, position: m.position}); } });
+  chrome.runtime.onMessage.addListener(m => { if (m.type === 'playerProgress' && window === top) { const id = pageIdentity(); if (watchPage() && id?.episode) send({type: 'save', ...id, position: m.position}); } });
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area !== 'local') return;
     const pageHost = location.hostname.toLowerCase().replace(/^www\./, '');
@@ -267,17 +263,12 @@
   refresh(true);
   setInterval(() => {
     if (!ready) refresh(true);
-    document.querySelectorAll('video, audio').forEach(track);
-    document.querySelectorAll('#movie_player, .html5-video-player, ytd-player').forEach(el => {
-      watchAd(el);
-      const shadow = shadowOf(el);
-      if (shadow) scan(shadow);
-    });
+    if (currentURL !== location.href) { currentURL = location.href; currentIdentity = null; reminded.clear(); document.getElementById('anibrave-memory-card')?.remove(); refresh(false); }
+    scan(document);
     for (const v of [...media]) {
       if (!v.isConnected) media.delete(v);
-      else if (needsApply(v)) onRate(v);
+      else if (needsApply(v)) apply(v);
     }
-    if (currentURL !== location.href) { currentURL = location.href; currentIdentity = null; reminded.clear(); document.getElementById('anibrave-memory-card')?.remove(); refresh(false); }
-    else remind();
+    remind();
   }, 2000);
 })();

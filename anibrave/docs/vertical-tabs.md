@@ -45,9 +45,9 @@ model, resolves stable tab IDs again on each action and calls the native removal
 pipeline rather than deleting a CDP page. Private models have a lazy wrapper;
 selection uses native `B0(index, FROM_USER=3)` on both implementations.
 
-`NativeStrip.java` follows Chromium's toolbar capture protocol before height changes,
-uses a one-shot callback with cancellation/timeout, and settles pending work on
-pause. System status-bar space is reserved only when missing from the native
+`NativeStrip.java` delegates height reconciliation to the pinned native controller's
+`b(false)` method, which owns Chromium's capture callback and transition. AniBrave
+does not register a second capture or invoke the height setter independently. System status-bar space is reserved only when missing from the native
 parent; fullscreen removes that addition. Horizontal restoration recreates the
 native window rather than retaining an intermediate compositor snapshot. Native
 fullscreen exit restores the previous window-inset mode instead of forcing a
@@ -68,10 +68,11 @@ model changes so native bitmap copies do not trigger endless row redraws.
 `VerticalTabs.java` owns one resumed normal-browser activity. It removes callbacks,
 listeners, padding and views on pause. Model/title reconciliation runs every 750ms
 while attached and redraws rows only when their state changes. Native lock/overlay
-protection also runs before drawing. The pinned strip transition
-`control_container.z.E.J.d(height, true)` updates Chromium's compositor, toolbar
-margins and browser-controls height together: zero for vertical; native width-dependent
-height on return to horizontal. This moves the address bar up without cropping a
+protection also runs before drawing. The pinned native policy and transition update Chromium's minimum toolbar height,
+compositor, margins and browser-controls height together: zero for vertical; native
+width-dependent height on return to horizontal. Policy/layer reconciliation runs before
+drawing, while retrying an unfinished height is limited to the 750ms refresh; it
+never queues capture work on every frame. This moves the address bar up without cropping a
 live page or painting over the old strip. An incompatible API disables vertical
 mode and restores native layout rather than leaving a broken sidebar.
 
@@ -126,3 +127,17 @@ page swipes while the address toolbar hides/reappears, favicon pixel evidence,
 unique control/access checks, native Undo/models/overview, layout restoration,
 rotation and fullscreen/shortcut behavior. Physical browsing acceptance remains
 separate from fixture and signing checks.
+
+## Regression repairs (2026-10-22)
+
+The strip policy already schedules Chromium's capture-before-height transition.
+The previous second capture/height call raced that lifecycle and skipped the native
+minimum-height update. Height reconciliation now uses the native transition only.
+Late compositor attachment is retried rather than permanently disabling the rail;
+replacement coordinators are reconciled before drawing. Favicon comparison and
+copying are isolated per row, and cached icons are owned immutable copies so native
+bitmap recycling cannot invalidate the complete tab snapshot.
+
+Desktop viewport metrics use the measured page surface after rail padding and notify
+the engine when its available dimensions change. Narrow expanded titles still overlay
+the page, so only the compact reserved width affects scaling.

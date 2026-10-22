@@ -1,6 +1,6 @@
 # AniHome Launcher
 
-AniHome is an Android HOME launcher with a TV-style grid of apps and websites over the system wallpaper. Websites open through AniBrave's immersive shortcut activity, sharing its browser profile. Package: `app.anihome.launcher`; Android 8.0+; current source version 0.8.21.
+AniHome is an Android HOME launcher with a TV-style grid of apps and websites over the system wallpaper. Websites open through AniBrave's immersive shortcut activity, sharing its browser profile. Package: `app.anihome.launcher`; Android 8.0+; current source version 0.8.22.
 
 ## Home and app drawer
 
@@ -17,7 +17,7 @@ AniHome is an Android HOME launcher with a TV-style grid of apps and websites ov
 
 ## Validation — 21 October 2026
 
-Version 0.8.21 passed 101 JVM tests, release lint, and signed release assembly. Earlier 0.8.19 physical-phone checks covered portrait/landscape rotation, the landscape side dock and 360dp sidebar cap, app-grid geometry, dock pin selection/persistence/launch, and recent-file expansion, metadata and Android sharing. Earlier tablet-emulator checks covered both drawer orientations. Dock browser selection, browser launch, search visibility and preference persistence were checked in the emulator.
+Version 0.8.22 passed 108 JVM tests, release lint, and signed release assembly. Earlier 0.8.19 physical-phone checks covered portrait/landscape rotation, the landscape side dock and 360dp sidebar cap, app-grid geometry, dock pin selection/persistence/launch, and recent-file expansion, metadata and Android sharing. Earlier tablet-emulator checks covered both drawer orientations. Dock browser selection, browser launch, search visibility and preference persistence were checked in the emulator.
 
 Auto mode enables Android sensor rotation; physical sensor movement and every vendor’s firmware have not been exhaustively tested. System-wide rotation needs optional Android modify-system-settings access. Direct Shizuku controls additionally lock the display against app and Recents orientation requests; Auto releases that display lock. Unsupported firmware reports an error instead of assuming enforcement succeeded. Local launcher rotation does not need extra access.
 
@@ -54,6 +54,8 @@ License: MPL-2.0.
 
 The dock clock grows when neither charging nor USB is active. The app-menu outline is inset equally within its touch target.
 
-Version 0.8.21 adds a shared compact time/count row and date row in either dock layout, plus optional direct system rotation enforcement against app-requested orientation.
+Version 0.8.22 adds a shared compact time/count row and date row in either dock layout, plus optional direct system rotation enforcement against app-requested orientation.
 
-Version 0.8.21 adds rounded phone Recent files corners, 160–190 ms gesture-directed opening and expansion motion, animated notification list removal, and long-press notification snoozing/channel settings. Animations respect Android’s animator setting. Wi-Fi and Bluetooth retain inline discovery/connection controls; their options buttons open Android’s advanced radio settings. Emulator checks covered the new rotation toggle/current-angle lock, notification snoozing and radio options. Physical-device validation of this version remains pending.
+Version 0.8.22 adds rounded phone Recent files corners, 160–190 ms gesture-directed opening and expansion motion, animated notification list removal, and long-press notification snoozing/channel settings. Animations respect Android’s animator setting. Wi-Fi and Bluetooth retain inline discovery/connection controls; their options buttons open Android’s advanced radio settings. Emulator checks covered the new rotation toggle/current-angle lock, notification snoozing and radio options. Physical-device validation of this version remains pending.
+
+Version 0.8.22 adds widget edge resizing, a compact widget menu, blank-area tap to finish Home editing, and circular dock artwork with consistent spacing. QA repairs preserve Home drag order across asynchronous reloads and completed legacy seed migrations, retain shortcut tiles when Android refuses unpinning, keep limited Wi-Fi scan feedback, and cancel pending Bluetooth UI state when radio/profile services disappear. Portrait tablet Frequent apps retain two columns; the clock adapts to available badge and power-indicator space.

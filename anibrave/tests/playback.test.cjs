@@ -164,3 +164,10 @@ test('VOD becoming live restores preload and sends player-buffer restoration',()
  const f=bufferFixture();f.context.__aniBrave.configure(1,0,180,true);assert.equal(f.bridge.filter(m=>m.type==='set-buffer').at(-1).seconds,180);
  f.video.duration=Infinity;f.fire('durationchange');assert.equal(f.bridge.filter(m=>m.type==='set-buffer').at(-1).seconds,0);assert.equal(f.video.preload,'metadata');assert.equal(f.pauses(),0);
 });
+
+test('genuine speed choice during metadata loading overrides startup suppression',()=>{
+ const f=fixture();f.video.readyState=1;f.context.__aniBrave.configure(2,123);f.fire('loadstart');f.tick(100);
+ f.fire('pointerdown',{isTrusted:true,target:{textContent:'1.5×',closest(){return this;}}});
+ f.video.playbackRate=1.5;f.fire('ratechange');f.tick(130);
+ assert.equal(f.video.playbackRate,1.5);assert.equal(f.messages.find(m=>m.type==='nativeRate').rate,1.5);
+});

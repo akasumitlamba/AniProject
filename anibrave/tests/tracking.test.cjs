@@ -87,3 +87,26 @@ test('back-forward cache restore restarts one metadata and shadow discovery time
   assert.equal(f.activeTimers(),1);assert.equal(f.messages.at(-1).episode,9);
   f.fire('pagehide',{persisted:true});assert.equal(f.activeTimers(),0);
 });
+
+test('Crunchyroll compact and spelled-out season labels preserve season identity',()=>{
+  for(const heading of ['S2E12 - Episode title','Season 2 Episode 12']){
+    const f=fixture('https://www.crunchyroll.com/watch/id',{'a[href*="/series/"]':text('Frieren'),'h1':text(heading)});
+    const data=f.context.__aniWatch.snapshot();assert.equal(data.episode,12);assert.equal(data.title,'Frieren Season 2');
+  }
+  const f=fixture('https://www.crunchyroll.com/watch/id',{'a[href*="/series/"]':text('Frieren'),'h1':text('S1E12 - Title')});
+  assert.equal(f.context.__aniWatch.snapshot().title,'Frieren');
+});
+test('a long trailer beside a paused main video cannot record an episode',()=>{
+  const f=fixture('https://anikototv.to/watch/example/ep-9',{'h1':text('Example')});
+  const main={tagName:'VIDEO',isConnected:true,clientWidth:1280,clientHeight:720,paused:true};
+  const trailer={tagName:'VIDEO',isConnected:true,clientWidth:320,clientHeight:180,currentTime:0,duration:90,paused:false,seeking:false,playbackRate:1};
+  f.document.querySelectorAll=s=>s==='video'?[main,trailer]:[];
+  f.tick(trailer);for(let i=1;i<=20;i++){f.time(1000);trailer.currentTime=i;f.tick(trailer);}
+  assert.equal(f.messages.some(m=>m.type==='watchProgress'),false);
+});
+test('a long ad video cannot record watch progress',()=>{
+  const f=fixture('https://player.example/embed');
+  const video={tagName:'VIDEO',isConnected:true,classList:{contains:n=>n==='ad-showing'},currentTime:0,duration:90,paused:false,seeking:false,playbackRate:1};
+  f.tick(video);for(let i=1;i<=20;i++){f.time(1000);video.currentTime=i;f.tick(video);}
+  assert.equal(f.messages.some(m=>m.type==='watchProgress'),false);
+});

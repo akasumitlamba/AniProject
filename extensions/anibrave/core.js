@@ -42,16 +42,16 @@ export function mergeSettings(current, patch, now = Date.now()) {
 
 // How to react when a media element reports a new playbackRate.
 // ignore: echo of our own write, an ad, a preview, or a rate outside 0.25×–5×.
-// enforce: startup window — put the saved speed back once.
-// adopt: the site chose this speed; remember it instead of fighting.
-export function rateDecision({mediaRate, savedRate, suppressRate, withinSuppress, withinHold, adActive, main}) {
+// enforce: an automatic player reset — retain the saved speed.
+// adopt: a deliberate speed-control input chose this rate.
+export function rateDecision({mediaRate, savedRate, suppressRate, withinSuppress, userIntent = false, adActive, main}) {
   const rate = normalizeSpeed(mediaRate);
   const saved = normalizeSpeed(savedRate);
   if (rate == null || saved == null) return 'ignore';
   if (speedsMatch(rate, saved)) return 'ignore';
   if (withinSuppress && speedsMatch(rate, normalizeSpeed(suppressRate))) return 'ignore';
   if (adActive || !main) return 'ignore';
-  return withinHold ? 'enforce' : 'adopt';
+  return userIntent ? 'adopt' : 'enforce';
 }
 
 export function recordEntry(data, host, url) {
