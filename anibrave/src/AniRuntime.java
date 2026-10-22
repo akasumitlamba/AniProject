@@ -116,6 +116,7 @@ public final class AniRuntime {
         UI.removeCallbacks(CHECK_REMINDER);toggleServer(false);dismiss();active=new WeakReference<>(null);
     }
     private static void dismiss(){
+        ContinuationController.pause();
         NativeStrip.settle(active.get());
         if(verticalTabs!=null){verticalTabs.close();verticalTabs=null;}
         UI.removeCallbacks(HIDE);
@@ -371,21 +372,16 @@ public final class AniRuntime {
         if(watchReminder!=null&&watchReminder.getParent() instanceof ViewGroup)((ViewGroup)watchReminder.getParent()).removeView(watchReminder);
         watchReminder=null;reminderKey="";reminderUrl="";reminderEpisode=0;
     }
-    static void watchPage(String url,JSONObject page){
-        UI.post(()->{
-            if(!WatchUrl.same(url,currentUrl())||!normalProfile(active.get()))return;
-            if(page==null){removeWatchReminder();return;}
-            String key=AnimeIdentity.key(page.optString("title"));
-            IO.execute(()->{AnimeHistory.Summary summary=history.summary(key);UI.post(()->displayReminder(url,summary));});
-        });
-    }
+    static Activity continuationActivity(){Activity a=active.get();if(!alive(a)||!normalProfile(a))return null;
+        for(String name:new String[]{"incognito_reauth_unlock_incognito_button","incognito_reauth_unlock_incognito_icon","incognito_reauth_see_other_tabs_label","tab_list_recycler_view","tab_grid_dialog_recycler_view_container"}){int id=a.getResources().getIdentifier(name,"id",a.getPackageName());View view=id==0?null:a.findViewById(id);if(view!=null&&view.isShown()&&view.getWidth()>0&&view.getHeight()>0)return null;}return a;}
+    static void watchPage(String url,JSONObject page){} // ContinuationController owns reminders.
     static void watched(String url,JSONObject page,int position,int duration){
         UI.post(()->{
             if(!WatchUrl.same(url,currentUrl())||duration<60||!normalProfile(active.get()))return;
-            String title=page.optString("title"),host=SiteKey.of(url);int episode=page.optInt("episode");
+            String base=page.optString("seriesTitle"),title=base.isEmpty()?page.optString("title"):base+(page.optInt("season",1)>1?" Season "+page.optInt("season"):"")+(page.optInt("part")>0?" Part "+page.optInt("part"):"");String host=SiteKey.of(url);int episode=page.optInt("episode");
             host=SiteKey.watchHost(url);if(host.isEmpty())return;
             final String watchHost=host;
-            IO.execute(()->{AnimeHistory.Summary summary=history.record(title,episode,watchHost,url,position,duration);UI.post(()->displayReminder(url,summary));});
+            IO.execute(()->{AnimeHistory.Summary summary=history.record(title,episode,watchHost,url,position,duration);});
         });
     }
     private static void displayReminder(String url,AnimeHistory.Summary summary){
@@ -404,12 +400,8 @@ public final class AniRuntime {
         if(accessibility!=null)timeout=accessibility.getRecommendedTimeoutMillis(timeout,android.view.accessibility.AccessibilityManager.FLAG_CONTENT_TEXT|android.view.accessibility.AccessibilityManager.FLAG_CONTENT_CONTROLS);
         UI.postDelayed(AUTO_HIDE_REMINDER,timeout);
     }
-    private static void library(Activity a){
-        HIDE.run();IO.execute(()->{java.util.List<AnimeHistory.Summary> all=history.library();String[] labels=new String[all.size()];for(int i=0;i<labels.length;i++)labels[i]=all.get(i).title+" · Episode "+all.get(i).episode;
-            UI.post(()->{if(!alive(a))return;if(all.isEmpty()){new AlertDialog.Builder(a).setTitle("Watched anime").setMessage("Episodes appear after you watch video on Crunchyroll, HiAnime or AniKoto. Your log stays on this device.").setPositiveButton("Close",null).show();return;}
-                new AlertDialog.Builder(a).setTitle("Watched anime").setItems(labels,(dialog,index)->watchLog(a,all.get(index).key,all.get(index).title)).setNegativeButton("Close",null).show();});
-        });
-    }
+    private static void library(Activity a){HIDE.run();ContinuationController.library(a);}
+    static void continuationLog(Activity a,JSONObject e){String title=e.optString("title")+(e.optInt("season",1)>1?" Season "+e.optInt("season"):"")+(e.optInt("part")>0?" Part "+e.optInt("part"):"");watchLog(a,AnimeIdentity.key(title),title);}
     private static void watchLog(Activity a,String key,String title){
         IO.execute(()->{String text=history.log(key);UI.post(()->{if(!alive(a))return;TextView content=new TextView(a);content.setText(text);content.setTextColor(Color.WHITE);content.setTextSize(15);content.setPadding(dp(a,20),dp(a,16),dp(a,20),dp(a,16));ScrollView scroll=new ScrollView(a);scroll.setBackgroundColor(0xff202028);scroll.addView(content);new AlertDialog.Builder(a).setTitle(title).setView(scroll).setPositiveButton("Close",null).show();});});
     }

@@ -23,7 +23,7 @@ def main():
   for name in dex:
    data=app.read(name);assert data[:4]==b'dex\n' and data[12:32]==hashlib.sha1(data[32:]).digest() and struct.unpack_from('<I',data,8)[0]==zlib.adler32(data[12:])&0xffffffff,name
   if args.feature_dex:assert app.read('classes8.dex')==args.feature_dex.read_bytes()
-  for js in ['playback.js','player.js','tracking.js']:assert app.read('assets/anibrave/'+js)==(BASE/'src'/js).read_bytes()
+  for js in ['playback.js','player.js','tracking.js','continuation.js']:assert app.read('assets/anibrave/'+js)==(BASE/'src'/js).read_bytes()
   assert app.getinfo('resources.arsc').compress_type==0
   assert app.testzip() is None
  badging=subprocess.check_output([str(args.build_tools/'aapt2'),'dump','badging',str(args.input)],text=True)

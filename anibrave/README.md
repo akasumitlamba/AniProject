@@ -60,7 +60,7 @@ Existing native and browser notices are retained in the app. Customization sourc
 
 ## Local anime history
 
-Tracking belongs to AniBrave. Updates preserve the browser profile when signed with the same identity. See [TRACKING.md](TRACKING.md) for progress gating, cross-site reminders, local import, privacy, build verification and acceptance limits. The current update is 0.1.6 (Brave 1.97.59), versionCode 429705619.
+Tracking belongs to AniBrave. Updates preserve the browser profile when signed with the same identity. See [TRACKING.md](TRACKING.md) for progress gating, cross-site reminders, local import, privacy, build verification and acceptance limits. The current update is 0.2.0 (Brave 1.97.59), versionCode 429705620. It adds local per-episode continuation, conservative cross-site search, timestamp/speed restoration and an editable episode archive.
 
 ## Episode reminders and protected playback
 

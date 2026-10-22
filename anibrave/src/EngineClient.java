@@ -34,7 +34,7 @@ final class EngineClient implements Runnable {
     EngineClient(Context c) throws Exception {
         context=c;fullscreen=AniRuntime.videoFullscreen();playerSource=asset(c,"anibrave/player.js");
         try (java.io.InputStream in=c.getAssets().open("anibrave/playback.js");java.io.ByteArrayOutputStream out=new java.io.ByteArrayOutputStream()) {
-            byte[] buffer=new byte[8192];int n;while((n=in.read(buffer))!=-1)out.write(buffer,0,n);source=new String(out.toByteArray(),StandardCharsets.UTF_8)+"\n"+asset(c,"anibrave/tracking.js");
+            byte[] buffer=new byte[8192];int n;while((n=in.read(buffer))!=-1)out.write(buffer,0,n);source=new String(out.toByteArray(),StandardCharsets.UTF_8)+"\n"+asset(c,"anibrave/tracking.js")+"\n"+asset(c,"anibrave/continuation.js");
         }
     }
     private static String asset(Context c,String name)throws Exception{
@@ -122,6 +122,20 @@ final class EngineClient implements Runnable {
         } catch(Exception ignored) {}
         AniRuntime.pin(url,"","");
     }
+    private void continuationCommand(String target,String expected,String expression,boolean frames){
+        try{for(Page p:pages.values())if(root(p).target.equals(target)&&WatchUrl.same(root(p).url,expected)&&TrackingPrivacy.normalContext(defaultBrowserContext,root(p).browserContext)&&(frames||p==root(p))){
+            for(int id:p.contexts){configure(p,id);send("Runtime.evaluate",json("expression",expression,"contextId",id),p.session);}
+        }}catch(Exception e){AniRuntime.engineWarning("Continuation will retry when the player is ready");}
+    }
+    void confirmContinuationIdentity(String target,String url,JSONObject entry){
+        try{JSONObject id=new JSONObject(entry.toString()).put("url",url).put("seriesTitle",entry.optString("title")).put("seasonKnown",true).put("kind","watch");
+            for(Page p:pages.values())if(p==root(p)&&p.target.equals(target)&&WatchUrl.same(p.url,url)&&TrackingPrivacy.normalContext(defaultBrowserContext,p.browserContext)){p.watchPage=id;if(p.watchIdentityAt==0)p.watchIdentityAt=System.currentTimeMillis();}
+            continuationCommand(target,url,"globalThis.__aniWatch?.confirm("+id+")",false);
+        }catch(Exception ignored){}
+    }
+    void continuationState(String target,String url,JSONObject state){continuationCommand(target,url,"if(document.visibilityState!=='hidden')globalThis.__aniContinue?.configure("+state+")",false);}
+    void continuationSearch(String target,String url,JSONObject entry){continuationCommand(target,url,"globalThis.__aniContinue?.search("+entry+")",false);}
+    void resumeContinuation(String target,String url,JSONObject entry){continuationCommand(target,url,"globalThis.__aniContinue?.resume("+entry+")",true);}
     public void run() {
         while(running) {
             try {
@@ -220,7 +234,16 @@ final class EngineClient implements Runnable {
                 Page top=root(p);JSONObject episode=top.watchPage;
                 if(TrackingPrivacy.normalContext(defaultBrowserContext,top.browserContext)&&episode!=null&&WatchUrl.same(episode.optString("url"),top.url)&&data.optInt("playedSeconds")>=15&&System.currentTimeMillis()-top.watchIdentityAt>=15000){
                     AniRuntime.watched(top.url,episode,data.optInt("position"),data.optInt("duration"));
+                    ContinuationController.progress(top.url,episode,data);
                 }
+            }else if(data.optString("type").startsWith("continuation")){
+                Page top=root(p);if(!TrackingPrivacy.normalContext(defaultBrowserContext,top.browserContext))return;
+                String type=data.optString("type");
+                if(type.equals("continuationPage")&&p==top&&WatchUrl.same(data.optString("url"),url))ContinuationController.page(this,top.target,url,data);
+                else if(type.equals("continuationNavigate")&&p==top)ContinuationController.navigateRequest(top.target,url,data.optString("url"));
+                else if(type.equals("continuationApply")&&p==top&&WatchUrl.same(data.optString("url"),url)&&data.optJSONObject("identity")!=null)ContinuationController.applyRequest(top.target,url,data.getJSONObject("identity"));
+                else if(type.equals("continuationApplied"))ContinuationController.applied(top.target,url,true,"");
+                else if(type.equals("continuationBlocked"))ContinuationController.applied(top.target,url,false,data.optString("reason"));
             }else if(data.optString("type").equals("reveal")) AniRuntime.reveal(url);
             else if(data.optString("type").equals("resize")) view(root(p));
             else if(data.optString("type").equals("fullscreen")) AniRuntime.fullscreen(url,data.optBoolean("enabled"));

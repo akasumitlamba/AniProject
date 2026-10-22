@@ -117,6 +117,7 @@ assets=RES/'assets'/'anibrave';assets.mkdir(exist_ok=True)
 (assets/'playback.js').write_bytes((BASE/'src'/'playback.js').read_bytes())
 (assets/'player.js').write_bytes((BASE/'src'/'player.js').read_bytes())
 (assets/'tracking.js').write_bytes((BASE/'src'/'tracking.js').read_bytes())
+(assets/'continuation.js').write_bytes((BASE/'src'/'continuation.js').read_bytes())
 if not any(node.get('{'+NS+'}name')=='app.anibrave.HistoryImportActivity' for node in app.findall('activity')):
     ET.SubElement(app,'activity',{'{'+NS+'}name':'app.anibrave.HistoryImportActivity','{'+NS+'}exported':'true','{'+NS+'}configChanges':'orientation|screenSize','{'+NS+'}theme':'@android:style/Theme.Material.NoActionBar'})
     tree.write(manifest,encoding='utf-8',xml_declaration=True)

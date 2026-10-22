@@ -20,11 +20,15 @@ jobs:
           distribution: temurin
           java-version: '17'
       - name: Playback script tests
-        run: node --test anibrave/tests/playback.test.cjs anibrave/tests/player.test.cjs anibrave/tests/tracking.test.cjs
+        run: node --test anibrave/tests/playback.test.cjs anibrave/tests/player.test.cjs anibrave/tests/tracking.test.cjs anibrave/tests/continuation.test.cjs
       - name: Site key tests
         run: |
           javac -d /tmp/anibrave-tests anibrave/src/SiteKey.java anibrave/tests/SiteKeyTest.java
           java -cp /tmp/anibrave-tests app.anibrave.SiteKeyTest
+      - name: Watch URL equivalence policy
+        run: |
+          javac -d /tmp/anibrave-tests anibrave/src/SiteKey.java anibrave/src/ResumeLocation.java anibrave/src/WatchUrl.java anibrave/tests/WatchUrlTest.java
+          java -cp /tmp/anibrave-tests app.anibrave.WatchUrlTest
       - name: Engine HTTP tests
         run: |
           javac -d /tmp/anibrave-tests anibrave/src/EngineHttp.java anibrave/tests/EngineHttpTest.java

@@ -110,3 +110,19 @@ test('a long ad video cannot record watch progress',()=>{
   f.tick(video);for(let i=1;i<=20;i++){f.time(1000);video.currentTime=i;f.tick(video);}
   assert.equal(f.messages.some(m=>m.type==='watchProgress'),false);
 });
+test('tracking separates season identity and checkpoints merged advancing ranges every ten seconds',()=>{
+ const f=fixture('https://www.crunchyroll.com/watch/id',{'a[href*="/series/"]':text('Frieren'),'h1':text('S2 E9 - Title')});
+ const id=f.context.__aniWatch.snapshot();assert.equal(id.seriesTitle,'Frieren');assert.equal(id.season,2);assert.equal(id.seasonKnown,true);
+ const v={tagName:'VIDEO',currentTime:0,duration:1200,paused:false,seeking:false,playbackRate:2};f.tick(v);
+ for(let i=1;i<=25;i++){f.time(1000);v.currentTime=i*2;f.tick(v);}
+ const saves=f.messages.filter(m=>m.type==='watchProgress');assert.equal(saves.length,2);assert.equal(saves[1].speed,2);assert.deepEqual(saves[1].ranges,[[0,50]]);
+ assert.ok(JSON.stringify(saves[1]).length<4096);
+});
+test('pause checkpoints qualified video and a seek creates no watched coverage',()=>{
+ const f=fixture('https://player.example/embed');const v={tagName:'VIDEO',currentTime:0,duration:1200,paused:false,seeking:false,playbackRate:1};f.tick(v);
+ for(let i=1;i<=16;i++){f.time(1000);v.currentTime=i;f.tick(v);}
+ v.paused=true;f.fire('pause',{type:'pause',target:v});assert.equal(f.messages.filter(m=>m.type==='watchProgress').length,2);
+ v.currentTime=600;v.seeking=true;f.fire('seeking',{type:'seeking',target:v});v.seeking=false;v.paused=false;f.tick(v);
+ for(let i=1;i<=10;i++){f.time(1000);v.currentTime=600+i;f.tick(v);}
+ const ranges=f.messages.filter(m=>m.type==='watchProgress').at(-1).ranges;assert.ok(ranges.every(r=>r[1]-r[0]<100));
+});

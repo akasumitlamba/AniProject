@@ -21,6 +21,15 @@ final class AnimeHistory extends SQLiteOpenHelper {
         db.execSQL("CREATE INDEX episode_log_import ON episode_log(anime_key,episode,host,watched_at)");
     }
     public void onUpgrade(SQLiteDatabase db,int old,int next){throw new IllegalStateException("Unknown history schema");}
+    synchronized void clearHistory(){SQLiteDatabase db=getWritableDatabase();db.beginTransaction();try{for(String table:new String[]{"episode_log","site_progress","anime"})db.delete(table,null,null);db.setTransactionSuccessful();}finally{db.endTransaction();}}
+    synchronized void deleteEpisode(String title,int episode){String key=AnimeIdentity.key(title);SQLiteDatabase db=getWritableDatabase();db.beginTransaction();try{
+        db.delete("episode_log","anime_key=? AND episode=?",new String[]{key,""+episode});
+        db.delete("site_progress","anime_key=? AND last_episode=?",new String[]{key,""+episode});
+        try(Cursor c=db.rawQuery("SELECT episode,host,url,watched_at FROM episode_log WHERE anime_key=? ORDER BY watched_at DESC LIMIT 1",new String[]{key})){
+            if(!c.moveToFirst())db.delete("anime","key=?",new String[]{key});
+            else{ContentValues v=new ContentValues();v.put("last_episode",c.getInt(0));v.put("last_host",c.getString(1));v.put("last_url",c.getString(2));v.put("updated_at",c.getLong(3));db.update("anime",v,"key=? AND last_episode=?",new String[]{key,""+episode});}
+        }db.setTransactionSuccessful();
+    }finally{db.endTransaction();}}
     synchronized Summary summary(String key){try(Cursor c=getReadableDatabase().rawQuery("SELECT key,title,last_episode,last_host,reminder_dismissed FROM anime WHERE key=?",new String[]{key})){return c.moveToFirst()?new Summary(c):null;}}
     synchronized List<Summary> library(){List<Summary> result=new ArrayList<>();try(Cursor c=getReadableDatabase().rawQuery("SELECT key,title,last_episode,last_host,reminder_dismissed FROM anime ORDER BY updated_at DESC",null)){while(c.moveToNext())result.add(new Summary(c));}return result;}
     synchronized void dismiss(String key){ContentValues v=new ContentValues();v.put("reminder_dismissed",1);v.put("updated_at",System.currentTimeMillis());getWritableDatabase().update("anime",v,"key=?",new String[]{key});}

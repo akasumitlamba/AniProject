@@ -19,27 +19,40 @@ browser controller; the top watch page supplies the anime identity. Only the
 currently open browser page can update the log. Third-party players without
 accessible HTML video progress cannot be recorded automatically.
 
-The reminder reads `You were on episode N of TITLE`. It hides automatically after eight seconds
-(or longer when Android accessibility settings recommend more reading time). Repeated progress
-signals on the same page/episode do not restart the timer or revive the hidden card. A new visit,
-another anime or another watched episode can show a fresh card. Timeout only hides the UI; it
-never changes stored dismissal or watched history. Navigation/pause removes pending callbacks.
-Its X explicitly dismisses it until another episode is watched. Tapping
-the text opens a local log with date, time, site and episode. Watching a different
-episode of that anime on any supported site updates the latest episode and
-revives the reminder, including earlier and future episodes. Watching the same
-episode again preserves dismissal. There is no next-episode navigation action.
+The compact native continuation card shows the series, season/part, episode and
+saved timestamp. On an identified series/watch page it offers that series' local
+history; a supported homepage can offer one recent cross-site episode. Unrelated
+pages stay quiet. Ordinary offers hide after 12 seconds (extended for Android
+accessibility) and remain dismissed for that episode; checkpoints do not revive
+them. A different episode can create a new offer.
 
-`Watched anime` in the native browser tools opens the local library. Repeated
-signals for the same anime, episode and site within six hours are one sitting.
-Titles use the prior AniHome normalization rules, including season suffixes.
-Different translations or aliases can still need identity matching; there is no
-remote catalog, server or cloud lookup.
+**Continue here** uses a learned exact URL first. Otherwise it searches the target
+site and follows only a unique exact title and matching season/episode. Ambiguous
+results and missing metadata require manual navigation and **Confirm episode**;
+identifiers are never guessed. **Open previous site** uses the saved source URL.
+An explicit handoff belongs to the native browser tab and survives navigation,
+reload and process restart for 30 minutes. **Done** or the dismiss control clears
+it. A seekable matching player restores position and per-site speed without
+starting playback or changing the site's view mode. Unsupported players retain
+manual guidance. This does not bypass DRM or provide downloading.
+
+`Watched anime` opens the local episode archive with separate season/part records,
+partial position, watched intervals and sticky completion at 85% actual coverage.
+Rewatching an earlier episode never erases completed later episodes. The archive
+supports correcting title/episode/time, deleting one episode, deleting all history,
+and opening the dated legacy watch log. Explicit confirmations learn local title
+aliases, numbering offsets and exact episode URLs. There is no remote catalog,
+server or cloud lookup. Private tabs neither read nor write normal continuation
+history; the native card is removed before a tab/profile transition is drawn.
 
 ## Storage and migration
 
-The database is `anibrave-watch.db` in AniBrave's private app storage. It has
-`anime`, `site_progress` and `episode_log` tables. Browser backup is disabled in
+The original `anibrave-watch.db` and its `anime`, `site_progress` and
+`episode_log` tables remain intact. The sidecar `anibrave-continuation.db` imports
+legacy records idempotently and stores episode coverage, positions, metadata,
+learned links/aliases, dismissals and tab-scoped pending handoffs. Legacy timestamps
+and log records are preserved; old completion is never guessed. Both databases
+remain in AniBrave's private app storage. Browser backup is disabled in
 the feature APK so Android does not copy the history to cloud backup.
 
 AniHome explicitly targets `app.anibrave.HistoryImportActivity` with
@@ -60,23 +73,19 @@ uploads history.
 
 ## Build and checks
 
-The current tablet runtime is AniBrave 0.1.1. Its feature sources were recovered
-from `codex/anibrave-fullscreen-controls` so changing tracking preserves the
-existing fullscreen and controller repairs. This is a feature-module update,
-not a merge of the old Firefox branch.
+AniBrave 0.2.0 uses the pinned Brave 1.97.59 / Chromium 155 engine. Linux
+`tools/build_engine.py` builds the complete verified APK. Feature-only updates can
+use `tools/build_feature_update.py` with the original signing key; all four JS
+assets and the compiled feature DEX must match the source. APKs, keys and passwords
+stay outside Git.
 
-`tools/build_feature_update.py --input EXISTING.apk --output UPDATED.apk
---keystore ORIGINAL.jks` compiles `src/*.java` into the feature DEX and updates
-an existing AniBrave APK. Put the matching key passwords in
-`ANIBRAVE_KS_PASS`/`ANIBRAVE_KEY_PASS` privately. It delegates to
-`tools/patch_icon.py --feature-dex ...`; that verifier permits only the rebuilt
-`classes8.dex` while requiring identical upstream DEX and native libraries and
-an identical signing certificate. The build increases versionCode, preserves
-browser identity and profiles, adds the importer activity and copies both JS
-assets. It does not install the APK. APKs, keys and build outputs stay out of git.
+Run `node --test anibrave/tests/*.test.cjs`, the Python policy suite, and the Java
+policy tests in `.github/workflows/source-checks.yml`. Real SQLite migration,
+coverage, deletion, alias and handoff checks run in a disposable Android package:
+`python3 anibrave/tools/run_android_continuation_tests.py --serial DEVICE --sdk SDK
+--java-home JDK`. This never opens production browser data.
 
-Tests: compile/run `tests/ReminderPresentationTest.java` with `src/ReminderPresentation.java`
-for page/session rearming and timeout anti-repeat policy. Also `node --test tests/playback.test.cjs tests/tracking.test.cjs` and compile/
-run `tests/AnimeIdentityTest.java` with `src/AnimeIdentity.java`. Real device
-acceptance must still exercise each site's live player DOM, iframe progress,
-cross-site reminders, import/reimport and fullscreen tool behavior.
+Controlled real-media fixtures validate seek/navigation behavior separately from
+live signed-in site acceptance. Protected/native players, inaccessible cross-origin
+media, site DOM changes and ambiguous catalog results can require manual action;
+fixture success does not establish universal streaming or DRM compatibility.
