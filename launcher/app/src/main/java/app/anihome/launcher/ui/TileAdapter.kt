@@ -85,7 +85,11 @@ class TileAdapter(
         private var tile: HomeTile? = null
 
         init {
-            binding.card.clipToOutline = true
+            // Composite the opaque corner tag and artwork before clipping their common outline.
+            // Independent antialiased curves let the banner colour show through the tag edge.
+            binding.cardSurface.clipToOutline = true
+            binding.cardSurface.setLayerType(View.LAYER_TYPE_HARDWARE, null)
+            binding.card.clipToOutline = false
             binding.root.setOnClickListener { tile?.let { if (editMode) onOptions(it) else onOpen(it) } }
             binding.root.setOnLongClickListener {
                 tile?.let { t -> if (editMode) onStartDrag(this) else onOptions(t) }
