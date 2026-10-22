@@ -65,7 +65,9 @@ class AppDrawerActivity : AppCompatActivity() {
         binding.list.layoutManager = GridLayoutManager(this, if (resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT) 4 else (availableDp / 96f).toInt().coerceIn(3, 8))
         binding.list.adapter = adapter
         binding.list.itemAnimator = null
-        fitColumns(binding.list, if (AdaptiveLayout.tablet(this) && resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT) 4 else 8)
+        if (!(AdaptiveLayout.tablet(this) && resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT)) {
+            fitColumns(binding.list, 8)
+        }
         buildLibrary()
         binding.btnBack.setOnClickListener { finish() }
         binding.search.doAfterTextChanged { filter(); renderFiles() }
