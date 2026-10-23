@@ -8,9 +8,9 @@ import java.io.File
 import java.util.Locale
 
 /** CRUD for home tiles. All calls are synchronous; callers run them off the main thread. */
-class TileStore(context: Context) {
+class TileStore(context: Context, private val databaseOverride: android.database.sqlite.SQLiteDatabase? = null) {
     private val app = context.applicationContext
-    private val db get() = LauncherDb.get(app).writableDatabase
+    private val db get() = databaseOverride ?: LauncherDb.get(app).writableDatabase
 
     fun all(): List<HomeTile> = db.query(TABLE, null, null, null, null, null, "position ASC, id ASC").use { c ->
         buildList { while (c.moveToNext()) add(c.toTile()) }
@@ -43,6 +43,7 @@ class TileStore(context: Context) {
             put("label", label)
             put("package_name", packageName)
             put("activity_name", activityName)
+            put("artwork_origin", "pending")
             put("color", color)
             put("position", nextPosition())
             put("created_at", System.currentTimeMillis())
@@ -125,11 +126,17 @@ class TileStore(context: Context) {
 
     fun setArtwork(id: Long, path: String?) {
         val previous = byId(id)?.artworkPath
-        db.update(TABLE, ContentValues().apply { put("artwork_path", path) }, "id=?", arrayOf(id.toString()))
+        db.update(TABLE, ContentValues().apply { put("artwork_path", path); put("artwork_origin", "manual") }, "id=?", arrayOf(id.toString()))
         previous?.let { IconCache.invalidateFile(it); if (it != path) File(it).delete() }
     }
 
-    fun remove(id: Long, updatePins: Boolean = true) {
+    /** Compare-and-set protects a manual selection/reset, including a late download race. */
+    fun finishAutomaticArtwork(id: Long, path: String?): Boolean = db.update(TABLE, ContentValues().apply {
+        put("artwork_path", path); put("artwork_origin", if (path == null) "icon" else "automatic")
+    }, "id=? AND kind=? AND artwork_origin='pending' AND artwork_path IS NULL AND shortcut_id IS NULL",
+        arrayOf(id.toString(), HomeTile.Kind.APP.name)) == 1
+
+    fun remove(id: Long, updatePins: Boolean = true, preserveAssets: Boolean = false) {
         val removed = byId(id) ?: return
         if (removed.isShortcut && updatePins) {
             val user = app.getSystemService(android.os.UserManager::class.java)
@@ -139,8 +146,23 @@ class TileStore(context: Context) {
             app.getSystemService(android.content.pm.LauncherApps::class.java).pinShortcuts(removed.packageName!!, remaining, user)
         }
         db.delete(TABLE, "id=?", arrayOf(id.toString()))
+        if (!preserveAssets) discardAssets(removed)
+    }
+
+    fun discardAssets(removed: HomeTile) {
         removed.artworkPath?.let { IconCache.invalidateFile(it); File(it).delete() }
         removed.iconPath?.let { runCatching { File(it).delete() } }
+    }
+
+    /** Restores the same identity, placement and artwork after an ordinary removal. */
+    fun restore(tile: HomeTile) {
+        require(!tile.isShortcut) { "Platform shortcuts require pin approval" }
+        db.insertOrThrow(TABLE, null, ContentValues().apply {
+            put("id", tile.id); put("kind", tile.kind.name); put("label", tile.label)
+            put("package_name", tile.packageName); put("activity_name", tile.activityName)
+            put("url", tile.url); put("icon_path", tile.iconPath); put("artwork_path", tile.artworkPath); put("artwork_origin", tile.artworkOrigin)
+            put("color", tile.color); put("position", tile.position); put("created_at", System.currentTimeMillis())
+        })
     }
 
     fun removePackage(packageName: String): Int {
@@ -180,6 +202,7 @@ class TileStore(context: Context) {
         url = getStringOrNull("url"),
         iconPath = getStringOrNull("icon_path"),
         artworkPath = getStringOrNull("artwork_path"),
+        artworkOrigin = getString(getColumnIndexOrThrow("artwork_origin")),
         color = getColumnIndexOrThrow("color").let { if (isNull(it)) null else getInt(it) },
         position = getInt(getColumnIndexOrThrow("position")),
     )

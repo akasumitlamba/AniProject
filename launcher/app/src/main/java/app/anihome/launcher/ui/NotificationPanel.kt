@@ -48,7 +48,8 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
             insets
         }
         val heading = LinearLayout(activity).apply { gravity = Gravity.CENTER_VERTICAL }
-        heading.addView(ArtworkUi.title(activity, "Notifications").apply { textSize = 16f }, LinearLayout.LayoutParams(0, dp(40), 1f))
+        val headingTitle = ArtworkUi.title(activity, "Notifications").apply { textSize = 16f }
+        heading.addView(headingTitle, LinearLayout.LayoutParams(0, dp(40), 1f))
         val clear = ArtworkUi.plainIcon(activity, R.drawable.ic_clear_all, "Clear all notifications") { }
         compactIcon(clear, 40)
         heading.addView(clear)
@@ -90,6 +91,12 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
             addView(emptyScroll, FrameLayout.LayoutParams(-1, -1))
         }
         root.addView(notifications, LinearLayout.LayoutParams(-1, 0, 1f))
+        quickSettings.onSectionChanged = { section ->
+            val inSettings = section == "Settings"
+            headingTitle.text = if (inSettings) "Home settings" else "Notifications"
+            notifications.visibility = if (inSettings) View.GONE else View.VISIBLE
+            clear.visibility = if (inSettings) View.GONE else View.VISIBLE
+        }
         val settings = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; setPadding(0, dp(4), 0, 0) }
         root.addView(settings)
         val sheetHeight = SidePanelLayout.bounds(activity).height
@@ -106,7 +113,7 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
         dialog = sheet
         sheet.setCancelable(true)
         sheet.setCanceledOnTouchOutside(true)
-        sheet.setOnDismissListener { quickSettings.detach(); collector?.cancel(); collector = null; adapter.items = emptyList(); expandedKeys.clear(); dialog = null }
+        sheet.setOnDismissListener { quickSettings.onSectionChanged = null; quickSettings.detach(); collector?.cancel(); collector = null; adapter.items = emptyList(); expandedKeys.clear(); dialog = null }
         sheet.window?.let { SidePanelLayout.apply(activity, it); it.setWindowAnimations(0) }
         sheet.show()
         sheet.window?.let { SidePanelLayout.apply(activity, it); it.setWindowAnimations(0) }

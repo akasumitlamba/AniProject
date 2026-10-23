@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.widget.ImageView
 import android.view.LayoutInflater
 import android.view.View
+import android.view.MotionEvent
+import android.animation.ValueAnimator
 import android.view.ViewGroup
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.content.ContextCompat
@@ -67,7 +69,7 @@ class TileAdapter(
     override fun onBindViewHolder(holder: Holder, position: Int) = holder.bind(getItem(position))
 
     override fun onBindViewHolder(holder: Holder, position: Int, payloads: MutableList<Any>) {
-        if (payloads.contains("badge")) holder.applyBadge() else if (payloads.contains(PAYLOAD_EDIT)) holder.applyEditMode() else super.onBindViewHolder(holder, position, payloads)
+        if (payloads.contains("badge")) holder.applyBadge() else if (payloads.contains(PAYLOAD_EDIT)) holder.applyEditMode(true) else super.onBindViewHolder(holder, position, payloads)
     }
 
     /** Moves the item locally during a drag; the caller persists the order when the drag ends. */
@@ -94,6 +96,15 @@ class TileAdapter(
             binding.root.setOnLongClickListener {
                 tile?.let { t -> if (editMode) onStartDrag(this) else onOptions(t) }
                 true
+            }
+            binding.root.setOnTouchListener { _, event ->
+                if (!editMode && ValueAnimator.areAnimatorsEnabled()) {
+                    when (event.actionMasked) {
+                        MotionEvent.ACTION_DOWN -> binding.root.animate().scaleX(.97f).scaleY(.97f).setDuration(80).start()
+                        MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> binding.root.animate().scaleX(1f).scaleY(1f).setDuration(120).start()
+                    }
+                }
+                false
             }
             binding.remove.setOnClickListener { tile?.let(onRemove) }
         }
@@ -132,7 +143,10 @@ class TileAdapter(
             } else {
                 binding.icon.setImageDrawable(null)
                 binding.icon.visibility = View.GONE
-                binding.monogram.text = tile.label.take(2).uppercase()
+                binding.monogram.text = if (showLabels) tile.label.take(2).uppercase() else tile.label
+                binding.monogram.textSize = if (showLabels) 32f else 18f
+                binding.monogram.maxLines = 2
+                binding.monogram.ellipsize = android.text.TextUtils.TruncateAt.END
                 binding.monogram.setTextColor(TileColors.onColor(color))
                 binding.monogram.visibility = View.VISIBLE
             }
@@ -144,12 +158,22 @@ class TileAdapter(
             BadgeUi.bind(binding.notificationBadge, if (editMode) 0 else count)
             binding.root.contentDescription = tile?.label.orEmpty() + if (count > 0) ", $count unread notifications" else ""
         }
-        fun applyEditMode() {
+        fun applyEditMode(animate: Boolean = false) {
             applyBadge()
-            binding.remove.visibility = if (editMode) View.VISIBLE else View.GONE
             binding.root.animate().cancel()
-            binding.root.scaleX = if (editMode) 0.96f else 1f
-            binding.root.scaleY = if (editMode) 0.96f else 1f
+            binding.remove.animate().cancel()
+            val scale = if (editMode) .96f else 1f
+            if (animate && ValueAnimator.areAnimatorsEnabled()) {
+                binding.root.animate().scaleX(scale).scaleY(scale).setDuration(160).start()
+                if (editMode) { binding.remove.alpha = 0f; binding.remove.visibility = View.VISIBLE }
+                binding.remove.animate().alpha(if (editMode) 1f else 0f).setDuration(160).withEndAction {
+                    binding.remove.visibility = if (editMode) View.VISIBLE else View.GONE
+                }.start()
+            } else {
+                binding.root.scaleX = scale; binding.root.scaleY = scale
+                binding.remove.visibility = if (editMode) View.VISIBLE else View.GONE
+                binding.remove.alpha = if (editMode) 1f else 0f
+            }
         }
     }
 

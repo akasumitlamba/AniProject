@@ -43,6 +43,40 @@ class RegressionInstrumentation : Instrumentation() {
                 adapter.move(3,0)
                 verify(adapter.currentList.map { it.id }==listOf(1L,2L,3L,4L),"reverse drag order")
             }
+            // Real SQLite transitions: late automatic responses must never replace a manual choice.
+            SQLiteDatabase.create(null).use { database ->
+                LauncherDb(targetContext).onCreate(database)
+                val store = TileStore(targetContext, database)
+                val tile = store.addApp("Banner fixture", "fixture.banner.app", "fixture.banner.app.Main", null)
+                verify(tile.artworkOrigin == "pending", "new app requests an automatic banner")
+                val auto = File(qaDirectory, "automatic.webp").apply { writeText("fixture") }
+                verify(store.finishAutomaticArtwork(tile.id, auto.path), "automatic banner attaches once")
+                verify(!store.finishAutomaticArtwork(tile.id, auto.path), "automatic choice cannot repeat")
+                store.setArtwork(tile.id, null)
+                verify(!store.finishAutomaticArtwork(tile.id, auto.path), "manual icon reset blocks late downloads")
+                val manual = File(qaDirectory, "manual.jpg").apply { writeText("custom") }
+                store.setArtwork(tile.id, manual.path)
+                verify(!store.finishAutomaticArtwork(tile.id, auto.path), "manual banner blocks late downloads")
+                val snapshot = store.byId(tile.id)!!
+                store.remove(tile.id, preserveAssets = true)
+                verify(manual.exists(), "undo window retains custom artwork")
+                store.restore(snapshot)
+                verify(store.byId(tile.id) == snapshot, "undo restores tile identity and manual choice")
+                store.remove(tile.id)
+                val replacement = store.addApp("Banner fixture", "fixture.banner.app", "fixture.banner.app.Main", null)
+                verify(replacement.id != tile.id && replacement.artworkOrigin == "pending", "remove and re-add permits a fresh automatic choice")
+                verify(!store.finishAutomaticArtwork(tile.id, auto.path), "removed tile rejects a late response")
+                verify(store.finishAutomaticArtwork(replacement.id, null) && store.byId(replacement.id)?.artworkOrigin == "icon", "no banner settles on app icon")
+                auto.delete(); manual.delete()
+            }
+            SQLiteDatabase.create(null).use { database ->
+                database.execSQL("CREATE TABLE tiles(id INTEGER PRIMARY KEY, artwork_path TEXT)")
+                database.execSQL("INSERT INTO tiles VALUES(1, 'existing-custom.jpg')")
+                LauncherDb(targetContext).onUpgrade(database, 4, 5)
+                database.rawQuery("SELECT artwork_path, artwork_origin FROM tiles", null).use { row ->
+                    verify(row.moveToFirst() && row.getString(0) == "existing-custom.jpg" && row.getString(1) == "manual", "upgrade protects existing artwork")
+                }
+            }
             // SQLiteOpenHelper must roll back a failed old-schema migration.
             val dbName="qa-upgrade.db"
             fixture.deleteDatabase(dbName)

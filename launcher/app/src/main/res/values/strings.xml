@@ -31,10 +31,10 @@
     <string name="action_dismiss_reminder">Dismiss reminder</string>
     <string name="action_watch_log">Watch log</string>
 
-    <string name="empty_home">Nothing here yet. Tap + to add apps and websites.</string>
+    <string name="empty_home">Nothing here yet. Hold empty Home, then tap + to add apps, websites or widgets.</string>
     <string name="reminder_body">You were on episode %1$d of %2$s</string>
     <string name="default_home_banner">AniHome is not your default home screen yet.</string>
-    <string name="default_home_set">Choose</string>
+    <string name="default_home_set">Set as home</string>
 
     <string name="add_site_title">Add a website</string>
     <string name="add_site_hint_url">Website address</string>

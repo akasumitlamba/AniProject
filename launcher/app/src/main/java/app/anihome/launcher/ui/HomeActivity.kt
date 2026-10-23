@@ -1,6 +1,5 @@
 package app.anihome.launcher.ui
 
-import kotlinx.coroutines.sync.withLock
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -30,7 +29,6 @@ import android.widget.FrameLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import app.anihome.launcher.R
@@ -49,6 +47,9 @@ import app.anihome.launcher.controls.HomeControlsService
 import android.app.Activity
 import app.anihome.launcher.web.WebActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -62,6 +63,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var store: TileStore
     private lateinit var tiles: TileAdapter
     private lateinit var touchHelper: ItemTouchHelper
+    private lateinit var board: HomeBoardAdapter
     private lateinit var widgets: WidgetController
     private var legacyHistoryAvailable = false
     private var restoreNotificationPanel = false
@@ -74,12 +76,13 @@ class HomeActivity : AppCompatActivity() {
         HistoryMigration.removeTemporaryCopy(this)
     }
     private val homeRoleRequest = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        binding.defaultBanner.visibility = if (isDefaultHome()) View.GONE else View.VISIBLE
+        updateDefaultPrompt()
     }
     private val homePreferences by lazy { getSharedPreferences("anihome", MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        InstalledApps.watch(applicationContext)
         RotationControl.applyHome(this)
         notificationPanel = NotificationPanel(this, ::populateHomeSettings)
         restoreNotificationPanel = savedInstanceState?.getBoolean("notification_panel_open") == true
@@ -89,8 +92,20 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         hideStatusBar()
         store = TileStore(this)
-        widgets = WidgetController(this, binding.widgetGrid, ::setDragScrolling) {
-            binding.empty.visibility = if ((!::tiles.isInitialized || tiles.itemCount == 0) && binding.widgetGrid.visibility != View.VISIBLE) View.VISIBLE else View.GONE
+        // Prepare visible app artwork while Home is idle, never hold the drawer behind icon decoding.
+        lifecycleScope.launch(Dispatchers.IO) {
+            runCatching {
+                val apps = InstalledApps.list(applicationContext)
+                val home = store.all().filter { it.isApp }.map { "${it.packageName}/${it.activityName}" }.toSet()
+                val workers = kotlinx.coroutines.sync.Semaphore(4)
+                (apps.filter { "${it.packageName}/${it.activityName}" in home } + apps.take(40)).distinctBy { it.component }.map { app ->
+                    async { workers.withPermit { IconCache.appIcon(applicationContext, app.packageName, app.activityName) } }
+                }.awaitAll()
+            }
+        }
+        binding.widgetGrid.visibility = View.GONE
+        widgets = WidgetController(this, binding.grid, ::setDragScrolling) {
+            if (::widgets.isInitialized) binding.empty.visibility = if ((!::tiles.isInitialized || tiles.itemCount == 0) && !widgets.hasWidgets) View.VISIBLE else View.GONE
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
@@ -113,9 +128,16 @@ class HomeActivity : AppCompatActivity() {
         }
 
         tiles = TileAdapter(onOpen = ::open, onOptions = ::showOptions, onRemove = ::confirmRemove, onStartDrag = { touchHelper.startDrag(it) })
-        tiles.showLabels = homePreferences.getBoolean("show_tile_labels", false)
-        binding.grid.layoutManager = GridLayoutManager(this, HomeLayout.columns(this))
-        binding.grid.adapter = tiles
+        tiles.showLabels = homePreferences.getBoolean("show_tile_labels", true)
+        board = HomeBoardAdapter(this, tiles, widgets)
+        binding.grid.layoutManager = HomeBoardLayoutManager(this, board) { tiles.showLabels }
+        binding.grid.adapter = board
+        binding.grid.itemAnimator = null
+        widgets.onEditRequested = { setEditMode(true) }
+        widgets.onStartDrag = { touchHelper.startDrag(it) }
+        widgets.onResizeStarted = { id -> board.beginGeometryChange("widget:$id") }
+        widgets.onResizePosition = { id, dx, dy -> board.resizeAnchor("widget:$id", dx, dy) }
+        widgets.onResizeFinished = { board.pack((binding.grid.layoutManager as HomeBoardLayoutManager).columns); board.persist() }
         binding.grid.itemAnimator?.changeDuration = 0
         touchHelper = ItemTouchHelper(DragCallback())
         touchHelper.attachToRecyclerView(binding.grid)
@@ -131,8 +153,22 @@ class HomeActivity : AppCompatActivity() {
         binding.btnApps.setOnClickListener { startActivity(Intent(this, AppDrawerActivity::class.java)) }
         binding.btnSettings.setOnClickListener { showSettingsMenu(it) }
         binding.btnDefaultHome.setOnClickListener { openHomeSettings() }
+        binding.btnDismissDefault.setOnClickListener {
+            homePreferences.edit().putBoolean("default_prompt_dismissed", true).apply()
+            updateDefaultPrompt()
+        }
 
         configureRail()
+        if (!homePreferences.getBoolean("home_hint_seen", false)) {
+            val actions = HomeInteractionPolicy.Swipe.entries.mapNotNull { direction ->
+                HomeInteractionPolicy.action(homePreferences.getString("gesture_action_${direction.name}", null), direction, AdaptiveLayout.tablet(this)).takeUnless { it == HomeInteractionPolicy.Action.NONE }?.let { "${direction.label}: ${it.label}" }
+            }
+            binding.editHint.text = "Hold empty Home to edit and add. Hold the dock to pin apps or open settings.\n" + actions.joinToString(" · ") + "\nTap this hint to dismiss."
+            binding.editHint.visibility = View.VISIBLE
+            binding.editHint.setOnClickListener {
+                if (!tiles.editMode) { homePreferences.edit().putBoolean("home_hint_seen", true).apply(); binding.editHint.visibility = View.GONE }
+            }
+        }
 
         // A home screen never "goes back"; Back just leaves edit mode.
         onBackPressedDispatcher.addCallback(this) { if (tiles.editMode) setEditMode(false) }
@@ -163,6 +199,7 @@ class HomeActivity : AppCompatActivity() {
         format24Hour = "HH:mm\ndd MMM"; format12Hour = "h:mm\ndd MMM"; importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
     } }
     private val recents by lazy { ArtworkUi.plainIcon(this, R.drawable.ic_recents, "Recent apps") { systemAction(AccessibilityService.GLOBAL_ACTION_RECENTS) } }
+    private val notificationControl by lazy { FrameLayout(this) }
     private val notificationBadge by lazy { BadgeUi.create(this) }
     private val dockStatus by lazy { DockStatus(this) }
     private fun hideStatusBar() = HomeFullscreen.apply(window)
@@ -176,10 +213,11 @@ class HomeActivity : AppCompatActivity() {
         val showSearch = homePreferences.getBoolean("show_dock_search", true)
         val showRecents = !tiles.editMode && homePreferences.getBoolean("show_recents_button", AdaptiveLayout.tablet(this@HomeActivity))
         val all = listOf(binding.railBrand, binding.btnSearch, binding.btnAdd, binding.btnNotifications,
-            binding.btnSettings, binding.btnEdit, binding.btnMore, binding.btnApps, clock, recents, notificationBadge, dockStatus)
+            binding.btnSettings, binding.btnEdit, binding.btnMore, binding.btnApps, clock, recents, notificationBadge, notificationControl, dockStatus)
         all.forEach { (it.parent as? ViewGroup)?.removeView(it) }
         val rail = binding.controlRail
         rail.removeAllViews()
+        rail.setOnLongClickListener { showMoreMenu(rail); true }
         rail.orientation = if (vertical) LinearLayout.VERTICAL else LinearLayout.HORIZONTAL
         rail.gravity = if (vertical) Gravity.CENTER_HORIZONTAL else Gravity.CENTER_VERTICAL
         rail.updateLayoutParams<FrameLayout.LayoutParams> {
@@ -209,15 +247,26 @@ class HomeActivity : AppCompatActivity() {
             }
             parent.addView(view, LinearLayout.LayoutParams(dp(size), dp(size)))
         }
-        dockStatus.onPowerIndicatorsChanged = { powerVisible ->
+        dockStatus.onPowerIndicatorsChanged = { _ ->
             if (vertical) androidx.core.widget.TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
-                clock, 11, if (powerVisible) 13 else 16, 1, android.util.TypedValue.COMPLEX_UNIT_SP
-            ) else clock.textSize = 16f
+                clock, 16, 19, 1, android.util.TypedValue.COMPLEX_UNIT_SP
+            ) else {
+                androidx.core.widget.TextViewCompat.setAutoSizeTextTypeWithDefaults(clock, androidx.core.widget.TextViewCompat.AUTO_SIZE_TEXT_TYPE_NONE)
+                clock.textSize = 16f
+            }
         }
         clock.gravity = if (vertical) Gravity.CENTER else Gravity.START or Gravity.CENTER_VERTICAL
         clock.format24Hour = "HH:mm"
         clock.format12Hour = "h:mm"
-        notificationBadge.textSize = if (vertical) 9f else 11f
+        notificationControl.removeAllViews()
+        binding.btnNotifications.setImageResource(R.drawable.ic_chat)
+        val messageInset = dp((controlSize - 36) / 2)
+        binding.btnNotifications.setPadding(messageInset, messageInset, messageInset, messageInset)
+        binding.btnNotifications.visibility = View.VISIBLE
+        notificationControl.addView(binding.btnNotifications, FrameLayout.LayoutParams(-1, -1))
+        notificationControl.addView(notificationBadge, FrameLayout.LayoutParams(-2, dp(16), Gravity.TOP or Gravity.END))
+        if (!vertical) add(rail, notificationControl)
+        notificationBadge.textSize = 9f
         notificationBadge.minWidth = dp(if (vertical) 16 else 20)
         notificationBadge.setPadding(dp(if (vertical) 1 else 4), 0, dp(if (vertical) 1 else 4), 0)
         clock.includeFontPadding = false
@@ -229,14 +278,13 @@ class HomeActivity : AppCompatActivity() {
             addView(LinearLayout(this@HomeActivity).apply {
                 orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL
                 addView(clock, if (vertical) LinearLayout.LayoutParams(0, -1, 1f) else LinearLayout.LayoutParams(-2, -1))
-                addView(notificationBadge, LinearLayout.LayoutParams(-2, dp(if (vertical) 16 else 20)).apply { marginStart = dp(2) })
-            }, LinearLayout.LayoutParams(if (vertical) -1 else -2, dp(22)))
+            }, LinearLayout.LayoutParams(if (vertical) -1 else -2, dp(if (vertical) 24 else 20)))
             addView(android.widget.TextClock(this@HomeActivity).apply {
                 format24Hour = "dd MMM"; format12Hour = "dd MMM"
                 setTextColor(-1); textSize = if (vertical) 14f else 16f
                 gravity = if (vertical) Gravity.CENTER else Gravity.START or Gravity.CENTER_VERTICAL
                 includeFontPadding = false; setOnClickListener { notificationPanel.show() }
-            }, LinearLayout.LayoutParams(if (vertical) -1 else -2, dp(22)))
+            }, LinearLayout.LayoutParams(if (vertical) -1 else -2, dp(if (vertical) 20 else 18)))
         }
         val clockBlock = LinearLayout(this).apply {
             orientation = if (vertical) LinearLayout.VERTICAL else LinearLayout.HORIZONTAL
@@ -252,7 +300,7 @@ class HomeActivity : AppCompatActivity() {
         val clockArea = FrameLayout(this).apply {
             addView(clockBlock, FrameLayout.LayoutParams(-1, -1))
         }
-        rail.addView(clockArea, LinearLayout.LayoutParams(if (vertical) dp(52) else -2, dp(if (vertical) 76 else 48)))
+        rail.addView(clockArea, LinearLayout.LayoutParams(if (vertical) dp(52) else -2, dp(if (vertical) 78 else 48)))
         binding.btnSearch.setImageResource(R.drawable.ic_google)
         binding.btnSearch.contentDescription = "Search or open address"
         val browser = DockBrowser.selected(this)
@@ -278,6 +326,11 @@ class HomeActivity : AppCompatActivity() {
             setOnLongClickListener { showDockPicker(); true }
         }
         if (tiles.editMode) {
+            binding.btnAdd.tooltipText = "Add to Home"
+            binding.btnEdit.tooltipText = "Done"
+            listOf(binding.btnAdd, binding.btnEdit).forEach {
+                it.background = android.graphics.drawable.InsetDrawable(androidx.core.content.ContextCompat.getDrawable(this, R.drawable.bg_dock_apps), dp(4))
+            }
             add(group, binding.btnAdd); add(group, binding.btnEdit)
         } else {
             val page = resources.getDimensionPixelSize(R.dimen.page_padding) / resources.displayMetrics.density
@@ -313,6 +366,7 @@ class HomeActivity : AppCompatActivity() {
         if (vertical) rail.addView(NestedScrollView(this).apply { isFillViewport = true; isVerticalScrollBarEnabled = false; addView(group, ViewGroup.LayoutParams(-1, -2)) }, LinearLayout.LayoutParams(-1, 0, 1f))
         else rail.addView(group, LinearLayout.LayoutParams(0, -1, 1f))
         if (showRecents) add(rail, recents)
+        if (vertical) add(rail, notificationControl)
         add(rail, binding.btnApps)
         // Inset the visible circle equally while preserving the full button touch target.
         binding.btnApps.background = android.graphics.drawable.InsetDrawable(
@@ -325,7 +379,7 @@ class HomeActivity : AppCompatActivity() {
         stopDragScroll()
         touchHelper.attachToRecyclerView(null)
         configureRail()
-        (binding.grid.layoutManager as GridLayoutManager).spanCount = HomeLayout.columns(this)
+        binding.grid.requestLayout()
         tiles.notifyDataSetChanged()
         widgets.updateLayout()
         touchHelper.attachToRecyclerView(binding.grid)
@@ -343,7 +397,6 @@ class HomeActivity : AppCompatActivity() {
     private var dragging = false
     private var tileOrderEpoch = 0L
     private var tileOrderWrites = 0
-    private val tileOrderMutex = kotlinx.coroutines.sync.Mutex()
     private val gestures by lazy {
         GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onDown(event: MotionEvent) = true
@@ -355,7 +408,7 @@ class HomeActivity : AppCompatActivity() {
                 return true
             }
             override fun onDoubleTap(event: MotionEvent): Boolean {
-                if (tiles.editMode || android.os.SystemClock.uptimeMillis() - editExitAt < android.view.ViewConfiguration.getDoubleTapTimeout() || !homePreferences.getBoolean("double_tap_lock", true)) return false
+                if (tiles.editMode || android.os.SystemClock.uptimeMillis() - editExitAt < android.view.ViewConfiguration.getDoubleTapTimeout() || !homePreferences.getBoolean("double_tap_lock", HomeControlsService.connected())) return false
                 gestureConsumed = true
                 systemAction(AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN)
                 return true
@@ -381,9 +434,9 @@ class HomeActivity : AppCompatActivity() {
             }
         })
     }
-    private fun contains(view: View, x: Int, y: Int): Boolean {
+    private fun contains(view: View?, x: Int, y: Int): Boolean {
         val bounds = Rect()
-        return view.visibility == View.VISIBLE && view.getGlobalVisibleRect(bounds) && bounds.contains(x, y)
+        return view != null && view.visibility == View.VISIBLE && view.getGlobalVisibleRect(bounds) && bounds.contains(x, y)
     }
     private fun emptyHomeSpace(event: MotionEvent): Boolean {
         val x = event.rawX.toInt(); val y = event.rawY.toInt()
@@ -393,7 +446,7 @@ class HomeActivity : AppCompatActivity() {
         // Never steal a gesture from an app tile, a provider widget, or its controls.
         for (i in 0 until binding.grid.childCount) {
             val tile = binding.grid.getChildAt(i)
-            if (tiles.editMode && contains(tile, x, y)) return false
+            if ((tiles.editMode || board.isWidget(binding.grid.getChildAdapterPosition(tile))) && contains(tile, x, y)) return false
             if (contains(tile.findViewById(R.id.card_frame), x, y) || contains(tile.findViewById(R.id.label), x, y)) return false
         }
         for (i in 0 until binding.widgetGrid.childCount) {
@@ -505,16 +558,31 @@ class HomeActivity : AppCompatActivity() {
         else notificationPanel.resume()
         configureRail()
         reload()
-        binding.defaultBanner.visibility = if (isDefaultHome()) View.GONE else View.VISIBLE
+        updateDefaultPrompt()
     }
 
+    private var loadedBoard = false
     private fun reload() {
         val epoch = tileOrderEpoch
         lifecycleScope.launch {
             val items = withContext(Dispatchers.IO) { store.all() }
             legacyHistoryAvailable = withContext(Dispatchers.IO) { HistoryMigration.hasHistory(this@HomeActivity) }
             if (dragging || tileOrderWrites > 0 || epoch != tileOrderEpoch) return@launch
+            val previous = tiles.currentList.map { it.id }.toSet()
+            val added = if (!loadedBoard) null else items.lastOrNull { it.id !in previous }
+            loadedBoard = true
             tiles.submitList(items)
+            if (items.any { it.isApp && it.artworkOrigin == "pending" }) app.anihome.launcher.banners.AutomaticBanners.enqueue(applicationContext)
+            added?.let { tile -> binding.grid.post {
+                val index = tiles.currentList.indexOfFirst { it.id == tile.id }
+                val view = binding.grid.findViewHolderForAdapterPosition(index)?.itemView
+                if (view != null) {
+                    if (android.animation.ValueAnimator.areAnimatorsEnabled()) {
+                        binding.homeScroll.smoothScrollTo(0, view.top)
+                        view.alpha = .45f; view.animate().alpha(1f).setDuration(180).start()
+                    } else binding.homeScroll.scrollTo(0, view.top)
+                }
+            } }
             binding.empty.visibility = if (items.isEmpty() && !widgets.hasWidgets) View.VISIBLE else View.GONE
             withContext(Dispatchers.IO) { backfillColors(items) }
         }
@@ -550,8 +618,20 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setEditMode(enabled: Boolean) {
+        if (enabled && homePreferences.getBoolean("layout_locked", false)) {
+            Toast.makeText(this, "Home layout is locked. Unlock it in Home settings.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (enabled) {
+            homePreferences.edit().putBoolean("home_hint_seen", true).apply()
+            binding.editHint.text = "Hold a tile to move it. Drag widget edges to resize. Tap empty Home or Done to finish."
+        }
+        binding.editHint.visibility = if (enabled) View.VISIBLE else View.GONE
+        binding.editHint.announceForAccessibility(if (enabled) binding.editHint.text else "Finished editing Home")
         tiles.editMode = enabled
+        board.editing = enabled
         widgets.setEditMode(enabled)
+        binding.grid.requestLayout()
         configureRail()
         binding.btnSettings.isActivated = enabled
         ViewCompat.setStateDescription(binding.btnSettings, if (enabled) "Editing home" else "Home settings")
@@ -633,19 +713,36 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun confirmRemove(tile: HomeTile) {
-        MaterialAlertDialogBuilder(this)
-            .setTitle(tile.label)
-            .setMessage(R.string.action_remove)
-            .setNegativeButton(R.string.action_cancel, null)
-            .setPositiveButton(R.string.action_remove) { _, _ ->
-                lifecycleScope.launch {
-                    val result = withContext(Dispatchers.IO) { runCatching { store.remove(tile.id) } }
-                    result.onSuccess { TileEvents.notifyChanged() }.onFailure {
-                        Toast.makeText(this@HomeActivity, "Could not remove shortcut. Please retry.", Toast.LENGTH_LONG).show()
+        if (tile.isShortcut) {
+            MaterialAlertDialogBuilder(this).setTitle("Remove ${tile.label} from Home?")
+                .setMessage("The app stays installed. Android may require the shortcut to be pinned again later.")
+                .setNegativeButton(R.string.action_cancel, null)
+                .setPositiveButton(R.string.action_remove) { _, _ -> removeTile(tile, false) }.show()
+        } else removeTile(tile, true)
+    }
+    private fun removeTile(tile: HomeTile, undoable: Boolean) {
+        lifecycleScope.launch {
+            runCatching { withContext(Dispatchers.IO) { store.remove(tile.id, preserveAssets = undoable) } }
+                .onSuccess {
+                    TileEvents.notifyChanged()
+                    if (undoable) {
+                        var undo = false
+                        com.google.android.material.snackbar.Snackbar.make(binding.root, "${tile.label} removed from Home", 4000)
+                            .setAction("Undo") {
+                                undo = true
+                                lifecycleScope.launch {
+                                    runCatching { withContext(Dispatchers.IO) { store.restore(tile) } }
+                                        .onSuccess { TileEvents.notifyChanged() }
+                                        .onFailure { Toast.makeText(this@HomeActivity, "Could not restore tile", Toast.LENGTH_LONG).show() }
+                                }
+                            }.addCallback(object : com.google.android.material.snackbar.Snackbar.Callback() {
+                                override fun onDismissed(bar: com.google.android.material.snackbar.Snackbar?, event: Int) {
+                                    if (!undo) lifecycleScope.launch(Dispatchers.IO) { store.discardAssets(tile) }
+                                }
+                            }).show()
                     }
-                }
-            }
-            .show()
+                }.onFailure { Toast.makeText(this@HomeActivity, "Could not remove tile. Please retry.", Toast.LENGTH_LONG).show() }
+        }
     }
 
     private fun showAddMenu(anchor: View) {
@@ -677,17 +774,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showSearch() {
-        Dialogs.input(this, R.string.search_title, R.string.search_hint, null) { query ->
-            val q = query.trim()
-            if (q.isEmpty()) return@input
-            val url = SiteIcons.normalizeUrl(q).takeIf { q.contains('.') && !q.contains(' ') }
-                ?: "https://www.google.com/search?q=" + Uri.encode(q)
-            val browserIntent = DockBrowser.intent(this, q, url, q.contains('.') && !q.contains(' '))
-            if (browserIntent == null) openUrl(url)
-            else runCatching { startActivity(browserIntent) }.onFailure {
-                Toast.makeText(this, "Selected browser unavailable. Choose another in Dock settings.", Toast.LENGTH_LONG).show()
-            }
-        }.show()
+        startActivity(Intent(this, AppDrawerActivity::class.java).putExtra(AppDrawerActivity.EXTRA_SEARCH, true))
     }
 
     private fun showSettingsMenu(@Suppress("UNUSED_PARAMETER") anchor: View) {
@@ -695,14 +782,14 @@ class HomeActivity : AppCompatActivity() {
     }
     private fun populateHomeSettings(parent: LinearLayout) {
         val panel = SettingsPanel(this)
-        panel.section("Rotation", R.drawable.ic_rotation) {
+        panel.section("Rotation", R.drawable.ic_rotation, summary = { RotationControl.mode(this) }) {
             panel.text(this, "Rotation works in AniHome without extra access. Allow system control to apply it to other apps too.")
             addView(ArtworkUi.textChip(this@HomeActivity, "Allow system rotation control") {
                 runCatching { startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:$packageName"))) }
             })
             addView(ArtworkUi.textChip(this@HomeActivity, "Follow device rotation setting") { RotationControl.followDevice(this@HomeActivity) })
         }
-        panel.section("Dock", R.drawable.ic_recents) {
+        panel.section("Dock", R.drawable.ic_recents, summary = { DockBrowser.choices(this).firstOrNull { it.packageName == DockBrowser.selected(this) }?.label ?: "Browser unavailable" }) {
             panel.toggle(this, "Show search/browser icon", homePreferences.getBoolean("show_dock_search", true)) {
                 homePreferences.edit().putBoolean("show_dock_search", it).apply()
                 configureRail()
@@ -735,9 +822,13 @@ class HomeActivity : AppCompatActivity() {
                 configureRail()
             }
         }
-        panel.section("Gestures", R.drawable.ic_gestures) {
-            panel.toggle(this, "Double tap empty Home to lock", homePreferences.getBoolean("double_tap_lock", true)) {
+        panel.section("Gestures", R.drawable.ic_gestures, summary = { if (HomeControlsService.connected()) "AniHome controls ready" else "Lock and Recent apps need AniHome controls" }) {
+            if (!HomeControlsService.connected()) panel.text(this, "Lock screen and Recent apps need AniHome controls. Enable them in Android accessibility settings.")
+            panel.toggle(this, "Double tap empty Home to lock", homePreferences.getBoolean("double_tap_lock", HomeControlsService.connected())) {
                 homePreferences.edit().putBoolean("double_tap_lock", it).apply()
+                if (it && !HomeControlsService.connected()) {
+                    runCatching { startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) }
+                }
             }
             HomeInteractionPolicy.Swipe.entries.forEach { direction ->
                 val row = LinearLayout(this@HomeActivity).apply { gravity = Gravity.CENTER_VERTICAL; orientation = if (AdaptiveLayout.tablet(this@HomeActivity)) LinearLayout.HORIZONTAL else LinearLayout.VERTICAL }
@@ -764,7 +855,11 @@ class HomeActivity : AppCompatActivity() {
                 addView(row)
             }
         }
-        panel.section("Home layout", R.drawable.ic_apps) {
+        panel.section("Home layout", R.drawable.ic_apps, summary = { (HomeLayout.selection(this).takeIf { it != 0 }?.let { "$it per row" } ?: "Automatic") + if (homePreferences.getBoolean("layout_locked", false)) " · Locked" else "" }) {
+            panel.toggle(this, "Lock Home layout", homePreferences.getBoolean("layout_locked", false)) {
+                homePreferences.edit().putBoolean("layout_locked", it).apply()
+                if (it && tiles.editMode) setEditMode(false)
+            }
             val options = android.widget.RadioGroup(this@HomeActivity)
             (listOf(0) + (2..6)).forEach { columns ->
                 options.addView(androidx.appcompat.widget.AppCompatRadioButton(this@HomeActivity).apply {
@@ -773,7 +868,7 @@ class HomeActivity : AppCompatActivity() {
                     isChecked = HomeLayout.selection(this@HomeActivity) == columns
                     setOnClickListener {
                         homePreferences.edit().putInt("home_columns", columns).apply()
-                        (binding.grid.layoutManager as GridLayoutManager).spanCount = HomeLayout.columns(this@HomeActivity)
+                        binding.grid.requestLayout()
                         binding.grid.requestLayout()
                         widgets.updateLayout()
                     }
@@ -781,7 +876,7 @@ class HomeActivity : AppCompatActivity() {
             }
             addView(options)
         }
-        panel.section(getString(R.string.action_show_app_names), R.drawable.ic_label) {
+        panel.section("App and website names", R.drawable.ic_label, summary = { if (tiles.showLabels) "Shown" else "Hidden · Missing artwork stays named" }) {
             panel.toggle(this, "Show names below tiles", tiles.showLabels) {
                 tiles.showLabels = it
                 homePreferences.edit().putBoolean("show_tile_labels", it).apply()
@@ -827,6 +922,14 @@ class HomeActivity : AppCompatActivity() {
 
     // ----- default launcher -----
 
+    private fun updateDefaultPrompt() {
+        val isHome = isDefaultHome()
+        if (isHome) homePreferences.edit().putBoolean("was_default_home", true).apply()
+        else if (homePreferences.getBoolean("was_default_home", false)) {
+            homePreferences.edit().putBoolean("was_default_home", false).remove("default_prompt_dismissed").apply()
+        }
+        binding.defaultBanner.visibility = if (isHome || homePreferences.getBoolean("default_prompt_dismissed", false)) View.GONE else View.VISIBLE
+    }
     private fun isDefaultHome(): Boolean {
         if (android.os.Build.VERSION.SDK_INT >= 29) {
             val roles = getSystemService(android.app.role.RoleManager::class.java)
@@ -852,35 +955,49 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private inner class DragCallback : ItemTouchHelper.SimpleCallback(
-        ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, 0,
+        ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, 0
     ) {
+        private var key: String? = null
+        private var dropX = 0f
+        private var dropY = 0f
         override fun isLongPressDragEnabled() = false
-        override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-            val from = viewHolder.bindingAdapterPosition
-            val to = target.bindingAdapterPosition
-            if (!HomeInteractionPolicy.validMove(from, to, tiles.itemCount)) return false
-            tiles.move(from, to)
-            return true
-        }
-        override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
-            super.onSelectedChanged(viewHolder, actionState)
-            if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+        override fun onMove(view: RecyclerView, holder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder) = false
+        override fun onSelectedChanged(holder: RecyclerView.ViewHolder?, state: Int) {
+            super.onSelectedChanged(holder, state)
+            if (state == ItemTouchHelper.ACTION_STATE_DRAG && holder != null) {
+                key = board.keyAt(holder.absoluteAdapterPosition)
+                dropX = holder.itemView.left.toFloat(); dropY = holder.itemView.top.toFloat() - binding.grid.paddingTop
                 tileOrderEpoch++
                 setDragScrolling(true)
             } else stopDragScroll()
         }
-        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) = Unit
-        override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
-            super.clearView(recyclerView, viewHolder)
-            stopDragScroll()
-            val order = tiles.currentList.map { it.id }
-            tileOrderEpoch++
-            tileOrderWrites++
-            lifecycleScope.launch {
-                try { withContext(Dispatchers.IO) { tileOrderMutex.withLock { store.reorder(order) } } }
-                catch (_: Exception) { Toast.makeText(this@HomeActivity, "Could not save Home order. Please retry.", Toast.LENGTH_LONG).show() }
-                finally { tileOrderWrites--; tileOrderEpoch++; reload() }
+        override fun onChildDraw(canvas: android.graphics.Canvas, recycler: RecyclerView, holder: RecyclerView.ViewHolder,
+            dx: Float, dy: Float, state: Int, active: Boolean) {
+            if (active && state == ItemTouchHelper.ACTION_STATE_DRAG) {
+                dropX = holder.itemView.left + dx
+                dropY = holder.itemView.top + dy - recycler.paddingTop
+                val layout = recycler.layoutManager as HomeBoardLayoutManager
+                val placement = board.placements.firstOrNull { it.key == key }
+                if (placement != null) {
+                    val x = kotlin.math.round(dropX / layout.cellWidth).toInt().coerceIn(0, (layout.columns - placement.columns).coerceAtLeast(0))
+                    val y = kotlin.math.round(dropY / layout.cellHeight).toInt().coerceAtLeast(0)
+                    val rect = android.graphics.RectF(x * layout.cellWidth + dp(4), y * layout.cellHeight + recycler.paddingTop + dp(4), (x + placement.columns) * layout.cellWidth - dp(4), (y + placement.rows) * layout.cellHeight + recycler.paddingTop - dp(4))
+                    val paint = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply { color = 0x448fdaff }
+                    canvas.drawRoundRect(rect, dp(14).toFloat(), dp(14).toFloat(), paint)
+                    paint.style = android.graphics.Paint.Style.STROKE; paint.strokeWidth = dp(2).toFloat(); paint.color = 0xff9edfff.toInt()
+                    canvas.drawRoundRect(rect, dp(14).toFloat(), dp(14).toFloat(), paint)
+                }
             }
+            super.onChildDraw(canvas, recycler, holder, dx, dy, state, active)
+        }
+        override fun onSwiped(holder: RecyclerView.ViewHolder, direction: Int) = Unit
+        override fun clearView(recycler: RecyclerView, holder: RecyclerView.ViewHolder) {
+            super.clearView(recycler, holder)
+            val layout = recycler.layoutManager as HomeBoardLayoutManager
+            key?.let {
+                board.moveToCell(it, kotlin.math.round(dropX / layout.cellWidth).toInt(), kotlin.math.round(dropY / layout.cellHeight).toInt(), layout.columns)
+            }
+            key = null; tileOrderEpoch++; stopDragScroll()
         }
     }
 }

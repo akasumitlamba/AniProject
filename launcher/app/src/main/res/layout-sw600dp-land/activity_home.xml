@@ -43,7 +43,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/default_home_set"
                 android:textColor="@color/cyan" />
+            <ImageButton android:id="@+id/btn_dismiss_default" style="@style/Widget.AniHome.BorderlessIconButton"
+                android:src="@drawable/ic_close" android:contentDescription="Dismiss default home reminder" />
         </LinearLayout>
+        <TextView android:id="@+id/edit_hint" android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" android:padding="10dp" android:background="@drawable/bg_pill"
+            android:text="Hold a tile to move it. Drag widget edges to resize. Tap empty Home or Done to finish."
+            android:textSize="13sp" android:textColor="@color/text" android:visibility="gone" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/home_scroll"
@@ -84,7 +90,7 @@
         android:layout_marginBottom="@dimen/page_padding"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:background="@drawable/bg_glass"
+        android:background="@drawable/bg_dock_surface"
         android:padding="8dp">
         <ImageView android:id="@+id/rail_brand" android:layout_width="32dp" android:layout_height="32dp"
             android:src="@drawable/anibrave_lion" android:contentDescription="@null" />

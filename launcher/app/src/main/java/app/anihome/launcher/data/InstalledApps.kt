@@ -18,12 +18,26 @@ data class InstalledApp(
 /** Enumerates launchable activities exactly the way a stock launcher does. */
 object InstalledApps {
     @Volatile private var snapshot: List<InstalledApp>? = null
+    private var watching = false
+    @Synchronized fun watch(context: Context) {
+        if (watching) return
+        val launcher = context.applicationContext.getSystemService(android.content.pm.LauncherApps::class.java)
+        val callback = object : android.content.pm.LauncherApps.Callback() {
+            private fun changed(pkg: String) { invalidate(); IconCache.invalidate(pkg); TileEvents.notifyChanged() }
+            override fun onPackageAdded(packageName: String, user: android.os.UserHandle) = changed(packageName)
+            override fun onPackageRemoved(packageName: String, user: android.os.UserHandle) = changed(packageName)
+            override fun onPackageChanged(packageName: String, user: android.os.UserHandle) = changed(packageName)
+            override fun onPackagesAvailable(packageNames: Array<out String>, user: android.os.UserHandle, replacing: Boolean) { packageNames.forEach(::changed) }
+            override fun onPackagesUnavailable(packageNames: Array<out String>, user: android.os.UserHandle, replacing: Boolean) { packageNames.forEach(::changed) }
+        }
+        watching = runCatching { launcher.registerCallback(callback, android.os.Handler(android.os.Looper.getMainLooper())); true }.getOrDefault(false)
+    }
     fun cached(): List<InstalledApp>? = snapshot
-    fun invalidate() { snapshot = null }
+    @Synchronized fun invalidate() { snapshot = null }
     @Synchronized
 
-    fun list(context: Context): List<InstalledApp> {
-        snapshot?.let { return it }
+    fun list(context: Context, refresh: Boolean = false): List<InstalledApp> {
+        if (!refresh) snapshot?.let { return it }
         val pm = context.packageManager
         val intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
         val collator = Collator.getInstance()

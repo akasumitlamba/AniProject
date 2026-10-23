@@ -4,7 +4,7 @@ import kotlin.math.abs
 import kotlin.math.roundToInt
 
 internal object HomeInteractionPolicy {
-    enum class Swipe(val label: String) { UP("Bottom to top"), DOWN("Top to bottom"), LEFT("Right to left"), RIGHT("Left to right") }
+    enum class Swipe(val label: String) { UP("Swipe up"), DOWN("Swipe down"), LEFT("Swipe left"), RIGHT("Swipe right") }
     enum class Action(val label: String) { NONE("Do nothing"), APPS("Applications"), RECENTS("Recent apps"), NOTIFICATIONS("Notifications"), SEARCH("Search"), LOCK("Lock screen") }
     fun defaultAction(direction: Swipe): Action = when (direction) {
         Swipe.UP -> Action.RECENTS

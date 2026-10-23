@@ -13,6 +13,7 @@ class HomeControlsService : AccessibilityService() {
 
     companion object {
         @Volatile private var current: HomeControlsService? = null
+        fun connected() = current != null
         fun perform(action: Int): Boolean {
             if (action !in setOf(GLOBAL_ACTION_RECENTS, GLOBAL_ACTION_LOCK_SCREEN)) return false
             if (action == GLOBAL_ACTION_LOCK_SCREEN && Build.VERSION.SDK_INT < 28) return false

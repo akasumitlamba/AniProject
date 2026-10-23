@@ -17,6 +17,7 @@ data class HomeTile(
     val position: Int,
     val shortcutId: String? = null,
     val shortcutUser: Long? = null,
+    val artworkOrigin: String = "manual",
 ) {
     enum class Kind { APP, WEB }
 

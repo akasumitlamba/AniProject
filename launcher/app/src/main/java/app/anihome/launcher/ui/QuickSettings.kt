@@ -196,7 +196,9 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         parent.addView(label, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(6) })
     }
     fun showSettings() { selected = "Settings"; wifiDraft = null; render() }
+    var onSectionChanged: ((String?) -> Unit)? = null
     private fun render() {
+        onSectionChanged?.invoke(selected)
         val parent = content ?: return
         (rotationTile as? ImageButton)?.setImageResource(when (rotationMode()) {
             "Fixed" -> app.anihome.launcher.R.drawable.ic_lock
@@ -226,7 +228,6 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
             parent.addView(sectionRoot, LinearLayout.LayoutParams(-1, -2))
             when (section) {
                 "Settings" -> {
-                    sectionRoot.addView(ArtworkUi.title(activity, "Home settings").apply { textSize = 14f }, LinearLayout.LayoutParams(-1, dp(40)))
                     settingsContent(body)
                 }
                 "Wi-Fi" -> wifiRows(body, sectionRoot)

@@ -9,7 +9,8 @@ internal object AdaptiveLayout {
     fun columns(widthDp: Float, fontScale: Float, maximum: Int = 8, cellDp: Float = 80f): Int =
         floor(widthDp / (cellDp * fontScale.coerceIn(1f, 1.6f))).toInt().coerceIn(1, maximum)
     fun dockCapacity(lengthDp: Int, vertical: Boolean, recents: Boolean, editing: Boolean, search: Boolean = true): Int {
-        val fixed = 80 + (if (search) 44 else 0) + 44 + (if (recents) 44 else 0) + (if (editing) 88 else 0) + 16
+        val control = if (vertical) 52 else 44
+        val fixed = (if (vertical) 88 else 80) + (if (search) control else 0) + control * 2 + (if (recents) control else 0) + (if (editing) control * 2 else 0) + 16
         return ((lengthDp - fixed) / (if (vertical) 58 else 50)).coerceIn(0, 5)
     }
     fun expandedHeight(sheetHeightDp: Int, portrait: Boolean): Int =

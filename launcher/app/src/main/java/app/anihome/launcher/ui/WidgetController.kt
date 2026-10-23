@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.RemoteViews
 import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
+import androidx.core.view.doOnLayout
 import androidx.core.content.ContextCompat
 import app.anihome.launcher.R
 import android.widget.LinearLayout
@@ -43,29 +44,17 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
     private var editing = false
     private var resizingId: Int? = null
     private val adapter = WidgetAdapter()
-    private val dragHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
-        ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, 0
-    ) {
-        override fun isLongPressDragEnabled() = false
-        override fun onMove(view: RecyclerView, from: RecyclerView.ViewHolder, to: RecyclerView.ViewHolder): Boolean {
-            val start = from.bindingAdapterPosition
-            val end = to.bindingAdapterPosition
-            if (!editing || !HomeInteractionPolicy.validMove(start, end, entries.size)) return false
-            entries.add(end, entries.removeAt(start))
-            adapter.notifyItemMoved(start, end)
-            return true
-        }
-        override fun onSelectedChanged(holder: RecyclerView.ViewHolder?, state: Int) {
-            super.onSelectedChanged(holder, state)
-            onDragging(state == ItemTouchHelper.ACTION_STATE_DRAG)
-        }
-        override fun clearView(view: RecyclerView, holder: RecyclerView.ViewHolder) {
-            super.clearView(view, holder)
-            onDragging(false)
-            save()
-        }
-        override fun onSwiped(holder: RecyclerView.ViewHolder, direction: Int) = Unit
-    })
+    @Suppress("UNCHECKED_CAST")
+    val homeAdapter get() = adapter as RecyclerView.Adapter<RecyclerView.ViewHolder>
+    fun idAt(position: Int) = entries[position].id
+    fun indexOf(id: Int) = entries.indexOfFirst { it.id == id }
+    fun columnsAt(position: Int) = entries[position].columns.coerceAtMost(columns)
+    fun rowsAt(position: Int) = entries[position].rows
+    var onEditRequested: () -> Unit = {}
+    var onStartDrag: (RecyclerView.ViewHolder) -> Unit = {}
+    var onResizeStarted: (Int) -> Unit = {}
+    var onResizePosition: (Int, Int, Int) -> Unit = { _, _, _ -> }
+    var onResizeFinished: () -> Unit = {}
     private val builtIns = BuiltInWidgets(activity)
     private val bind = activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == Activity.RESULT_OK) configureOrAdd() else cancelAdding()
@@ -84,18 +73,6 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
             host.appWidgetIds.filter { id -> id != pendingId && entries.none { BuiltInWidgetPolicy.usesProviderHost(it.kind, it.id) && it.id == id } }
                 .forEach { host.deleteAppWidgetId(it) }
         }
-        val layout = GridLayoutManager(activity, columns)
-        layout.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int) = entries[position].columns.coerceAtMost(columns)
-        }
-        grid.layoutManager = layout
-        grid.adapter = adapter
-        dragHelper.attachToRecyclerView(grid)
-        grid.isNestedScrollingEnabled = false
-        grid.itemAnimator = null
-        grid.addOnLayoutChangeListener { _, left, _, right, _, oldLeft, _, oldRight, _ ->
-            if (right - left != oldRight - oldLeft) grid.post { adapter.notifyDataSetChanged() }
-        }
         refresh()
     }
 
@@ -111,13 +88,11 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
         val next = HomeLayout.columns(activity) * 2
         if (next == columns) return
         columns = next
-        (grid.layoutManager as GridLayoutManager).spanCount = columns
         refresh()
     }
     fun setEditMode(value: Boolean) {
         editing = value
         if (!value) resizingId = null
-        if (!value) { dragHelper.attachToRecyclerView(null); dragHelper.attachToRecyclerView(grid) }
         adapter.notifyDataSetChanged()
     }
 
@@ -342,7 +317,7 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
         val width = if (grid.width > 0) grid.width / density else activity.resources.displayMetrics.widthPixels / density - 28
         return width / columns
     }
-    private fun cellHeightDp() = cellWidthDp() / 1.62f + 20f
+    private fun cellHeightDp() = (grid.layoutManager as? HomeBoardLayoutManager)?.cellHeight?.takeIf { it > 1f }?.div(activity.resources.displayMetrics.density) ?: (cellWidthDp() / 1.62f + 8f)
     private fun save() {
         val array = JSONArray()
         entries.forEach { array.put(JSONObject().put("id", it.id).put("columns", it.columns).put("rows", it.rows).put("kind", it.kind).put("note", it.note)) }
@@ -351,34 +326,15 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
     private fun refresh() {
         // Provider info can be temporarily absent during restore or an app update.
         // Keep the allocation and a removable placeholder until explicit removal.
-        grid.visibility = if (entries.isEmpty()) View.GONE else View.VISIBLE
         adapter.notifyDataSetChanged()
         onChanged()
     }
-    private fun options(entry: Entry, anchor: View = grid) {
-        val title = if (BuiltInWidgetPolicy.isBuiltIn(entry.kind)) builtIns.title(entry.kind)
-            else runCatching { manager.getAppWidgetInfo(entry.id)?.loadLabel(activity.packageManager)?.toString() }.getOrNull() ?: "Widget"
-        val actions = mutableListOf<HomeMenu.Item>()
-        val limits = limits(entry)
-        if (limits != null && (limits.horizontal || limits.vertical)) actions += HomeMenu.Item(1, "Resize", R.drawable.ic_widget_resize, "Drag the widget edges") {
-            resizingId = entry.id; editing = true; adapter.notifyDataSetChanged()
-        }
-        if (entry.kind == BuiltInWidgetPolicy.NOTE) actions += HomeMenu.Item(2, "Edit note", R.drawable.ic_edit) { editNote(entry) }
-        fun move(delta: Int) {
-            val from = entries.indexOf(entry)
-            val to = (from + delta).coerceIn(0, entries.lastIndex)
-            if (from >= 0 && from != to) { entries.removeAt(from); entries.add(to, entry); save(); refresh() }
-        }
-        if (entries.indexOf(entry) > 0) actions += HomeMenu.Item(3, "Move earlier", R.drawable.ic_widget_move) { move(-1) }
-        if (entries.indexOf(entry) < entries.lastIndex) actions += HomeMenu.Item(4, "Move later", R.drawable.ic_widget_move) { move(1) }
-        actions += HomeMenu.Item(5, "Remove widget", R.drawable.ic_close) {
-            MaterialAlertDialogBuilder(activity).setTitle("Remove widget?").setMessage("You can add it again from Widgets.")
-                .setNegativeButton("Cancel", null).setPositiveButton("Remove") { _, _ ->
-                    if (BuiltInWidgetPolicy.usesProviderHost(entry.kind, entry.id)) runCatching { host.deleteAppWidgetId(entry.id) }
-                    entries.remove(entry); if (resizingId == entry.id) resizingId = null; save(); refresh()
-                }.show()
-        }
-        HomeMenu.show(anchor, title, actions)
+    private fun remove(entry: Entry) {
+        MaterialAlertDialogBuilder(activity).setTitle("Remove widget?")
+            .setNegativeButton("Cancel", null).setPositiveButton("Remove") { _, _ ->
+                if (BuiltInWidgetPolicy.usesProviderHost(entry.kind, entry.id)) runCatching { host.deleteAppWidgetId(entry.id) }
+                entries.remove(entry); save(); refresh()
+            }.show()
     }
     private fun unavailable() = Toast.makeText(activity, "Widget service unavailable. Try again.", Toast.LENGTH_SHORT).show()
     private data class SizeLimits(val horizontal: Boolean, val vertical: Boolean, val minColumns: Int, val maxColumns: Int, val minRows: Int, val maxRows: Int)
@@ -405,8 +361,7 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
     private inner class WidgetAdapter : RecyclerView.Adapter<WidgetHolder>() {
         override fun getItemCount() = entries.size
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WidgetHolder {
-            val container = LinearLayout(activity).apply {
-                orientation = LinearLayout.VERTICAL
+            val container = FrameLayout(activity).apply {
                 layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
                 setPadding(dp(4), dp(4), dp(4), dp(4))
             }
@@ -420,32 +375,26 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
             if (!builtin && info == null) {
                 holder.container.addView(Button(activity).apply {
                     text = "Widget unavailable · Remove"
-                    setOnClickListener { options(entry) }
+                    setOnClickListener { remove(entry) }
                 })
                 return
             }
             val title = if (builtin) builtIns.title(entry.kind) else info!!.loadLabel(activity.packageManager).toString()
-            if (editing) {
-                val header = LinearLayout(activity).apply { gravity = Gravity.CENTER_VERTICAL }
-                header.addView(TextView(activity).apply {
-                    text = title; textSize = 12f; maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END
-                    setTextColor(0xffd9e2e9.toInt()); setPadding(dp(8), 0, 0, 0)
-                }, LinearLayout.LayoutParams(0, dp(48), 1f))
-                header.addView(ArtworkUi.plainIcon(activity, R.drawable.ic_widget_move, "Move $title; hold and drag") {}.apply {
-                    setOnLongClickListener { dragHelper.startDrag(holder); true }
-                }, LinearLayout.LayoutParams(dp(48), dp(48)))
-                header.addView(ArtworkUi.plainIcon(activity, R.drawable.ic_more, "$title options") { options(entry, it) }, LinearLayout.LayoutParams(dp(48), dp(48)))
-                holder.container.addView(header)
-            }
             val height = (entry.rows * cellHeightDp() * activity.resources.displayMetrics.density).toInt()
             val frame = WidgetResizeFrame(activity).apply {
                 this.editing = this@WidgetController.editing
-                resizeSelected = editing && resizingId == entry.id
+                resizeSelected = editing
                 setPadding(dp(6), dp(6), dp(6), dp(6))
-                setOnClickListener {
-                    if (this@WidgetController.editing && resizingId != entry.id) { resizingId = entry.id; adapter.notifyDataSetChanged() }
+                onLongPress = {
+                    if (!this@WidgetController.editing) {
+                        onEditRequested()
+                        grid.doOnLayout {
+                            val position = (grid.adapter as? HomeBoardAdapter)?.positionOfWidget(entry.id) ?: RecyclerView.NO_POSITION
+                            grid.findViewHolderForAdapterPosition(position)?.let(onStartDrag)
+                        }
+                    } else onStartDrag(holder)
                 }
-                contentDescription = if (editing) "$title, ${entry.columns} by ${entry.rows} cells. Select, then drag edges to resize." else null
+                contentDescription = if (editing) "$title, ${entry.columns} by ${entry.rows} cells. Drag edges to resize; hold the centre to move." else null
                 importantForAccessibility = if (editing) View.IMPORTANT_FOR_ACCESSIBILITY_YES else View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
             }
             val live = if (builtin) builtIns.create(entry.kind, entry.note) { editNote(entry) }
@@ -453,7 +402,10 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
                     holder.container.addView(TextView(activity).apply { text = "Widget unavailable" }); return
                 }
             frame.addView(live, FrameLayout.LayoutParams(-1, -1))
-            holder.container.addView(frame, LinearLayout.LayoutParams(-1, height))
+            holder.container.addView(frame, FrameLayout.LayoutParams(-1, -1))
+            if (editing) holder.container.addView(ArtworkUi.plainIcon(activity, R.drawable.ic_close, "Remove $title") { remove(entry) }.apply {
+                background = ContextCompat.getDrawable(activity, R.drawable.bg_badge_remove)
+            }, FrameLayout.LayoutParams(dp(40), dp(40), Gravity.TOP or Gravity.END).apply { topMargin = dp(8); marginEnd = dp(8) })
             fun updateProvider() {
                 if (live is android.appwidget.AppWidgetHostView) frame.post {
                     val density = activity.resources.displayMetrics.density
@@ -475,8 +427,7 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
                 fun applySize(c: Int, r: Int) {
                     entry.columns = c.coerceIn(bounds.minColumns, bounds.maxColumns)
                     entry.rows = r.coerceIn(bounds.minRows, bounds.maxRows)
-                    frame.layoutParams = frame.layoutParams.apply { this.height = (entry.rows * cellHeightDp() * activity.resources.displayMetrics.density).toInt() }
-                    (grid.layoutManager as GridLayoutManager).spanSizeLookup.invalidateSpanIndexCache()
+
                     grid.requestLayout()
                     frame.contentDescription = "$title, ${entry.columns} by ${entry.rows} cells. Drag edges to resize."
                     androidx.core.view.ViewCompat.setStateDescription(frame, "${entry.columns} by ${entry.rows} cells")
@@ -486,15 +437,18 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
                     startColumns = entry.columns; startRows = entry.rows
                     cellWidth = cellWidthDp() * activity.resources.displayMetrics.density
                     cellHeight = cellHeightDp() * activity.resources.displayMetrics.density
+                    onResizeStarted(entry.id)
                     onDragging(true)
                 }
                 frame.onResize = { dx, dy ->
                     val c = WidgetSizing.dragCells(startColumns, dx, cellWidth, bounds.minColumns, bounds.maxColumns)
                     val r = WidgetSizing.dragCells(startRows, dy, cellHeight, bounds.minRows, bounds.maxRows)
                     if (c != entry.columns || r != entry.rows) applySize(c, r)
+                    onResizePosition(entry.id, if (frame.resizingLeft) startColumns - c else 0, if (frame.resizingTop) startRows - r else 0)
                 }
                 frame.onEnd = { cancelled ->
-                    if (cancelled) applySize(startColumns, startRows) else save()
+                    if (cancelled) { applySize(startColumns, startRows); onResizePosition(entry.id, 0, 0) } else save()
+                    onResizeFinished()
                     onDragging(false)
                 }
                 if (editing) {
@@ -510,5 +464,5 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
     }
     private companion object { const val CONFIGURE_REQUEST = 5020 }
 
-    private class WidgetHolder(val container: LinearLayout) : RecyclerView.ViewHolder(container)
+    private class WidgetHolder(val container: FrameLayout) : RecyclerView.ViewHolder(container)
 }

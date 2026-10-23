@@ -1,5 +1,6 @@
 package app.anihome.launcher.ui
 
+import androidx.core.view.doOnPreDraw
 import android.animation.ValueAnimator
 import android.view.View
 import android.view.ViewGroup
@@ -15,13 +16,13 @@ internal object MotionUi {
     }
     fun enter(view: View, direction: String) {
         view.alpha = 0f
-        view.post {
+        view.doOnPreDraw {
             view.alpha = 1f
-            if (!ValueAnimator.areAnimatorsEnabled()) return@post
+            if (!ValueAnimator.areAnimatorsEnabled()) return@doOnPreDraw
             val distance = (if (direction == "UP" || direction == "DOWN") view.height else view.width).toFloat()
             view.translationX = when (direction) { "RIGHT" -> -distance; "LEFT" -> distance; else -> 0f }
             view.translationY = when (direction) { "UP" -> distance; "DOWN" -> -distance; else -> 0f }
-            view.animate().translationX(0f).translationY(0f).setDuration(190).setInterpolator(DecelerateInterpolator()).start()
+            view.animate().translationX(0f).translationY(0f).setDuration(280).setInterpolator(android.view.animation.PathInterpolator(.2f, 0f, 0f, 1f)).withLayer().start()
         }
     }
 }
