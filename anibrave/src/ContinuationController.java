@@ -29,7 +29,7 @@ final class ContinuationController {
     private static final Runnable pendingTimeout=()->{JSONObject p=pending();if(p!=null){if(p.optLong("expires")<=System.currentTimeMillis())forgetPresentation(null);else scheduleExpiry(p);}};
     private static void scheduleExpiry(JSONObject p){UI.removeCallbacks(pendingTimeout);if(p!=null)UI.postDelayed(pendingTimeout,Math.max(0,p.optLong("expires")-System.currentTimeMillis()));}
     private static ContinuationStore store(Activity a){if(store==null)store=new ContinuationStore(a.getApplicationContext());return store;}
-    private static Object currentTab(Activity a){try{return a.getClass().getMethod("m4").invoke(a);}catch(Exception e){return null;}}
+    private static Object currentTab(Activity a){try{return a.getClass().getMethod("n4").invoke(a);}catch(Exception e){return null;}}
     private static int scope(Object t){try{return ((Number)t.getClass().getMethod("getId").invoke(t)).intValue();}catch(Exception e){return -1;}}
     private static boolean valid(Activity a,Object t,String page){return a!=null&&a==AniRuntime.continuationActivity()&&t!=null&&currentTab(a)==t&&WatchUrl.same(page,AniRuntime.currentUrl());}
     static JSONObject normalized(JSONObject id){try{JSONObject n=new JSONObject(id.toString());if(!n.optString("seriesTitle").isEmpty())n.put("title",n.optString("seriesTitle"));return n;}catch(Exception e){return id;}}

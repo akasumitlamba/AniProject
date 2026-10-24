@@ -12,7 +12,18 @@ public final class NativeStripTest {
         public void d(int height,boolean animate){throw new AssertionError("Must not bypass native capture protocol");}
     }
     public static final class Owner {public Object C;}
+    public static final class Layer {
+        int flags=8;
+        public java.util.function.Supplier<Integer> w0=()->flags;
+        public void u(int reason,boolean visible){flags=visible?flags&~reason:flags|reason;}
+    }
     public static void main(String[] args)throws Exception{
+        Layer layer=new Layer();
+        if(NativeStrip.layerHidden(layer))throw new AssertionError("Other hide reasons must not imply our own flag");
+        NativeStrip.layerVisible(layer,false);
+        if(!NativeStrip.layerHidden(layer)||layer.flags!=9)throw new AssertionError("Hide must preserve other reasons");
+        NativeStrip.layerVisible(layer,true);
+        if(NativeStrip.layerHidden(layer)||layer.flags!=8)throw new AssertionError("Restore must preserve other reasons");
         Controller c=new Controller();
         if(NativeStrip.layer(null)!=null||NativeStrip.layer(c)!=null)throw new AssertionError("Unattached compositor must retry");
         c.a=new Owner();
@@ -31,6 +42,6 @@ public final class NativeStripTest {
         if(c.transitions!=2)throw new AssertionError("Restoring native policy");
         try{NativeStrip.request(null,null,c,0,null);throw new AssertionError("Conflicting height accepted");}
         catch(IllegalArgumentException expected){}
-        System.out.println("NativeStrip: 9 native policy/capture checks passed");
+        System.out.println("NativeStrip: 12 native policy/capture checks passed");
     }
 }

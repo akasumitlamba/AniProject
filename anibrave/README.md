@@ -1,6 +1,6 @@
 # AniBrave
 
-Personal Android browser based on the official Brave 1.97.59 ARM64 APK (Chromium 155.0.8059.85). Install identity: `app.anibrave.main`. Launcher name: **AniBrave**. This installs alongside official Brave. AniBrowser Full (Firefox/GeckoView) and Lite have been removed from this repository. It has an independent profile: cookies are shared between AniBrave tabs and its shortcuts, not imported from other installed browsers.
+Personal Android browser based on the official Brave 1.98.60 ARM64 APK (Chromium 156.0.8078.48). Install identity: `app.anibrave.main`. Launcher name: **AniBrave**. This installs alongside official Brave. AniBrowser Full (Firefox/GeckoView) and Lite have been removed from this repository. It has an independent profile: cookies are shared between AniBrave tabs and its shortcuts, not imported from other installed browsers.
 
 The native engine and Shields libraries remain byte-for-byte identical to the verified upstream APK. This is a locally compiled Java/JavaScript customization and repackaging of that APK, not a full Chromium source build. It uses a separate personal signing key. A daily GitHub Actions check prepares draft engine-upgrade proposals; compatibility testing, signing and installation remain explicit steps (see [engine updates](docs/engine-updates.md)). It is an experimental personal build; physical tablet startup and settings application have been checked, but universal streaming compatibility is not claimed.
 
@@ -51,16 +51,16 @@ The internal controller uses Chromium's DevTools protocol through an abstract Un
 
 ## Upstream and notices
 
-- [Brave 1.97.59 release](https://github.com/brave/brave-browser/releases/tag/v1.97.59)
-- [Corresponding Brave source](https://github.com/brave/brave-core/tree/v1.97.59), tag commit `c7357bfd2a76c2467ba1ae62593a81ae92c05205`
-- [Chromium source](https://chromium.googlesource.com/chromium/src/+/155.0.8059.85/)
-- [Brave source license](https://github.com/brave/brave-core/blob/v1.97.59/LICENSE)
+- [Brave 1.98.60 release](https://github.com/brave/brave-browser/releases/tag/v1.98.60)
+- [Corresponding Brave source](https://github.com/brave/brave-core/tree/v1.98.60), tag commit `52db4b25c0aa3038e9a1c6021428b136cc3cb5fc`
+- [Chromium source](https://chromium.googlesource.com/chromium/src/+/156.0.8078.48/)
+- [Brave source license](https://github.com/brave/brave-core/blob/v1.98.60/LICENSE)
 
 Existing native and browser notices are retained in the app. Customization sources in this folder are MPL-2.0. AniBrave is independent and is not an official Brave Software product. Brave, Chromium, apktool, smali/dexlib2 and their dependencies retain their respective licenses and trademarks.
 
 ## Local anime history
 
-Tracking belongs to AniBrave. Updates preserve the browser profile when signed with the same identity. See [TRACKING.md](TRACKING.md) for progress gating, cross-site reminders, local import, privacy, build verification and acceptance limits. The current update is 0.2.0 (Brave 1.97.59), versionCode 429705620. It adds local per-episode continuation, conservative cross-site search, timestamp/speed restoration and an editable episode archive.
+Tracking belongs to AniBrave. Updates preserve the browser profile when signed with the same identity. See [TRACKING.md](TRACKING.md) for progress gating, cross-site reminders, local import, privacy, build verification and acceptance limits. The current update is 0.2.1 (Brave 1.98.60), versionCode 429705621. This engine update retains local per-episode continuation, conservative cross-site search, timestamp/speed restoration and the editable episode archive.
 
 ## Episode reminders and protected playback
 

@@ -143,15 +143,15 @@ final class VerticalTabs {
         if(layer==null)return; // Native compositor may attach after toolbar initialization.
         if(layer!=stripLayer){
             restoreStripLayer();stripLayer=layer;
-            originalLayerHidden=(((Number)field(field(layer,"w0"),"w")).intValue()&1)!=0;
+            originalLayerHidden=NativeStrip.layerHidden(layer);
         }
-        int flags=((Number)field(field(layer,"w0"),"w")).intValue();
-        // H3() gates native scene-overlay rendering and hit testing. Height zero
+        boolean hidden=NativeStrip.layerHidden(layer);
+        // S1() gates native scene-overlay rendering and hit testing. Height zero
         // alone does not suppress this independent layer when controls scroll.
-        if((flags&1)==0)layer.getClass().getMethod("t",int.class,boolean.class).invoke(layer,1,false);
+        if(!hidden)NativeStrip.layerVisible(layer,false);
     }
     private void restoreStripLayer(){
-        if(stripLayer!=null)try{stripLayer.getClass().getMethod("t",int.class,boolean.class).invoke(stripLayer,1,!originalLayerHidden);}catch(Exception ignored){}
+        if(stripLayer!=null)try{NativeStrip.layerVisible(stripLayer,!originalLayerHidden);}catch(Exception ignored){}
         stripLayer=null;
     }
     private void restoreStrip() {

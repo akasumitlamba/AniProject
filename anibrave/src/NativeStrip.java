@@ -13,6 +13,13 @@ final class NativeStrip {
         Object owner=field(controller,"a");
         return owner==null?null:field(owner,"C");
     }
+    static boolean layerHidden(Object layer) throws Exception {
+        Object flags=((java.util.function.Supplier<?>)field(layer,"w0")).get();
+        return (((Number)flags).intValue()&1)!=0;
+    }
+    static void layerVisible(Object layer,boolean visible) throws Exception {
+        layer.getClass().getMethod("u",int.class,boolean.class).invoke(layer,1,visible);
+    }
     static int desired(Object controller) throws Exception {
         boolean hidden=(Boolean)field(controller,"p"),responsive=(Boolean)field(controller,"u");
         int width=((Number)field(controller,"q")).intValue(),threshold=((Number)field(controller,"n")).intValue();

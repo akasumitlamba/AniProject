@@ -73,7 +73,7 @@ uploads history.
 
 ## Build and checks
 
-AniBrave 0.2.0 uses the pinned Brave 1.97.59 / Chromium 155 engine. Linux
+AniBrave 0.2.1 uses the pinned Brave 1.98.60 / Chromium 155 engine. Linux
 `tools/build_engine.py` builds the complete verified APK. Feature-only updates can
 use `tools/build_feature_update.py` with the original signing key; all four JS
 assets and the compiled feature DEX must match the source. APKs, keys and passwords

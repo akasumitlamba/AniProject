@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/** Version-pinned bridge to Brave 1.97.59's real tab models. UI thread only. */
+/** Version-pinned bridge to Brave 1.98.60's real tab models. UI thread only. */
 final class NativeTabs {
     static final class Entry {
         final int id;
@@ -46,7 +46,7 @@ final class NativeTabs {
         catch(InvocationTargetException e){Throwable cause=e.getCause();if(cause instanceof Exception)throw (Exception)cause;throw e;}
     }
     private static Object call(Object target,String name) throws Exception {return call(target,name,new Class<?>[0]);}
-    private Object selector() throws Exception {check();Object value=call(activity,"v4");if(value==null)throw new Failure("Tabs are still loading");return value;}
+    private Object selector() throws Exception {check();Object value=call(activity,"w4");if(value==null)throw new Failure("Tabs are still loading");return value;}
     private Object model(Object selector,boolean incognito) throws Exception {return call(selector,"k",new Class<?>[]{boolean.class},incognito);}
     Snapshot snapshot() throws Failure {
         try {
@@ -105,7 +105,7 @@ final class NativeTabs {
                 if(candidate!=null&&((Number)call(candidate,"getId")).intValue()==id) {
                     // The private model is a lazy wrapper, not a TabModelJniBridge.
                     // Both expose the pinned TabModel selection API.
-                    call(model,"B0",new Class<?>[]{int.class,int.class},i,3);return true;
+                    call(model,"A0",new Class<?>[]{int.class,int.class},i,3);return true;
                 }
             }
             return false;
@@ -120,9 +120,9 @@ final class NativeTabs {
             Class<?> tabType=Class.forName("org.chromium.chrome.browser.tab.Tab");
             // Use the same removal pipeline as the tab UI: preserves undo and
             // native shared-group confirmation, unlike JNI closeTab().
-            Object builder=Class.forName("icj").getMethod("b",tabType).invoke(null,tab);
-            Object params=call(builder,"a"),remover=call(model,"r1");
-            Class.forName("b1k").getMethod("a",Class.forName("icj")).invoke(remover,params);
+            Object builder=Class.forName("fdj").getMethod("b",tabType).invoke(null,tab);
+            Object params=call(builder,"a"),remover=call(model,"q1");
+            Class.forName("c2k").getMethod("a",Class.forName("fdj")).invoke(remover,params);
             return true;
         }catch(Exception e){throw e instanceof Failure?(Failure)e:new Failure(e);}
     }

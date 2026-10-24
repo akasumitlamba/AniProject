@@ -7,7 +7,7 @@ AniProject contains **AniHome**, an Android home-screen launcher, and **AniBrave
 | Product | Download | Requirements |
 | --- | --- | --- |
 | AniHome 0.8.25 | [Download launcher](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.24/AniHome-Launcher-0.8.25-release.apk) | Android 8+ |
-| AniBrave 0.2.0 | [Download browser](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.24/AniBrave-0.2.0-arm64-v8a.apk) | Android 10+, ARM64 |
+| AniBrave 0.2.1 | [Download browser](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.24/AniBrave-0.2.1-arm64-v8a.apk) | Android 10+, ARM64 |
 | AniBrave desktop 0.1.4 | [Download extension](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.24/AniBrave-Extension-0.1.4.zip) | Brave desktop |
 
 [Download all three applications together](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.24/AniProject-2026.10.24-All-Apps.zip), or use the individual downloads above.
@@ -31,7 +31,7 @@ cd launcher
 
 ![AniBrave emulator preview with local fixture pages](docs/screenshots/anibrave-vertical-tabs.png)
 
-[AniBrave](anibrave/README.md) combines the official Brave 1.97.59 ARM64 engine with Java/JavaScript controls for saved playback speed, site viewing modes, immersive website shortcuts, vertical tabs, buffer-ahead preferences and local watch history. Anime reminders and watch logs stay on-device. Browser tabs and immersive shortcuts share the browser profile.
+[AniBrave](anibrave/README.md) combines the official Brave 1.98.60 ARM64 engine with Java/JavaScript controls for saved playback speed, site viewing modes, immersive website shortcuts, vertical tabs, buffer-ahead preferences and local watch history. Anime reminders and watch logs stay on-device. Browser tabs and immersive shortcuts share the browser profile.
 
 This is an experimental APK customization, not a complete Chromium source build or an official Brave product. Protected streaming and device-specific radio/biometric behavior require hardware validation. Screenshots above use emulator fixtures and are labeled by capture version in [screenshot notes](docs/screenshots/README.md).
 

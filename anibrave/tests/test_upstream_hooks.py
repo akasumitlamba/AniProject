@@ -2,7 +2,7 @@ import sys
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from upstream_hooks import remove_shortcut_close, bootstrap_shortcut_controls
+from upstream_hooks import remove_shortcut_close, bootstrap_shortcut_controls, verify_native_initialization
 
 class ShortcutOverlayTest(unittest.TestCase):
     def test_only_close_attachment_removed(self):
@@ -20,9 +20,16 @@ request-notification-permission
 
 class ShortcutBootstrapTest(unittest.TestCase):
     def test_bootstrap_follows_native_initialization(self):
-        call='    invoke-super {p0}, Lorg/chromium/chrome/browser/customtabs/CustomTabActivity;->O3()V'
+        call='    invoke-super {p0}, Lorg/chromium/chrome/browser/customtabs/CustomTabActivity;->P3()V'
         patched=bootstrap_shortcut_controls(call+'\n    return-void')
         self.assertLess(patched.index('invoke-super'),patched.index('->shortcutReady('))
         self.assertLess(patched.index('->shortcutReady('),patched.index('return-void'))
     def test_changed_native_callback_fails_closed(self):
         with self.assertRaises(RuntimeError):bootstrap_shortcut_controls('changed engine')
+
+class NativeInitializationTest(unittest.TestCase):
+    def test_pinned_server_slot(self):
+        verify_native_initialization('const/4 v3, 0x4\nconst-string v4, "chrome"\ninvoke-static {v3, v4}, LJ/N;->JO(ILjava/lang/Object;)J')
+    def test_old_slot_fails_closed(self):
+        with self.assertRaises(RuntimeError):
+            verify_native_initialization('const/4 v3, 0x3\nconst-string v4, "chrome"\ninvoke-static {v3, v4}, LJ/N;->JO(ILjava/lang/Object;)J')

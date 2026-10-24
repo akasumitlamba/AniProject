@@ -64,12 +64,12 @@ public final class AniRuntime {
         try{
             // Shortcut-only startup does not register main-browser preference
             // observers. Create the same native server without those observers.
-            serverPointer=((Number)Class.forName("J.N").getMethod("JO",int.class,Object.class).invoke(null,3,"anibrave")).longValue();
+            serverPointer=((Number)Class.forName("J.N").getMethod("JO",int.class,Object.class).invoke(null,4,"anibrave")).longValue();
             toggleServer(true);
         }
         catch(Exception e){status="Page controls could not start";android.util.Log.w("AniBrave","Control startup failed",e);}
     }
-    /** O3 runs only after Chromium finishes native startup and loads its profile. */
+    /** P3 runs only after Chromium finishes native startup and loads its profile. */
     public static void shortcutReady(Activity a){
         UI.post(()->{if(alive(a)&&active.get()==a)startControls();});
     }
@@ -219,13 +219,13 @@ public final class AniRuntime {
     static String currentUrl() {
         Activity a=active.get();if(!alive(a))return "";
         try {
-            Object tab=a.getClass().getMethod("m4").invoke(a);if(tab==null)return "";
+            Object tab=a.getClass().getMethod("n4").invoke(a);if(tab==null)return "";
             Object url=tab.getClass().getMethod("getUrl").invoke(tab);
             return (String)url.getClass().getField("a").get(url);
         }catch(Exception e){return "";}
     }
     private static boolean normalProfile(Activity a){
-        try {Object tab=a.getClass().getMethod("m4").invoke(a);return tab!=null&&!((Boolean)tab.getClass().getMethod("isIncognito").invoke(tab));}
+        try {Object tab=a.getClass().getMethod("n4").invoke(a);return tab!=null&&!((Boolean)tab.getClass().getMethod("isIncognito").invoke(tab));}
         catch(Exception e){return false;} // Unknown profile must never persist browsing URLs.
     }
     private static void captureLocation(Activity a){
@@ -237,7 +237,7 @@ public final class AniRuntime {
         ResumeStore.capture(context,a.getTaskId(),url);
     }
     private static String currentUrlFor(Activity a){
-        try{Object tab=a.getClass().getMethod("m4").invoke(a);Object url=tab.getClass().getMethod("getUrl").invoke(tab);return (String)url.getClass().getField("a").get(url);}catch(Exception e){return "";}
+        try{Object tab=a.getClass().getMethod("n4").invoke(a);Object url=tab.getClass().getMethod("getUrl").invoke(tab);return (String)url.getClass().getField("a").get(url);}catch(Exception e){return "";}
     }
     static String taskUrl(int taskId){
         for(Activity a:lastLocations.keySet())if(a!=null&&!a.isDestroyed()&&a.getTaskId()==taskId)return currentUrlFor(a);

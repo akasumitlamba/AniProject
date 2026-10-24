@@ -1,7 +1,7 @@
 """Version-pinned integration hooks. Fail rather than guessing changed upstream bytecode."""
 from pathlib import Path
 from app_resources import configure_tasks, write_icon_placement
-from upstream_hooks import remove_shortcut_close, bootstrap_shortcut_controls
+from upstream_hooks import remove_shortcut_close, bootstrap_shortcut_controls, verify_native_initialization
 import re
 import os
 import json
@@ -55,10 +55,11 @@ def devtools(text):
 
 rewrite('org/chromium/chrome/browser/DevToolsServer.smali', devtools)
 def prefix(text):
+    verify_native_initialization(text)
     before='const-string v4, "chrome"'
     if text.count(before)!=1:raise RuntimeError('DevTools socket prefix changed')
     return text.replace(before,'const-string v4, "anibrave"')
-rewrite('vkf.smali',prefix)
+rewrite('ylf.smali',prefix)
 
 def activity(text):
     text=inject(text,'public final onResume()V','    invoke-static/range {p0 .. p0}, Lapp/anibrave/AniRuntime;->resume(Landroid/app/Activity;)V')
@@ -66,7 +67,7 @@ def activity(text):
 rewrite('org/chromium/chrome/browser/ChromeTabbedActivity.smali',activity)
 rewrite('org/chromium/content_public/browser/LoadUrlParams.smali',lambda text:inject(text,'public constructor <init>(ILjava/lang/String;)V','''    invoke-static/range {p2 .. p2}, Lapp/anibrave/AniRuntime;->blankNewTab(Ljava/lang/String;)Ljava/lang/String;
     move-result-object p2'''))
-rewrite('org/chromium/chrome/browser/customtabs/FullScreenCustomTabActivity.smali',lambda text:inject(bootstrap_shortcut_controls(remove_shortcut_close(text)),'public final O3()V','    invoke-static/range {p0 .. p0}, Lapp/anibrave/AniRuntime;->resume(Landroid/app/Activity;)V'))
+rewrite('org/chromium/chrome/browser/customtabs/FullScreenCustomTabActivity.smali',lambda text:inject(bootstrap_shortcut_controls(remove_shortcut_close(text)),'public final P3()V','    invoke-static/range {p0 .. p0}, Lapp/anibrave/AniRuntime;->resume(Landroid/app/Activity;)V'))
 
 # Preserve classes/component names; change install identity, permissions, provider authorities.
 manifest=RES/'AndroidManifest.xml'
@@ -123,7 +124,7 @@ if not any(node.get('{'+NS+'}name')=='app.anibrave.HistoryImportActivity' for no
     tree.write(manifest,encoding='utf-8',xml_declaration=True)
 # Reserve native toolbar space beside the tab switcher, so Brave's layout and
 # scrolling own the feature button instead of overlaying website content.
-for name,style in [('APKTOOL_RENAMED_0x7f0e04d8.xml','APKTOOL_RENAMED_0x7f15069e'),('APKTOOL_RENAMED_0x7f0e04d4.xml','APKTOOL_RENAMED_0x7f15069d')]:
+for name,style in [('APKTOOL_RENAMED_0x7f0e04de.xml','APKTOOL_RENAMED_0x7f1506a0'),('APKTOOL_RENAMED_0x7f0e04da.xml','APKTOOL_RENAMED_0x7f15069f')]:
     path=RES/'res'/'layout'/name
     layout=ET.parse(path); element=layout.getroot()
     if not any(node.get('{'+NS+'}id')=='@+id/anibrave_features' for node in element.iter()):
