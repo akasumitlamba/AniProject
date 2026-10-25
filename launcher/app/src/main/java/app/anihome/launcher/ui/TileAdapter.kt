@@ -100,6 +100,7 @@ class TileAdapter(
             tile = null
             binding.icon.setImageDrawable(null)
             binding.root.animate().cancel()
+            binding.root.alpha = 1f
             binding.remove.animate().cancel()
         }
 
@@ -225,6 +226,7 @@ class TileAdapter(
         fun applyEditMode(animate: Boolean = false) {
             applyBadge()
             binding.root.animate().cancel()
+            binding.root.alpha = 1f
             binding.remove.animate().cancel()
             val scale = if (editMode) .96f else 1f
             if (animate && ValueAnimator.areAnimatorsEnabled()) {

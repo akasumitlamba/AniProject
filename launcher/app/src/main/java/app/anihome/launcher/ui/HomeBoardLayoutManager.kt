@@ -15,7 +15,7 @@ internal class HomeBoardLayoutManager(private val context: Context, private val 
     private fun calculate(width: Int): List<HomeBoardPacking.Placement> {
         val density = context.resources.displayMetrics.density
         cellWidth = ((width - paddingLeft - paddingRight).toFloat() / columns).coerceAtLeast(1f)
-        cellHeight = (((cellWidth * 2 - 16 * density) / CropGeometry.ASPECT + 16 * density + if (labels()) 28 * density else 0f) / 2).coerceAtLeast(32 * density)
+        cellHeight = (((cellWidth * 2 - 16 * density) / CropGeometry.ASPECT + 16 * density + if (labels()) 36 * density else 0f) / 2).coerceAtLeast(32 * density)
         return board.pack(columns)
     }
     override fun generateDefaultLayoutParams() = RecyclerView.LayoutParams(-1, -2)
