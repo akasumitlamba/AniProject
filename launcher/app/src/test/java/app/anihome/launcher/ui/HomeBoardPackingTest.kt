@@ -43,6 +43,21 @@ class HomeBoardPackingTest {
         assertEquals(2, result[2].x); assertEquals(2, result[2].y)
         checkNoOverlap(result, 4)
     }
+    @Test fun deletingRowsBringsOffscreenItemsUpInVisualOrder() {
+        val items = (0..19).map { HomeBoardPacking.Item("tile:$it", 2, 2) }
+        val before = HomeBoardPacking.pack(items, 4, emptyMap())
+        val remaining = items.drop(16)
+        val compact = HomeBoardPacking.compact(remaining, 4, before)
+        assertEquals(listOf(0, 0, 2, 2), compact.map { it.y })
+        checkNoOverlap(compact, 4)
+    }
+    @Test fun deletionCompactsMixedWidgetsAndIconsWithoutOverlap() {
+        val items = listOf(HomeBoardPacking.Item("widget", 2, 4), HomeBoardPacking.Item("icon", 1, 1), HomeBoardPacking.Item("tile", 2, 2))
+        val before = HomeBoardPacking.pack(items, 6, mapOf("widget" to HomeBoardPacking.Cell(0, 8)))
+        val compact = HomeBoardPacking.compact(items, 6, before)
+        assertTrue(compact.maxOf { it.y + it.rows } <= 4)
+        checkNoOverlap(compact, 6)
+    }
     @Test fun invalidSavedCellsFallBackSafely() {
         val result = HomeBoardPacking.pack(listOf(HomeBoardPacking.Item("widget", 2, 2)), 4, mapOf("widget" to HomeBoardPacking.Cell(-2, Int.MAX_VALUE)))
         assertEquals(0, result.single().x); assertEquals(0, result.single().y)

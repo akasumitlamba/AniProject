@@ -92,7 +92,7 @@ class HomeActivity : AppCompatActivity() {
         DrawerWarmup.prepare(applicationContext)
         binding.widgetGrid.visibility = View.GONE
         widgets = WidgetController(this, binding.grid, ::setDragScrolling) {
-            if (::widgets.isInitialized) binding.empty.visibility = if ((!::tiles.isInitialized || tiles.itemCount == 0) && !widgets.hasWidgets) View.VISIBLE else View.GONE
+            binding.empty.visibility = View.GONE
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
@@ -374,6 +374,7 @@ class HomeActivity : AppCompatActivity() {
     private var scrollUpAtTouch = false
     private var scrollDownAtTouch = false
     private var scrollStartY = 0
+    private var pointerX = 0f
     private var pointerY = 0f
     private var dragging = false
     private var dragCancelled = false
@@ -444,6 +445,7 @@ class HomeActivity : AppCompatActivity() {
         cancel.recycle()
     }
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        pointerX = event.rawX
         pointerY = event.rawY
         if (event.actionMasked == MotionEvent.ACTION_CANCEL) dragCancelled = true
         if (event.actionMasked == MotionEvent.ACTION_DOWN) {
@@ -475,7 +477,7 @@ class HomeActivity : AppCompatActivity() {
             val viewport = Rect()
             if (binding.homeScroll.getGlobalVisibleRect(viewport)) {
                 val step = HomeInteractionPolicy.scrollStep(pointerY - viewport.top, viewport.height(), dp(64), dp(18))
-                if (step != 0) binding.homeScroll.scrollBy(0, step)
+                if (step != 0) { binding.homeScroll.scrollBy(0, step); binding.grid.invalidate() }
             }
             ViewCompat.postOnAnimation(binding.homeScroll, this)
         }
@@ -574,11 +576,11 @@ class HomeActivity : AppCompatActivity() {
                 if (view != null) {
                     if (android.animation.ValueAnimator.areAnimatorsEnabled()) {
                         binding.homeScroll.smoothScrollTo(0, view.top)
-                        view.alpha = .45f; view.animate().alpha(1f).setDuration(180).start()
+                        view.animate().cancel(); view.alpha = 1f
                     } else binding.homeScroll.scrollTo(0, view.top)
                 }
             } }
-            binding.empty.visibility = if (items.isEmpty() && !widgets.hasWidgets) View.VISIBLE else View.GONE
+            binding.empty.visibility = View.GONE
             withContext(Dispatchers.IO) { backfillColors(items) }
         }
     }
@@ -934,6 +936,8 @@ class HomeActivity : AppCompatActivity() {
         private var key: String? = null
         private var optionsTask: Runnable? = null
         private var moved = false
+        private var gripX = 0f
+        private var gripY = 0f
         private var dropX = 0f
         private var dropY = 0f
         // ItemTouchHelper normally animates a manual drop back to its original bounds.
@@ -946,6 +950,9 @@ class HomeActivity : AppCompatActivity() {
             super.onSelectedChanged(holder, state)
             if (state == ItemTouchHelper.ACTION_STATE_DRAG && holder != null) {
                 key = board.keyAt(holder.absoluteAdapterPosition)
+                val location = IntArray(2)
+                holder.itemView.getLocationOnScreen(location)
+                gripX = pointerX - location[0]; gripY = pointerY - location[1]
                 moved = false
                 optionsTask?.let(binding.grid::removeCallbacks)
                 optionsTask = Runnable {
@@ -971,12 +978,26 @@ class HomeActivity : AppCompatActivity() {
         }
         override fun onChildDraw(canvas: android.graphics.Canvas, recycler: RecyclerView, holder: RecyclerView.ViewHolder,
             dx: Float, dy: Float, state: Int, active: Boolean) {
+            // Keep the entire dragged item inside the visible scrolling viewport. Ancestor
+            // clipping must never make a card disappear before edge scrolling catches up.
+            val visible = Rect()
+            val bounded = active && state == ItemTouchHelper.ACTION_STATE_DRAG && recycler.getLocalVisibleRect(visible)
+            val location = IntArray(2)
+            recycler.getLocationOnScreen(location)
+            val fingerDx = pointerX - location[0] - gripX - holder.itemView.left
+            val fingerDy = pointerY - location[1] - gripY - holder.itemView.top
+            val safeDx = if (bounded) fingerDx.coerceIn(
+                (visible.left + dp(6) - holder.itemView.left).toFloat(),
+                (visible.right - dp(6) - holder.itemView.right).coerceAtLeast(visible.left + dp(6) - holder.itemView.left).toFloat()) else dx
+            val safeDy = if (bounded) fingerDy.coerceIn(
+                (visible.top + dp(6) - holder.itemView.top).toFloat(),
+                (visible.bottom - dp(6) - holder.itemView.bottom).coerceAtLeast(visible.top + dp(6) - holder.itemView.top).toFloat()) else dy
             if (active && state == ItemTouchHelper.ACTION_STATE_DRAG) {
                 if (!moved && kotlin.math.hypot(dx, dy) > android.view.ViewConfiguration.get(this@HomeActivity).scaledTouchSlop) {
                     moved = true; optionsTask?.let(recycler::removeCallbacks); HomeMenu.dismiss()
                 }
-                dropX = holder.itemView.left + dx
-                dropY = holder.itemView.top + dy - recycler.paddingTop
+                dropX = holder.itemView.left + safeDx
+                dropY = holder.itemView.top + safeDy - recycler.paddingTop
                 val layout = recycler.layoutManager as HomeBoardLayoutManager
                 val placement = board.placements.firstOrNull { it.key == key }
                 if (placement != null) {
@@ -989,7 +1010,7 @@ class HomeActivity : AppCompatActivity() {
                     canvas.drawRoundRect(rect, dp(14).toFloat(), dp(14).toFloat(), paint)
                 }
             }
-            super.onChildDraw(canvas, recycler, holder, dx, dy, state, active)
+            super.onChildDraw(canvas, recycler, holder, safeDx, safeDy, state, active)
         }
         override fun onSwiped(holder: RecyclerView.ViewHolder, direction: Int) = Unit
         override fun clearView(recycler: RecyclerView, holder: RecyclerView.ViewHolder) {

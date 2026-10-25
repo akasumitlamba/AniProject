@@ -80,11 +80,17 @@ class RegressionInstrumentation : Instrumentation() {
             }
             verify(loadedShortcut, "cold shortcut artwork replaces a cached generic app icon")
             runOnMainSync {
+                imageHolder.itemView.alpha = .45f
                 imageAdapter.editMode = true
                 imageAdapter.onBindViewHolder(imageHolder,0,mutableListOf("badge","edit"))
                 verify(imageHolder.itemView.findViewById<android.view.View>(R.id.remove).visibility == android.view.View.VISIBLE,
                     "combined badge and edit payload keeps remove control visible")
+                verify(imageHolder.itemView.alpha == 1f, "edit payload restores fully opaque tile after interrupted entry")
+                imageHolder.itemView.alpha = .45f
+                imageAdapter.onBindViewHolder(imageHolder, 0)
+                verify(imageHolder.itemView.alpha == 1f, "full rebind restores fully opaque tile")
                 imageAdapter.onViewRecycled(imageHolder)
+                verify(imageHolder.itemView.alpha == 1f, "recycling clears stale tile opacity")
                 registry.currentState = androidx.lifecycle.Lifecycle.State.DESTROYED
             }
             shortcutArt.delete(); IconCache.invalidateFile(shortcutArt.path)

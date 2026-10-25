@@ -18,12 +18,22 @@ internal object RotationControl {
         if (activity.requestedOrientation != ActivityInfo.SCREEN_ORIENTATION_FULL_USER)
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_USER
     }
-    fun setAutomatic(activity: AppCompatActivity, automatic: Boolean): Boolean = runCatching {
-        check(Settings.System.canWrite(activity))
-        // Capture the visible display angle before disabling the sensor.
-        if (!automatic) check(Settings.System.putInt(activity.contentResolver, Settings.System.USER_ROTATION, currentAngle(activity)))
-        check(Settings.System.putInt(activity.contentResolver, Settings.System.ACCELEROMETER_ROTATION, if (automatic) 1 else 0))
-        applyHome(activity)
-        true
-    }.getOrDefault(false)
+    /** Only an explicit toggle writes Android settings; lifecycle entry is strictly read-only. */
+    fun setAutomatic(activity: AppCompatActivity, automatic: Boolean): Boolean {
+        if (!Settings.System.canWrite(activity)) return false
+        val resolver = activity.contentResolver
+        val oldAuto = Settings.System.getInt(resolver, Settings.System.ACCELEROMETER_ROTATION, 1)
+        if ((oldAuto == 1) == automatic) return true
+        val oldAngle = Settings.System.getInt(resolver, Settings.System.USER_ROTATION, 0)
+        return runCatching {
+            if (!automatic) check(Settings.System.putInt(resolver, Settings.System.USER_ROTATION, currentAngle(activity)))
+            check(Settings.System.putInt(resolver, Settings.System.ACCELEROMETER_ROTATION, if (automatic) 1 else 0))
+            true
+        }.getOrElse {
+            // A rejected write must not leave half of a rotation change applied.
+            runCatching { Settings.System.putInt(resolver, Settings.System.USER_ROTATION, oldAngle) }
+            runCatching { Settings.System.putInt(resolver, Settings.System.ACCELEROMETER_ROTATION, oldAuto) }
+            false
+        }
+    }
 }

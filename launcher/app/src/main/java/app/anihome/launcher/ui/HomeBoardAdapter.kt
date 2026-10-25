@@ -36,7 +36,11 @@ internal class HomeBoardAdapter(context: Context, private val tiles: TileAdapter
     fun pack(columns: Int): List<HomeBoardPacking.Placement> {
         val items = tiles.currentList.map { HomeBoardPacking.Item("tile:${it.id}", if (it.iconOnly) 1 else 2, if (it.iconOnly) 1 else 2) } +
             (0 until widgetAdapter.itemCount).map { HomeBoardPacking.Item("widget:${widgets.idAt(it)}", widgets.columnsAt(it), widgets.rowsAt(it)) }
-        placements = HomeBoardPacking.pack(items, columns, desired, priority)
+        val active = items.map { it.key }.toSet()
+        val removed = placements.any { it.key !in active }
+        placements = if (removed) HomeBoardPacking.compact(items, columns, placements)
+            else HomeBoardPacking.pack(items, columns, desired, priority)
+        if (removed) { priority = null; desired.clear(); persist() }
         return placements
     }
     private var geometryOrigin: HomeBoardPacking.Cell? = null

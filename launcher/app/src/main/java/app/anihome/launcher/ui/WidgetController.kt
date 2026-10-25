@@ -440,7 +440,7 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
             if (editing) holder.container.addView(ArtworkUi.plainIcon(activity, R.drawable.ic_close, "Remove $title") { remove(entry) }.apply {
                 background = ContextCompat.getDrawable(activity, R.drawable.bg_badge_remove_compact)
                 setPadding(dp(12), dp(12), dp(12), dp(12))
-                translationX = dp(10).toFloat(); translationY = -dp(10).toFloat()
+                translationX = dp(6).toFloat(); translationY = -dp(6).toFloat()
                 elevation = dp(12).toFloat()
             }, FrameLayout.LayoutParams(dp(40), dp(40), Gravity.TOP or Gravity.END).apply { topMargin = 0; marginEnd = 0 })
             fun updateProvider() {

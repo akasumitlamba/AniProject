@@ -5,6 +5,13 @@ internal object HomeBoardPacking {
     data class Item(val key: String, val columns: Int, val rows: Int)
     data class Cell(val x: Int, val y: Int)
     data class Placement(val key: String, val x: Int, val y: Int, val columns: Int, val rows: Int)
+    /** Deletion closes gaps in visual order, including cells formerly below the viewport. */
+    fun compact(items: List<Item>, columns: Int, previous: List<Placement>): List<Placement> {
+        val order = previous.sortedWith(compareBy<Placement> { it.y }.thenBy { it.x }).map { it.key }
+        val sorted = items.sortedBy { order.indexOf(it.key).takeIf { index -> index >= 0 } ?: Int.MAX_VALUE }
+        val packed = pack(sorted, columns, emptyMap()).associateBy { it.key }
+        return items.map { packed.getValue(it.key) }
+    }
     fun pack(items: List<Item>, columns: Int, desired: Map<String, Cell>, priority: String? = null): List<Placement> {
         require(columns > 0)
         val occupied = hashSetOf<Long>()
