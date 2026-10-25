@@ -60,7 +60,10 @@ class TileStore(context: Context, private val databaseOverride: android.database
         val existing = db.query(TABLE, arrayOf("id"), selection, args, null, null, null).use { if (it.moveToFirst()) it.getLong(0) else null }
         val previousIcon = existing?.let { byId(it)?.iconPath }
         val values = ContentValues().apply {
-            put("kind", HomeTile.Kind.APP.name); put("label", label.take(200)); put("package_name", packageName)
+            put("kind", HomeTile.Kind.APP.name)
+            // Re-pinning updates the shortcut, but must preserve the user's Home name.
+            if (existing == null) put("label", label.trim().take(200))
+            put("package_name", packageName)
             put("shortcut_id", shortcutId); put("shortcut_user", user)
             if (iconPath != null) put("icon_path", iconPath)
         }
@@ -113,7 +116,7 @@ class TileStore(context: Context, private val databaseOverride: android.database
 
     fun rename(id: Long, label: String) {
         if (label.isBlank()) return
-        db.update(TABLE, ContentValues().apply { put("label", label.trim()) }, "id=?", arrayOf(id.toString()))
+        db.update(TABLE, ContentValues().apply { put("label", label.trim().take(200)) }, "id=?", arrayOf(id.toString()))
     }
 
     fun setIcon(id: Long, iconPath: String?, color: Int?) {
@@ -124,16 +127,30 @@ class TileStore(context: Context, private val databaseOverride: android.database
         db.update(TABLE, values, "id=?", arrayOf(id.toString()))
     }
 
+    /** A late colour computation must never restore an outdated icon or colour. */
+    fun backfillColor(id: Long, expectedIconPath: String?, color: Int): Boolean = db.update(
+        TABLE, ContentValues().apply { put("color", color) },
+        "id=? AND color IS NULL AND " + if (expectedIconPath == null) "icon_path IS NULL" else "icon_path=?",
+        if (expectedIconPath == null) arrayOf(id.toString()) else arrayOf(id.toString(), expectedIconPath)
+    ) == 1
+
     fun setArtwork(id: Long, path: String?) {
         val previous = byId(id)?.artworkPath
         db.update(TABLE, ContentValues().apply { put("artwork_path", path); put("artwork_origin", "manual") }, "id=?", arrayOf(id.toString()))
         previous?.let { IconCache.invalidateFile(it); if (it != path) File(it).delete() }
     }
 
+    fun setTileStyle(id: Long, icon: Boolean) {
+        db.update(TABLE, ContentValues().apply {
+            put("tile_style", if (icon) "icon" else "banner")
+            if (icon) put("artwork_origin", "manual")
+        }, "id=? AND kind=? AND shortcut_id IS NULL", arrayOf(id.toString(), HomeTile.Kind.APP.name))
+    }
+
     /** Compare-and-set protects a manual selection/reset, including a late download race. */
     fun finishAutomaticArtwork(id: Long, path: String?): Boolean = db.update(TABLE, ContentValues().apply {
         put("artwork_path", path); put("artwork_origin", if (path == null) "icon" else "automatic")
-    }, "id=? AND kind=? AND artwork_origin='pending' AND artwork_path IS NULL AND shortcut_id IS NULL",
+    }, "id=? AND kind=? AND artwork_origin='pending' AND tile_style='banner' AND artwork_path IS NULL AND shortcut_id IS NULL",
         arrayOf(id.toString(), HomeTile.Kind.APP.name)) == 1
 
     fun remove(id: Long, updatePins: Boolean = true, preserveAssets: Boolean = false) {
@@ -160,7 +177,7 @@ class TileStore(context: Context, private val databaseOverride: android.database
         db.insertOrThrow(TABLE, null, ContentValues().apply {
             put("id", tile.id); put("kind", tile.kind.name); put("label", tile.label)
             put("package_name", tile.packageName); put("activity_name", tile.activityName)
-            put("url", tile.url); put("icon_path", tile.iconPath); put("artwork_path", tile.artworkPath); put("artwork_origin", tile.artworkOrigin)
+            put("url", tile.url); put("icon_path", tile.iconPath); put("artwork_path", tile.artworkPath); put("artwork_origin", tile.artworkOrigin); put("tile_style", tile.tileStyle)
             put("color", tile.color); put("position", tile.position); put("created_at", System.currentTimeMillis())
         })
     }
@@ -203,6 +220,7 @@ class TileStore(context: Context, private val databaseOverride: android.database
         iconPath = getStringOrNull("icon_path"),
         artworkPath = getStringOrNull("artwork_path"),
         artworkOrigin = getString(getColumnIndexOrThrow("artwork_origin")),
+        tileStyle = getString(getColumnIndexOrThrow("tile_style")),
         color = getColumnIndexOrThrow("color").let { if (isNull(it)) null else getInt(it) },
         position = getInt(getColumnIndexOrThrow("position")),
     )

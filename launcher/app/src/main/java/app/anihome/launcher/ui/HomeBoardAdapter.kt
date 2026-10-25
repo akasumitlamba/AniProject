@@ -34,7 +34,7 @@ internal class HomeBoardAdapter(context: Context, private val tiles: TileAdapter
     fun positionOfWidget(id: Int): Int = widgets.indexOf(id).takeIf { it >= 0 }?.plus(tiles.itemCount) ?: RecyclerView.NO_POSITION
     fun isWidget(position: Int) = position >= tiles.itemCount && position < itemCount
     fun pack(columns: Int): List<HomeBoardPacking.Placement> {
-        val items = tiles.currentList.map { HomeBoardPacking.Item("tile:${it.id}", 2, 2) } +
+        val items = tiles.currentList.map { HomeBoardPacking.Item("tile:${it.id}", if (it.iconOnly) 1 else 2, if (it.iconOnly) 1 else 2) } +
             (0 until widgetAdapter.itemCount).map { HomeBoardPacking.Item("widget:${widgets.idAt(it)}", widgets.columnsAt(it), widgets.rowsAt(it)) }
         placements = HomeBoardPacking.pack(items, columns, desired, priority)
         return placements

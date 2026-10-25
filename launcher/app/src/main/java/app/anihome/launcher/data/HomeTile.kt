@@ -18,9 +18,11 @@ data class HomeTile(
     val shortcutId: String? = null,
     val shortcutUser: Long? = null,
     val artworkOrigin: String = "manual",
+    val tileStyle: String = "banner",
 ) {
     enum class Kind { APP, WEB }
 
+    val iconOnly get() = isApp && tileStyle == "icon"
     val isShortcut get() = shortcutId != null
     val isApp get() = kind == Kind.APP && !isShortcut
     val isWeb get() = kind == Kind.WEB

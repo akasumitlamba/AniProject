@@ -67,7 +67,7 @@
     <string name="history_episode">Episode %1$d</string>
     <string name="history_meta">%1$s · %2$s</string>
 
-    <string name="about_body">AniHome turns your phone\'s home screen into a TV-style launcher where native apps and websites sit side by side. The home screen uses your system wallpaper. Websites open full-page. Anime progress is detected from the pages you watch and stored only on this device. No account, no server, no cloud.</string>
+    <string name="about_body">AniHome is a launcher for phones and tablets. Arrange apps, website banners and widgets on your wallpaper. Your layout and settings stay on this device.</string>
     <string name="action_show_app_names">Show app names</string>
     <string name="drawer_hint_open">Tap an app to open it</string>
     <string name="drawer_hint_add">Tap an app to add it to Home</string>

@@ -19,10 +19,10 @@ internal object DockBrowser {
             .distinctBy { it.activityInfo.packageName }
             .map { Choice(it.loadLabel(context.packageManager).toString(), it.activityInfo.packageName) }
             .sortedBy { it.label.lowercase(java.util.Locale.ROOT) }
-        return listOf(Choice("Google search", null)) + browsers
+        return listOf(Choice("System default", null)) + browsers
     }
     fun intent(context: Context, query: String, url: String, isAddress: Boolean): Intent? {
-        val browser = selected(context) ?: return null
+        val browser = selected(context) ?: return Intent(Intent.ACTION_VIEW, Uri.parse(url)).addCategory(Intent.CATEGORY_BROWSABLE)
         if (!isAddress) {
             val search = Intent(Intent.ACTION_WEB_SEARCH).setPackage(browser).putExtra(SearchManager.QUERY, query)
             if (search.resolveActivity(context.packageManager) != null) return search

@@ -23,6 +23,11 @@ internal object HomeInteractionPolicy {
         if (abs(dy) >= distance && abs(dy) > abs(dx) * 1.5f && abs(velocityY) >= velocity && dy * velocityY > 0) return if (dy > 0) Swipe.DOWN else Swipe.UP
         return null
     }
+    fun gestureAllowed(direction: Swipe, canScrollUp: Boolean, canScrollDown: Boolean, scrolled: Boolean): Boolean = when (direction) {
+        Swipe.UP -> !canScrollDown && !scrolled
+        Swipe.DOWN -> !canScrollUp && !scrolled
+        else -> true
+    }
     fun validMove(from: Int, to: Int, size: Int) = from in 0 until size && to in 0 until size && from != to
     fun scrollStep(y: Float, height: Int, edge: Int, maxStep: Int): Int {
         if (height <= 0 || edge <= 0) return 0

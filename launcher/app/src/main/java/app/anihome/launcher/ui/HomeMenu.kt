@@ -24,8 +24,12 @@ object HomeMenu {
     data class Item(val id: Int, val title: String, val icon: Int, val detail: String? = null,
         val checked: Boolean? = null, val action: () -> Unit)
 
-    fun show(anchor: View, title: String, items: List<Item>) {
+    private var active: PopupWindow? = null
+    fun dismiss() { active?.dismiss(); active = null }
+    fun finishGesture() { active?.let { if (!it.isFocusable) { it.isFocusable = true; it.update() } } }
+    fun show(anchor: View, title: String, items: List<Item>, keepGesture: Boolean = false) {
         if (!anchor.isAttachedToWindow || items.isEmpty()) return
+        dismiss()
         val context = anchor.context
         fun dp(value: Int) = (value * context.resources.displayMetrics.density).toInt()
         fun surface(fill: Int, radius: Int = 12) = GradientDrawable().apply {
@@ -35,15 +39,15 @@ object HomeMenu {
         val width = minOf(dp(320), (bounds.width() - dp(24)).coerceAtLeast(dp(180)))
         val list = LinearLayout(context).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(6), dp(6), dp(6), dp(6)) }
         list.addView(TextView(context).apply {
-            text = title; textSize = 12f; setTextColor(ContextCompat.getColor(context, R.color.cyan))
+            text = title; textSize = 12f; setTextColor(0xffbfc3ca.toInt())
             setPadding(dp(14), dp(8), dp(14), dp(8))
             ViewCompat.setAccessibilityHeading(this, true)
         })
         val scroll = ScrollView(context).apply {
             addView(list); isFillViewport = false
-            background = ArtworkUi.surface(context); clipToOutline = true
+            background = surface(0xf5222428.toInt(), 20); clipToOutline = true
         }
-        val popup = PopupWindow(scroll, width, ViewGroup.LayoutParams.WRAP_CONTENT, true).apply {
+        val popup = PopupWindow(scroll, width, ViewGroup.LayoutParams.WRAP_CONTENT, !keepGesture).apply {
             setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
             elevation = dp(12).toFloat(); isOutsideTouchable = true; isClippingEnabled = true
             inputMethodMode = PopupWindow.INPUT_METHOD_NOT_NEEDED
@@ -54,7 +58,7 @@ object HomeMenu {
                 orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL
                 minimumHeight = dp(52); setPadding(dp(6), dp(6), dp(10), dp(6))
                 isClickable = true; isFocusable = true; isSelected = item.checked == true
-                background = RippleDrawable(ColorStateList.valueOf(0x4438bdf8),
+                background = RippleDrawable(ColorStateList.valueOf(0x33ffffff),
                     ContextCompat.getDrawable(context, R.drawable.bg_home_menu_row), surface(-1, 12))
                 contentDescription = listOfNotNull(item.title, item.detail).joinToString(", ")
                 item.checked?.let { ViewCompat.setStateDescription(this, if (it) "On" else "Off") }
@@ -68,7 +72,7 @@ object HomeMenu {
                     info.isChecked = item.checked == true
                 }
             })
-            row.addView(ImageView(context).apply {
+            if (item.icon != 0) row.addView(ImageView(context).apply {
                 setImageResource(item.icon)
                 imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, if (item.checked == true) R.color.cyan else R.color.text))
                 setPadding(dp(8), dp(8), dp(8), dp(8))
@@ -97,7 +101,13 @@ object HomeMenu {
         scroll.measure(View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
             View.MeasureSpec.makeMeasureSpec((bounds.height() * 0.7f).toInt(), View.MeasureSpec.AT_MOST))
         popup.height = scroll.measuredHeight
-        popup.setOnDismissListener { if (anchor.isAttachedToWindow) anchor.requestFocus() }
-        popup.showAsDropDown(anchor, 0, dp(8), Gravity.END)
+        popup.setOnDismissListener { if (active === popup) active = null; if (!keepGesture && anchor.isAttachedToWindow) anchor.requestFocus() }
+        active = popup
+        val location = IntArray(2).also(anchor::getLocationOnScreen)
+        val x = (location[0] + anchor.width - width).coerceIn(bounds.left + dp(12), (bounds.right - width - dp(12)).coerceAtLeast(bounds.left + dp(12)))
+        val below = location[1] + anchor.height + dp(8)
+        val y = (if (below + popup.height <= bounds.bottom) below else location[1] - popup.height - dp(8))
+            .coerceIn(bounds.top + dp(8), (bounds.bottom - popup.height - dp(8)).coerceAtLeast(bounds.top + dp(8)))
+        popup.showAtLocation(anchor.rootView, Gravity.TOP or Gravity.LEFT, x, y)
     }
 }

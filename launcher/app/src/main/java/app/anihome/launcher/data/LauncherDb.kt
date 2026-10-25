@@ -24,6 +24,7 @@ class LauncherDb(context: Context) : SQLiteOpenHelper(context.applicationContext
                 icon_path TEXT,
                 artwork_path TEXT,
                 artwork_origin TEXT NOT NULL DEFAULT 'manual',
+                tile_style TEXT NOT NULL DEFAULT 'banner',
                 color INTEGER,
                 position INTEGER NOT NULL,
                 created_at INTEGER NOT NULL
@@ -97,6 +98,7 @@ class LauncherDb(context: Context) : SQLiteOpenHelper(context.applicationContext
                 """,
             )
         }
+        if (oldVersion < 6) addColumnIfMissing(db, "tiles", "tile_style", "TEXT NOT NULL DEFAULT 'banner'")
         if (oldVersion < 5) addColumnIfMissing(db, "tiles", "artwork_origin", "TEXT NOT NULL DEFAULT 'manual'")
         if (oldVersion < 4) {
             addColumnIfMissing(db, "tiles", "shortcut_id", "TEXT")
@@ -131,7 +133,7 @@ class LauncherDb(context: Context) : SQLiteOpenHelper(context.applicationContext
 
     companion object {
         const val NAME = "anihome.db"
-        const val VERSION = 5
+        const val VERSION = 6
 
         @Volatile private var instance: LauncherDb? = null
         fun get(context: Context): LauncherDb = instance ?: synchronized(this) {

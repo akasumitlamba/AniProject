@@ -10,6 +10,14 @@ class HomeInteractionPolicyTest {
         assertEquals(HomeInteractionPolicy.Swipe.RIGHT, HomeInteractionPolicy.swipe(180f, 5f, 500f, 0f, 72f, 200f))
         assertEquals(HomeInteractionPolicy.Swipe.LEFT, HomeInteractionPolicy.swipe(-180f, 5f, -500f, 0f, 72f, 200f))
     }
+    @Test fun scrollingWinsOverVerticalGesturesIncludingTheFinalScrollToAnEdge() {
+        assertFalse(HomeInteractionPolicy.gestureAllowed(HomeInteractionPolicy.Swipe.UP, false, true, false))
+        assertFalse(HomeInteractionPolicy.gestureAllowed(HomeInteractionPolicy.Swipe.DOWN, true, false, false))
+        assertFalse(HomeInteractionPolicy.gestureAllowed(HomeInteractionPolicy.Swipe.UP, false, false, true))
+        assertTrue(HomeInteractionPolicy.gestureAllowed(HomeInteractionPolicy.Swipe.UP, true, false, false))
+        assertTrue(HomeInteractionPolicy.gestureAllowed(HomeInteractionPolicy.Swipe.DOWN, false, true, false))
+        assertTrue(HomeInteractionPolicy.gestureAllowed(HomeInteractionPolicy.Swipe.LEFT, true, true, true))
+    }
     @Test fun defaultsAndPersistedActionsAreIndependent() {
         assertEquals(HomeInteractionPolicy.Action.RECENTS, HomeInteractionPolicy.action(null, HomeInteractionPolicy.Swipe.UP))
         assertEquals(HomeInteractionPolicy.Action.APPS, HomeInteractionPolicy.action(null, HomeInteractionPolicy.Swipe.LEFT))

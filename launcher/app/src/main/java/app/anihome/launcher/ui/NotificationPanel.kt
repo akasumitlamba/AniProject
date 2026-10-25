@@ -35,6 +35,7 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
         dialog?.window?.let { quickSettings.resize(SidePanelLayout.apply(activity, it).height) }
     }
     private fun dp(n: Int) = ArtworkUi.dp(activity, n)
+    fun setAutomaticRotation(automatic: Boolean) = quickSettings.setAutomaticRotation(automatic)
     fun showSettings() { show(); quickSettings.showSettings() }
     fun show(direction: String = "RIGHT") {
         if (dialog?.isShowing == true) return
@@ -91,14 +92,15 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
             addView(emptyScroll, FrameLayout.LayoutParams(-1, -1))
         }
         root.addView(notifications, LinearLayout.LayoutParams(-1, 0, 1f))
+        val settings = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; setPadding(0, dp(4), 0, 0) }
+        root.addView(settings)
         quickSettings.onSectionChanged = { section ->
             val inSettings = section == "Settings"
             headingTitle.text = if (inSettings) "Home settings" else "Notifications"
             notifications.visibility = if (inSettings) View.GONE else View.VISIBLE
             clear.visibility = if (inSettings) View.GONE else View.VISIBLE
+            settings.layoutParams = LinearLayout.LayoutParams(-1, if (inSettings) 0 else -2, if (inSettings) 1f else 0f)
         }
-        val settings = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; setPadding(0, dp(4), 0, 0) }
-        root.addView(settings)
         val sheetHeight = SidePanelLayout.bounds(activity).height
         quickSettings.attach(settings, sheetHeight)
         root.addOnLayoutChangeListener { _, _, top, _, bottom, _, oldTop, _, oldBottom ->

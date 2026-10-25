@@ -48,6 +48,7 @@ class AppDrawerActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DrawerItemWarmup.pause()
         InstalledApps.watch(applicationContext)
         @Suppress("DEPRECATION")
         overridePendingTransition(0, 0)
@@ -56,6 +57,7 @@ class AppDrawerActivity : AppCompatActivity() {
         binding = ActivityAppDrawerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         entryPending = savedInstanceState == null
+        if (!entryPending) entryFinished.complete(Unit)
         if (entryPending) binding.root.alpha = 0f
         store = TileStore(this); preferences = DrawerPreferences(this)
         selected.addAll(savedInstanceState?.getStringArrayList("selected").orEmpty())
@@ -80,7 +82,7 @@ class AppDrawerActivity : AppCompatActivity() {
             searchResults = android.widget.LinearLayout(this).apply { orientation = android.widget.LinearLayout.VERTICAL }
             binding.root.addView(searchResults, 1)
             webResults = android.widget.LinearLayout(this).apply { orientation = android.widget.LinearLayout.VERTICAL }
-            binding.root.addView(webResults)
+            binding.root.addView(webResults, 1)
         }
         binding.search.doAfterTextChanged { filter(); renderFiles() }
         binding.search.setOnEditorActionListener { _, action, event ->
@@ -115,10 +117,18 @@ class AppDrawerActivity : AppCompatActivity() {
             if (dockPickMode) { DockApps.set(this, selected.mapNotNull { key -> all.firstOrNull { it.key() == key }?.component }); finish() }
             else addApps(all.filter { it.key() in selected }, true)
         }
-        InstalledApps.cached()?.let {
-            all = it
-            if (pickMode) { filter(); binding.loading.visibility = View.GONE }
+        val warm = DrawerWarmup.current()
+        val cached = warm?.apps ?: InstalledApps.cached()
+        if (cached != null) {
+            all = cached
+            val tiles = warm?.tiles.orEmpty()
+            onHome = if (dockPickMode) emptySet() else tiles.filter { it.isApp }.map { "${it.packageName}/${it.activityName}" }.toSet()
+            homeWebsites = tiles.filter { it.isWeb }
+            cachedFiles = warm?.files.orEmpty()
+            filter(); renderFiles(); binding.loading.visibility = View.GONE
+            revealDrawer()
         }
+
     }
     override fun onResume() { super.onResume(); RotationControl.applyHome(this); load(); refreshFiles() }
     override fun onSaveInstanceState(outState: Bundle) {
@@ -126,11 +136,17 @@ class AppDrawerActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
     }
     private var entryPending = false
+    private val entryFinished = CompletableDeferred<Unit>()
+    private val webBrowserLabel by lazy { DockBrowser.choices(this).firstOrNull { it.packageName == DockBrowser.selected(this) }?.label ?: "browser" }
+    private suspend fun waitForEntry() {
+        if (!entryPending) entryFinished.await()
+    }
+
     private fun revealDrawer() {
         libraryContent?.visibility = View.VISIBLE
-        if (!entryPending) return
+        if (!entryPending) { entryFinished.complete(Unit); return }
         entryPending = false
-        MotionUi.enter(binding.root, intent.getStringExtra("motion_direction") ?: "LEFT")
+        MotionUi.enter(binding.root, intent.getStringExtra("motion_direction") ?: "LEFT") { entryFinished.complete(Unit) }
     }
     private var loadJob: Job? = null
     private fun load() {
@@ -144,8 +160,10 @@ class AppDrawerActivity : AppCompatActivity() {
                     Triple(apps, home, tiles.filter { it.isWeb })
                 }
             }
+            waitForEntry()
             binding.loading.visibility = View.GONE
             result.onSuccess { (apps, home, websites) ->
+                if (apps == all && home == onHome && websites == homeWebsites && !entryPending) return@onSuccess
                 homeWebsites = websites
                 all = apps; onHome = if (dockPickMode) emptySet() else home; if (!dockPickMode) selected.removeAll(home); filter()
                 revealDrawer()
@@ -358,8 +376,9 @@ class AppDrawerActivity : AppCompatActivity() {
         if (pickMode || !::recentBody.isInitialized) return
         filesJob?.cancel()
         filesJob = lifecycleScope.launch {
-            cachedFiles = withContext(Dispatchers.IO) { RecentFiles.read(this@AppDrawerActivity) }
-            renderFiles()
+            val files = withContext(Dispatchers.IO) { RecentFiles.read(this@AppDrawerActivity) }
+            waitForEntry()
+            if (files != cachedFiles) { cachedFiles = files; renderFiles() }
         }
     }
     private fun renderFiles() {
@@ -491,7 +510,10 @@ class AppDrawerActivity : AppCompatActivity() {
         if (container.visibility != View.VISIBLE) return
         val matches = homeWebsites.filter { it.label.contains(query, true) || it.url.orEmpty().contains(query, true) }.take(3)
         matches.forEach { tile -> container.addView(ArtworkUi.chip(this, tile.label, R.drawable.ic_home) { openWebsite(tile) }) }
-        webResults?.addView(ArtworkUi.chip(this, if (looksLikeAddress(query)) "Open $query" else "Search the web for “$query”", R.drawable.ic_search) { searchWeb(query) })
+        val browser = webBrowserLabel
+        webResults?.addView(ArtworkUi.chip(this, if (looksLikeAddress(query)) "Open address in $browser" else if (DockBrowser.selected(this) == null) "Search Google on the web" else "Search web in $browser", R.drawable.ic_search) { searchWeb(query) }.apply {
+            contentDescription = if (looksLikeAddress(query)) "Open $query in $browser" else "Search the web for $query in $browser"
+        }, android.widget.LinearLayout.LayoutParams(-1, ArtworkUi.dp(this, 44)).apply { topMargin = ArtworkUi.dp(this@AppDrawerActivity, 6) })
     }
     private fun looksLikeAddress(query: String) = query.contains('.') && query.none { it.isWhitespace() }
     private fun openWebsite(tile: HomeTile) {
@@ -523,7 +545,7 @@ class AppDrawerActivity : AppCompatActivity() {
     private inner class Adapter : RecyclerView.Adapter<Holder>() {
         var items = emptyList<InstalledApp>()
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-            val item = ItemAppBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            val item = DrawerItemWarmup.take(parent)
             if (this == favorites && AdaptiveLayout.tablet(this@AppDrawerActivity)) item.root.layoutParams = RecyclerView.LayoutParams(ArtworkUi.dp(this@AppDrawerActivity, 96), ViewGroup.LayoutParams.MATCH_PARENT)
             return Holder(item)
         }

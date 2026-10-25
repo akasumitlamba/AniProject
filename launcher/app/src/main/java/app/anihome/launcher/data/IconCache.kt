@@ -15,6 +15,8 @@ object IconCache {
     }
 
     fun cachedAppIcon(packageName: String, activityName: String?): Bitmap? = cache.get("app:$packageName/$activityName")
+    fun cachedDockIcon(packageName: String, activityName: String?): Bitmap? = cache.get("dock:$packageName/$activityName")
+    fun cachedFileIcon(path: String): Bitmap? = cache.get("file:$path")
 
     fun appIcon(context: Context, packageName: String, activityName: String?): Bitmap? {
         val key = "app:$packageName/$activityName"

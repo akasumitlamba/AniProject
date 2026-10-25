@@ -45,7 +45,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
     private val handler = Handler(Looper.getMainLooper())
     private class LimitedScroll(context: Context, var limit: Int) : ScrollView(context) {
         override fun onMeasure(width: Int, height: Int) {
-            super.onMeasure(width, View.MeasureSpec.makeMeasureSpec(limit.coerceAtLeast(1), View.MeasureSpec.AT_MOST))
+            super.onMeasure(width, View.MeasureSpec.makeMeasureSpec(minOf(limit.coerceAtLeast(1), if (View.MeasureSpec.getMode(height) == View.MeasureSpec.UNSPECIFIED) limit.coerceAtLeast(1) else View.MeasureSpec.getSize(height)), View.MeasureSpec.AT_MOST))
         }
     }
     private fun privileged(work: (IRadioService) -> String, result: (String) -> Unit = { status = it; render() }) {
@@ -128,7 +128,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         if (next == expandedHeight) return
         expandedHeight = next
         scrollView?.let { scroll ->
-            scroll.limit = (expandedHeight - dp(40)).coerceAtLeast(dp(32)); scroll.requestLayout()
+            scroll.limit = if (selected == "Settings") Int.MAX_VALUE else (expandedHeight - dp(40)).coerceAtLeast(dp(32)); scroll.requestLayout()
         }
     }
     fun attach(parent: LinearLayout, sheetHeight: Int) {
@@ -201,7 +201,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         onSectionChanged?.invoke(selected)
         val parent = content ?: return
         (rotationTile as? ImageButton)?.setImageResource(when (rotationMode()) {
-            "Fixed" -> app.anihome.launcher.R.drawable.ic_lock
+            "Fixed" -> app.anihome.launcher.R.drawable.ic_rotation_locked
             "Landscape" -> app.anihome.launcher.R.drawable.ic_landscape
             else -> app.anihome.launcher.R.drawable.ic_rotation
         })
@@ -221,11 +221,11 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
                 setPadding(0, dp(2), 0, dp(4))
                 layoutParams = LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(8) }
             }
-            val scroll = LimitedScroll(activity, (expandedHeight - dp(40)).coerceAtLeast(dp(32))).apply { isFillViewport = false }
+            val scroll = LimitedScroll(activity, if (section == "Settings") Int.MAX_VALUE else (expandedHeight - dp(40)).coerceAtLeast(dp(32))).apply { isFillViewport = false }
             scrollView = scroll
             val body = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL }
             scroll.addView(body)
-            parent.addView(sectionRoot, LinearLayout.LayoutParams(-1, -2))
+            parent.addView(sectionRoot, LinearLayout.LayoutParams(-1, if (section == "Settings") 0 else -2, if (section == "Settings") 1f else 0f))
             when (section) {
                 "Settings" -> {
                     settingsContent(body)
@@ -235,13 +235,13 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
                     note(body, "Nearby-device access changed. Reopen this panel to grant access.")
                 }
             }
-            sectionRoot.addView(scroll, LinearLayout.LayoutParams(-1, -2))
+            sectionRoot.addView(scroll, LinearLayout.LayoutParams(-1, if (section == "Settings") -1 else -2))
             scroll.post { scroll.scrollTo(0, previousScroll) }
         }
         val controls = LinearLayout(activity)
         listOf("Wi-Fi", "Bluetooth", "Rotation", "Settings").forEach { name ->
             val column = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL }
-            val icon = when (name) { "Wi-Fi" -> app.anihome.launcher.R.drawable.ic_wifi; "Bluetooth" -> app.anihome.launcher.R.drawable.ic_bluetooth; "Settings" -> app.anihome.launcher.R.drawable.ic_settings; else -> when (rotationMode()) { "Fixed" -> app.anihome.launcher.R.drawable.ic_lock; "Landscape" -> app.anihome.launcher.R.drawable.ic_landscape; else -> app.anihome.launcher.R.drawable.ic_rotation } }
+            val icon = when (name) { "Wi-Fi" -> app.anihome.launcher.R.drawable.ic_wifi; "Bluetooth" -> app.anihome.launcher.R.drawable.ic_bluetooth; "Settings" -> app.anihome.launcher.R.drawable.ic_settings; else -> when (rotationMode()) { "Fixed" -> app.anihome.launcher.R.drawable.ic_rotation_locked; "Landscape" -> app.anihome.launcher.R.drawable.ic_landscape; else -> app.anihome.launcher.R.drawable.ic_rotation } }
             val tile = ImageButton(activity).apply {
                 setImageResource(icon)
                 imageTintList = android.content.res.ColorStateList.valueOf(if (selected == name) -1 else 0xffbbbbbb.toInt())
@@ -466,20 +466,12 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         }
     }
     private fun rotationMode(): String = if (RotationControl.mode(activity) == "Auto") "Auto" else "Fixed"
-    private fun cycleRotation() {
-        if (radioBusy) return
-        val next = if (rotationMode() == "Auto") "Fixed" else "Auto"
-        RotationControl.select(activity, next)
-        if (bridge.ready) {
-            val angle = RotationControl.fixedAngle(activity)
-            privileged({ it.applyRotation(if (next == "Auto") 0 else 1, angle) }) {
-                status = if (it == "OK") "" else it
-                render()
-            }
-        } else if (!Settings.System.canWrite(activity)) {
-            status = "Allow system rotation control to apply this outside AniHome."
+    private fun cycleRotation() = setAutomaticRotation(rotationMode() != "Auto")
+    fun setAutomaticRotation(automatic: Boolean) {
+        if (!RotationControl.setAutomatic(activity, automatic)) {
+            Toast.makeText(activity, "Allow system rotation access to change Android rotation.", Toast.LENGTH_LONG).show()
+            runCatching { activity.startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:${activity.packageName}"))) }
         }
-        (activity as? HomeActivity)?.applyRotationFromPanel() ?: RotationControl.applyHome(activity)
         render()
     }
     private fun note(body: LinearLayout, value: String) {
