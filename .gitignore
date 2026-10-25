@@ -64,3 +64,10 @@ docs/PROJECT-STORY.md
 
 # Reviewed technical contributor instructions
 !/AGENTS.md
+
+# Editor lock and temporary files
+.~lock.*#
+*.swp
+*.swo
+*~
+Thumbs.db
