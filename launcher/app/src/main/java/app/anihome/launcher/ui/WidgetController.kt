@@ -17,6 +17,7 @@ import android.widget.RemoteViews
 import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import androidx.core.view.doOnLayout
+import androidx.core.widget.doAfterTextChanged
 import androidx.core.content.ContextCompat
 import app.anihome.launcher.R
 import android.widget.LinearLayout
@@ -37,6 +38,9 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
     private val prefs = activity.getSharedPreferences("home_widgets", 0)
     private val manager = AppWidgetManager.getInstance(activity)
     private val host = AppWidgetHost(activity, 1024)
+    // Keep provider content (including scroll position) through Home/edit refreshes.
+    // Views belong only to this activity and are released when their widget is removed.
+    private val providerViews = mutableMapOf<Int, android.appwidget.AppWidgetHostView>()
     private var columns = HomeLayout.columns(activity) * 2
     private val entries = mutableListOf<Entry>()
     val hasWidgets: Boolean get() = entries.isNotEmpty()
@@ -82,7 +86,12 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
         return true
     }
 
-    fun start() { runCatching { host.startListening() }; builtIns.start(); refresh() }
+    fun start() {
+        runCatching { host.startListening() }
+        builtIns.start()
+        // Recheck unavailable providers without invalidating unrelated app tiles.
+        adapter.notifyItemRangeChanged(0, entries.size)
+    }
     fun stop() { builtIns.stop(); runCatching { host.stopListening() } }
     fun updateLayout() {
         val next = HomeLayout.columns(activity) * 2
@@ -91,9 +100,10 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
         refresh()
     }
     fun setEditMode(value: Boolean) {
+        if (editing == value) return
         editing = value
         if (!value) resizingId = null
-        adapter.notifyDataSetChanged()
+        adapter.notifyItemRangeChanged(0, entries.size)
     }
 
     fun pick() {
@@ -199,16 +209,24 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
     }
     private fun editNote(entry: Entry) {
         if (entry.kind != BuiltInWidgetPolicy.NOTE) return
+        val draftKey = "draft:${entry.id}"
         val input = android.widget.EditText(activity).apply {
-            setText(entry.note); setSelection(text.length)
+            setText(prefs.getString(draftKey, entry.note)); setSelection(text.length)
             hint = "Your note"
             inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE or android.text.InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
             minLines = 3; maxLines = 8
             filters = arrayOf(android.text.InputFilter.LengthFilter(2000))
             setPadding(dp(16), dp(12), dp(16), dp(12))
+            // Recover interrupted edits after rotation/process recreation. Explicit Cancel discards them.
+            doAfterTextChanged { prefs.edit().putString(draftKey, it.toString()).apply() }
         }
         MaterialAlertDialogBuilder(activity).setTitle("Quick note").setView(input)
-            .setNegativeButton("Cancel", null).setPositiveButton("Save") { _, _ -> entry.note = input.text.toString(); save(); refresh() }.show()
+            .setNegativeButton("Cancel") { _, _ -> prefs.edit().remove(draftKey).apply() }
+            .setPositiveButton("Save") { _, _ ->
+                entry.note = input.text.toString()
+                prefs.edit().remove(draftKey).apply()
+                save(); refresh()
+            }.show()
     }
 
     private fun dp(value: Int) = (value * activity.resources.displayMetrics.density).toInt()
@@ -329,10 +347,20 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
         adapter.notifyDataSetChanged()
         onChanged()
     }
+    fun showOptions(id: Int, anchor: View) {
+        val entry = entries.firstOrNull { it.id == id } ?: return
+        val actions = mutableListOf<HomeMenu.Item>()
+        if (entry.kind == "note") actions += HomeMenu.Item(1, "Edit note", R.drawable.ic_edit) { editNote(entry) }
+        actions += HomeMenu.Item(2, "Remove widget", R.drawable.ic_close) { remove(entry) }
+        HomeMenu.show(anchor, builtIns.title(entry.kind), actions, keepGesture = true)
+    }
+
     private fun remove(entry: Entry) {
         MaterialAlertDialogBuilder(activity).setTitle("Remove widget?")
             .setNegativeButton("Cancel", null).setPositiveButton("Remove") { _, _ ->
                 if (BuiltInWidgetPolicy.usesProviderHost(entry.kind, entry.id)) runCatching { host.deleteAppWidgetId(entry.id) }
+                providerViews.remove(entry.id)
+                prefs.edit().remove("draft:${entry.id}").apply()
                 entries.remove(entry); save(); refresh()
             }.show()
     }
@@ -362,8 +390,9 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
         override fun getItemCount() = entries.size
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WidgetHolder {
             val container = FrameLayout(activity).apply {
+                clipChildren = false; clipToPadding = false
                 layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-                setPadding(dp(4), dp(4), dp(4), dp(4))
+                setPadding(0, 0, 0, 0)
             }
             return WidgetHolder(container)
         }
@@ -384,7 +413,7 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
             val frame = WidgetResizeFrame(activity).apply {
                 this.editing = this@WidgetController.editing
                 resizeSelected = editing
-                setPadding(dp(6), dp(6), dp(6), dp(6))
+                setPadding(0, 0, 0, 0)
                 onLongPress = {
                     if (!this@WidgetController.editing) {
                         onEditRequested()
@@ -398,14 +427,22 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
                 importantForAccessibility = if (editing) View.IMPORTANT_FOR_ACCESSIBILITY_YES else View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
             }
             val live = if (builtin) builtIns.create(entry.kind, entry.note) { editNote(entry) }
-                else runCatching { host.createView(activity, entry.id, info!!) }.getOrElse {
+                else runCatching {
+                    providerViews[entry.id]?.takeIf { it.appWidgetInfo?.provider == info!!.provider }
+                        ?: host.createView(activity, entry.id, info!!).also { providerViews[entry.id] = it }
+                }.getOrElse {
                     holder.container.addView(TextView(activity).apply { text = "Widget unavailable" }); return
                 }
+            (live.parent as? ViewGroup)?.removeView(live)
+            if (live is android.appwidget.AppWidgetHostView) live.setPadding(0, 0, 0, 0)
             frame.addView(live, FrameLayout.LayoutParams(-1, -1))
             holder.container.addView(frame, FrameLayout.LayoutParams(-1, -1))
             if (editing) holder.container.addView(ArtworkUi.plainIcon(activity, R.drawable.ic_close, "Remove $title") { remove(entry) }.apply {
-                background = ContextCompat.getDrawable(activity, R.drawable.bg_badge_remove)
-            }, FrameLayout.LayoutParams(dp(40), dp(40), Gravity.TOP or Gravity.END).apply { topMargin = dp(8); marginEnd = dp(8) })
+                background = ContextCompat.getDrawable(activity, R.drawable.bg_badge_remove_compact)
+                setPadding(dp(12), dp(12), dp(12), dp(12))
+                translationX = dp(10).toFloat(); translationY = -dp(10).toFloat()
+                elevation = dp(12).toFloat()
+            }, FrameLayout.LayoutParams(dp(40), dp(40), Gravity.TOP or Gravity.END).apply { topMargin = 0; marginEnd = 0 })
             fun updateProvider() {
                 if (live is android.appwidget.AppWidgetHostView) frame.post {
                     val density = activity.resources.displayMetrics.density

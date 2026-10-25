@@ -31,10 +31,11 @@ internal class HomeBoardLayoutManager(private val context: Context, private val 
         calculate(width).forEachIndexed { index, p ->
             val view = recycler.getViewForPosition(index)
             addView(view)
-            val left = paddingLeft + (p.x * cellWidth).toInt()
-            val top = paddingTop + (p.y * cellHeight).toInt()
-            val right = paddingLeft + ((p.x + p.columns) * cellWidth).toInt()
-            val bottom = paddingTop + ((p.y + p.rows) * cellHeight).toInt()
+            val gap = ArtworkUi.dp(context, 8)
+            val left = paddingLeft + (p.x * cellWidth).toInt() + gap
+            val top = paddingTop + (p.y * cellHeight).toInt() + gap
+            val right = paddingLeft + ((p.x + p.columns) * cellWidth).toInt() - gap
+            val bottom = paddingTop + ((p.y + p.rows) * cellHeight).toInt() - gap
             view.measure(View.MeasureSpec.makeMeasureSpec(right - left, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(bottom - top, View.MeasureSpec.EXACTLY))
             layoutDecoratedWithMargins(view, left, top, right, bottom)
         }

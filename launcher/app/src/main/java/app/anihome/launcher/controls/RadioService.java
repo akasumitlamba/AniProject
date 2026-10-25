@@ -25,37 +25,7 @@ public final class RadioService extends IRadioService.Stub {
         return (Context) type.getMethod("getSystemContext").invoke(thread);
     }
     @Override public String applyRotation(int mode, int angle) {
-        if (mode < 0 || mode > 2 || angle < 0 || angle > 3) return "Unsupported rotation";
-        try {
-            // Lock the display itself so app/Recents orientation requests cannot replace it.
-            String policy = mode == 0 ? "disabled" : "enabled";
-            if (!rotationCommand("fixed-to-user-rotation", policy)
-                    && !rotationCommand("set-fix-to-user-rotation", policy)) return "System rotation enforcement unavailable";
-            if (mode == 0) {
-                if (!rotationCommand("user-rotation", "free")
-                        && !rotationCommand("set-user-rotation", "free")) return "Auto rotation unavailable";
-            } else if (!rotationCommand("user-rotation", "lock", Integer.toString(angle))
-                    && !rotationCommand("set-user-rotation", "lock", Integer.toString(angle))) return "Rotation lock unavailable";
-            return "OK";
-        } catch (Exception failure) { return "Direct rotation access unavailable"; }
-    }
-    private boolean rotationCommand(String... args) throws Exception {
-        java.util.List<String> command = new java.util.ArrayList<>();
-        command.add("/system/bin/wm"); java.util.Collections.addAll(command, args);
-        Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
-        if (!process.waitFor(4, java.util.concurrent.TimeUnit.SECONDS)) {
-            process.destroyForcibly(); return false;
-        }
-        String output = new String(readCommandOutput(process), java.nio.charset.StandardCharsets.UTF_8);
-        return process.exitValue() == 0 && !output.contains("Unknown command") && !output.contains("Error");
-    }
-    private byte[] readCommandOutput(Process process) throws java.io.IOException {
-        java.io.ByteArrayOutputStream output = new java.io.ByteArrayOutputStream();
-        byte[] buffer = new byte[1024]; int count;
-        try (java.io.InputStream input = process.getInputStream()) {
-            while ((count = input.read(buffer)) != -1) output.write(buffer, 0, count);
-        }
-        return output.toByteArray();
+        return "Forced display rotation has been removed. Use Android auto-rotate or lock the current orientation.";
     }
     @Override public boolean scanWifi() { return wifi.startScan(); }
     @Override public boolean setWifiPower(boolean enabled) { return wifi.setWifiEnabled(enabled); }

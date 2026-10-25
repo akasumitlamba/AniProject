@@ -6,7 +6,7 @@ AniProject contains **AniHome**, an Android home-screen launcher, and **AniBrave
 
 | Product | Download | Requirements |
 | --- | --- | --- |
-| AniHome 0.8.25 | [Download launcher](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.24/AniHome-Launcher-0.8.25-release.apk) | Android 8+ |
+| AniHome 0.8.29 | [Download launcher](https://github.com/akasumitlamba/AniProject/releases/download/anihome-v0.8.29/AniHome-Launcher-0.8.29-release.apk) | Android 8+ |
 | AniBrave 0.2.1 | [Download browser](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.24/AniBrave-0.2.1-arm64-v8a.apk) | Android 10+, ARM64 |
 | AniBrave desktop 0.1.4 | [Download extension](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.24/AniBrave-Extension-0.1.4.zip) | Brave desktop |
 

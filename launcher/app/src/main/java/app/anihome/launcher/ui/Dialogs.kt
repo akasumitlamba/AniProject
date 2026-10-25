@@ -46,6 +46,7 @@ object Dialogs {
         if (hint != null) binding.input.setHint(hint)
         binding.input.setText(initial.orEmpty())
         binding.input.setSelection(binding.input.text.length)
+        binding.input.filters = arrayOf(android.text.InputFilter.LengthFilter(200))
         val dialog = MaterialAlertDialogBuilder(context)
             .setTitle(title)
             .setView(binding.root)
@@ -53,7 +54,11 @@ object Dialogs {
             .setPositiveButton(R.string.action_ok, null)
             .create()
         dialog.setOnShowListener {
-            val submit = { onDone(binding.input.text.toString()); dialog.dismiss() }
+            val submit = {
+                val value = binding.input.text.toString().trim()
+                if (value.isBlank()) binding.input.error = "Enter a name"
+                else { onDone(value); dialog.dismiss() }
+            }
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener { submit() }
             binding.input.setOnEditorActionListener { _, _, _ -> submit(); true }
             binding.input.requestFocus()

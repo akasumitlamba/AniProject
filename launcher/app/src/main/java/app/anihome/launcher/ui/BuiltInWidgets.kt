@@ -33,19 +33,31 @@ internal class BuiltInWidgets(private val context: Context) {
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == Intent.ACTION_BATTERY_CHANGED) readBattery(intent)
-            update()
+            update(if (intent?.action == Intent.ACTION_BATTERY_CHANGED) BuiltInWidgetPolicy.BATTERY else BuiltInWidgetPolicy.CLOCK)
         }
     }
     private val ticker = object : Runnable {
         override fun run() {
             if (!running) return
-            update()
+            update(BuiltInWidgetPolicy.CLOCK)
             handler.postDelayed(this, 60_000L - System.currentTimeMillis() % 60_000L)
         }
     }
     fun start() {
         if (running) return
         running = true
+        syncUpdates()
+    }
+    private fun syncUpdates() {
+        handler.removeCallbacks(ticker)
+        val live = running && attached.any { it.kind != BuiltInWidgetPolicy.NOTE }
+        if (!live) {
+            if (registered) runCatching { context.unregisterReceiver(receiver) }
+            registered = false
+            return
+        }
+        if (attached.any { it.kind == BuiltInWidgetPolicy.CLOCK }) handler.post(ticker)
+        if (registered) return
         val filter = IntentFilter().apply {
             addAction(Intent.ACTION_BATTERY_CHANGED)
             addAction(Intent.ACTION_TIME_CHANGED)
@@ -57,7 +69,6 @@ internal class BuiltInWidgets(private val context: Context) {
             registered = true
             if (sticky?.action == Intent.ACTION_BATTERY_CHANGED) readBattery(sticky)
         }
-        handler.post(ticker)
     }
     fun stop() {
         running = false
@@ -78,8 +89,8 @@ internal class BuiltInWidgets(private val context: Context) {
             setOnClickListener { onNote() }
         }
         addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-            override fun onViewAttachedToWindow(view: View) { attached += this@apply; updateContent() }
-            override fun onViewDetachedFromWindow(view: View) { attached -= this@apply }
+            override fun onViewAttachedToWindow(view: View) { attached += this@apply; syncUpdates(); updateContent() }
+            override fun onViewDetachedFromWindow(view: View) { attached -= this@apply; syncUpdates() }
         })
     }
     private fun readBattery(intent: Intent) {
@@ -89,36 +100,33 @@ internal class BuiltInWidgets(private val context: Context) {
         val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
         charging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL
     }
-    private fun update() { attached.toList().forEach { it.updateContent() } }
+    private fun update(kind: String) { attached.filter { it.kind == kind }.forEach { it.updateContent() } }
     private fun dp(value: Int) = (value * context.resources.displayMetrics.density).toInt()
-    private inner class Card(private val kind: String, private val note: String) : LinearLayout(context) {
-        private val heading = label(10f, 0xffc1d5e6.toInt()).apply {
-            letterSpacing = 0.12f
+    private inner class Card(val kind: String, private val note: String) : LinearLayout(context) {
+        private val heading = label(10f, 0xffbdbdbd.toInt()).apply {
+            letterSpacing = 0f
             typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
         }
         private val main = label(if (kind == BuiltInWidgetPolicy.NOTE) 16f else 40f, Color.WHITE)
-        private val detail = label(12f, 0xffc1d5e6.toInt())
+        private val detail = label(12f, 0xffbdbdbd.toInt())
         private val battery = ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal).apply {
-            max = 100; progressTintList = ColorStateList.valueOf(0xff64d9ef.toInt())
-            progressBackgroundTintList = ColorStateList.valueOf(0x334f7793)
+            max = 100; progressTintList = ColorStateList.valueOf(0xffdddddd.toInt())
+            progressBackgroundTintList = ColorStateList.valueOf(0x33444444)
             importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
         }
         init {
             orientation = VERTICAL
             gravity = Gravity.CENTER_VERTICAL
-            setPadding(dp(16), dp(12), dp(16), dp(12))
-            background = GradientDrawable(GradientDrawable.Orientation.TL_BR, intArrayOf(0xe6273d55.toInt(), 0xe6111d30.toInt())).apply {
-                cornerRadius = context.resources.getDimension(app.anihome.launcher.R.dimen.control_radius)
-                setStroke(dp(1).coerceAtLeast(1), ContextCompat.getColor(context, app.anihome.launcher.R.color.glass_line))
-            }
+            setPadding(dp(12), dp(10), dp(12), dp(10))
+            background = ArtworkUi.surface(context, 0xe617191d.toInt()).apply { setStroke(0, 0) }
             clipToOutline = true
             elevation = dp(2).toFloat()
             heading.text = when (kind) {
-                BuiltInWidgetPolicy.CLOCK -> "CLOCK & DATE"
-                BuiltInWidgetPolicy.BATTERY -> "BATTERY"
-                else -> "QUICK NOTE  ·  ✎"
+                BuiltInWidgetPolicy.CLOCK -> "Clock"
+                BuiltInWidgetPolicy.BATTERY -> "Battery"
+                else -> "Note"
             }
-            addView(heading, LayoutParams(-1, -2))
+            if (kind != BuiltInWidgetPolicy.CLOCK) addView(heading, LayoutParams(-1, -2))
             if (kind == BuiltInWidgetPolicy.NOTE) {
                 main.maxLines = 6
                 main.ellipsize = android.text.TextUtils.TruncateAt.END
@@ -149,9 +157,9 @@ internal class BuiltInWidgets(private val context: Context) {
                     contentDescription = "Battery ${main.text}, ${detail.text}"
                 }
                 else -> {
-                    main.text = note.ifBlank { "A little space for what matters." }
+                    main.text = note.ifBlank { "Tap to write" }
                     main.setTextColor(if (note.isBlank()) 0xffb9ccdc.toInt() else Color.WHITE)
-                    detail.text = if (note.isBlank()) "Tap to add a note" else "Tap to edit · Saved on this device"
+                    detail.visibility = View.GONE
                     contentDescription = "Quick note. ${if (note.isBlank()) "Tap to add a note" else note}."
                 }
             }

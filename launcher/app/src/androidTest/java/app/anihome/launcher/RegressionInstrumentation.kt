@@ -43,6 +43,51 @@ class RegressionInstrumentation : Instrumentation() {
                 adapter.move(3,0)
                 verify(adapter.currentList.map { it.id }==listOf(1L,2L,3L,4L),"reverse drag order")
             }
+            // A warm generic app icon must not suppress a cold pinned-shortcut icon.
+            val shortcutArt = File(qaDirectory, "shortcut-priority.png")
+            Bitmap.createBitmap(32,32,Bitmap.Config.ARGB_8888).also { image ->
+                image.eraseColor(android.graphics.Color.MAGENTA)
+                shortcutArt.outputStream().use { image.compress(Bitmap.CompressFormat.PNG,100,it) }
+                image.recycle()
+            }
+            IconCache.invalidateFile(shortcutArt.path)
+            val pkg = targetContext.packageName
+            verify(IconCache.appIcon(targetContext, pkg, null) != null, "generic app icon is warm before shortcut binding")
+            lateinit var imageHolder: TileAdapter.Holder
+            lateinit var imageAdapter: TileAdapter
+            lateinit var registry: androidx.lifecycle.LifecycleRegistry
+            runOnMainSync {
+                val owner = object : android.view.ContextThemeWrapper(targetContext, R.style.Theme_AniHome), androidx.lifecycle.LifecycleOwner {
+                    override val lifecycle = androidx.lifecycle.LifecycleRegistry(this)
+                }
+                registry = owner.lifecycle
+                registry.currentState = androidx.lifecycle.Lifecycle.State.STARTED
+                imageAdapter = TileAdapter({},{},{},{})
+                imageAdapter.submitList(listOf(HomeTile(900, HomeTile.Kind.APP, "Shortcut fixture", packageName=pkg,
+                    shortcutId="fixture", shortcutUser=0, iconPath=shortcutArt.path, position=0)))
+                imageHolder = imageAdapter.onCreateViewHolder(android.widget.FrameLayout(owner),0)
+                imageAdapter.onBindViewHolder(imageHolder,0)
+            }
+            var loadedShortcut = false
+            val deadline = android.os.SystemClock.uptimeMillis()+5000
+            while (!loadedShortcut && android.os.SystemClock.uptimeMillis()<deadline) {
+                runOnMainSync {
+                    val image = imageHolder.itemView.findViewById<android.widget.ImageView>(R.id.icon)
+                    val bitmap = (image.drawable as? android.graphics.drawable.BitmapDrawable)?.bitmap
+                    loadedShortcut = bitmap?.getPixel(0,0) == android.graphics.Color.MAGENTA
+                }
+                if (!loadedShortcut) Thread.sleep(20)
+            }
+            verify(loadedShortcut, "cold shortcut artwork replaces a cached generic app icon")
+            runOnMainSync {
+                imageAdapter.editMode = true
+                imageAdapter.onBindViewHolder(imageHolder,0,mutableListOf("badge","edit"))
+                verify(imageHolder.itemView.findViewById<android.view.View>(R.id.remove).visibility == android.view.View.VISIBLE,
+                    "combined badge and edit payload keeps remove control visible")
+                imageAdapter.onViewRecycled(imageHolder)
+                registry.currentState = androidx.lifecycle.Lifecycle.State.DESTROYED
+            }
+            shortcutArt.delete(); IconCache.invalidateFile(shortcutArt.path)
             // Real SQLite transitions: late automatic responses must never replace a manual choice.
             SQLiteDatabase.create(null).use { database ->
                 LauncherDb(targetContext).onCreate(database)
@@ -67,6 +112,32 @@ class RegressionInstrumentation : Instrumentation() {
                 verify(replacement.id != tile.id && replacement.artworkOrigin == "pending", "remove and re-add permits a fresh automatic choice")
                 verify(!store.finishAutomaticArtwork(tile.id, auto.path), "removed tile rejects a late response")
                 verify(store.finishAutomaticArtwork(replacement.id, null) && store.byId(replacement.id)?.artworkOrigin == "icon", "no banner settles on app icon")
+                val compact = store.addApp("Compact fixture", "fixture.compact", "fixture.compact.Main", null)
+                store.setTileStyle(compact.id, true)
+                val icon = store.byId(compact.id)!!
+                verify(icon.iconOnly && icon.artworkOrigin == "manual", "icon selection is durable and ends automatic artwork selection")
+                verify(!store.finishAutomaticArtwork(compact.id, auto.path), "compact app icon rejects a late banner download")
+                store.remove(compact.id, preserveAssets = true); store.restore(icon)
+                verify(store.byId(compact.id)?.iconOnly == true, "Undo retains compact icon presentation")
+                store.setTileStyle(compact.id, false)
+                verify(store.byId(compact.id)?.iconOnly == false, "banner presentation can be restored")
+                val shortcut = store.addShortcut("Original site", "app.anibrave.main", "site:example", 0, null)
+                store.rename(shortcut.id, "  My anime  ")
+                val renamed = store.byId(shortcut.id)!!
+                verify(renamed.label == "My anime", "shortcut label is editable")
+                verify(renamed.copy(label = shortcut.label) == shortcut, "rename preserves shortcut destination, identity and placement")
+                val repinned = store.addShortcut("Publisher title", "app.anibrave.main", "site:example", 0, null)
+                verify(repinned == renamed, "re-pinning cannot overwrite a personal shortcut name")
+                store.rename(shortcut.id, "   ")
+                verify(store.byId(shortcut.id) == renamed, "blank rename preserves the shortcut")
+                store.rename(shortcut.id, "x".repeat(250))
+                verify(store.byId(shortcut.id)!!.label.length == 200, "shortcut label length is bounded")
+                val colouring = store.addWeb("Colour fixture", "https://fixture.invalid/colour", null)
+                store.setIcon(colouring.id, "new-icon.png", null)
+                verify(!store.backfillColor(colouring.id, null, 123), "late colour result rejects a replaced icon")
+                verify(store.byId(colouring.id)?.iconPath == "new-icon.png", "colour work never restores an old icon")
+                verify(store.backfillColor(colouring.id, "new-icon.png", 456), "matching icon receives its missing colour")
+                verify(!store.backfillColor(colouring.id, "new-icon.png", 789), "existing colour is preserved")
                 auto.delete(); manual.delete()
             }
             SQLiteDatabase.create(null).use { database ->
@@ -77,6 +148,15 @@ class RegressionInstrumentation : Instrumentation() {
                     verify(row.moveToFirst() && row.getString(0) == "existing-custom.jpg" && row.getString(1) == "manual", "upgrade protects existing artwork")
                 }
             }
+            val browserContext = object : android.content.ContextWrapper(targetContext) {
+                override fun getSharedPreferences(name: String, mode: Int) = targetContext.getSharedPreferences("qa-browser-$name", mode)
+            }
+            app.anihome.launcher.ui.DockBrowser.select(browserContext, null)
+            val web = app.anihome.launcher.ui.DockBrowser.intent(browserContext, "fixture query", "https://example.invalid/", false)
+            verify(web?.action == android.content.Intent.ACTION_VIEW && web.`package` == null, "default web search uses the system browser")
+            app.anihome.launcher.ui.DockBrowser.select(browserContext, "fixture.browser")
+            val address = app.anihome.launcher.ui.DockBrowser.intent(browserContext, "example.invalid", "https://example.invalid/", true)
+            verify(address?.`package` == "fixture.browser", "explicit browser selection is retained")
             // SQLiteOpenHelper must roll back a failed old-schema migration.
             val dbName="qa-upgrade.db"
             fixture.deleteDatabase(dbName)
