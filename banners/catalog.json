@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updated": "2026-10-15",
+  "updated": "2026-10-26",
   "curation": "India-focused mainstream apps and existing device utilities; not a live ranked top chart",
   "entries": [
     {
@@ -126,7 +126,7 @@
       "webHosts": [
         "tv.apple.com"
       ],
-      "sha256": "399fe8ffba568b4ada85af1c717f16fe088d7e34066fff331611d6a79b063ed0",
+      "sha256": "5ea4ae9a174f082f6a246ad2b0964388291a81fdd0d2bf934b65fefbdb5db5cc",
       "popular": true,
       "category": "entertainment",
       "tabletPriority": 98
@@ -316,7 +316,7 @@
       "webHosts": [
         "linkedin.com"
       ],
-      "sha256": "1899840c96afdaf2b8662265a7762533a30d52d9c102c31a6fcbd211c98ea084",
+      "sha256": "179e8a50a8e8e6aebb6a71900c6f304e4145ddc566f0151f91da840be712bb44",
       "popular": true,
       "category": "productivity",
       "tabletPriority": 82
@@ -574,7 +574,7 @@
       "webHosts": [
         "x.com"
       ],
-      "sha256": "30146e268111b7b6c4fee287dc1acc325dc47aea8b6164c1a9f78fa124c0e291",
+      "sha256": "33fcf8bfb09ca32c3fd4329dbff0b79a9a69875d32d2b459004fa5d030d24743",
       "popular": true,
       "category": "communication",
       "tabletPriority": 75
@@ -700,7 +700,7 @@
       "webHosts": [
         "sonyliv.com"
       ],
-      "sha256": "bc3f178e623327be183a309fbec1c96ce9bb03fa6ec31fd6a0ea361bc0d731d1",
+      "sha256": "7465dbcec39c8feffaff907d959e900b4ed3c0ced3fc6b47e43064070065463b",
       "popular": true,
       "category": "entertainment",
       "tabletPriority": 98
@@ -713,12 +713,13 @@
         "com.graymatrix.did"
       ],
       "aliases": [
-        "ZEE5"
+        "ZEE5",
+        "Z5"
       ],
       "webHosts": [
         "zee5.com"
       ],
-      "sha256": "b5c498e0cc35893d8824baef1529d295d64045826e02910fa8d9d1261cc3dc5a",
+      "sha256": "045a455b02171d4f2e9eab17a4a5a06ee7a0452d378069f6044aaa65138b0763",
       "popular": true,
       "category": "entertainment",
       "tabletPriority": 98
@@ -1471,7 +1472,7 @@
       "webHosts": [
         "udemy.com"
       ],
-      "sha256": "e7494d52b3eda4850da7726321fbbf55ef6ed708ba15115761bb0ad7103c2797",
+      "sha256": "d62f5748bf51cd24eaf59e875b14e4d8da404e8cff76206775d8da828d76f9db",
       "popular": true,
       "category": "learning",
       "tabletPriority": 90
@@ -1578,7 +1579,7 @@
       "webHosts": [
         "opera.com"
       ],
-      "sha256": "341959fffec8d9df78cd03acd751870d019cf15d2b5d3fbe8e2076980405d030",
+      "sha256": "5f5333155da63bbb10119839fad304d538cc9deb6e206c6cc90b2a53a8e81b6e",
       "popular": true,
       "category": "productivity",
       "tabletPriority": 82
@@ -1864,7 +1865,8 @@
       "name": "Calculator",
       "file": "images/calculator.webp",
       "packages": [
-        "com.tcl.tct.calculator"
+        "com.tcl.tct.calculator",
+        "com.android.calculator2"
       ],
       "aliases": [
         "Calculator"
@@ -1980,7 +1982,8 @@
       "name": "Contacts",
       "file": "images/contacts.webp",
       "packages": [
-        "com.google.android.contacts"
+        "com.google.android.contacts",
+        "com.android.contacts"
       ],
       "aliases": [
         "Contacts"
@@ -2079,7 +2082,8 @@
       "name": "Files",
       "file": "images/files.webp",
       "packages": [
-        "com.google.android.documentsui"
+        "com.google.android.documentsui",
+        "com.android.documentsui"
       ],
       "aliases": [
         "Files"
@@ -2168,7 +2172,7 @@
       "webHosts": [
         "grok.com"
       ],
-      "sha256": "866342867e4a6edef34cb23fa7626b91634d9871fdb59908a56d2380ad552dfc",
+      "sha256": "efe98dd4a1d5d34f31855c36f02556959b099f606b87f34b665c06a646f4dea8",
       "popular": true,
       "category": "productivity",
       "tabletPriority": 82
@@ -2182,7 +2186,7 @@
         "Grok Bot"
       ],
       "webHosts": [],
-      "sha256": "559fd40515fc52bf197f5ea04efbc04a848b26cdbd2382f3c88e54f2320bb8a8",
+      "sha256": "3bc0c8265c49c445ef965c1e756817dba623f8351ee8c2019eca3795b5eb6bbc",
       "popular": false,
       "category": "productivity",
       "tabletPriority": 82
@@ -2275,7 +2279,8 @@
       "name": "Messages",
       "file": "images/messages.webp",
       "packages": [
-        "com.google.android.apps.messaging"
+        "com.google.android.apps.messaging",
+        "com.android.messaging"
       ],
       "aliases": [
         "Messages"
@@ -2323,7 +2328,8 @@
       "name": "Phone",
       "file": "images/phone.webp",
       "packages": [
-        "com.google.android.dialer"
+        "com.google.android.dialer",
+        "com.android.dialer"
       ],
       "aliases": [
         "Phone"
@@ -2355,7 +2361,8 @@
       "name": "Radio",
       "file": "images/radio.webp",
       "packages": [
-        "com.tcl.fmradio"
+        "com.tcl.fmradio",
+        "com.android.fmradio"
       ],
       "aliases": [
         "Radio"
@@ -2489,7 +2496,7 @@
         "Velixa"
       ],
       "webHosts": [],
-      "sha256": "c1edc6fbf9004631d8ffb3c218a6dee5f1b2c3947deb37ed942e6df997eec4ae",
+      "sha256": "bf79cbec4d8826f6f6ba442d0d9ec0658290880c92c8efc9f0f0065d418c5a34",
       "popular": false,
       "category": "utilities",
       "tabletPriority": 35
@@ -2791,6 +2798,306 @@
       "popular": true,
       "category": "productivity",
       "tabletPriority": 88
+    },
+    {
+      "id": "atomberg",
+      "name": "Atomberg",
+      "file": "images/atomberg.webp",
+      "packages": [
+        "com.atomberg.app"
+      ],
+      "aliases": [
+        "Atomberg"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "d7b3b5800299176857b2fbfe3a1202339757ae286b0d333a7c8d2326b49fff2e"
+    },
+    {
+      "id": "boat-hearables",
+      "name": "boAt Hearables",
+      "file": "images/boat-hearables.webp",
+      "packages": [
+        "com.boAt.hearables"
+      ],
+      "aliases": [
+        "boAt Hearables"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "b3ab9477df4cb38001a04dcba9d22c0764f3f42a11e9a02fcc3635f8d7fedebb"
+    },
+    {
+      "id": "deepseek",
+      "name": "DeepSeek",
+      "file": "images/deepseek.webp",
+      "packages": [
+        "com.deepseek.chat"
+      ],
+      "aliases": [
+        "DeepSeek"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "b8343b38f95852d9932fc1ed134a775b0b0fe06672821acd65e4c26ffd851253"
+    },
+    {
+      "id": "duckduckgo",
+      "name": "DuckDuckGo",
+      "file": "images/duckduckgo.webp",
+      "packages": [
+        "com.duckduckgo.mobile.android"
+      ],
+      "aliases": [
+        "DuckDuckGo"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "0feba7d670c2021fd32308a9e64abe84b6959cbdbec7a3db4e877bd6ddd311a1"
+    },
+    {
+      "id": "google-assistant",
+      "name": "Google Assistant",
+      "file": "images/google-assistant.webp",
+      "packages": [
+        "com.google.android.apps.googleassistant"
+      ],
+      "aliases": [
+        "Google Assistant"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "4449053f23dffa40b6bca4942389b7bab530e991bea0b4fbb85e5d975c1b6cd2"
+    },
+    {
+      "id": "microsoft-launcher",
+      "name": "Microsoft Launcher",
+      "file": "images/microsoft-launcher.webp",
+      "packages": [
+        "com.microsoft.launcher"
+      ],
+      "aliases": [
+        "Microsoft Launcher"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "45a5041a63dbf6d678bf2593019632df117808c8fea00650380e488127184c07"
+    },
+    {
+      "id": "microsoft-swiftkey",
+      "name": "Microsoft SwiftKey",
+      "file": "images/microsoft-swiftkey.webp",
+      "packages": [
+        "com.touchtype.swiftkey"
+      ],
+      "aliases": [
+        "Microsoft SwiftKey"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "a42971013ff3f17ddc784aec3ec0a2dfe1ad254585e86b6c15c390264cb58e8a"
+    },
+    {
+      "id": "proton-vpn",
+      "name": "Proton VPN",
+      "file": "images/proton-vpn.webp",
+      "packages": [
+        "ch.protonvpn.android"
+      ],
+      "aliases": [
+        "Proton VPN"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "5f953c21b05498237e38f5a18554236f35d31542eb9165852a103d34986dcfab"
+    },
+    {
+      "id": "shizuku",
+      "name": "Shizuku",
+      "file": "images/shizuku.webp",
+      "packages": [
+        "moe.shizuku.privileged.api"
+      ],
+      "aliases": [
+        "Shizuku"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "74acb29bf5497e258579a2779ee871ba56835f5e44cab57419e553517fa4b074"
+    },
+    {
+      "id": "wipro-smart",
+      "name": "Wipro Smart",
+      "file": "images/wipro-smart.webp",
+      "packages": [
+        "wipro.com"
+      ],
+      "aliases": [
+        "Wipro Smart",
+        "Wipro",
+        "Wipro Next Smart Home"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "961161b0cff91c52c7006ed4c01fd45cbb8a69aff413e987f8b059b61a9096cf"
+    },
+    {
+      "id": "audiofx",
+      "name": "AudioFX",
+      "file": "images/audiofx.webp",
+      "packages": [
+        "org.lineageos.audiofx"
+      ],
+      "aliases": [
+        "AudioFX"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "4f2023d65100010c7b2eaf2a6a1d8bdd0fcfc13e760b81386cede0bd421aa0be"
+    },
+    {
+      "id": "jelly",
+      "name": "Jelly Browser",
+      "file": "images/jelly.webp",
+      "packages": [
+        "org.lineageos.jelly"
+      ],
+      "aliases": [
+        "Jelly Browser",
+        "Jelly",
+        "Browser (Jelly)"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "387cd7c91fa5ae8c81ea0466f41e4c8f1bf1c29a76cfdf7aff2aad2023c137cb"
+    },
+    {
+      "id": "etar",
+      "name": "Etar Calendar",
+      "file": "images/etar.webp",
+      "packages": [
+        "org.lineageos.etar"
+      ],
+      "aliases": [
+        "Etar Calendar",
+        "Etar",
+        "Calendar (Etar)"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "704e3249ae3fcecda21fbe2a44987e805be799d332df1008a8605b79e6d4e59a"
+    },
+    {
+      "id": "aperture",
+      "name": "Aperture Camera",
+      "file": "images/aperture.webp",
+      "packages": [
+        "org.lineageos.aperture"
+      ],
+      "aliases": [
+        "Aperture Camera",
+        "Aperture",
+        "Camera (Aperture)"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "13f871e74914c8fa530b852cacb8e6ae2ca9a9af2ed560eb5fd32c91c41afe83"
+    },
+    {
+      "id": "glimpse",
+      "name": "Glimpse Gallery",
+      "file": "images/glimpse.webp",
+      "packages": [
+        "org.lineageos.glimpse"
+      ],
+      "aliases": [
+        "Glimpse Gallery",
+        "Glimpse",
+        "Gallery (Glimpse)"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "c3695de75b908722c81ae89ede261103d946a079c900032db9cc890fd23b4caa"
+    },
+    {
+      "id": "twelve",
+      "name": "Twelve Music",
+      "file": "images/twelve.webp",
+      "packages": [
+        "org.lineageos.twelve"
+      ],
+      "aliases": [
+        "Twelve Music",
+        "Twelve",
+        "Music (Twelve)"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "26d92e7ba785dfaeb1e358a591e5f400d7c22aac4495ef4142113b6d1b51452f"
+    },
+    {
+      "id": "recorder",
+      "name": "Recorder",
+      "file": "images/recorder.webp",
+      "packages": [
+        "org.lineageos.recorder"
+      ],
+      "aliases": [
+        "Recorder"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "4c092e0aae321e92a6df35150e2f1639c97e1e01c5bf5dc56069d5fb5d52e1b0"
+    },
+    {
+      "id": "rawcam",
+      "name": "RawCam",
+      "file": "images/rawcam.webp",
+      "packages": [
+        "com.example.rawcamdemo"
+      ],
+      "aliases": [
+        "RawCam"
+      ],
+      "webHosts": [],
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 65,
+      "sha256": "180f3b52c2f988cc45f3b990067d5235eea5d761fe2e3dc04892c6995db592d8"
     }
   ]
 }

@@ -51,9 +51,9 @@
     "id": "apple-tv",
     "name": "Apple TV",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.apple.atve.androidtv.appletv&hl=en&gl=IN",
-    "referenceSourceUrl": "https://play-lh.googleusercontent.com/OClJIvZt6akgvt1v9AZf5C0RHtanBLtxtEKPMO-iU0UQgOIaKqSf_efqSi06H8dRNVVAz1y9rMX8TUugdpSI9A=s0-br30",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/T5tmhzEpX3GPMVcQpOsSLuOz3WRjOdmvJaZ5Rs-6jDZKBGv5qGWdqfTK3Pvz9YZXUmLpBbhUzt2XBvBrnekuDw=s0-br30",
     "verifiedPlayTitle": "Apple TV: Shows, Movies & More - Apps on Google Play",
-    "brandColor": "#101010"
+    "brandColor": "#050505"
   },
   {
     "id": "myjio",
@@ -130,7 +130,7 @@
   {
     "id": "linkedin",
     "name": "LinkedIn",
-    "sourceUrl": "https://play.google.com/store/apps/details?id=com.linkedin.android&hl=en&gl=IN",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.linkedin.android&hl=en",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/oij55bxj3e-4JrhGntpki0lnQyE8yQn8X5FPEzZ0t7cLppeiSINynEk7n9COoh7QSaCOZ_yiPO31NVaW4SDbWg=s0-br30",
     "verifiedPlayTitle": "LinkedIn: Community & Network - Apps on Google Play",
     "brandColor": "#0A66C2"
@@ -242,7 +242,7 @@
   {
     "id": "x",
     "name": "X",
-    "sourceUrl": "https://play.google.com/store/apps/details?id=com.twitter.android&hl=en&gl=IN",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.twitter.android&hl=en",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/IsLsCD4eLC2CYvlkgTI6Z5TROj0BJIBgUF7BZ5eliTzyyTjqG_mbofeG4kw2s7oG_JZMSi5ErLz_qsDi169C8w=s0-br30",
     "verifiedPlayTitle": "X - Apps on Google Play",
     "brandColor": "#101010"
@@ -298,7 +298,7 @@
   {
     "id": "sonyliv",
     "name": "Sony LIV",
-    "sourceUrl": "https://play.google.com/store/apps/details?id=com.sonyliv&hl=en&gl=IN",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.sonyliv&hl=en",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/OSPwLdQHHx16DNvMT8GxkBvpzj5x9WG9_DmJoTMS1YKKbg1YsQlfzTLzc-XTkCLaF9FT7-I-kX9RvSUxSAwYRA=s0-br30",
     "verifiedPlayTitle": "Sony LIV: Sports & Entmt - Apps on Google Play",
     "brandColor": "#181818"
@@ -306,7 +306,7 @@
   {
     "id": "zee5",
     "name": "ZEE5",
-    "sourceUrl": "https://play.google.com/store/apps/details?id=com.graymatrix.did&hl=en&gl=IN",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.graymatrix.did&hl=en",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/NyMT3ByjkBG1FhdFX9GSj_0mXLNIAuz_IZO8Xr9Noow6D4IQs-Srai9Hklad5gDasSv6F5tHYwsquk1mXErQ5A=s0-br30",
     "verifiedPlayTitle": "Zee 5 - Apps on Google Play",
     "brandColor": "#161616"
@@ -642,7 +642,7 @@
   {
     "id": "udemy",
     "name": "Udemy",
-    "sourceUrl": "https://play.google.com/store/apps/details?id=com.udemy.android&hl=en&gl=IN",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.udemy.android&hl=en",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/b4vY9kDlVRfWsPCi4GEOvCtoQs0vU6lo2RFYc2qixQBVMzYmA9UebE8R4xbnrRMy4jB6NQEBNqd0ZDyg2Wciig=s0-br30",
     "verifiedPlayTitle": "Udemy - Online Courses - Apps on Google Play",
     "brandColor": "#A435F0"
@@ -690,8 +690,8 @@
   {
     "id": "opera",
     "name": "Opera",
-    "sourceUrl": "https://play.google.com/store/apps/details?id=com.opera.browser&hl=en&gl=IN",
-    "referenceSourceUrl": "https://play-lh.googleusercontent.com/ClFQAxLPGuKdEp4YwGiEiaUVrujYcKSLVZVKWNwmMsmffL29yMUeuLa0sY54mZ3Cwa5zcSJpqbsj_wwxsiUrhA=s0-br30",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.opera.browser&hl=en",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/-Bm0-kPKh4ehWGmA8lndXL-JeYCVOcG2-vxaekD0yyz7gR3f9GxQU4psTQFnM8MgR0g2KfFF1c5k0ysI7B-2Aw=s0-br30",
     "verifiedPlayTitle": "Opera: AI browser with VPN - Apps on Google Play",
     "brandColor": "#FF1B2D"
   },
@@ -772,7 +772,7 @@
     "name": "Ludo King",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.ludo.king&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/qSN0Eb6mDVPIX4PRggTB3PsEU1oyPorteUfiuJ709P9cZxdWP9Y-kV0htG7rtJNYywGE-3wlrC_7Gix0h0-Urw=s0-br30",
-    "verifiedPlayTitle": "Ludo King\u00ae - Apps on Google Play",
+    "verifiedPlayTitle": "Ludo King® - Apps on Google Play",
     "brandColor": "#DF252C"
   },
   {
@@ -821,7 +821,10 @@
     "id": "calculator",
     "name": "Calculator",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.tcl.tct.calculator&hl=en&gl=IN",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "packageSources": [
+      "https://raw.githubusercontent.com/LineageOS/android_packages_apps_ExactCalculator/lineage-24.0/AndroidManifest.xml"
+    ]
   },
   {
     "id": "calendar",
@@ -857,7 +860,10 @@
     "id": "clock",
     "name": "Clock",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.android.deskclock&hl=en&gl=IN",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "packageSources": [
+      "https://raw.githubusercontent.com/LineageOS/android_packages_apps_DeskClock/lineage-24.0/AndroidManifest.xml"
+    ]
   },
   {
     "id": "cometin",
@@ -873,7 +879,10 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.contacts&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/pQFpAZw7ZrQiRrG9wX3_PkyNgvlmeSUes4-XIGPN6z81IBxfcLJ6X0-u-j3ILwW995heg3L2qHZazJA94r-ONQ=s0-br30",
     "verifiedPlayTitle": "Contacts - Apps on Google Play",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "packageSources": [
+      "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Contacts/lineage-24.0/AndroidManifest.xml"
+    ]
   },
   {
     "id": "crunchyroll",
@@ -916,14 +925,17 @@
     "id": "files",
     "name": "Files",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.documentsui&hl=en&gl=IN",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "packageSources": [
+      "https://raw.githubusercontent.com/LineageOS/android_packages_apps_DocumentsUI/lineage-24.0/AndroidManifest.xml"
+    ]
   },
   {
     "id": "find-hub",
     "name": "Find Hub",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.adm&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/i0_6dO_MWC1nkjIMdh3uPXrhbkxfAr5H5Nb7YIynV0W8kGhX2BWb0hH2gm-2Fp21CeEx6ZonAnwlkPDYOIyEAVs=s0-br30",
-    "verifiedPlayTitle": "Google\u2019s Find Hub - Apps on Google Play",
+    "verifiedPlayTitle": "Google’s Find Hub - Apps on Google Play",
     "brandColor": "#18202D"
   },
   {
@@ -957,8 +969,9 @@
   {
     "id": "grok-bot",
     "name": "Grok Bot",
-    "sourceUrl": "local installed application icon",
-    "brandColor": "#18202D"
+    "sourceUrl": "https://x.ai/bot",
+    "brandColor": "#18202D",
+    "referenceSourceUrl": "https://raw.githubusercontent.com/glorics/omarchy-grok-bot/main/official-mark.json"
   },
   {
     "id": "heymelody",
@@ -1002,7 +1015,10 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.messaging&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/Mgukz1fq2stUYX_lQf79gmMeDzNvRCu5eobmiJwNkXl4riNY6HZ3VB-HRW5QciwEuLnFyk_ZmHumvn8RJ5Um=s0-br30",
     "verifiedPlayTitle": "Google Messages - Apps on Google Play",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "packageSources": [
+      "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Messaging/lineage-24.0/AndroidManifest.xml"
+    ]
   },
   {
     "id": "music",
@@ -1022,7 +1038,10 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.dialer&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/b0ipxfvtgDE5kT8PscD8hggLVWrP5Zodu2EwIPN0ub-3UBJ7CosIHCP0V9pSjV-hPdXQjd7u7JP2gGMrfSMZmA=s0-br30",
     "verifiedPlayTitle": "Phone by Google - Apps on Google Play",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "packageSources": [
+      "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Dialer/lineage-24.0/AndroidManifest.xml"
+    ]
   },
   {
     "id": "proton-pass",
@@ -1036,13 +1055,19 @@
     "id": "radio",
     "name": "Radio",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.tcl.fmradio&hl=en&gl=IN",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "packageSources": [
+      "https://raw.githubusercontent.com/LineageOS/android_packages_apps_FMRadio/lineage-24.0/AndroidManifest.xml"
+    ]
   },
   {
     "id": "settings",
     "name": "Settings",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.android.settings&hl=en&gl=IN",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "packageSources": [
+      "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Settings/lineage-24.0/AndroidManifest.xml"
+    ]
   },
   {
     "id": "smart-manager",
@@ -1089,8 +1114,9 @@
   {
     "id": "velixa",
     "name": "Velixa",
-    "sourceUrl": "https://play.google.com/store/apps/details?id=com.velixa.app&hl=en&gl=IN",
-    "brandColor": "#18202D"
+    "sourceUrl": "https://github.com/akasumitlamba/Velixa",
+    "brandColor": "#18202D",
+    "referenceSourceUrl": "https://raw.githubusercontent.com/akasumitlamba/Velixa/main/assets/velixa-logo.png"
   },
   {
     "id": "video",
@@ -1205,7 +1231,7 @@
     "name": "ReadEra",
     "sourceUrl": "https://play.google.com/store/apps/details?id=org.readera&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/IYYIJY9HttxtQhZjbsA7tzQRdMQ675qFtOJFiRbvJvRJarsBzvBn4tcjE2RbWgSQfhEJn4wpbUtEzq-4CXUorg=s0-br30",
-    "verifiedPlayTitle": "ReadEra \u2013 book reader pdf epub - Apps on Google Play",
+    "verifiedPlayTitle": "ReadEra – book reader pdf epub - Apps on Google Play",
     "brandColor": "#E56E22"
   },
   {
@@ -1223,5 +1249,134 @@
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/AmBoaxTjw_jERw2p8YUqv52zctH_P5K9Hxb1OXBEIrKFXV_KDi4HYEQ1303G2e_cQwnIDsHR225tySjFYJCxDg=s0-br30",
     "verifiedPlayTitle": "PDF Reader & Editor: Xodo - Apps on Google Play",
     "brandColor": "#0055A5"
+  },
+  {
+    "id": "atomberg",
+    "name": "Atomberg",
+    "brandColor": "#F4B41B",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.atomberg.app&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/0riuPf23beY4_TluqTHmyTYzcjXCId8PZqg0LXl-KE9ohPz2zdzloceEXidZQXfDs8eLSMAd-V4y4eCz8nPw=s0-br30",
+    "verifiedPlayTitle": "Atomberg Home - Apps on Google Play"
+  },
+  {
+    "id": "boat-hearables",
+    "name": "boAt Hearables",
+    "brandColor": "#E4212D",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.boAt.hearables&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/RwOMb7HG4eEtaTfpavyzNfC08pQvWXBxdXGBznZE9ofmgo8P2HgnpAOmK1LuXzg_QbiB0dMm34XKFm2SNAXDQCU=s0-br30",
+    "verifiedPlayTitle": "boAt Hearables - Apps on Google Play"
+  },
+  {
+    "id": "deepseek",
+    "name": "DeepSeek",
+    "brandColor": "#4D6BFE",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.deepseek.chat&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/6acgsFuPK-ynZRKRvbvEhhC5jcUJybr5Dnsy9cU1OPIxiDazubiqYqfq3nGOKSq-EG3G_6VtxM7tjRV_jiaK=s0-br30",
+    "verifiedPlayTitle": "DeepSeek - AI Assistant - Apps on Google Play"
+  },
+  {
+    "id": "duckduckgo",
+    "name": "DuckDuckGo",
+    "brandColor": "#DE5833",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.duckduckgo.mobile.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/R9-3PbO5ywKx6dA5OQI2wkesOpmgY9CzKhB_1Eqn-GC_vRjeqwtG-CLVs2o55wuRhiLS0pd1Sui_kUyn7Q4dng=s0-br30",
+    "verifiedPlayTitle": "DuckDuckGo, optional Duck.ai - Apps on Google Play"
+  },
+  {
+    "id": "google-assistant",
+    "name": "Google Assistant",
+    "brandColor": "#F7F9FC",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.googleassistant&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/NZ5UNeazssOfX6iP0JioUvnwKV_fb-DGOjgHVsnzXpC7XtORuGjnTXixXoUvEGhrR-gEU8aSuKkRVa9pTLgYjw=s0-br30",
+    "verifiedPlayTitle": "Google Assistant - Apps on Google Play"
+  },
+  {
+    "id": "microsoft-launcher",
+    "name": "Microsoft Launcher",
+    "brandColor": "#0078D4",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.microsoft.launcher&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Dh6LsB6hAI6_MpC4PatXZNg1BjLuSShVJPGL2vfwNdrSiCuokU40zu59lDBM1d5IJ4G39gR0T4scrCNOduym2gg=s0-br30",
+    "verifiedPlayTitle": "Microsoft Launcher - Apps on Google Play"
+  },
+  {
+    "id": "microsoft-swiftkey",
+    "name": "Microsoft SwiftKey",
+    "brandColor": "#1675C9",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.touchtype.swiftkey&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/un81w8Bvs_WORw0DvG0-L1Ff0s4kVVLVyBmRPWMUc6rzQ1G8bPtba0u8tyode8R0BucLl0DBZOwyxKeSMgOVgQ=s0-br30",
+    "verifiedPlayTitle": "Microsoft SwiftKey AI Keyboard - Apps on Google Play"
+  },
+  {
+    "id": "proton-vpn",
+    "name": "Proton VPN",
+    "brandColor": "#6D4AFF",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=ch.protonvpn.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/sNzvGfn-_S8SLmWYHxLjCn04oy53n1bzfkhxCV9Pp_qhEsQ8biu3D0XoAsUdwD-qfPvzMqZPcx-pjYIHSbp4wg=s0-br30",
+    "verifiedPlayTitle": "Proton VPN: Secure & Fast VPN - Apps on Google Play"
+  },
+  {
+    "id": "shizuku",
+    "name": "Shizuku",
+    "brandColor": "#2E91C2",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=moe.shizuku.privileged.api&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/vqtoZBfwl9hlfwhD3153xfdB7WbK87KQKHhznW9HkrBHQVFrdhMkpcHvlKlLLYEsAjhgDr9Yq_lyCk2mGxvpybE=s0-br30",
+    "verifiedPlayTitle": "Shizuku - Apps on Google Play"
+  },
+  {
+    "id": "wipro-smart",
+    "name": "Wipro Smart",
+    "brandColor": "#181A34",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=wipro.com&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/UyHQPG0pA3T-NwEhBXRALKDZKXuha9oABwfjXPs-bc5CSGNPtDlaVmWq7MEIGGGtKF4zuRU04a8OJS4lHqNPV_I=s0-br30",
+    "verifiedPlayTitle": "Wipro Next Smart Home - Apps on Google Play"
+  },
+  {
+    "id": "audiofx",
+    "name": "AudioFX",
+    "sourceUrl": "https://github.com/LineageOS/android_packages_apps_AudioFX",
+    "referenceSourceUrl": "https://raw.githubusercontent.com/LineageOS/android_packages_apps_AudioFX/lineage-24.0/res/drawable/ic_launcher_foreground.xml"
+  },
+  {
+    "id": "jelly",
+    "name": "Jelly Browser",
+    "sourceUrl": "https://github.com/LineageOS/android_packages_apps_Jelly",
+    "referenceSourceUrl": "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Jelly/lineage-24.0/app/src/main/res/drawable/ic_launcher_foreground.xml"
+  },
+  {
+    "id": "etar",
+    "name": "Etar Calendar",
+    "sourceUrl": "https://github.com/LineageOS/android_packages_apps_Etar",
+    "referenceSourceUrl": "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Etar/lineage-24.0/app/src/main/res/drawable/ic_launcher_foreground.xml"
+  },
+  {
+    "id": "aperture",
+    "name": "Aperture Camera",
+    "sourceUrl": "https://github.com/LineageOS/android_packages_apps_Aperture",
+    "referenceSourceUrl": "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Aperture/lineage-24.0/app/src/main/res/drawable/ic_launcher_foreground.xml"
+  },
+  {
+    "id": "glimpse",
+    "name": "Glimpse Gallery",
+    "sourceUrl": "https://github.com/LineageOS/android_packages_apps_Glimpse",
+    "referenceSourceUrl": "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Glimpse/lineage-24.0/app/src/main/res/drawable/ic_launcher_foreground.xml"
+  },
+  {
+    "id": "twelve",
+    "name": "Twelve Music",
+    "sourceUrl": "https://github.com/LineageOS/android_packages_apps_Twelve",
+    "referenceSourceUrl": "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Twelve/lineage-24.0/app/src/main/res/drawable/ic_launcher_foreground.xml"
+  },
+  {
+    "id": "recorder",
+    "name": "Recorder",
+    "sourceUrl": "https://github.com/LineageOS/android_packages_apps_Recorder",
+    "referenceSourceUrl": "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Recorder/lineage-24.0/app/src/main/res/drawable/ic_launcher_foreground.xml"
+  },
+  {
+    "id": "rawcam",
+    "name": "RawCam",
+    "sourceUrl": "https://github.com/a1024/RawCam",
+    "referenceSourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.GoogleCamera",
+    "identityNotes": "Deliberate Pixel Camera artwork substitute for RawCam; this is not the upstream RawCam application icon."
   }
 ]
