@@ -1,5 +1,5 @@
 {
-  "method": "Built-in image generation with official app icon references; existing51 artwork retained except Cursor brand correction",
+  "method": "Built-in image generation with verified app-store and upstream icon references; existing artwork retained except documented brand redesigns.",
   "prompts": [
     {
       "id": "ibis-paint-x",
@@ -103,11 +103,11 @@
     },
     {
       "id": "apple-tv",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Apple TV\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #101010, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Apple TV\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Apple TV, using the linked brand artwork as identity reference. Use one complete centered brand wordmark or logo with no repeated app name. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
     },
     {
       "id": "x",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"X\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #101010, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"X\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for X, using the linked brand artwork as identity reference. Use one complete centered brand wordmark or logo with no repeated app name. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
     },
     {
       "id": "github",
@@ -119,7 +119,7 @@
     },
     {
       "id": "opera",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Opera\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #FF1B2D, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Opera\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Opera, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
     },
     {
       "id": "microsoft-teams",
@@ -159,7 +159,7 @@
     },
     {
       "id": "udemy",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Udemy\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #A435F0, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Udemy\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Udemy, using the linked brand artwork as identity reference. Use one complete centered brand wordmark or logo with no repeated app name. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
     },
     {
       "id": "adobe-acrobat",
@@ -231,7 +231,7 @@
     },
     {
       "id": "zee5",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"ZEE5\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #161616, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"ZEE5\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for ZEE5, using the linked brand artwork as identity reference. Use one complete centered brand wordmark or logo with no repeated app name. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
     },
     {
       "id": "bookmyshow",
@@ -311,7 +311,7 @@
     },
     {
       "id": "linkedin",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"LinkedIn\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #0A66C2, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"LinkedIn\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for LinkedIn, using the linked brand artwork as identity reference. Use one complete centered brand wordmark or logo with no repeated app name. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
     },
     {
       "id": "zerodha-kite",
@@ -391,7 +391,7 @@
     },
     {
       "id": "sonyliv",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Sony LIV\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #181818, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Sony LIV\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Sony LIV, using the linked brand artwork as identity reference. Use one complete centered brand wordmark or logo with no repeated app name. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
     },
     {
       "id": "groww",
@@ -436,6 +436,90 @@
     {
       "id": "swiggy",
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Swiggy\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #FC8019, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Swiggy\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
+    },
+    {
+      "id": "atomberg",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Atomberg, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "boat-hearables",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for boAt Hearables, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "deepseek",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for DeepSeek, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "duckduckgo",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for DuckDuckGo, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "google-assistant",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Google Assistant, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "microsoft-launcher",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Microsoft Launcher, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "microsoft-swiftkey",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Microsoft SwiftKey, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "proton-vpn",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Proton VPN, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "shizuku",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Shizuku, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "wipro-smart",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Wipro Smart, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "audiofx",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for AudioFX, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "jelly",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Jelly Browser, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "etar",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Etar Calendar, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "aperture",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Aperture Camera, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "glimpse",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Glimpse Gallery, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "twelve",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Twelve Music, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "recorder",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Recorder, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "grok-ai",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Grok AI, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "grok-bot",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Grok Bot, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "velixa",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Velixa, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "rawcam",
+      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for RawCam, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Use the Pixel Camera emblem as a deliberate visual substitute for RawCam. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
     }
   ]
 }
