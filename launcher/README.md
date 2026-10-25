@@ -27,7 +27,7 @@ The left sidebar attaches to the screen edge. Live notifications remain in memor
 
 Wi-Fi and Bluetooth expand inside the sidebar with labeled headers, refresh and power controls. Connected/recent devices sort first; long lists scroll. Rotation toggles Auto / Fixed without a popup. Fixed captures the current display angle, including reverse landscape, and preserves it after activity recreation. Previously saved Portrait/Landscape preferences remain supported until changed. Home settings expand beside the radio controls. Landscape panels are capped at 360dp instead of spanning a phone’s width.
 
-Direct radio operations use an optional, narrowly scoped Shizuku service. Android permissions, system Location, pairing approval and profile support still apply. See [radio setup](docs/radio-controls.md) and [validation scope](docs/quick-settings-validation.md). Accessibility controls for Recents and screen lock are optional and do not request screen-content access.
+Direct radio operations use an optional, narrowly scoped Shizuku service. Android permissions, system Location, pairing approval and profile support still apply. See [radio setup](docs/radio-controls.md) and [validation boundaries](../PROJECT-CONTEXT.md). Accessibility controls for Recents and screen lock are optional and do not request screen-content access.
 
 ## Artwork and local data
 
