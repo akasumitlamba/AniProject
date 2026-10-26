@@ -6,11 +6,11 @@ AniProject contains **AniHome**, an Android home-screen launcher, **AniBrave**, 
 
 | Product | Download | Requirements |
 | --- | --- | --- |
-| AniHome 0.9.0 | [Download launcher](https://github.com/akasumitlamba/AniProject/releases/download/v0.9.0/AniHome-Launcher-0.9.0-release.apk) | Android 8+ |
-| AniBrave 0.9.0 | [Download browser](https://github.com/akasumitlamba/AniProject/releases/download/v0.9.0/AniBrave-0.9.0-arm64-v8a.apk) | Android 10+, ARM64 |
-| AniBrave desktop 0.9.0 | [Download extension](https://github.com/akasumitlamba/AniProject/releases/download/v0.9.0/AniBrave-Extension-0.9.0.zip) | Brave desktop |
+| AniHome 1.0.0 | [Download launcher](https://github.com/akasumitlamba/AniProject/releases/download/v1.0.0/AniHome-Launcher-1.0.0-release.apk) | Android 8+ |
+| AniBrave 1.0.0 | [Download browser](https://github.com/akasumitlamba/AniProject/releases/download/v1.0.0/AniBrave-1.0.0-arm64-v8a.apk) | Android 10+, ARM64 |
+| AniBrave desktop 1.0.0 | [Download extension](https://github.com/akasumitlamba/AniProject/releases/download/v1.0.0/AniBrave-Extension-1.0.0.zip) | Brave desktop |
 
-[Download all three applications together](https://github.com/akasumitlamba/AniProject/releases/download/v0.9.0/AniProject-0.9.0-All-Products.zip), or use the individual downloads above.
+[Download all three applications together](https://github.com/akasumitlamba/AniProject/releases/download/v1.0.0/AniProject-1.0.0-All-Products.zip), or use the individual downloads above.
 
 For updates, install the matching signed APK over the existing app. Keep the same signing identity; do not uninstall or clear app data.
 
@@ -49,6 +49,8 @@ This public repository contains source and technical documentation. Signing keys
 
 Customization sources are MPL-2.0. Upstream notices and licenses remain intact. Third-party trademarks belong to their respective owners; AniProject is independent of Brave Software and the services represented in its banner catalog.
 
-## Combined releases
+## Launch release
 
-All active products share version **0.9.0**: AniHome, AniBrave Android and the AniBrave desktop extension. [Download the complete release](https://github.com/akasumitlamba/AniProject/releases/tag/v0.9.0). Each release includes both APKs, the unpacked extension ZIP, banners, checksums and an all-products bundle. See [release policy](RELEASING.md) and [consolidated history](CHANGELOG.md).
+All active products share version **1.0.0**: AniHome, AniBrave Android and the AniBrave desktop extension. [Download the complete release](https://github.com/akasumitlamba/AniProject/releases/tag/v1.0.0). Each release includes both APKs, the unpacked extension ZIP, banners, checksums and an all-products bundle. See [release policy](RELEASING.md) and [consolidated history](CHANGELOG.md).
+
+The [1.0.0 launch notes](docs/releases/1.0.0.md) provide the complete feature guide, setup instructions, privacy/permission boundaries, upgrade details and validation limits.

@@ -1,5 +1,9 @@
 # Release history
 
+## 1.0.0 — launch release
+
+AniHome, AniBrave Android and the desktop extension launch together at 1.0.0, retaining the completed navigation, playback, history, launcher, widget and artwork features. See [the full launch feature guide](docs/releases/1.0.0.md). Android upgrade codes are 45 and 429705625; the existing signing identities are retained. This is version alignment of the validated feature baseline, not a new Brave engine update. Pre-launch release records are removed after verified delivery; their technical history and Git tags are retained.
+
 ## 0.9.0 — unified product release
 
 ### Revision 2 — navigation and animation maintenance
