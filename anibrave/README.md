@@ -35,7 +35,7 @@ Website players may resist speed changes, and native/closed-shadow/DRM-controlle
 
 Requires Java 17, Node, Python, `gh`, and the workspace Android SDK 37.1/build-tools 37.0.0. The script pins and checks upstream APK/tool hashes, compiles the feature module, assembles five narrowly scoped integration hooks, rewrites install-identity string constants through dexlib2, rebuilds Android resources, retains all original native libraries, aligns and signs the APK, and verifies the result. Set `ANIBRAVE_KEYSTORE` to your private existing keystore and supply signing passwords through environment variables (see below). Preserve that signing identity for future updates. Signing files and downloaded binaries are ignored by Git.
 
-Output: `output/anibrave/AniBrave-0.9.0-arm64-v8a.apk`, plus `verification.json` and `SHA256SUMS.txt`. Minimum Android version: Android 10. Only this ARM64 build is intended for delivery.
+Output: `output/anibrave/AniBrave-1.0.0-arm64-v8a.apk`, plus `verification.json` and `SHA256SUMS.txt`. Minimum Android version: Android 10. Only this ARM64 build is intended for delivery.
 
 ## Validation and limits
 
@@ -60,7 +60,7 @@ Existing native and browser notices are retained in the app. Customization sourc
 
 ## Local anime history
 
-Tracking belongs to AniBrave. Updates preserve the browser profile when signed with the same identity. See [TRACKING.md](TRACKING.md) for progress gating, cross-site reminders, local import, privacy, build verification and acceptance limits. The current shared release is 0.9.0 (Brave 1.98.60), versionCode 429705624. This engine update retains local per-episode continuation, conservative cross-site search, timestamp/speed restoration and the editable episode archive.
+Tracking belongs to AniBrave. Updates preserve the browser profile when signed with the same identity. See [TRACKING.md](TRACKING.md) for progress gating, cross-site reminders, local import, privacy, build verification and acceptance limits. The current shared release is 1.0.0 (Brave 1.98.60), versionCode 429705625. This engine update retains local per-episode continuation, conservative cross-site search, timestamp/speed restoration and the editable episode archive.
 
 ## Episode reminders and protected playback
 
@@ -101,11 +101,11 @@ DevTools default browser context and a foreground normal-profile tab. Unknown
 context identities fail closed. AniKoto slug fallback preserves alphabetic words;
 opaque alphabetic suffixes can remain until the authoritative heading is available.
 
-## Combined release
+## Launch release
 
-AniBrave 0.1.6 is included with AniHome 0.8.21 and desktop extension 0.1.3 in the
-[AniProject 2026.10.21 release](https://github.com/akasumitlamba/AniProject/releases/tag/aniproject-2026.10.21).
-The Android update retains the existing signing identity and profile.
+AniBrave 1.0.0 ships with AniHome 1.0.0 and desktop extension 1.0.0 in the
+[AniProject 1.0.0 launch release](https://github.com/akasumitlamba/AniProject/releases/tag/v1.0.0).
+See the [detailed launch notes](../docs/releases/1.0.0.md). Android updates retain the original signing identities and application profiles.
 
 ## Streaming buffer
 

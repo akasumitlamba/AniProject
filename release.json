@@ -1,10 +1,10 @@
 {
-  "version": "0.9.0",
+  "version": "1.0.0",
   "products": [
     "AniHome",
     "AniBrave Android",
     "AniBrave desktop extension"
   ],
   "policy": "Publish every product together. Product display versions match; platform upgrade codes increase independently.",
-  "revision": 2
+  "revision": 1
 }

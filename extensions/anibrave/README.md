@@ -1,10 +1,10 @@
 # AniBrave for Brave desktop
 
-Version 0.9.0, part of the synchronized AniProject release. An unpacked Manifest V3 extension for Brave on PC. No Android build or web app is required.
+Version 1.0.0, part of the synchronized AniProject release. An unpacked Manifest V3 extension for Brave on PC. No Android build or web app is required.
 
 ## Install
 
-1. Extract `AniBrave-Extension-0.1.4.zip` into a permanent folder.
+1. Extract `AniBrave-Extension-1.0.0.zip` into a permanent folder.
 2. Open `brave://extensions` in Brave and enable **Developer mode**.
 3. Choose **Load unpacked**, then select the extracted folder containing `manifest.json`.
 4. Open Brave’s extensions menu (puzzle piece) and pin **AniBrave — Playback & Anime Memory**. The AniBrave lion appears in the toolbar.

@@ -1,6 +1,6 @@
 # AniHome Launcher
 
-AniHome is an Android HOME launcher with a TV-style grid of apps and websites over the system wallpaper. Websites open through AniBrave's immersive shortcut activity, sharing its browser profile. Package: `app.anihome.launcher`; Android 8.0+; current source version 0.9.0.
+AniHome is an Android HOME launcher with a TV-style grid of apps and websites over the system wallpaper. Websites open through AniBrave's immersive shortcut activity, sharing its browser profile. Package: `app.anihome.launcher`; Android 8.0+; current source version 1.0.0.
 
 ## Home and app drawer
 
@@ -31,7 +31,7 @@ Direct radio operations use an optional, narrowly scoped Shizuku service. Androi
 
 ## Artwork and local data
 
-Long-press a banner → Choose tile image to use Gallery, crop artwork, or browse the [bundled Banner Store](../banners/README.md). The store contains 159 named banners, supports search/preview, and applies only after confirmation. Offline use requires no account. Explicit Refresh requests the public AniProject catalog anonymously. No account or token is needed, and credentials from earlier private-catalog builds are discarded.
+Long-press a banner → Choose tile image to use Gallery, crop artwork, or browse the [bundled Banner Store](../banners/README.md). The store contains 177 named banners, supports search/preview, and applies only after confirmation. Offline use requires no account. Explicit Refresh requests the public AniProject catalog anonymously. No account or token is needed, and credentials from earlier private-catalog builds are discarded.
 
 Notification counts, app frequencies, connection recency, tiles and notes stay local. Scan lists and Wi-Fi passwords are not persisted by AniHome. Android manages saved Wi-Fi credentials. Recent files use MediaStore and previously authorized document folders; the app requests access only when needed.
 
@@ -54,7 +54,7 @@ License: MPL-2.0.
 
 The dock clock grows when neither charging nor USB is active. The app-menu outline is inset equally within its touch target.
 
-Version 0.8.22 adds a shared compact time/count row and date row in either dock layout, plus optional direct system rotation enforcement against app-requested orientation.
+Current rotation follows Android Auto/Fixed settings; forced display overrides are not part of the launch release.
 
 Version 0.8.22 adds rounded phone Recent files corners, 160–190 ms gesture-directed opening and expansion motion, animated notification list removal, and long-press notification snoozing/channel settings. Animations respect Android’s animator setting. Wi-Fi and Bluetooth retain inline discovery/connection controls; their options buttons open Android’s advanced radio settings. Emulator checks covered the new rotation toggle/current-angle lock, notification snoozing and radio options. Physical-device validation of this version remains pending.
 

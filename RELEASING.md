@@ -12,3 +12,5 @@ A request to update a release applies to every active product: AniHome, AniBrave
 An existing combined release may be updated in place. A new shared product version gets one new combined release, rather than separate product releases.
 
 For an in-place maintenance revision, increment release.json revision and Android upgrade codes, rebuild every product, and retain the shared display version. Existing Git tags remain immutable; link the new public commit and attach the exact source snapshot used for the rebuilt binaries.
+
+For the 1.0.0 launch, the explicitly requested cleanup removes every pre-launch release entry, including previews and drafts, after delivery verification. Keep the technical changelog and Git tags/history; do not republish retired products as launch applications.
