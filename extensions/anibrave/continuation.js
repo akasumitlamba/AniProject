@@ -8,6 +8,10 @@
   globalThis.AniContinue = function({send,identity,media,isMain,adBlocked}) {
     let state=null,signature='',hostElement=null,applying=false,notice='',lastRoute='',searchFilled='',resumeTimer=0,hideTimer=0;
     const sought=new WeakMap();
+    let automatic=globalThis.performance?.getEntriesByType?.('navigation')?.[0]?.type!=='back_forward';
+    const pauseForHistory=()=>{automatic=false;lastRoute='';searchFilled='';clearInterval(resumeTimer);};
+    window.addEventListener('popstate',pauseForHistory);
+    window.addEventListener('pageshow',event=>{if(event.persisted)pauseForHistory();});
     function remove(){clearTimeout(hideTimer);hostElement?.remove();hostElement=null;signature='';}
     function selected(){
       if(!state||state.privateMode)return null;
@@ -20,7 +24,7 @@
       return (supported()?state.history:state.history.filter(e=>e.host===state.host))[0];
     }
     async function update(){const next=await send({type:'state'});if(next){state=next;render();}}
-    async function begin(entry){notice='';const result=await send({type:'continue',key:entry.key});if(result){state.continuation=result.pending;render(true);if(!result.destination)fillSearch(entry);}else{notice='Could not start continuation. Reopen Episode memory and try again.';render(true);}}
+    async function begin(entry){automatic=true;notice='';const result=await send({type:'continue',key:entry.key});if(result){state.continuation=result.pending;render(true);if(!result.destination)fillSearch(entry);}else{notice='Could not start continuation. Reopen Episode memory and try again.';render(true);}}
     function fillSearch(entry){
       if(searchFilled===location.href)return;
       const input=document.querySelector('form[role="search"] input, input[type="search"], input[name="keyword"], input[name="q"]');
@@ -34,6 +38,7 @@
       }else{notice='Search this site for the title below. This card will stay with you.';render(true);}
     }
     function locate(entry){
+      if(!automatic)return;
       if(!state?.continuation || !supported() || lastRoute===location.href)return;
       const id=identity();let matches=[];
       for(const a of document.querySelectorAll('a[href]')){
@@ -59,6 +64,8 @@
     }
     function receive(entry){
       clearInterval(resumeTimer);
+      // A new explicit request supersedes earlier seeks on a retained SPA player.
+      for(const v of media)sought.delete(v);
       let done=false;for(const v of media)if(v.tagName==='VIDEO'&&trySeek(v,entry))done=true;
       if(done)return;
       const until=Date.now()+60000,url=location.href;
@@ -79,7 +86,7 @@
       const pending=state.continuation?.host===state.host&&state.continuation.expires>Date.now();
       if(!pending&&state.dismissals?.[state.host+'|'+eid(entry)]){remove();return;}
       const sig=eid(entry)+'|'+(pending?'pending':'offer')+'|'+!!state.continuation?.applied+'|'+notice;
-      if(sig===signature&&!force&&hostElement?.isConnected){if(pending)locate(entry);if(pending&&same(entry,identity())&&!state.continuation.applied)apply(entry);return;}
+      if(sig===signature&&!force&&hostElement?.isConnected){if(pending)locate(entry);if(automatic&&pending&&same(entry,identity())&&!state.continuation.applied)apply(entry);return;}
       remove();signature=sig;
       const host=document.createElement('div');host.id='anibrave-memory-card';host.style.cssText='position:fixed;right:14px;bottom:14px;z-index:2147483647;max-width:calc(100vw - 28px)';
       const root=host.attachShadow({mode:'closed'});const style=document.createElement('style');style.textContent=':host{all:initial}aside{box-sizing:border-box;width:290px;max-width:calc(100vw - 28px);padding:14px;border:1px solid #51473a;border-radius:10px;background:#211f1c;color:#f5f2ec;font:12px/1.5 system-ui;box-shadow:0 6px 28px #0006}header{display:flex;justify-content:space-between;align-items:center;color:#cdbb9f;font-size:11px}strong{display:block;margin-top:8px;font-size:13px}p{margin:4px 0;color:#c7bfb3}nav{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}button,a{font:12px system-ui;padding:7px 9px;border:1px solid #61513c;border-radius:6px;color:#f5f2ec;background:#302a22;cursor:pointer;text-decoration:none}header button{border:0;background:transparent;padding:0 3px;font-size:19px}small{display:block;color:#c7bfb3;margin-top:8px;font-size:11px}button:focus-visible,a:focus-visible{outline:2px solid #e2b779;outline-offset:2px}';
@@ -97,7 +104,7 @@
       const note=document.createElement('small');function renderNotice(){note.textContent=notice || (pending?(state.continuation.applied?'Resume requested. Press Play when ready; if this player blocks seeking, use the saved time above.':'Finding the saved episode. You can search manually; this card stays for 30 minutes.'):`Last watched on ${entry.host}`);}renderNotice();
       card.append(header,title,detail,nav,note);root.append(style,card);document.body.append(host);hostElement=host;
       if(!pending)hideTimer=setTimeout(()=>close.onclick(),12000);
-      if(pending){locate(entry);if(same(entry,identity())&&!state.continuation.applied)apply(entry);}
+      if(pending){locate(entry);if(automatic&&same(entry,identity())&&!state.continuation.applied)apply(entry);}
     }
     return {setState(next){state=next;render();},render,receive,update};
   };

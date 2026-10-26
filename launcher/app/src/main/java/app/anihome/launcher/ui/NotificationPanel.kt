@@ -30,15 +30,16 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
     private val expandedKeys = mutableSetOf<String>()
     val isShowing: Boolean get() = dialog?.isShowing == true
     fun dismiss() { dialog?.dismiss() }
-    fun resume() { if (quickSettings.consumeReturn()) show() }
+    fun resume() { if (quickSettings.consumeReturn()) show(restoreSection = true) }
     fun onConfigurationChanged() {
         dialog?.window?.let { quickSettings.resize(SidePanelLayout.apply(activity, it).height) }
     }
     private fun dp(n: Int) = ArtworkUi.dp(activity, n)
     fun setAutomaticRotation(automatic: Boolean) = quickSettings.setAutomaticRotation(automatic)
-    fun showSettings() { show(); quickSettings.showSettings() }
-    fun show(direction: String = "RIGHT") {
+    fun showSettings() { show(restoreSection = true); quickSettings.showSettings() }
+    fun show(direction: String = "RIGHT", restoreSection: Boolean = false) {
         if (dialog?.isShowing == true) return
+        if (!restoreSection) quickSettings.showNotifications()
         val root = LinearLayout(activity).apply {
             orientation = LinearLayout.VERTICAL; setPadding(dp(10), dp(2), dp(10), dp(4)); setBackgroundColor(0xff141414.toInt())
         }

@@ -12,12 +12,17 @@ import java.io.File
 
 /** Uses a dedicated QA cache directory and database, never the user's launcher data. */
 class RegressionInstrumentation : Instrumentation() {
+    private var navigationOnly = false
     private var checks = 0
     private fun verify(ok: Boolean, name: String) { check(ok) { name }; checks++ }
-    override fun onCreate(arguments: Bundle?) { super.onCreate(arguments); start() }
+    override fun onCreate(arguments: Bundle?) { super.onCreate(arguments); navigationOnly = arguments?.getString("navigation_only") == "true"; start() }
     override fun onStart() {
         val results = Bundle()
         try {
+            if (navigationOnly) {
+                results.putString("stream", NavigationRegression.run(this) + "\n")
+                finish(Activity.RESULT_OK, results); return
+            }
             val qaDirectory = File(targetContext.cacheDir,"regression-fixture").apply { mkdirs() }
             val fixture = object : android.content.ContextWrapper(targetContext) {
                 override fun getApplicationContext(): Context = this

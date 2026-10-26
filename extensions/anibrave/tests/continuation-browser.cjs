@@ -31,6 +31,11 @@ const path=require('path'),fs=require('fs'),os=require('os'),assert=require('ass
   await page.waitForFunction(()=>document.querySelector('video')?.playbackRate===1.5);
   const tabs=await worker.evaluate(async()=>(await chrome.tabs.query({})).filter(t=>t.url?.includes('episode5')));const tabId=tabs[0].id;
   assert.ok(await worker.evaluate(async id=>(await chrome.storage.session.get('continue:'+id))['continue:'+id].applied,tabId));
+  // Back must stay on the prior series page, rather than immediately auto-routing forward.
+  await page.goBack();await page.waitForTimeout(1500);
+  assert.equal(new URL(page.url()).pathname,'/series/dxd','automatic continuation must not trap browser Back');
+  await page.goForward();await page.waitForURL('https://www.crunchyroll.com/watch/episode5');
+  await page.waitForFunction(()=>document.querySelector('video')?.playbackRate===1.5);
   // The card survives search + series + episode navigation; Done dismisses persistently.
   await page.waitForSelector('#anibrave-memory-card');await page.screenshot({path:path.resolve(__dirname,'../../../.tools/anibrave-continuation.png')});await clickClosed('Done');await page.waitForFunction(()=>!document.querySelector('#anibrave-memory-card'));
   await page.goto('https://www.crunchyroll.com/');await page.waitForTimeout(2200);assert.equal(await page.locator('#anibrave-memory-card').count(),0);

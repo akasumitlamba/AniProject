@@ -2,6 +2,15 @@
 
 ## 0.9.0 — unified product release
 
+### Revision 2 — navigation and animation maintenance
+
+- Browser and extension Back/Forward traversal no longer immediately auto-route back into an episode. BFCache/history restoration pauses automatic continuation while explicit new requests remain available.
+- Explicit resume resets retained-player seek state; a newer saved timestamp for the same episode is honored.
+- Home entrance animations complete once on replacement, cancel or detach, reset opacity/translation, and release pending drawer loads. Reduced-motion entry restores resting geometry.
+- Opening Notifications after Settings starts in Notifications; returning from external settings/configuration restoration preserves the selected section.
+- Rebuilds all products together at 0.9.0: AniHome upgrade code 44 and AniBrave Android upgrade code 429705624. The extension ZIP is rebuilt from the same revision.
+- Validation: 124 JavaScript tests, 11 real-browser navigation checks, extension Back/Forward integration, 121 Home unit tests and release lint. QA passed 26 Android navigation/animation assertions in each of tablet, phone and reduced-motion phone emulator configurations, plus the existing 43 Android checks. Physical ARM64 browser UI/DRM acceptance remains separate.
+
 All active products now share version 0.9.0. This release combines AniHome 0.8.29 maintenance, AniBrave Android 0.2.2 and desktop extension continuation work, with 177 banners. Android package IDs, signing identities and user storage are preserved.
 
 AniHome includes opaque tile rendering, unclipped floating remove controls, deletion compaction, bounded drag scrolling, an unobstructed empty wallpaper, system-only rotation, pinned shortcuts, responsive drawer/files, notification controls, widgets and configurable gestures.
