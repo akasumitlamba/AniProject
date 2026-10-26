@@ -105,8 +105,10 @@ final class VerticalTabs {
         handler.post(refresh);
     }
     private int dp(int value) { return Math.round(value*activity.getResources().getDisplayMetrics().density); }
+    private final Map<String,Integer> resourceIds = new HashMap<>();
     private View find(String name) {
-        int id=activity.getResources().getIdentifier(name,"id",activity.getPackageName());
+        // Resource identities are fixed for this activity; view instances may be replaced.
+        int id=resourceIds.computeIfAbsent(name,key->activity.getResources().getIdentifier(key,"id",activity.getPackageName()));
         return id==0?null:decor.findViewById(id);
     }
     private static Object field(Object owner, String name) throws Exception {

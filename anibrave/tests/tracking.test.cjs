@@ -1,12 +1,12 @@
 const test=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');
 const source=fs.readFileSync(require('node:path').join(__dirname,'../src/tracking.js'),'utf8');
 function fixture(url,selectors={},title=''){
-  let now=100000;const messages=[],listeners=new Map(),intervals=new Map();let timerId=0;
+  let now=100000;const messages=[],listeners=new Map(),intervals=new Map(),observers=[];let timerId=0;
   const document={title,querySelector:s=>selectors[s]||null,querySelectorAll:()=>[],addEventListener:(name,fn)=>listeners.set(name,fn)};
   const location=new URL(url),window={addEventListener:(name,fn)=>listeners.set(name,fn)};
-  const context=vm.createContext({document,location,window,Date:{now:()=>now},setInterval:fn=>{intervals.set(++timerId,fn);return timerId;},clearInterval:id=>intervals.delete(id),aniBraveNative:value=>messages.push(JSON.parse(value))});
+  const context=vm.createContext({MutationObserver:class{constructor(fn){this.fn=fn;}observe(root){observers.push({root,fn:this.fn});}},document,location,window,Date:{now:()=>now},setInterval:fn=>{intervals.set(++timerId,fn);return timerId;},clearInterval:id=>intervals.delete(id),aniBraveNative:value=>messages.push(JSON.parse(value))});
   vm.runInContext(source,context);
-  return{context,messages,document,fire:(name,event)=>listeners.get(name)?.(event),activeTimers:()=>intervals.size,probe:()=>intervals.forEach(fn=>fn()),time:ms=>now+=ms,tick:video=>listeners.get('timeupdate')({target:video})};
+  return{context,messages,document,mutate:(root,nodes)=>observers.filter(o=>o.root===root).forEach(o=>o.fn([{addedNodes:nodes}])),fire:(name,event)=>listeners.get(name)?.(event),activeTimers:()=>intervals.size,probe:()=>intervals.forEach(fn=>fn()),time:ms=>now+=ms,tick:video=>listeners.get('timeupdate')({target:video})};
 }
 const text=value=>({textContent:value});
 test('AniKoto real path ep detects anime without recording a visit',()=>{
@@ -71,9 +71,9 @@ test('alphabetic slug words are preserved and malformed percent encoding is safe
 test('late nested shadow players receive tracking listeners only once',()=>{
   const f=fixture('https://player.example/embed');
   const outer={querySelectorAll:()=>[],addEventListener(){}};
-  f.document.querySelectorAll=()=>[{shadowRoot:outer}];f.probe();
+  f.document.querySelectorAll=()=>[{shadowRoot:outer}];f.time(10000);f.probe();
   const events=[];const inner={querySelectorAll:()=>[],addEventListener:(...args)=>events.push(args)};
-  outer.querySelectorAll=()=>[{shadowRoot:inner}];f.probe();f.probe();
+  outer.querySelectorAll=()=>[{shadowRoot:inner}];f.time(10000);f.probe();f.time(10000);f.probe();
   assert.equal(events.filter(e=>e[0]==='timeupdate').length,1);
 });
 
@@ -125,4 +125,42 @@ test('pause checkpoints qualified video and a seek creates no watched coverage',
  v.currentTime=600;v.seeking=true;f.fire('seeking',{type:'seeking',target:v});v.seeking=false;v.paused=false;f.tick(v);
  for(let i=1;i<=10;i++){f.time(1000);v.currentTime=600+i;f.tick(v);}
  const ranges=f.messages.filter(m=>m.type==='watchProgress').at(-1).ranges;assert.ok(ranges.every(r=>r[1]-r[0]<100));
+});
+
+test('full document sweeps are bounded and hidden tabs stop the discovery timer',()=>{
+  const f=fixture('https://example.com/');let sweeps=0;
+  f.document.querySelectorAll=s=>{if(s==='*')sweeps++;return [];};
+  for(let i=0;i<15;i++){f.time(2000);f.probe();}
+  assert.equal(sweeps,3); // Previously fifteen full DOM sweeps in thirty seconds.
+  f.document.visibilityState='hidden';f.fire('visibilitychange');
+  assert.equal(f.activeTimers(),0);
+  f.document.visibilityState='visible';f.fire('visibilitychange');f.fire('visibilitychange');
+  assert.equal(f.activeTimers(),1);
+});
+test('frequent media events do not rescan sibling videos for each event',()=>{
+  const f=fixture('https://player.example/');let scans=0;
+  f.document.querySelectorAll=s=>{if(s==='video')scans++;return [];};
+  const v={tagName:'VIDEO',currentTime:0,duration:1200,paused:false,playbackRate:1};
+  for(let i=0;i<10;i++){f.tick(v);f.time(100);v.currentTime+=.1;}
+  assert.equal(scans,1);
+});
+test('hidden page reports visibility immediately and foreground return refreshes metadata',()=>{
+  const f=fixture('https://anikototv.to/watch/example/ep-9',{'h1':text('Example')});
+  f.document.visibilityState='hidden';f.fire('visibilitychange');
+  assert.equal(f.messages.filter(m=>m.type==='continuationPage').at(-1).visible,false);
+  f.context.location.href='https://anikototv.to/watch/example/ep-10';
+  f.document.visibilityState='visible';f.fire('visibilitychange');
+  const page=f.messages.filter(m=>m.type==='continuationPage').at(-1);
+  assert.equal(page.episode,10);assert.equal(page.visible,true);
+});
+
+test('inserting a shadow host immediately discovers its video and installs one set of listeners',()=>{
+ const f=fixture('https://player.example/'),events=[];
+ const video={tagName:'VIDEO',isConnected:true};
+ const host={querySelectorAll:()=>[]};
+ const shadow={host,querySelectorAll:s=>s==='video'?[video]:[],addEventListener:(n,fn)=>events.push(n)};
+ host.shadowRoot=shadow;
+ f.mutate(f.document,[host]);f.mutate(f.document,[host]);
+ assert.equal(f.context.__aniWatch.media.has(video),true);
+ assert.equal(events.filter(n=>n==='timeupdate').length,1);
 });

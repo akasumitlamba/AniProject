@@ -23,7 +23,7 @@ public final class HistoryInstrumentation extends Instrumentation {
         public Object getTabById(int id){return new FakeTab();}
         public int getCount(){return 1;}
         public Object getTabAt(int index){return new FakeTab();}
-        public void B0(int index,int reason){selected++;}
+        public void A0(int index,int reason){selected++;}
     }
     public static final class FakeSelector {
         final FakeModel model=new FakeModel();int switched;
@@ -33,7 +33,7 @@ public final class HistoryInstrumentation extends Instrumentation {
     }
     public static final class FakeActivity extends Activity {
         final FakeSelector selector=new FakeSelector();
-        public Object v4(){return selector;}
+        public Object w4(){return selector;}
         @Override public android.content.Intent getIntent(){return new android.content.Intent();}
     }
     @Override public void onCreate(Bundle args){super.onCreate(args);start();}

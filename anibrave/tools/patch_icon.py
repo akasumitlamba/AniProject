@@ -39,9 +39,13 @@ def runtime(apk):
                 or (name.startswith('lib/') and name.endswith('.so'))}
 
 
-def require_engine_version(badging, tag):
+def require_engine_version(badging, tag, manifest=None):
     match = re.search(r"versionName='[^']+-brave-([^']+)'", badging)
-    if not match or match.group(1) != tag.removeprefix('v'):
+    engine = match.group(1) if match else None
+    if manifest is not None:
+        node = manifest.find("application/meta-data[@{http://schemas.android.com/apk/res/android}name='app.anibrave.BRAVE_VERSION']")
+        if node is not None: engine = node.get('{http://schemas.android.com/apk/res/android}value')
+    if engine != tag.removeprefix('v'):
         raise RuntimeError('Feature source and input engine differ; use a full-engine build')
 
 
@@ -64,9 +68,8 @@ def main():
     if not os.environ.get('ANIBRAVE_KS_PASS'):
         raise RuntimeError('Set ANIBRAVE_KS_PASS privately before signing')
     os.environ.setdefault('ANIBRAVE_KEY_PASS', os.environ['ANIBRAVE_KS_PASS'])
-    if args.feature_dex:
+    if args.feature_dex or args.version_name:
         badging = run(args.build_tools/'aapt2', 'dump', 'badging', args.input, capture=True)
-        require_engine_version(badging, json.loads((root/'anibrave/upstream.json').read_text())['tag'])
     signer = args.build_tools/'apksigner'
     original_certificate = certificate(signer, args.input)
     original_runtime = runtime(args.input)
@@ -92,6 +95,8 @@ def main():
         element = tree.getroot()
         if element.get('package') != 'app.anibrave.main':
             raise RuntimeError('Input must be installed AniBrave')
+        if args.feature_dex or args.version_name:
+            require_engine_version(badging, json.loads((root/'anibrave/upstream.json').read_text())['tag'], element)
         if args.feature_dex:
             if 'classes8.dex' not in original_runtime:
                 raise RuntimeError('Expected existing app.anibrave feature DEX')
@@ -116,6 +121,11 @@ def main():
         element.set(android+'versionCode', new_version)
         if args.version_name:
             element.set(android+'versionName', args.version_name)
+            application=element.find('application')
+            node=next((n for n in application.findall('meta-data') if n.get(android+'name')=='app.anibrave.BRAVE_VERSION'),None)
+            if node is None: node=ET.SubElement(application,'meta-data')
+            node.set(android+'name','app.anibrave.BRAVE_VERSION')
+            node.set(android+'value',json.loads((root/'anibrave/upstream.json').read_text())['tag'].removeprefix('v'))
             metadata_text = re.sub(r'(?m)^(\s*versionName:)\s*[^\r\n]+$', lambda match: match.group(1)+' '+args.version_name, metadata_text)
         tree.write(manifest, encoding='utf-8', xml_declaration=True)
         if metadata_version:

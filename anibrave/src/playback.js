@@ -165,7 +165,11 @@
   // player resets that do not emit usable events in this isolated world.
   let scans=0;
   const recovery=setInterval(()=>{
-    for(const video of media)apply(video);
+    for(const video of media){
+      if(!video.isConnected){media.delete(video);continue;}
+      if(document.visibilityState==='hidden' && video.paused){cancelGuard(video);continue;}
+      apply(video);
+    }
     if(document.visibilityState!=='hidden' && ++scans%6===0)for(const element of document.querySelectorAll('*'))if(element.shadowRoot)discover(element.shadowRoot);
   },1500);
   document.addEventListener('fullscreenchange', () => {
@@ -190,5 +194,12 @@
   }, {passive: true});
   window.addEventListener('pagehide', event => {for(const v of media){clearTimeout(state(v).pending);cancelGuard(v);}if(!event.persisted){media.clear();clearInterval(recovery);}});
   window.addEventListener('pageshow', () => {for(const v of document.querySelectorAll('video,audio'))track(v,true);});
-  window.addEventListener('resize', () => send({type: 'resize'}), {passive: true});
+  let resizeTimer = null;
+  window.addEventListener('resize', () => {
+    if (resizeTimer !== null) return;
+    resizeTimer=setTimeout(() => { resizeTimer=null; send({type:'resize'}); },100);
+  }, {passive:true});
+  document.addEventListener('visibilitychange', () => {
+    if(document.visibilityState!=='hidden')for(const video of media)apply(video);
+  });
 })();
