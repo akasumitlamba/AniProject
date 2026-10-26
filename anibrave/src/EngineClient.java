@@ -15,9 +15,11 @@ final class EngineClient implements Runnable {
         String browserContext = "";
         volatile String url;
         volatile String metricsKey="", mainFrame="";
+        volatile int userAgentMode = -1;
         volatile JSONObject watchPage;
         volatile long watchIdentityAt;
         final Set<Integer> contexts = ConcurrentHashMap.newKeySet();
+        final Set<Integer> configuredContexts = ConcurrentHashMap.newKeySet();
         Page(String s, String t, String ty, String p, String u) { session=s; target=t; type=ty; parent=p; url=u; }
     }
     private final Context context;
@@ -66,14 +68,23 @@ final class EngineClient implements Runnable {
     private int mode(Page p) { return context.getSharedPreferences("anibrave_sites",0).getInt("mode:"+SiteKey.of(root(p).url),0); }
     private void configure(Page p,int id) throws Exception {
         if(SiteKey.of(root(p).url).isEmpty()) return;
-        synchronized(PlaybackSettings.class){send("Runtime.evaluate",json("expression",source+";globalThis.__aniBrave.configure("+rate(p)+","+context.getSharedPreferences("anibrave_sites",0).getLong("rateRevision:"+SiteKey.of(root(p).url),0)+","+context.getSharedPreferences("anibrave_ui",0).getInt("buffer_seconds",180)+","+context.getSharedPreferences("anibrave_ui",0).getBoolean("buffer_guard",true)+");","contextId",id),p.session);}
+        synchronized(PlaybackSettings.class){
+            // Bootstrap once per execution context, then send only settings. Repeated
+            // title, viewport and continuation updates must not resend all controllers.
+            String bootstrap=p.configuredContexts.contains(id)?"":source+";";
+            send("Runtime.evaluate",json("expression",bootstrap+"globalThis.__aniBrave.configure("+rate(p)+","+context.getSharedPreferences("anibrave_sites",0).getLong("rateRevision:"+SiteKey.of(root(p).url),0)+","+context.getSharedPreferences("anibrave_ui",0).getInt("buffer_seconds",180)+","+context.getSharedPreferences("anibrave_ui",0).getBoolean("buffer_guard",true)+");","contextId",id),p.session);
+            p.configuredContexts.add(id);
+        }
     }
     private void view(Page p) throws Exception {
         if(SiteKey.of(root(p).url).isEmpty()) return;
         int mode=mode(p);
         String ua=mode==0 ? "Mozilla/5.0 (Linux; Android "+Build.VERSION.RELEASE+") AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36"
             : "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36";
-        send("Emulation.setUserAgentOverride",json("userAgent",ua,"platform",mode==0?"Linux armv8l":"Linux x86_64"),p.session);
+        if(p.userAgentMode!=mode){
+            send("Emulation.setUserAgentOverride",json("userAgent",ua,"platform",mode==0?"Linux armv8l":"Linux x86_64"),p.session);
+            p.userAgentMode=mode;
+        }
         // Identity and layout remain separate. Default mobile/hybrid retain the physical viewport.
         if("page".equals(p.type)) {
             if(fullscreen){if(!p.metricsKey.equals("fullscreen")){p.metricsKey="fullscreen";send("Emulation.clearDeviceMetricsOverride",json(),p.session);}return;}
@@ -184,6 +195,7 @@ final class EngineClient implements Runnable {
         if(method.equals("Target.targetInfoChanged")) {
             JSONObject info=params.getJSONObject("targetInfo");
             for(Page page:pages.values()) if(page.target.equals(info.optString("targetId"))) {
+                if(page.url.equals(info.optString("url")))continue;
                 page.url=info.optString("url");
                 if(page.parent==null&&page.type.equals("page"))AniRuntime.navigated(page.url);
                 view(page);for(int id:page.contexts)configure(page,id);
@@ -211,8 +223,8 @@ final class EngineClient implements Runnable {
         if(method.equals("Runtime.executionContextCreated")) {
             JSONObject c=params.getJSONObject("context"); if(c.optString("name").equals("AniBrave")) {int id=c.getInt("id");p.contexts.add(id);configure(p,id);} return;
         }
-        if(method.equals("Runtime.executionContextDestroyed")) {p.contexts.remove(params.optInt("executionContextId"));return;}
-        if(method.equals("Runtime.executionContextsCleared")) {p.contexts.clear();return;}
+        if(method.equals("Runtime.executionContextDestroyed")) {p.contexts.remove(params.optInt("executionContextId"));p.configuredContexts.remove(params.optInt("executionContextId"));return;}
+        if(method.equals("Runtime.executionContextsCleared")) {p.contexts.clear();p.configuredContexts.clear();return;}
         if(method.equals("Page.frameNavigated")) {
             JSONObject frame=params.getJSONObject("frame");
             if(!frame.has("parentId") && p.parent==null) { p.mainFrame=frame.optString("id");p.url=frame.optString("url"); AniRuntime.navigated(p.url);view(p); for(int id:p.contexts) configure(p,id); }

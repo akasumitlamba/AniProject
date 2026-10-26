@@ -1,0 +1,17 @@
+name: Shared product version
+on:
+  push:
+    paths: ['release.json', 'launcher/app/build.gradle.kts', 'anibrave/version.json', 'extensions/anibrave/manifest.json', 'tools/check_release_versions.py', '.github/workflows/release-versions.yml']
+  pull_request:
+    paths: ['release.json', 'launcher/app/build.gradle.kts', 'anibrave/version.json', 'extensions/anibrave/manifest.json', 'tools/check_release_versions.py', '.github/workflows/release-versions.yml']
+permissions:
+  contents: read
+jobs:
+  versions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: python3 tools/check_release_versions.py

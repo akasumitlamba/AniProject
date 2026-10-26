@@ -15,6 +15,12 @@ class AppResourcesTest(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 require_engine_version(value, 'v1.97.59')
 
+    def test_shared_product_version_has_separate_engine_identity(self):
+        manifest=ET.fromstring('<manifest xmlns:android="http://schemas.android.com/apk/res/android"><application><meta-data android:name="app.anibrave.BRAVE_VERSION" android:value="1.98.60"/></application></manifest>')
+        require_engine_version("versionName='0.9.0'", 'v1.98.60', manifest)
+        with self.assertRaises(RuntimeError):
+            require_engine_version("versionName='0.9.0'", 'v1.97.59', manifest)
+
     def test_retained_root_is_internal_separate_and_idempotent(self):
         app = ET.fromstring('<application><activity name="unrelated"/></application>')
         configure_tasks(app)

@@ -192,7 +192,9 @@
       const path = location.pathname.match(/^\/watch\/([^/]+)\/ep-?(\d{1,4})(?:\/|$)/i);
       if (path) { let slug = path[1]; try { slug = decodeURIComponent(slug); } catch { /* malformed URL */ } title = heading || slug.replace(/-/g, ' '); episode = Number(path[2]); }
     }
-    return title ? {title: title.replace(/^watch\s+/i, '').trim(), episode, season} : null;
+    const seasonLabel=(heading+' '+title+' '+document.title).match(/\bseason\s*(\d{1,2})\b|\b(\d{1,2})(?:st|nd|rd|th)\s+season\b|\bS(\d{1,2})\s*E?\d*/i);
+    if(seasonLabel)season=Number(seasonLabel[1]||seasonLabel[2]||seasonLabel[3]);
+    return title ? {title: title.replace(/^watch\s+/i, '').trim(), episode, season,seasonKnown:!!seasonLabel} : null;
   }
   function pageIdentity() {
     if (currentURL !== location.href) { currentURL = location.href; currentIdentity = null; }
@@ -200,34 +202,35 @@
     if (found && (!watchPage() || found.episode > 0 || !currentIdentity?.episode)) currentIdentity = found;
     return currentIdentity;
   }
-  const watchPage = () => /^\/watch\//.test(location.pathname);
+  const watchPage = () => /^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?watch\//i.test(location.pathname);
   const key = t => t.normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
-  function remind() {
-    if (window !== top || !ready || !document.body) return;
-    const id = pageIdentity();
-    const supported = /(^|\.)(crunchyroll\.com|hianime\.to|hianimez\.to|anikototv\.to)$/.test(location.hostname);
-    const entries = id ? history.filter(e => e.key === key(id.title)) : (supported ? history : history.filter(e => e.host === site)).slice(0, 3);
-    if (!entries.length) { document.getElementById('anibrave-memory-card')?.remove(); return; }
-    const signature = location.href + '|' + entries.map(e => e.key + ':' + e.season + ':' + e.episode).join('|'); if (reminded.has(signature)) return; reminded.add(signature);
-    document.getElementById('anibrave-memory-card')?.remove();
-    const host = document.createElement('div'); host.id = 'anibrave-memory-card'; host.style.cssText = 'position:fixed;right:20px;bottom:20px;z-index:2147483647;max-width:calc(100vw - 40px);'; const shadow = host.attachShadow({mode: 'closed'});
-    const style = document.createElement('style'); style.textContent = ':host{all:initial}aside{font:14px system-ui;color:#f5f2ec;background:#211f1c;border:1px solid #746652;border-radius:16px;padding:18px;width:320px;max-width:calc(100vw - 40px);box-sizing:border-box;box-shadow:0 12px 48px #0008}header{display:flex;justify-content:space-between;align-items:center;color:#e2b779;font-size:12px;font-weight:700}button{background:transparent;color:#ddd;border:0;font:20px system-ui;cursor:pointer;padding:0 4px}p{line-height:1.6;margin:12px 0 0}small{color:#b8afa2;font-size:11px}';
-    const card = document.createElement('aside'); card.setAttribute('role', 'status'); const header = document.createElement('header'); header.textContent = 'ANIBRAVE · YOUR LAST EPISODE'; const close = document.createElement('button'); close.textContent = '×'; close.setAttribute('aria-label', 'Dismiss episode reminder'); close.onclick = () => host.remove(); header.append(close); card.append(header);
-    for (const e of entries) { const p = document.createElement('p'); p.textContent = `${e.title} — Season ${e.season}, episode ${e.episode}`; const detail = document.createElement('small'); detail.textContent = `Last watched on ${e.host}`; card.append(p, detail); } shadow.append(style, card); document.body.append(host);
-  }
+  const continuation=globalThis.AniContinue?.({send,identity:pageIdentity,media,isMain,adBlocked});
+  function remind(){continuation?.render();}
   function progress(v) {
     if (!ready || v.tagName !== 'VIDEO' || !isMain(v) || adBlocked(v)) return; const now = Date.now(), old = counters.get(v), position = v.currentTime;
     const identified = window === top ? pageIdentity() : null;
-    const signature = location.href + '|' + (identified?.episode || 0) + '|' + (identified?.season || 1); let seconds = old?.signature === signature ? old.seconds : 0;
-    if (old?.signature === signature && !v.paused && !v.seeking && v.duration >= 60) { const wall = (now - old.time) / 1000, delta = position - old.position; if (wall > 0 && wall <= 10 && delta > 0 && delta <= wall * Math.max(1, v.playbackRate) + 1) seconds += Math.min(wall, delta / Math.max(.25, v.playbackRate)); }
-    const sent = old?.signature === signature ? old.sent : 0; counters.set(v, {time: now, position, signature, seconds, sent});
-    if (seconds >= 15 && now - sent > 30000) { counters.get(v).sent = now; if (window === top) { const id = pageIdentity(); if (watchPage() && id?.episode) send({type: 'save', ...id, position}); } else send({type: 'progress', position}); }
+    const signature = location.href + '|' + (identified?.episode || 0) + '|' + (identified?.season || 1); let seconds = old?.signature === signature ? old.seconds : 0;let coverage=old?.signature===signature?old.coverage||0:0;let ranges=old?.signature===signature?old.ranges||[]:[];
+    if (old?.signature === signature && !v.paused && !v.seeking && v.duration >= 60) { const wall = (now - old.time) / 1000, delta = position - old.position; if (wall > 0 && wall <= 10 && delta > 0 && delta <= wall * Math.max(1, v.playbackRate) + 1) {seconds += Math.min(wall, delta / Math.max(.25, v.playbackRate));coverage+=Math.min(delta,wall*Math.max(.25,v.playbackRate));const last=ranges[ranges.length-1];if(last&&old.position<=last[1]+.5)last[1]=position;else if(ranges.length<1000)ranges.push([old.position,position]);} }
+    const sent = old?.signature === signature ? old.sent : 0; counters.set(v, {time: now, position, signature, seconds, coverage, ranges, sent});
+    if (seconds >= 15 && now - sent > 10000) { counters.get(v).sent = now; if (window === top) { const id = pageIdentity(); if (watchPage() && id?.episode) send({type: 'save', ...id, position,duration:v.duration,watchedSeconds:coverage,ranges}); } else send({type: 'progress', position,duration:v.duration,watchedSeconds:coverage,ranges}); }
   }
+  function flushPosition(){
+    const id=window===top?pageIdentity():null;
+    if(window===top&&(!watchPage()||!id?.episode))return;
+    for(const v of media){const counter=counters.get(v);const sig=location.href+'|'+(id?.episode||0)+'|'+(id?.season||1);if(v.tagName==='VIDEO'&&isMain(v)&&!adBlocked(v)&&counter?.seconds>=15&&counter.signature===sig){
+      const data={position:v.currentTime,duration:v.duration,watchedSeconds:counter.coverage||0,ranges:counter.ranges||[]};
+      if(window===top)send({type:'save',...id,...data});else send({type:'progress',...data});
+    }}
+  }
+  document.addEventListener('pause',flushPosition,true);
+  document.addEventListener('ended',flushPosition,true);
+  window.addEventListener('pagehide',flushPosition);
   async function refresh(applyStoredSpeed) {
     const token = ++refreshToken;
     const state = await send({type: 'state'});
     if (!state || token !== refreshToken) return;
     site = state.host; history = state.history || []; ready = true;
+    continuation?.setState(state);
     if (applyStoredSpeed) {
       const incoming = normalizeSpeed(state.settings?.speed) ?? 1;
       const stamp = Number(state.settings?.speedUpdated) || 0;
@@ -242,8 +245,9 @@
     for (const v of media) if (needsApply(v)) apply(v);
     remind();
   }
-  chrome.runtime.onMessage.addListener(m => { if (m.type === 'playerProgress' && window === top) { const id = pageIdentity(); if (watchPage() && id?.episode) send({type: 'save', ...id, position: m.position}); } });
+  chrome.runtime.onMessage.addListener(m => { if(m.type==='continuationChanged')continuation?.update();if(m.type==='resumeEpisode')continuation?.receive(m.entry);if (m.type === 'playerProgress' && window === top) { const id = pageIdentity(); if (watchPage() && id?.episode) send({type: 'save', ...id, position:m.position,duration:m.duration,watchedSeconds:m.watchedSeconds,ranges:m.ranges}); } });
   chrome.storage.onChanged.addListener((changes, area) => {
+    if(area==='session'){continuation?.update();return;}
     if (area !== 'local') return;
     const pageHost = location.hostname.toLowerCase().replace(/^www\./, '');
     const siteChange = changes['site:' + pageHost] || (site && site !== pageHost ? changes['site:' + site] : undefined);
@@ -257,7 +261,7 @@
         if (changed) for (const v of media) if (isControlled(v)) apply(v);
       }
     }
-    if (site && (siteChange || changes.history)) refresh(false);
+    if (site && (siteChange || changes.history||changes.reminderDismissals)) refresh(false);
   });
   scan(document);
   refresh(true);

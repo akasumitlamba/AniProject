@@ -262,10 +262,10 @@ public final class AniRuntime {
         if(immersive)return;
         if(toolbarListener!=null)return;
         toolbarDecor=a.getWindow().getDecorView();
+        final int featureId=a.getResources().getIdentifier("anibrave_features","id",a.getPackageName());
         toolbarListener=()->{
             if(!alive(a)||active.get()!=a)return;
-            int id=a.getResources().getIdentifier("anibrave_features","id",a.getPackageName());
-            View icon=toolbarDecor.findViewById(id);
+            View icon=toolbarDecor.findViewById(featureId);
             if(icon!=null&&icon!=featureButton){featureButton=icon;icon.setOnClickListener(v->showTools(a));}
         };
         toolbarDecor.getViewTreeObserver().addOnGlobalLayoutListener(toolbarListener);

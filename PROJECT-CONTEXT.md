@@ -31,3 +31,11 @@ Use synthetic fixtures for public screenshots and reports. Automated unit tests,
 Keep secrets, signing material, personal conversations, device identifiers, local paths, real notifications, network names and personal captures out of public source and release assets. Scan the exact staged public tree with `python3 tools/check_public_source.py` and a redacted secret scanner. Preserve licenses and third-party attribution.
 
 Public publishing uses AniProject's independent history and reviewed project-only changes. Never mirror private history or copy private chat archives into public context. Public banner requests use no saved credentials. Technical contributor instructions and this handoff contain project guidance, not personal conversation transcripts.
+
+## Current launcher recovery baseline
+
+AniHome 0.8.29 removes forced display rotation, migrates old app-only angle preferences, and uses Android Auto-rotate/current-orientation lock. The retired privileged force operation cannot change display policy. The local rotation guard is not a project dependency. Unit tests and release lint passed for this baseline; retain separate hardware acceptance evidence outside source.
+
+## Unified product releases
+
+`release.json` records the shared product display version. AniHome, AniBrave Android and the AniBrave desktop extension must all match it. Platform version codes remain independently increasing to preserve in-place updates. Every new or updated release contains all active products, banners, checksums and an all-products bundle. Never publish a launcher-only or browser-only maintenance release. Preserve consolidated notes before removing superseded standalone releases; keep combined rollback releases and Git tags. See RELEASING.md.

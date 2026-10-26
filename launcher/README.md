@@ -1,6 +1,6 @@
 # AniHome Launcher
 
-AniHome is an Android HOME launcher with a TV-style grid of apps and websites over the system wallpaper. Websites open through AniBrave's immersive shortcut activity, sharing its browser profile. Package: `app.anihome.launcher`; Android 8.0+; current source version 0.8.29.
+AniHome is an Android HOME launcher with a TV-style grid of apps and websites over the system wallpaper. Websites open through AniBrave's immersive shortcut activity, sharing its browser profile. Package: `app.anihome.launcher`; Android 8.0+; current source version 0.9.0.
 
 ## Home and app drawer
 

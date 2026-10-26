@@ -171,3 +171,18 @@ test('genuine speed choice during metadata loading overrides startup suppression
  f.video.playbackRate=1.5;f.fire('ratechange');f.tick(130);
  assert.equal(f.video.playbackRate,1.5);assert.equal(f.messages.find(m=>m.type==='nativeRate').rate,1.5);
 });
+
+test('hidden paused players skip recovery but background playback keeps saved speed',()=>{
+  const f=fixture();f.context.__aniBrave.configure(2);f.document.visibilityState='hidden';
+  f.video.paused=true;f.video.playbackRate=1;f.tick(6000);f.recover();
+  assert.equal(f.video.playbackRate,1);
+  f.video.paused=false;f.recover();assert.equal(f.video.playbackRate,2);
+  f.video.paused=true;f.video.playbackRate=1;f.document.visibilityState='visible';
+  f.fire('visibilitychange');assert.equal(f.video.playbackRate,2);
+});
+test('resize bursts send one viewport update and later resize remains supported',()=>{
+  const f=fixture();for(let i=0;i<30;i++)f.fire('resize');
+  assert.equal(f.messages.filter(m=>m.type==='resize').length,0);
+  f.tick(100);assert.equal(f.messages.filter(m=>m.type==='resize').length,1);
+  f.fire('resize');f.tick(100);assert.equal(f.messages.filter(m=>m.type==='resize').length,2);
+});

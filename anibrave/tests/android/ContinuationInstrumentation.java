@@ -16,6 +16,10 @@ public final class ContinuationInstrumentation extends Instrumentation {
   ContinuationStore s=new ContinuationStore(getTargetContext());JSONArray initial=s.library();check(initial.length()==2,"migration retains earlier log episodes");JSONObject migrated=initial.getJSONObject(0);check(migrated.getInt("season")==2,"migration retains season");check(migrated.getDouble("position")==313,"migration retains latest timestamp");check(!migrated.getBoolean("completed"),"legacy completion never guessed");check(!s.state("https://crunchyroll.com/",null,1).has("entry"),"legacy global dismissal suppresses relevant last episode (older eligible suppressed below)");
   s.close();s=new ContinuationStore(getTargetContext());check(s.library().length()==2,"migration idempotent after reopen");
   JSONObject i=id("Test Series",2,5,"anikototv.to").put("seriesId","series-42").put("episodeId","episode-5");JSONObject e=s.record(i,progress(313,1000,1.5,0,100));String k=e.getString("key");check(e.getString("seriesId").equals("series-42")&&e.getString("episodeId").equals("episode-5"),"structured site identifiers preserved");check(s.state(i.getString("url"),i,31).has("entry"),"identified watch page permits same-site history");check(!s.state("https://anikototv.to/",null,31).has("entry"),"homepage only offers cross-site history");check(e.getDouble("position")==313,"partial timestamp stored separately from coverage");check(!e.getBoolean("completed"),"position alone cannot complete");
+  JSONObject partial=id("Test Series",2,5,"anikototv.to").put("seriesId","series-42");
+  JSONObject retained=s.record(partial,progress(314,1000,1.5,100,101));
+  check(retained.getString("episodeId").equals("episode-5"),"partial metadata update retains known episode identifier");
+  check(s.record(id("!!!",1,1,"hianime.to"),progress(1,1000,1,0,20))==null,"punctuation-only series identity rejected");
   s.record(i,progress(600,1000,1.5,50,500));e=s.record(i,progress(850,1000,1.5,500,850));check(e.getBoolean("completed"),"merged actual coverage reaches 85 percent");check(e.getJSONArray("ranges").length()==1,"overlapping ranges merged");
   e=s.record(i,progress(20,1000,1.5,0,20));check(e.getBoolean("completed"),"rewatch preserves prior completion");
   JSONObject earlier=id("Test Series",2,2,"anikototv.to");s.record(earlier,progress(70,1000,1,0,70));check(s.library().length()==4,"earlier episode cannot replace later record");
@@ -29,6 +33,19 @@ public final class ContinuationInstrumentation extends Instrumentation {
   JSONObject corrected=s.correct(k,new JSONObject().put("position",432));check(corrected.getDouble("position")==432,"manual timestamp correction persisted");check(corrected.getBoolean("completed")&&corrected.getDouble("duration")==1000&&corrected.getJSONArray("ranges").length()>0,"timestamp correction preserves coverage duration completion");check(s.correct(k,new JSONObject().put("position",-1))==null,"invalid timestamp correction rejected");
   check(s.record(id("Test Series",2,8,"crunchyroll.com.evil.test"),progress(1,1000,1,0,20))==null,"host suffix spoof rejected");check(s.record(i,new JSONObject().put("position",900))==null,"unqualified playback rejected");
   pending=s.begin("https://hianime.to/",k,5,true);check(pending.getString("url").contains("crunchyroll.com"),"previous site returns latest saved exact URL");s.getWritableDatabase().execSQL("UPDATE pending SET expires=0 WHERE task=5");check(!s.state("https://crunchyroll.com/",null,5).has("pending"),"expired continuation ignored");
+  JSONObject renamed=s.correct(k,new JSONObject().put("episode",6));String renamedKey=renamed.getString("key");
+  check(!renamedKey.equals(k),"episode correction changes identity");
+  check(s.learned(i.getString("url")).getString("key").equals(renamedKey),"episode correction retains original-site learned link");
+  check(s.learned(unlabeled.getString("url")).getString("key").equals(renamedKey),"episode correction retains explicitly learned cross-site link");
+  check(renamed.getJSONObject("siteMetadata").getJSONObject("anikototv.to").getString("episodeId").equals("episode-5"),"episode correction retains metadata for other sites");
+  s.getWritableDatabase().execSQL("CREATE TRIGGER fail_correction BEFORE INSERT ON locations WHEN NEW.k LIKE '%|e7' BEGIN SELECT RAISE(ABORT,'QA transfer failure'); END");
+  check(s.correct(renamedKey,new JSONObject().put("episode",7))==null,"failed correction reports failure");
+  check(s.learned(i.getString("url")).getString("key").equals(renamedKey),"failed correction rolls back original learned links");
+  check(s.library().length()==4,"failed correction leaves no extra episode");
+  s.getWritableDatabase().execSQL("DROP TRIGGER fail_correction");
+  s.close();s=new ContinuationStore(getTargetContext());
+  check(s.learned(unlabeled.getString("url")).getString("key").equals(renamedKey),"corrected cross-site links survive reopen");
+  k=renamedKey;
   check(!s.state("https://crunchyroll.com/news",null,9).has("entry"),"unrelated page stays quiet");s.forget(k);check(s.begin("https://crunchyroll.com/",k,4,false)==null,"forget removes learned continuation");s.close();
   try(AnimeHistory h=new AnimeHistory(getTargetContext())){check(h.library().size()==1,"legacy original database untouched");try(Cursor c=h.getReadableDatabase().rawQuery("SELECT COUNT(*) FROM episode_log",null)){c.moveToFirst();check(c.getInt(0)==2,"legacy log count untouched");}}
   try(AnimeHistory h=new AnimeHistory(getTargetContext())){h.deleteEpisode("Legacy Season 2",4);try(Cursor c=h.getReadableDatabase().rawQuery("SELECT COUNT(*) FROM episode_log",null)){c.moveToFirst();check(c.getInt(0)==1,"per-episode deletion preserves other legacy log entries");}h.clearHistory();check(h.library().isEmpty(),"explicit legacy clear removes summaries");}

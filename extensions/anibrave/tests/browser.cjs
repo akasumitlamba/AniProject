@@ -46,8 +46,8 @@ const path=require('path'),fs=require('fs'),os=require('os'),assert=require('ass
 
  await page.reload();await settled(2);
  await worker.evaluate(async()=>chrome.storage.local.set({history:{'high school dxd':{key:'high school dxd',title:'High School DxD',episode:10,season:1,host:'127.0.0.1',url:'https://example.com',updated:Date.now()}}}));
- await page.waitForSelector('#anibrave-memory-card');await page.evaluate(()=>document.getElementById('anibrave-memory-card').remove());await page.waitForTimeout(2200);assert.equal(await page.locator('#anibrave-memory-card').count(),0);
- await page.reload();await page.waitForSelector('#anibrave-memory-card');
+ await page.waitForSelector('#anibrave-memory-card');await worker.evaluate(async()=>chrome.storage.local.set({reminderDismissals:{'127.0.0.1|high school dxd|s1|e10':Date.now()}}));await page.waitForTimeout(2200);assert.equal(await page.locator('#anibrave-memory-card').count(),0);
+ await page.reload();await page.waitForTimeout(500);assert.equal(await page.locator('#anibrave-memory-card').count(),0);
  // Activate fixture before rendering popup, as the toolbar does.
  await page.bringToFront();await popup.reload();await popup.waitForTimeout(700);
  await popup.waitForFunction(()=>document.querySelector('#host').textContent==='127.0.0.1');

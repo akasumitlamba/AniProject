@@ -13,13 +13,13 @@ async function fixture(url, selectors, title = '', options = {}) {
  const video = makeMedia(), media = [video], hosts = [];
  const queryAll = s=>s==='video, audio'||s==='video,audio'?media:s==='*'?hosts:[];
  const root={nodeType:1,localName:'html',classList:{contains:()=>false},querySelectorAll:queryAll};
- function element(tag) { const el={tag,children:[],style:{},setAttribute(){},append(...children){this.children.push(...children);},remove(){this.removed=true;},attachShadow(){this.shadow=element('shadow');return this.shadow;}};created.push(el);return el; }
+ function element(tag) { const el={tag,children:[],style:{},setAttribute(){},append(...children){this.children.push(...children);},isConnected:true,remove(){this.removed=true;this.isConnected=false;},attachShadow(){this.shadow=element('shadow');return this.shadow;}};created.push(el);return el; }
  const document={nodeType:9,documentElement:root,body:element('body'),title,addEventListener:(name,fn)=>{documentEvents[name]=fn;},createElement:element,querySelector:s=>selectors[s]||null,querySelectorAll:queryAll,getElementById:id=>created.find(el=>el.id===id&&!el.removed)||null};
  const windowEvents = {};
  const window={addEventListener:(name,fn)=>{windowEvents[name]=fn;},postMessage(data){queueMicrotask(()=>windowEvents.message?.({source:window,data:{source:'anibrave-page',type:'player-rate',id:data.id,rate:data.rate}}));}};
  const chrome={dom:{openOrClosedShadowRoot:el=>el.closedShadow||null},runtime:{async sendMessage(m){sent.push(m);if(m.type==='state'&&options.delayState)await options.delayState;return {ok:true,value:m.type==='state'?{host:new URL(url).hostname,settings:{speed:options.speed||1,speedUpdated:0},history:options.history||[]}:null};},onMessage:{addListener(fn){events.message=fn;}}},storage:{onChanged:{addListener(){}}}};
  const location=new URL(url);
- vm.runInNewContext(fs.readFileSync(new URL('../content.js',import.meta.url),'utf8'),{window,top:window,document,location,chrome,Date:{now:()=>clock},performance:{now:()=>clock},MutationObserver:class{observe(){}},setInterval:fn=>{intervals.push(fn);},setTimeout:(fn,ms)=>{timers.set(++timerId,{fn,at:clock+ms});return timerId;},clearTimeout:id=>timers.delete(id),queueMicrotask,console});
+ const sandbox={window,top:window,document,location,chrome,Date:{now:()=>clock},performance:{now:()=>clock},MutationObserver:class{observe(){}},setInterval:fn=>{intervals.push(fn);},setTimeout:(fn,ms)=>{timers.set(++timerId,{fn,at:clock+ms});return timerId;},clearTimeout:id=>timers.delete(id),queueMicrotask,console};const context=vm.createContext(sandbox);vm.runInContext(fs.readFileSync(new URL('../continuation.js',import.meta.url),'utf8'),context);vm.runInContext(fs.readFileSync(new URL('../content.js',import.meta.url),'utf8'),context);
  const flush=async()=>{await new Promise(resolve=>setImmediate(resolve));};
  const advance=async(ms)=>{clock+=ms;for(const [id,t]of [...timers])if(t.at<=clock){timers.delete(id);t.fn();}await flush();};
  await flush();

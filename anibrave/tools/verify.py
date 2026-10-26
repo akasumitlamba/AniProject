@@ -27,7 +27,9 @@ def main():
   assert app.getinfo('resources.arsc').compress_type==0
   assert app.testzip() is None
  badging=subprocess.check_output([str(args.build_tools/'aapt2'),'dump','badging',str(args.input)],text=True)
- assert "name='app.anibrave.main'" in badging and "versionCode='"+str(version['code'])+"'" in badging and "versionName='"+version['name']+'-brave-'+pin['tag'][1:]+"'" in badging
+ assert "name='app.anibrave.main'" in badging and "versionCode='"+str(version['code'])+"'" in badging and "versionName='"+version['name']+"'" in badging
+ tree=subprocess.check_output([str(args.build_tools/'aapt2'),'dump','xmltree',str(args.input),'--file','AndroidManifest.xml'],text=True)
+ assert 'app.anibrave.BRAVE_VERSION' in tree and pin['tag'][1:] in tree
  assert "native-code: 'arm64-v8a'" in badging
  def cert(apk):
   result=subprocess.check_output([str(args.build_tools/'apksigner'),'verify','--print-certs',str(apk)],text=True)

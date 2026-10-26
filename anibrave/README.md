@@ -35,7 +35,7 @@ Website players may resist speed changes, and native/closed-shadow/DRM-controlle
 
 Requires Java 17, Node, Python, `gh`, and the workspace Android SDK 37.1/build-tools 37.0.0. The script pins and checks upstream APK/tool hashes, compiles the feature module, assembles five narrowly scoped integration hooks, rewrites install-identity string constants through dexlib2, rebuilds Android resources, retains all original native libraries, aligns and signs the APK, and verifies the result. Set `ANIBRAVE_KEYSTORE` to your private existing keystore and supply signing passwords through environment variables (see below). Preserve that signing identity for future updates. Signing files and downloaded binaries are ignored by Git.
 
-Output: `output/anibrave/AniBrave-0.1.0-arm64-v8a.apk`, plus `verification.json` and `SHA256SUMS.txt`. Minimum Android version: Android 10. Only this ARM64 build is intended for delivery.
+Output: `output/anibrave/AniBrave-0.9.0-arm64-v8a.apk`, plus `verification.json` and `SHA256SUMS.txt`. Minimum Android version: Android 10. Only this ARM64 build is intended for delivery.
 
 ## Validation and limits
 
@@ -60,7 +60,7 @@ Existing native and browser notices are retained in the app. Customization sourc
 
 ## Local anime history
 
-Tracking belongs to AniBrave. Updates preserve the browser profile when signed with the same identity. See [TRACKING.md](TRACKING.md) for progress gating, cross-site reminders, local import, privacy, build verification and acceptance limits. The current update is 0.2.1 (Brave 1.98.60), versionCode 429705621. This engine update retains local per-episode continuation, conservative cross-site search, timestamp/speed restoration and the editable episode archive.
+Tracking belongs to AniBrave. Updates preserve the browser profile when signed with the same identity. See [TRACKING.md](TRACKING.md) for progress gating, cross-site reminders, local import, privacy, build verification and acceptance limits. The current shared release is 0.9.0 (Brave 1.98.60), versionCode 429705623. This engine update retains local per-episode continuation, conservative cross-site search, timestamp/speed restoration and the editable episode archive.
 
 ## Episode reminders and protected playback
 
@@ -114,3 +114,8 @@ The Android update retains the existing signing identity and profile.
 ## Full engine build on Linux
 
 Use `python3 anibrave/tools/build_engine.py --input <verified-official-arm64-apk> --output <signed-output.apk> --keystore <existing-private-key>`. Set JDK17 on PATH and the signing password environment described above. The tool reads `upstream.json` and `version.json`, verifies locked build tools and the upstream APK hash, isolates decoded caches by engine hash, applies version-pinned hooks, preserves native libraries and signs locally. SDK37.1/build-tools37.0.0 are required. Never reuse decoded outputs from another engine version.
+
+
+Version 0.2.2 reduces repeated controller transfer, title-only reconfiguration, viewport messages and page-wide tracking scans. Hidden tabs suspend periodic tracking discovery while media events and background playback remain supported. Inserted players are discovered through DOM changes with a slower fallback for late shadow roots. Native toolbar resource IDs are cached without retaining replaced view instances. The engine and native libraries are unchanged. See [validation boundaries](../PROJECT-CONTEXT.md).
+
+Version 0.9.0 also retains saved episode identifiers across partial page metadata updates, preserves learned cross-site links when correcting episode identity in one transaction, and rejects empty normalized series identities. Android SQLite regressions cover partial metadata, corrected links after reopen and rollback after a simulated transfer failure.

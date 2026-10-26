@@ -1,16 +1,16 @@
 # AniProject
 
-AniProject contains **AniHome**, an Android home-screen launcher, and **AniBrave**, a Brave-based Android browser customization. Contributor and AI guidance is technical-only: see [CONTRIBUTING.md](CONTRIBUTING.md).
+AniProject contains **AniHome**, an Android home-screen launcher, **AniBrave**, a Brave-based Android browser customization, and its desktop extension. Contributor and AI guidance is technical-only: see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Downloads
 
 | Product | Download | Requirements |
 | --- | --- | --- |
-| AniHome 0.8.29 | [Download launcher](https://github.com/akasumitlamba/AniProject/releases/download/anihome-v0.8.29/AniHome-Launcher-0.8.29-release.apk) | Android 8+ |
-| AniBrave 0.2.1 | [Download browser](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.24/AniBrave-0.2.1-arm64-v8a.apk) | Android 10+, ARM64 |
-| AniBrave desktop 0.1.4 | [Download extension](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.24/AniBrave-Extension-0.1.4.zip) | Brave desktop |
+| AniHome 0.9.0 | [Download launcher](https://github.com/akasumitlamba/AniProject/releases/download/v0.9.0/AniHome-Launcher-0.9.0-release.apk) | Android 8+ |
+| AniBrave 0.9.0 | [Download browser](https://github.com/akasumitlamba/AniProject/releases/download/v0.9.0/AniBrave-0.9.0-arm64-v8a.apk) | Android 10+, ARM64 |
+| AniBrave desktop 0.9.0 | [Download extension](https://github.com/akasumitlamba/AniProject/releases/download/v0.9.0/AniBrave-Extension-0.9.0.zip) | Brave desktop |
 
-[Download all three applications together](https://github.com/akasumitlamba/AniProject/releases/download/aniproject-2026.10.24/AniProject-2026.10.24-All-Apps.zip), or use the individual downloads above.
+[Download all three applications together](https://github.com/akasumitlamba/AniProject/releases/download/v0.9.0/AniProject-0.9.0-All-Products.zip), or use the individual downloads above.
 
 For updates, install the matching signed APK over the existing app. Keep the same signing identity; do not uninstall or clear app data.
 
@@ -20,7 +20,7 @@ For updates, install the matching signed APK over the existing app. Keep the sam
 
 [AniHome](launcher/README.md) combines apps and websites on the system wallpaper, with custom banner artwork, widgets, a searchable adaptive app drawer, recent files, configurable gestures and an inline notification/quick-settings sidebar. Wi-Fi and Bluetooth sections support scrolling lists and direct operations through optional Shizuku access. Rotation toggles Auto and Fixed, locking the current display angle. Gesture-driven panels use short directional animations. Notification counts use contrasting corner tags.
 
-The [Banner Store](banners/README.md) includes 159 named banners. It works offline and refreshes anonymously from this public repository. No GitHub account or token is needed. Apps retain local settings, tiles and connection recency; notifications are not uploaded.
+The [Banner Store](banners/README.md) includes 177 named banners. It works offline and refreshes anonymously from this public repository. No GitHub account or token is needed. Apps retain local settings, tiles and connection recency; notifications are not uploaded.
 
 ```sh
 cd launcher
@@ -48,3 +48,7 @@ This is an experimental APK customization, not a complete Chromium source build 
 This public repository contains source and technical documentation. Signing keys, credentials, private conversations, device backups and personal captures are excluded. Build signing uses private local configuration. See [contribution guidelines](CONTRIBUTING.md).
 
 Customization sources are MPL-2.0. Upstream notices and licenses remain intact. Third-party trademarks belong to their respective owners; AniProject is independent of Brave Software and the services represented in its banner catalog.
+
+## Combined releases
+
+All active products share version **0.9.0**: AniHome, AniBrave Android and the AniBrave desktop extension. [Download the complete release](https://github.com/akasumitlamba/AniProject/releases/tag/v0.9.0). Each release includes both APKs, the unpacked extension ZIP, banners, checksums and an all-products bundle. See [release policy](RELEASING.md) and [consolidated history](CHANGELOG.md).

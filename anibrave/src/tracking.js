@@ -57,8 +57,8 @@
   }
   let confirmedPage=null;
   function confirmed(){return confirmedPage&&confirmedPage.url===location.href?confirmedPage:null;}
-  function page() {
-    const watch=confirmed()||snapshot();if(watch)return {...watch,type:'continuationPage',kind:'watch'};
+  function page(watch=confirmed()||snapshot()) {
+    if(watch)return {...watch,type:'continuationPage',kind:'watch'};
     const host=location.hostname.toLowerCase();if(!/(^|\.)(crunchyroll\.com|hianime\.to|hianimez\.to|anikototv\.to)$/.test(host))return null;
     const path=location.pathname,kind=/^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?(?:home\/?)?$/i.test(path)?'home':/\/search(?:\/|$)/.test(path)?'search':/\/watch\//.test(path)?'watch':/\/(series|anime)\//.test(path)?'series':'other';
     const title=(text('[data-t="series-title"]')||text('.film-name')||text('h1')).slice(0,500);
@@ -69,9 +69,9 @@
   let lastSnapshot = '', lastProbe = 0;
   let knownPage = null;
   const probe = () => {
-    const raw=page(),current=raw?{...raw,visible:document.visibilityState!=='hidden',focused:document.hasFocus?.()!==false}:null, pageEncoded=JSON.stringify(current);if(pageEncoded!==lastPage){lastPage=pageEncoded;if(current)send(current);}
-    globalThis.__aniContinue?.update?.();
     const data = confirmed()||snapshot();
+    const raw=page(data),current=raw?{...raw,visible:document.visibilityState!=='hidden',focused:document.hasFocus?.()!==false}:null, pageEncoded=JSON.stringify(current);if(pageEncoded!==lastPage){lastPage=pageEncoded;if(current)send(current);}
+    globalThis.__aniContinue?.update?.();
     if (knownPage && knownPage.url !== location.href) knownPage = null;
     if (data) knownPage = data;
     const encoded = JSON.stringify(knownPage);
@@ -91,11 +91,16 @@
     const area = (video.clientWidth || 0)*(video.clientHeight || 0);
     return ![...media].some(v => v!==video && v.isConnected !== false && !ad(v) && (v.clientWidth||0)*(v.clientHeight||0)>area);
   }
+  let lastMediaScan = -Infinity;
   function tick(event) {
     const video = event.target;
     if (!video || video.tagName !== 'VIDEO') return;
     media.add(video);
-    for(const candidate of document.querySelectorAll('video'))if(candidate.tagName==='VIDEO')media.add(candidate);
+    // timeupdate can fire many times per second; discover sibling players at most once a second.
+    if (Date.now()-lastMediaScan >= 1000) {
+      lastMediaScan=Date.now();
+      for(const candidate of document.querySelectorAll('video'))if(candidate.tagName==='VIDEO')media.add(candidate);
+    }
     for(const candidate of media)if(candidate.isConnected===false)media.delete(candidate);
     const eligible=main(video);
     const now = Date.now(), position = Number(video.currentTime), duration = Number(video.duration);
@@ -119,20 +124,49 @@
     progress.set(video, {time:now,position,seconds,sent,signature,ranges,blocked:!eligible||!!video.paused||!!video.seeking||event.type==='seeking'});
   }
   for(const name of ['timeupdate','pause','ended','seeking','seeked'])document.addEventListener(name,tick,true);
-  const shadowRoots = new WeakSet();
+  const shadowRoots = new WeakSet(), observedRoots = new WeakSet();
+  const listenShadow = root => {
+    if (shadowRoots.has(root)) return;
+    shadowRoots.add(root);
+    for(const name of ['timeupdate','pause','ended','seeking','seeked'])root.addEventListener(name,tick,true);
+  };
   const scan = root => {
+    if (!root?.querySelectorAll) return;
+    if (root.tagName === 'VIDEO') media.add(root);
+    if (root.shadowRoot) { listenShadow(root.shadowRoot); scan(root.shadowRoot); }
+    // Observe document/shadow trees once, not each inserted subtree. Ordinary
+    // player insertion is event-driven; a slower sweep catches late attachShadow.
+    if ((root === document || root.host) && !observedRoots.has(root) && typeof MutationObserver !== 'undefined') {
+      observedRoots.add(root);
+      new MutationObserver(records => {
+        if (document.visibilityState === 'hidden') return;
+        for (const record of records) for (const node of record.addedNodes || []) scan(node);
+      }).observe(root, {childList:true, subtree:true});
+    }
     for (const video of root.querySelectorAll('video')) if(video.tagName === 'VIDEO')media.add(video);
     for(const video of media)if(video.isConnected===false)media.delete(video);
     for (const node of root.querySelectorAll('*')) if (node.shadowRoot) {
-    if (!shadowRoots.has(node.shadowRoot)) { shadowRoots.add(node.shadowRoot); for(const name of ['timeupdate','pause','ended','seeking','seeked'])node.shadowRoot.addEventListener(name,tick,true); }
+    listenShadow(node.shadowRoot);
     scan(node.shadowRoot);
   } };
   scan(document);
   globalThis.__aniWatch = {snapshot, page, tick, media, main, ad,confirm(entry){if(!entry)return;confirmedPage={...entry,type:"watchPage",kind:"watch",url:location.href,host:location.hostname,seasonKnown:true,seriesTitle:entry.seriesTitle||entry.title};knownPage=confirmedPage;probe();}};
   probe();
   let timer = null;
-  const start = () => { if (timer === null) timer = setInterval(() => { probe(); scan(document); }, 2000); };
+  let lastScan = Date.now();
+  const scanNow = () => { scan(document); lastScan=Date.now(); };
+  const start = () => {
+    if (timer === null && document.visibilityState !== 'hidden') timer = setInterval(() => {
+      probe();
+      if (Date.now()-lastScan >= 10000) scanNow();
+    }, 2000);
+  };
+  document.addEventListener('visibilitychange', () => {
+    probe(); // Report foreground changes immediately for continuation/privacy checks.
+    if (document.visibilityState === 'hidden') { clearInterval(timer); timer=null; }
+    else { scanNow(); start(); }
+  });
   start();
   window.addEventListener('pagehide', () => { clearInterval(timer); timer = null; });
-  window.addEventListener('pageshow', () => { probe(); scan(document); start(); });
+  window.addEventListener('pageshow', () => { probe(); scanNow(); start(); });
 })();

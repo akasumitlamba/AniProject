@@ -31,7 +31,7 @@ final class ContinuationStore extends SQLiteOpenHelper {
     private JSONObject identity(JSONObject i,String url,boolean aliases){
         if(i==null||host(url).isEmpty())return null;String title=i.optString("seriesTitle",i.optString("title","")).trim();int s=i.optInt("season",1),p=i.optInt("part",0),e=i.optInt("episode",0);
         if(title.length()<2||title.length()>500||s<1||s>100||p<0||p>100||e<1||e>9999)return null;
-        try{String series=titleKey(title);if(aliases)try(Cursor c=getReadableDatabase().rawQuery("SELECT canonical,offset,target_season,target_part FROM aliases WHERE host=? AND alias=? AND season=? AND part=?",new String[]{host(url),series,""+s,""+p})){if(c.moveToFirst()){series=c.getString(0);e+=c.getInt(1);s=c.getInt(2);p=c.getInt(3);}}if(e<1||e>9999)return null;return new JSONObject().put("title",title).put("series",series).put("season",s).put("part",p).put("episode",e).put("key",series+"|s"+s+"|p"+p+"|e"+e);}catch(Exception ex){return null;}
+        try{String series=titleKey(title);if(series.isEmpty())return null;if(aliases)try(Cursor c=getReadableDatabase().rawQuery("SELECT canonical,offset,target_season,target_part FROM aliases WHERE host=? AND alias=? AND season=? AND part=?",new String[]{host(url),series,""+s,""+p})){if(c.moveToFirst()){series=c.getString(0);e+=c.getInt(1);s=c.getInt(2);p=c.getInt(3);}}if(e<1||e>9999)return null;return new JSONObject().put("title",title).put("series",series).put("season",s).put("part",p).put("episode",e).put("key",series+"|s"+s+"|p"+p+"|e"+e);}catch(Exception ex){return null;}
     }
     static JSONArray merge(JSONArray a,JSONArray b,double duration)throws JSONException{
         List<double[]> list=new ArrayList<>();for(JSONArray group:new JSONArray[]{a,b})if(group!=null)for(int n=0;n<Math.min(group.length(),1000);n++){JSONArray r=group.optJSONArray(n);if(r==null||r.length()!=2)continue;double x=r.optDouble(0,-1),y=r.optDouble(1,-1);if(Double.isNaN(x)||Double.isNaN(y)||Double.isInfinite(x)||Double.isInfinite(y)||x<0||y<=x||y>86400)continue;if(duration>0)y=Math.min(y,duration);if(y>x)list.add(new double[]{x,y});}
@@ -45,7 +45,20 @@ final class ContinuationStore extends SQLiteOpenHelper {
         migrate();String url=i==null?"":i.optString("url","");if(url.isEmpty()&&progress!=null)url=progress.optString("url","");JSONObject id=identity(i,url,!canonical);if(id==null||progress==null||!progress.optBoolean("qualified",false))return null;
         SQLiteDatabase d=getWritableDatabase();d.beginTransaction();try{String key=id.getString("key");JSONObject old=get(key);double duration=number(progress,"duration",0,86400),position=number(progress,"position",0,86400),speed=number(progress,"speed",1,16);if(duration==0&&old!=null)duration=old.optDouble("duration",0);if(duration>0)position=Math.min(position,duration);if(speed<.1)speed=1;JSONArray ranges=merge(old==null?null:old.optJSONArray("ranges"),progress.optJSONArray("ranges"),duration);double covered=0;for(int n=0;n<ranges.length();n++){JSONArray r=ranges.getJSONArray(n);covered+=r.getDouble(1)-r.getDouble(0);}boolean done=old!=null&&old.optBoolean("completed")||duration>=60&&covered>=duration*.85;long now=System.currentTimeMillis();ContentValues v=new ContentValues();v.put("k",key);v.put("series",id.getString("series"));v.put("title",id.getString("title"));v.put("season",id.getInt("season"));v.put("part",id.getInt("part"));v.put("episode",id.getInt("episode"));v.put("position",position);v.put("duration",duration);v.put("speed",speed);v.put("completed",done?1:0);v.put("ranges",ranges.toString());v.put("url",url);v.put("host",host(url));v.put("updated",now);v.put("generation",old==null?now:old.optLong("generation"));d.insertWithOnConflict("episodes",null,v,SQLiteDatabase.CONFLICT_REPLACE);learn(key,url);metadata(key,url,i);d.setTransactionSuccessful();return get(key);}catch(Exception e){return null;}finally{d.endTransaction();}
     }
-    private void metadata(String key,String url,JSONObject id){String series=id.optString("seriesId","").trim(),episode=id.optString("episodeId","").trim();if(series.length()>500||episode.length()>500||(series.isEmpty()&&episode.isEmpty()))return;ContentValues v=new ContentValues();v.put("k",key);v.put("host",host(url));v.put("series_id",series);v.put("episode_id",episode);getWritableDatabase().insertWithOnConflict("metadata",null,v,SQLiteDatabase.CONFLICT_REPLACE);}
+    private void metadata(String key,String url,JSONObject id){
+        String series=id.optString("seriesId", "").trim(),episode=id.optString("episodeId", "").trim();
+        if(series.length()>500||episode.length()>500||(series.isEmpty()&&episode.isEmpty()))return;
+        // Page metadata can arrive in stages. Missing fields are not deletions.
+        try(Cursor c=getReadableDatabase().rawQuery("SELECT series_id,episode_id FROM metadata WHERE k=? AND host=?",new String[]{key,host(url)})){
+            if(c.moveToFirst()){
+                if(series.isEmpty())series=c.getString(0);
+                if(episode.isEmpty())episode=c.getString(1);
+            }
+        }
+        ContentValues v=new ContentValues();v.put("k",key);v.put("host",host(url));
+        v.put("series_id",series);v.put("episode_id",episode);
+        getWritableDatabase().insertWithOnConflict("metadata",null,v,SQLiteDatabase.CONFLICT_REPLACE);
+    }
     private void learn(String key,String url){if(host(url).isEmpty())return;ContentValues v=new ContentValues();v.put("k",key);v.put("host",host(url));v.put("url",url);getWritableDatabase().insertWithOnConflict("locations",null,v,SQLiteDatabase.CONFLICT_REPLACE);}
     synchronized JSONArray library(){migrate();JSONArray a=new JSONArray();try(Cursor c=getReadableDatabase().rawQuery("SELECT * FROM episodes ORDER BY updated DESC LIMIT 10000",null)){while(c.moveToNext())a.put(enrich(row(c)));}catch(Exception e){}return a;}
     // The scope is a persistent Chromium tab ID, not the enclosing Android task ID.
@@ -67,7 +80,35 @@ final class ContinuationStore extends SQLiteOpenHelper {
     synchronized void applied(int task){getWritableDatabase().delete("pending","task=?",new String[]{""+task});}
     synchronized void forget(String key){JSONObject old=get(key);SQLiteDatabase d=getWritableDatabase();d.beginTransaction();try{d.delete("episodes","k=?",new String[]{key});d.delete("locations","k=?",new String[]{key});d.delete("metadata","k=?",new String[]{key});d.delete("dismissed","k=?",new String[]{key});if(old!=null)try(Cursor left=d.rawQuery("SELECT 1 FROM episodes WHERE series=? LIMIT 1",new String[]{old.optString("series")})){if(!left.moveToFirst())d.delete("aliases","canonical=?",new String[]{old.optString("series")});}try(Cursor c=d.rawQuery("SELECT task,data FROM pending",null)){while(c.moveToNext())if(new JSONObject(c.getString(1)).getJSONObject("entry").optString("key").equals(key))applied(c.getInt(0));}catch(Exception e){}d.setTransactionSuccessful();}finally{d.endTransaction();}}
     synchronized void clear(){SQLiteDatabase d=getWritableDatabase();d.beginTransaction();try{for(String table:new String[]{"episodes","locations","metadata","dismissed","pending","aliases"})d.delete(table,null,null);d.execSQL("INSERT OR REPLACE INTO meta VALUES('legacy-v1','1')");d.setTransactionSuccessful();}finally{d.endTransaction();}}
-    synchronized JSONObject correct(String key,JSONObject correction){JSONObject old=get(key);if(old==null)return null;try{JSONObject i=new JSONObject(old.toString()).put("title",old.getString("series"));for(String k:new String[]{"title","season","part","episode"})if(correction.has(k))i.put(k,correction.get(k));JSONObject p=new JSONObject(old.toString()).put("qualified",true);if(correction.has("position")){double position=correction.optDouble("position",Double.NaN);if(Double.isNaN(position)||Double.isInfinite(position)||position<0||position>86400)return null;p.put("position",position);}JSONObject result=recordInternal(i,p,true);if(result!=null){ContentValues preserved=new ContentValues();if(!correction.has("title"))preserved.put("title",old.optString("title"));if(old.optBoolean("completed"))preserved.put("completed",1);if(preserved.size()>0)getWritableDatabase().update("episodes",preserved,"k=?",new String[]{result.optString("key")});result=get(result.optString("key"));if(!result.optString("key").equals(key))forget(key);}return result;}catch(Exception e){return null;}}
+    synchronized JSONObject correct(String key,JSONObject correction){
+        JSONObject old=get(key);if(old==null)return null;
+        SQLiteDatabase d=getWritableDatabase();d.beginTransaction();
+        try{
+            JSONObject i=new JSONObject(old.toString()).put("title",old.getString("series"));
+            for(String field:new String[]{"title","season","part","episode"})
+                if(correction.has(field))i.put(field,correction.get(field));
+            JSONObject progress=new JSONObject(old.toString()).put("qualified",true);
+            if(correction.has("position")){
+                double position=correction.optDouble("position",Double.NaN);
+                if(!Double.isFinite(position)||position<0||position>86400)return null;
+                progress.put("position",position);
+            }
+            JSONObject result=recordInternal(i,progress,true);if(result==null)return null;
+            String next=result.getString("key");
+            ContentValues preserved=new ContentValues();
+            if(!correction.has("title"))preserved.put("title",old.optString("title"));
+            if(old.optBoolean("completed"))preserved.put("completed",1);
+            if(preserved.size()>0)d.update("episodes",preserved,"k=?",new String[]{next});
+            if(!next.equals(key)){
+                // Identity edits retain every explicitly learned site, not just the last URL.
+                // Existing destination links take precedence when merging two records.
+                d.execSQL("INSERT OR IGNORE INTO locations(k,host,url) SELECT ?,host,url FROM locations WHERE k=?",new Object[]{next,key});
+                d.execSQL("INSERT OR IGNORE INTO metadata(k,host,series_id,episode_id) SELECT ?,host,series_id,episode_id FROM metadata WHERE k=?",new Object[]{next,key});
+                forget(key);
+            }
+            result=get(next);if(result!=null)d.setTransactionSuccessful();return result;
+        }catch(Exception e){return null;}finally{d.endTransaction();}
+    }
     private JSONObject legacyIdentity(String title,int episode,String url)throws JSONException{
         int season=1,part=0;java.util.regex.Matcher m=java.util.regex.Pattern.compile("(?i)\\bseason\\s*(\\d{1,2})\\b").matcher(title);if(m.find()){season=Integer.parseInt(m.group(1));title=m.replaceAll(" ");}
         m=java.util.regex.Pattern.compile("(?i)\\b(?:part|cour)\\s*(\\d{1,2})\\b").matcher(title);if(m.find()){part=Integer.parseInt(m.group(1));title=m.replaceAll(" ");}
