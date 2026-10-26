@@ -82,3 +82,12 @@ Limitations: Android owns rotation and individual apps retain Android-supported 
 ## Additional consolidated maintenance history
 
 Earlier standalone AniHome releases established native-app and website tiles, wallpaper Home, local data persistence, widgets, notification controls and configurable Home gestures. Earlier standalone AniBrave patches added local history, auto-hiding reminders, stable vertical-tab rendering, shortcut resume, two-way speed synchronization and shortcut task recovery. These features are retained in the current products; obsolete browser previews do not define current acceptance. Retired Firefox/Lite product archives are not part of this consolidation.
+
+### Browser maintenance consolidated from earlier standalone builds
+
+- `anibrave-v0.1.1-local-history`: on-device episode summaries and watch logs for supported anime adapters, qualified video progress before recording, profile privacy guards and editable local history.
+- `anibrave-v0.1.1-reminder-timeout`: reminder auto-hide after eight seconds, accessibility-adjusted reading time, and suppression of repeated presentation for the same page/episode.
+- `anibrave-v0.1.1-vertical-tabs`, `anibrave-v0.1.1-sidebar-polish`, and `anibrave-v0.1.1-vertical-tabs-fix`: selectable horizontal/vertical native tab layouts, compact tab counts and rows, Regular/Private switching, persistent hiding of the horizontal compositor strip in vertical mode, scroll/toolbar behavior, restored tab selection and layout insets.
+- `anibrave-v0.1.1-resume-speed` and `anibrave-v0.1.1-resume-speed-r2`: foreground normal-profile shortcut destination restoration, site/native playback-speed synchronization, delayed native menu acknowledgement and numeric-only rate labels such as 1.5. The r2 build superseded the earlier speed build.
+
+These historical records describe feature lineage. Current acceptance is limited to the validation listed in the 0.9.0 release; old native UI test counts do not imply complete present-day site compatibility.
