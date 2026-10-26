@@ -8,6 +8,7 @@
   const same=(entry,id)=>!!id&&id.kind==='watch'&&id.seasonKnown===true&&norm(entry.seriesTitle||entry.title)===norm(id.seriesTitle||id.title)&&Number(entry.season||1)===Number(id.season||1)&&Number(entry.part||0)===Number(id.part||0)&&Number(entry.episode)===Number(id.episode);
   let state=null,lastRoute='',lastApply='',resumeTimer=null,activeResume=null;
   const sought=new WeakMap(),ownSeek=new WeakMap();
+  let automatic=globalThis.performance?.getEntriesByType?.('navigation')?.[0]?.type!=='back_forward',configured=false;
   function cancel(reason){clearInterval(resumeTimer);resumeTimer=null;if(activeResume){send({type:'continuationBlocked',url:activeResume.url,reason});activeResume=null;}}
   function pending(){return state?.pending&&state.pending.expires>Date.now()&&String(state.pending.targetHost||state.pending.host||'').replace(/^www\./,'')===location.hostname.replace(/^www\./,'')&&!state.privateMode?state.pending:null;}
   function route(url){if(lastRoute===location.href+'|'+url)return;lastRoute=location.href+'|'+url;send({type:'continuationNavigate',url});}
@@ -19,7 +20,7 @@
     url.searchParams.set(name,entry.seriesTitle||entry.title);route(url.href);return true;
   }
   function update(){
-    const p=pending();if(!p||document.visibilityState==='hidden')return;const entry=p.entry||state.entry;if(!entry)return;
+    const p=pending();if(!automatic||!p||document.visibilityState==='hidden')return;const entry=p.entry||state.entry;if(!entry)return;
     const id=identity();if(same(entry,id)){
       const key=location.href+'|'+JSON.stringify([entry.title,entry.season,entry.part,entry.episode]);
       if(lastApply!==key){lastApply=key;send({type:'continuationApply',url:location.href,identity:id});}return;
@@ -48,6 +49,8 @@
   }
   function resume(entry){
     cancel('Replaced by a newer resume request.');if(!entry||state?.privateMode)return;
+    // A new native request must seek even when SPA history retained the same player.
+    for(const video of globalThis.__aniWatch?.media||[])sought.delete(video);
     const url=location.href,until=Date.now()+60000;activeResume={url};
     const attempt=()=>{
       if(!activeResume)return true;
@@ -63,6 +66,10 @@
   on('seeking',event=>{const v=event.target;if(event.isTrusted&&!(ownSeek.has(v)&&Math.abs(v.currentTime-ownSeek.get(v))<=1))cancel('Resume cancelled after the position changed.');});
   on('seeked',event=>ownSeek.delete(event.target));
   on('visibilitychange',()=>{if(document.visibilityState==='hidden')cancel('Resume paused while this page is hidden.');});
-  globalThis.__aniContinue={configure(next){if(JSON.stringify(state?.pending?.entry)!==JSON.stringify(next?.pending?.entry))lastApply='';state=next;update();},update,inspect:identity,resume,search:fillSearch,act(action){if(action==='search'){const p=pending();return !!p&&fillSearch(p.entry||state.entry);}return false;}};
+  globalThis.__aniContinue={configure(next){if(configured&&next?.pending&&next.pending.expires!==state?.pending?.expires)automatic=true;configured=true;if(JSON.stringify(state?.pending?.entry)!==JSON.stringify(next?.pending?.entry))lastApply='';state=next;update();},update,inspect:identity,resume,search:fillSearch,act(action){if(action==='search'){const p=pending();return !!p&&fillSearch(p.entry||state.entry);}return false;}};
   window.addEventListener('pagehide',()=>cancel('navigation'));
+  // History traversal is user navigation, not permission to route forward again.
+  const pauseForHistory=()=>{automatic=false;lastRoute='';lastApply='';cancel('navigation');};
+  window.addEventListener('popstate',pauseForHistory);
+  window.addEventListener('pageshow',event=>{if(event.persisted)pauseForHistory();});
 })();

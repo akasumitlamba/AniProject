@@ -5,5 +5,6 @@
     "AniBrave Android",
     "AniBrave desktop extension"
   ],
-  "policy": "Publish every product together. Product display versions match; platform upgrade codes increase independently."
+  "policy": "Publish every product together. Product display versions match; platform upgrade codes increase independently.",
+  "revision": 2
 }

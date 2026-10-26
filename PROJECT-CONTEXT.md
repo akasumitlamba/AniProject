@@ -39,3 +39,5 @@ AniHome 0.8.29 removes forced display rotation, migrates old app-only angle pref
 ## Unified product releases
 
 `release.json` records the shared product display version. AniHome, AniBrave Android and the AniBrave desktop extension must all match it. Platform version codes remain independently increasing to preserve in-place updates. Every new or updated release contains all active products, banners, checksums and an all-products bundle. Never publish a launcher-only or browser-only maintenance release. Preserve consolidated notes before removing superseded standalone releases; keep combined rollback releases and Git tags. See RELEASING.md.
+
+Revision 2 of 0.9.0 repairs history traversal/retained-player resume, cancellation-safe entrance completion and the Settings/Notifications section boundary. The exact reviewed source ZIP and public source commit accompany maintenance assets; existing release tags remain immutable. Emulator/browser fixture evidence is distinct from physical-device acceptance.

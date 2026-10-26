@@ -545,7 +545,7 @@ class HomeActivity : AppCompatActivity() {
         if (restoreNotificationPanel) {
             restoreNotificationPanel = false
             binding.root.doOnLayout {
-                if (!isFinishing && !isDestroyed) notificationPanel.show()
+                if (!isFinishing && !isDestroyed) notificationPanel.show(restoreSection = true)
             }
         }
         else notificationPanel.resume()

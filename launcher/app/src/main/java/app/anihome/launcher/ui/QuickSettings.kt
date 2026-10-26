@@ -196,6 +196,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         parent.addView(label, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(6) })
     }
     fun showSettings() { selected = "Settings"; wifiDraft = null; render() }
+    fun showNotifications() { selected = null; wifiDraft = null; status = ""; render() }
     var onSectionChanged: ((String?) -> Unit)? = null
     private fun render() {
         onSectionChanged?.invoke(selected)

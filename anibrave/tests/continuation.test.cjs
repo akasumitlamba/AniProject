@@ -1,6 +1,6 @@
 const test=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
 const source=fs.readFileSync(path.join(__dirname,'../src/continuation.js'),'utf8');
-function fixture(id,links=[]){let now=1000;const messages=[],timers=new Map(),media=new Set();let serial=0;const listeners=new Map();const context=vm.createContext({URL,location:new URL('https://hianime.to/search?keyword=Example'),Date:{now:()=>now},document:{addEventListener:(name,fn)=>listeners.set(name,fn),querySelector:()=>null,querySelectorAll:()=>links},window:{addEventListener:(name,fn)=>listeners.set(name,fn)},setInterval:fn=>{timers.set(++serial,fn);return serial;},clearInterval:n=>timers.delete(n),aniBraveNative:s=>messages.push(JSON.parse(s)),__aniWatch:{page:()=>id,media,main:()=>true,ad:v=>!!v.ad}});vm.runInContext(source,context);return {fire:(name,event={})=>listeners.get(name)?.(event),api:context.__aniContinue,context,messages,media,advance:ms=>{now+=ms;for(const fn of timers.values())fn();},state:entry=>({entry,pending:{entry,expires:now+1800000,host:'hianime.to'}})};}
+function fixture(id,links=[],navigationType="navigate"){let now=1000;const messages=[],timers=new Map(),media=new Set();let serial=0;const listeners=new Map();const context=vm.createContext({URL,performance:{getEntriesByType:()=>[{type:navigationType}]},location:new URL('https://hianime.to/search?keyword=Example'),Date:{now:()=>now},document:{addEventListener:(name,fn)=>listeners.set(name,fn),querySelector:()=>null,querySelectorAll:()=>links},window:{addEventListener:(name,fn)=>listeners.set(name,fn)},setInterval:fn=>{timers.set(++serial,fn);return serial;},clearInterval:n=>timers.delete(n),aniBraveNative:s=>messages.push(JSON.parse(s)),__aniWatch:{page:()=>id,media,main:()=>true,ad:v=>!!v.ad}});vm.runInContext(source,context);return {fire:(name,event={})=>listeners.get(name)?.(event),api:context.__aniContinue,context,messages,media,advance:ms=>{now+=ms;for(const fn of timers.values())fn();},state:entry=>({entry,pending:{entry,expires:now+1800000,host:'hianime.to'}})};}
 const entry={title:'Example',season:2,part:0,episode:5,position:313,duration:1200};
 const link=(text,url,attrs={})=>({textContent:text,href:url,getAttribute:n=>attrs[n]||null});
 test('unique exact series result requests native navigation; does not navigate itself',()=>{const f=fixture({kind:'search'},[link('Example','https://hianime.to/series/example')]);f.api.configure(f.state(entry));assert.equal(f.messages[0].type,'continuationNavigate');assert.equal(f.context.location.pathname,'/search');});
@@ -13,7 +13,28 @@ test('safe GET search fallback excludes password and cross-origin forms',()=>{co
 
 test('compact S2E5 episode labels route only to the saved exact season',()=>{for(const label of ['S2E5','S2 E5','Season 2 Episode 5']){const f=fixture({kind:'series',title:'Example',season:2,seasonKnown:true},[link(label,'https://hianime.to/watch/correct'),link('S3E5','https://hianime.to/watch/wrong-season')]);const state=f.state(entry);state.pending.targetHost=state.pending.host;delete state.pending.host;f.api.configure(state);assert.equal(f.messages.length,1);assert.equal(f.messages[0].url,'https://hianime.to/watch/correct');}});
 
-test('hidden pages and trusted user input cancel delayed resume without autoplay',()=>{for(const kind of ['hidden','pointerdown','keydown','seeking','pagehide','navigation']){const f=fixture(null);let play=0;const video={duration:1200,readyState:0,currentTime:0,paused:true,play:()=>play++,seekable:{length:1,start:()=>0,end:()=>1200}};f.media.add(video);f.api.resume(entry);if(kind==='hidden'){f.context.document.visibilityState='hidden';f.fire('visibilitychange');}else if(kind==='navigation')f.context.location.href='https://hianime.to/other';else f.fire(kind,{isTrusted:true,target:video});video.readyState=2;f.advance(1000);assert.equal(video.currentTime,0,kind);assert.equal(play,0);assert.equal(f.messages.at(-1).type,'continuationBlocked');}});
+test('hidden pages and trusted user input cancel delayed resume without autoplay',()=>{for(const kind of ['hidden','pointerdown','keydown','seeking','pagehide','popstate','navigation']){const f=fixture(null);let play=0;const video={duration:1200,readyState:0,currentTime:0,paused:true,play:()=>play++,seekable:{length:1,start:()=>0,end:()=>1200}};f.media.add(video);f.api.resume(entry);if(kind==='hidden'){f.context.document.visibilityState='hidden';f.fire('visibilitychange');}else if(kind==='navigation')f.context.location.href='https://hianime.to/other';else f.fire(kind,{isTrusted:true,target:video});video.readyState=2;f.advance(1000);assert.equal(video.currentTime,0,kind);assert.equal(play,0);assert.equal(f.messages.at(-1).type,'continuationBlocked');}});
 test('synthetic pointer events do not cancel a requested resume',()=>{const f=fixture(null),video={duration:1200,readyState:0,currentTime:0,seekable:{length:1,start:()=>0,end:()=>1200}};f.media.add(video);f.api.resume(entry);f.fire('pointerdown',{isTrusted:false});video.readyState=2;f.advance(500);assert.equal(video.currentTime,313);});
 
 test('applied handoff can reapply once in a new document after reload',()=>{const f=fixture({kind:'watch',seriesTitle:'Example',season:2,seasonKnown:true,episode:5});const s=f.state(entry);s.pending.applied=true;f.api.configure(s);f.api.configure(s);assert.equal(f.messages.filter(m=>m.type==='continuationApply').length,1);});
+
+test('history Back/Forward never automatically redirects or resumes',()=>{
+ for(const kind of ['search','watch']){
+  const f=fixture({kind,title:'Example',seriesTitle:'Example',season:2,seasonKnown:true,episode:5},[link('Example','https://hianime.to/series/example')],'back_forward');
+  f.api.configure(f.state(entry));f.api.update();assert.equal(f.messages.length,0,kind);
+ }
+});
+test('same-document Back cancels routing until an explicit new handoff',()=>{
+ const f=fixture({kind:'search'},[link('Example','https://hianime.to/series/example')]);
+ const s=f.state(entry);f.api.configure(s);assert.equal(f.messages.length,1);
+ f.fire('popstate');f.api.update();assert.equal(f.messages.length,1);
+ f.api.configure({...s,pending:{...s.pending,expires:s.pending.expires+1}});
+ assert.equal(f.messages.length,2,'an explicit new continuation can navigate again');
+});
+
+test('a new resume command seeks a retained player after history traversal',()=>{
+ const f=fixture(null),video={duration:1200,readyState:2,currentTime:0,seekable:{length:1,start:()=>0,end:()=>1200}};
+ f.media.add(video);f.api.resume(entry);assert.equal(video.currentTime,313);
+ video.currentTime=0;f.fire('popstate');f.api.resume(entry);assert.equal(video.currentTime,313);
+ f.api.resume({...entry,position:432});assert.equal(video.currentTime,432);
+});
