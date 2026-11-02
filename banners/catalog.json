@@ -52,7 +52,7 @@
       "webHosts": [
         "google.com"
       ],
-      "sha256": "435bea5370736c409d327854a03d787d530a0e9a9c5244281e85dcfbc3a30c98",
+      "sha256": "7ece0960a9be438edfc28cde472b48850d8f49fbe37fe51ecb9fdfd1f3db0c90",
       "popular": false,
       "category": "productivity",
       "tabletPriority": 82
@@ -664,7 +664,7 @@
       "webHosts": [
         "netflix.com"
       ],
-      "sha256": "1fbd9c3c0d743b94fd9cffdfaf990541bed7855756ca1001d6d3c0cd6236d73c",
+      "sha256": "59fb858d3ed9cf361555df7fb7a4d56314250714c196f2ece70d9a9a027b3a57",
       "popular": true,
       "category": "entertainment",
       "tabletPriority": 100
@@ -682,7 +682,7 @@
       "webHosts": [
         "primevideo.com"
       ],
-      "sha256": "8d7fa9e7c318b955e3765f27fdd8fd7b742ea3a1be80885b402e1fdfc34c0d5a",
+      "sha256": "f30ae54433294ae05d4ef77fb90af5a713ef4a4ad6b21bd4a87cf072d67d6fd8",
       "popular": true,
       "category": "entertainment",
       "tabletPriority": 100
