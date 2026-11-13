@@ -72,8 +72,8 @@
     </style>
     <style name="Theme.AniHome.Drawer" parent="Theme.AniHome">
         <item name="android:windowFullscreen">true</item>
-        <item name="android:windowBackground">@color/ink_soft</item>
-        <item name="android:windowShowWallpaper">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowShowWallpaper">true</item>
         <item name="android:windowAnimationStyle">@style/Animation.AniHome.Drawer</item>
     </style>
     <style name="Animation.AniHome.Drawer" parent="@android:style/Animation.Activity">
@@ -84,6 +84,16 @@
     </style>
     <style name="Theme.AniHome.Home" parent="Theme.AniHome">
         <item name="android:windowFullscreen">true</item>
+    </style>
+    <style name="Theme.AniHome.Panel" parent="Theme.AniHome">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <!-- Show the app underneath, not the wallpaper. -->
+        <item name="android:windowShowWallpaper">false</item>
     </style>
     <style name="Theme.AniHome.Sidebar" parent="Theme.AniHome.Dialog">
         <item name="android:windowFullscreen">true</item>

@@ -1,4 +1,5 @@
 """Shared task manifest and icon placement for initial builds and APK updates."""
+import os
 import xml.etree.ElementTree as ET
 
 ANDROID = '{http://schemas.android.com/apk/res/android}'
@@ -29,7 +30,7 @@ def configure_tasks(application):
         root = ET.SubElement(application, 'activity', {ANDROID+'name': name})
     for key, value in {
         'exported': 'false', 'theme': '@android:style/Theme.Translucent.NoTitleBar',
-        'taskAffinity': 'app.anibrave.main.shortcuts', 'documentLaunchMode': 'intoExisting',
+        'taskAffinity': os.environ.get('ANIBRAVE_PACKAGE', 'app.anibrave.main') + '.shortcuts', 'documentLaunchMode': 'intoExisting',
         'excludeFromRecents': 'false', 'autoRemoveFromRecents': 'false', 'maxRecents': '16',
         'configChanges': 'orientation|screenSize|smallestScreenSize|keyboardHidden|uiMode',
     }.items():

@@ -1,6 +1,6 @@
 # AniBrave
 
-Personal Android browser based on the official Brave 1.98.60 ARM64 APK (Chromium 156.0.8078.48). Install identity: `app.anibrave.main`. Launcher name: **AniBrave**. This installs alongside official Brave. AniBrowser Full (Firefox/GeckoView) and Lite have been removed from this repository. It has an independent profile: cookies are shared between AniBrave tabs and its shortcuts, not imported from other installed browsers.
+Personal Android browser based on the official Brave 1.99.57 ARM64 APK (Chromium 157.0.8103.79). Install identity: `app.anibrave.main`. Launcher name: **AniBrave**. This installs alongside official Brave. AniBrowser Full (Firefox/GeckoView) and Lite have been removed from this repository. It has an independent profile: cookies are shared between AniBrave tabs and its shortcuts, not imported from other installed browsers.
 
 The native engine and Shields libraries remain byte-for-byte identical to the verified upstream APK. This is a locally compiled Java/JavaScript customization and repackaging of that APK, not a full Chromium source build. It uses a separate personal signing key. A daily GitHub Actions check prepares draft engine-upgrade proposals; compatibility testing, signing and installation remain explicit steps (see [engine updates](docs/engine-updates.md)). It is an experimental personal build; physical tablet startup and settings application have been checked, but universal streaming compatibility is not claimed.
 
@@ -51,10 +51,10 @@ The internal controller uses Chromium's DevTools protocol through an abstract Un
 
 ## Upstream and notices
 
-- [Brave 1.98.60 release](https://github.com/brave/brave-browser/releases/tag/v1.98.60)
-- [Corresponding Brave source](https://github.com/brave/brave-core/tree/v1.98.60), tag commit `52db4b25c0aa3038e9a1c6021428b136cc3cb5fc`
-- [Chromium source](https://chromium.googlesource.com/chromium/src/+/156.0.8078.48/)
-- [Brave source license](https://github.com/brave/brave-core/blob/v1.98.60/LICENSE)
+- [Brave 1.99.57 release](https://github.com/brave/brave-browser/releases/tag/v1.99.57)
+- [Corresponding Brave source](https://github.com/brave/brave-core/tree/v1.99.57)
+- [Chromium source](https://chromium.googlesource.com/chromium/src/+/157.0.8103.79/)
+- [Brave source license](https://github.com/brave/brave-core/blob/v1.99.57/LICENSE)
 
 Existing native and browser notices are retained in the app. Customization sources in this folder are MPL-2.0. AniBrave is independent and is not an official Brave Software product. Brave, Chromium, apktool, smali/dexlib2 and their dependencies retain their respective licenses and trademarks.
 
@@ -111,9 +111,16 @@ See the [detailed launch notes](../docs/releases/1.0.0.md). Android updates reta
 
 [Streaming buffer](docs/buffering.md) requests more media ahead across sites and provides a bounded, cancelable buffer-guard fallback after stalls. It preserves the site player and does not guarantee full-episode loading on unsupported players. Fullscreen shortcut tools omit shortcut creation because the current window is already immersive.
 
+## QA builds beside the installed app
+
+Set `ANIBRAVE_PACKAGE=app.anibrave.qa` (and a throwaway QA keystore) to build a copy that installs
+next to the real AniBrave on a physical device. It has its own profile and launcher label
+"AniBrave QA", so testing a new engine never touches the everyday browser or its data.
+
 ## Full engine build on Linux
 
-Use `python3 anibrave/tools/build_engine.py --input <verified-official-arm64-apk> --output <signed-output.apk> --keystore <existing-private-key>`. Set JDK17 on PATH and the signing password environment described above. The tool reads `upstream.json` and `version.json`, verifies locked build tools and the upstream APK hash, isolates decoded caches by engine hash, applies version-pinned hooks, preserves native libraries and signs locally. SDK37.1/build-tools37.0.0 are required. Never reuse decoded outputs from another engine version.
+Use `python3 anibrave/tools/build_engine.py --input <verified-official-arm64-apk> --output <signed-output.apk> --keystore <existing-private-key>`. Set JDK17 on PATH and either the signing password environment described above or an ignored
+`<keystore>.properties` file beside the key (`storePassword=`, optional `keyPassword=`/`keyAlias=`). The tool reads `upstream.json` and `version.json`, verifies locked build tools and the upstream APK hash, isolates decoded caches by engine hash, applies version-pinned hooks, preserves native libraries and signs locally. SDK37.1/build-tools37.0.0 are required. Never reuse decoded outputs from another engine version.
 
 
 Version 0.2.2 reduces repeated controller transfer, title-only reconfiguration, viewport messages and page-wide tracking scans. Hidden tabs suspend periodic tracking discovery while media events and background playback remain supported. Inserted players are discovered through DOM changes with a slower fallback for late shadow roots. Native toolbar resource IDs are cached without retaining replaced view instances. The engine and native libraries are unchanged. See [validation boundaries](../PROJECT-CONTEXT.md).

@@ -6,7 +6,8 @@ internal object BuiltInWidgetPolicy {
     const val CLOCK = "clock"
     const val BATTERY = "battery"
     const val NOTE = "note"
-    val kinds = listOf(CLOCK, BATTERY, NOTE)
+    const val WEATHER = "weather"
+    val kinds = listOf(WEATHER, CLOCK, BATTERY, NOTE)
     fun isBuiltIn(kind: String) = kind in kinds
     fun isProvider(kind: String) = kind == PROVIDER
     fun usesProviderHost(kind: String, id: Int) = isProvider(kind) && id > 0

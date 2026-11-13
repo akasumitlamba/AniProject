@@ -39,3 +39,17 @@ class BraveUpdateTest(unittest.TestCase):
         with self.assertRaises(ValueError):proposal(self.pin,self.release)
 
 if __name__=='__main__':unittest.main()
+
+class NewestAndroidTest(unittest.TestCase):
+    def test_skips_desktop_only_and_nightly_releases(self):
+        from check_brave_update import newest_android
+        apk = [{'name': 'Bravearm64Universal.apk', 'state': 'uploaded'}]
+        releases = [
+            {'tag_name': 'v1.100.54', 'name': 'Release v1.100.54', 'assets': [{'name': 'BraveBrowserSetup.exe', 'state': 'uploaded'}]},
+            {'tag_name': 'v1.102.3', 'name': 'Nightly v1.102.3', 'assets': apk},
+            {'tag_name': 'v1.99.57', 'name': 'Release v1.99.57', 'assets': apk},
+            {'tag_name': 'v1.99.56', 'name': 'Release v1.99.56', 'assets': apk},
+        ]
+        self.assertEqual(newest_android(releases)['tag_name'], 'v1.99.57')
+        self.assertIsNone(newest_android(releases[:2]))
+

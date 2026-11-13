@@ -14,10 +14,10 @@
     <FrameLayout android:layout_width="match_parent" android:layout_height="56dp">
         <ImageView
             android:id="@+id/icon"
-            android:layout_width="match_parent"
+            android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             android:contentDescription="@null" />
         <ImageView
             android:id="@+id/on_home"

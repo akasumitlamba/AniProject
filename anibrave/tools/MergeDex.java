@@ -14,6 +14,7 @@ import java.util.*;
 
 /** Rewrites string constants through dexlib so sorted indices and checksums remain valid. */
 public final class MergeDex {
+    private static final String PACKAGE=System.getenv().getOrDefault("ANIBRAVE_PACKAGE","app.anibrave.main");
     public static void main(String[] args) throws Exception {
         Opcodes opcodes=Opcodes.forApi(29);
         DexFile original=DexFileFactory.loadDexFile(new File(args[0]),opcodes);
@@ -26,7 +27,7 @@ public final class MergeDex {
                         if(instruction instanceof ReferenceInstruction){
                             Reference ref=((ReferenceInstruction)instruction).getReference();
                             if(ref instanceof StringReference){
-                                ImmutableStringReference string=new ImmutableStringReference(((StringReference)ref).getString().replace("com.brave.browser","app.anibrave.main"));
+                                ImmutableStringReference string=new ImmutableStringReference(((StringReference)ref).getString().replace("com.brave.browser",PACKAGE));
                                 int register=((OneRegisterInstruction)instruction).getRegisterA();
                                 if(instruction.getOpcode()==Opcode.CONST_STRING)return new ImmutableInstruction21c(instruction.getOpcode(),register,string);
                                 if(instruction.getOpcode()==Opcode.CONST_STRING_JUMBO)return new ImmutableInstruction31c(instruction.getOpcode(),register,string);
@@ -39,7 +40,7 @@ public final class MergeDex {
             @Override public Rewriter<EncodedValue> getEncodedValueRewriter(Rewriters rewriters){
                 return new EncodedValueRewriter(rewriters){
                     @Override public EncodedValue rewrite(EncodedValue value){
-                        if(value instanceof StringEncodedValue)return new ImmutableStringEncodedValue(((StringEncodedValue)value).getValue().replace("com.brave.browser","app.anibrave.main"));
+                        if(value instanceof StringEncodedValue)return new ImmutableStringEncodedValue(((StringEncodedValue)value).getValue().replace("com.brave.browser",PACKAGE));
                         return super.rewrite(value);
                     }
                 };

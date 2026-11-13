@@ -40,6 +40,21 @@ def proposal(pin, release):
             'sha256': digest[7:], 'bytes': size, 'download_url': url,
             'release_url': f'https://github.com/{REPOSITORY}/releases/tag/{tag}'}
 
+def newest_android(releases):
+    """Newest stable release that actually ships the ARM64 APK.
+
+    Brave publishes desktop-only and nightly releases under the same repository, and
+    GitHub's "latest" can point at one without Android assets.
+    """
+    def eligible(release):
+        tag = release.get('tag_name', '')
+        return (not release.get('draft') and not release.get('prerelease')
+                and str(release.get('name', '')).startswith('Release')
+                and re.fullmatch(r'v1\.\d+\.\d+', tag or '') is not None
+                and any(a.get('name') == ASSET and a.get('state') == 'uploaded' for a in release.get('assets', [])))
+    candidates = [r for r in releases if eligible(r)]
+    return max(candidates, key=lambda r: version(r['tag_name'])) if candidates else None
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--pin', type=Path, default=Path('anibrave/upstream.json'))
@@ -52,12 +67,12 @@ def main():
         headers = {'Accept': 'application/vnd.github+json', 'User-Agent': 'AniBrave-update-check'}
         token = os.environ.get('GH_TOKEN')
         if token: headers['Authorization'] = f'Bearer {token}'
-        request = urllib.request.Request(f'https://api.github.com/repos/{REPOSITORY}/releases/latest', headers=headers)
+        request = urllib.request.Request(f'https://api.github.com/repos/{REPOSITORY}/releases?per_page=40', headers=headers)
         with urllib.request.urlopen(request, timeout=30) as response:
-            data = response.read(4 * 1024 * 1024 + 1)
-        if len(data) > 4 * 1024 * 1024: raise ValueError('Release metadata too large')
-        release = json.loads(data)
-    candidate = proposal(json.loads(args.pin.read_text()), release)
+            data = response.read(16 * 1024 * 1024 + 1)
+        if len(data) > 16 * 1024 * 1024: raise ValueError('Release metadata too large')
+        release = newest_android(json.loads(data))
+    candidate = proposal(json.loads(args.pin.read_text()), release) if release else None
     if candidate:
         args.output.write_text(json.dumps(candidate, indent=2) + '\n')
         print(f"New Brave candidate: {candidate['proposed_tag']}; compatibility review required")

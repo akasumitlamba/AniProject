@@ -46,11 +46,11 @@ final class NativeTabs {
         catch(InvocationTargetException e){Throwable cause=e.getCause();if(cause instanceof Exception)throw (Exception)cause;throw e;}
     }
     private static Object call(Object target,String name) throws Exception {return call(target,name,new Class<?>[0]);}
-    private Object selector() throws Exception {check();Object value=call(activity,"w4");if(value==null)throw new Failure("Tabs are still loading");return value;}
-    private Object model(Object selector,boolean incognito) throws Exception {return call(selector,"k",new Class<?>[]{boolean.class},incognito);}
+    private Object selector() throws Exception {check();Object value=call(activity,EngineSymbols.ACTIVITY_TAB_MODEL_SELECTOR);if(value==null)throw new Failure("Tabs are still loading");return value;}
+    private Object model(Object selector,boolean incognito) throws Exception {return call(selector,EngineSymbols.SELECTOR_MODEL,new Class<?>[]{boolean.class},incognito);}
     Snapshot snapshot() throws Failure {
         try {
-            Object selector=selector(),model=call(selector,"h");
+            Object selector=selector(),model=call(selector,EngineSymbols.SELECTOR_CURRENT_MODEL);
             if(model==null)throw new Failure("Tabs are still loading");
             boolean incognito=(Boolean)call(model,"isIncognito");
             int count=((Number)call(model,"getCount")).intValue(),index=((Number)call(model,"index")).intValue();
@@ -95,17 +95,17 @@ final class NativeTabs {
     boolean selectById(int id,boolean incognito) throws Failure {
         try {
             Object selector=selector();
-            if((Boolean)call(call(selector,"h"),"isIncognito")!=incognito)return false;
+            if((Boolean)call(call(selector,EngineSymbols.SELECTOR_CURRENT_MODEL),"isIncognito")!=incognito)return false;
             Object model=model(selector,incognito),tab=resolve(model,id);
             if(tab==null)return false;
-            call(selector,"F",new Class<?>[]{boolean.class},incognito);
+            call(selector,EngineSymbols.SELECTOR_SELECT_MODEL,new Class<?>[]{boolean.class},incognito);
             int count=((Number)call(model,"getCount")).intValue();
             for(int i=0;i<count;i++) {
                 Object candidate=call(model,"getTabAt",new Class<?>[]{int.class},i);
                 if(candidate!=null&&((Number)call(candidate,"getId")).intValue()==id) {
                     // The private model is a lazy wrapper, not a TabModelJniBridge.
                     // Both expose the pinned TabModel selection API.
-                    call(model,"A0",new Class<?>[]{int.class,int.class},i,3);return true;
+                    call(model,EngineSymbols.TAB_MODEL_SET_INDEX,new Class<?>[]{int.class,int.class},i,3);return true;
                 }
             }
             return false;
@@ -114,15 +114,15 @@ final class NativeTabs {
     boolean closeById(int id,boolean incognito) throws Failure {
         try {
             Object selector=selector();
-            if((Boolean)call(call(selector,"h"),"isIncognito")!=incognito)return false;
+            if((Boolean)call(call(selector,EngineSymbols.SELECTOR_CURRENT_MODEL),"isIncognito")!=incognito)return false;
             Object model=model(selector,incognito),tab=resolve(model,id);
             if(tab==null)return false;
             Class<?> tabType=Class.forName("org.chromium.chrome.browser.tab.Tab");
             // Use the same removal pipeline as the tab UI: preserves undo and
             // native shared-group confirmation, unlike JNI closeTab().
-            Object builder=Class.forName("fdj").getMethod("b",tabType).invoke(null,tab);
-            Object params=call(builder,"a"),remover=call(model,"q1");
-            Class.forName("c2k").getMethod("a",Class.forName("fdj")).invoke(remover,params);
+            Object builder=Class.forName(EngineSymbols.CLASS_CLOSE_PARAMS).getMethod(EngineSymbols.CLOSE_PARAMS_FOR_TAB,tabType).invoke(null,tab);
+            Object params=call(builder,EngineSymbols.CLOSE_BUILDER_BUILD),remover=call(model,EngineSymbols.TAB_MODEL_CLOSER);
+            Class.forName(EngineSymbols.CLASS_TAB_CLOSER).getMethod(EngineSymbols.TAB_CLOSER_CLOSE,Class.forName(EngineSymbols.CLASS_CLOSE_PARAMS)).invoke(remover,params);
             return true;
         }catch(Exception e){throw e instanceof Failure?(Failure)e:new Failure(e);}
     }
@@ -132,9 +132,9 @@ final class NativeTabs {
             Class<?> paramsType=Class.forName("org.chromium.content_public.browser.LoadUrlParams");
             Object params=paramsType.getConstructor(int.class,String.class).newInstance(0,"about:blank");
             Class<?> tabType=Class.forName("org.chromium.chrome.browser.tab.Tab");
-            Object created=call(selector,"B",new Class<?>[]{paramsType,int.class,tabType,boolean.class},params,2,null,incognito);
+            Object created=call(selector,EngineSymbols.SELECTOR_CREATE_TAB,new Class<?>[]{paramsType,int.class,tabType,boolean.class},params,2,null,incognito);
             if(created==null)throw new Failure("A new tab could not be opened");
-            call(selector,"F",new Class<?>[]{boolean.class},incognito);
+            call(selector,EngineSymbols.SELECTOR_SELECT_MODEL,new Class<?>[]{boolean.class},incognito);
             selectById(((Number)call(created,"getId")).intValue(),incognito);
         }catch(Exception e){throw e instanceof Failure?(Failure)e:new Failure(e);}
     }
@@ -142,7 +142,7 @@ final class NativeTabs {
         try {
             Object selector=selector(),target=model(selector,incognito);
             if(((Number)call(target,"getCount")).intValue()==0){newTab(incognito);return;}
-            call(selector,"F",new Class<?>[]{boolean.class},incognito);
+            call(selector,EngineSymbols.SELECTOR_SELECT_MODEL,new Class<?>[]{boolean.class},incognito);
         }
         catch(Exception e){throw e instanceof Failure?(Failure)e:new Failure(e);}
     }

@@ -64,7 +64,7 @@ public final class AniRuntime {
         try{
             // Shortcut-only startup does not register main-browser preference
             // observers. Create the same native server without those observers.
-            serverPointer=((Number)Class.forName("J.N").getMethod("JO",int.class,Object.class).invoke(null,4,"anibrave")).longValue();
+            serverPointer=((Number)Class.forName("J.N").getMethod("JO",int.class,Object.class).invoke(null,EngineSymbols.JNI_DEVTOOLS_INIT_SELECTOR,"anibrave")).longValue();
             toggleServer(true);
         }
         catch(Exception e){status="Page controls could not start";android.util.Log.w("AniBrave","Control startup failed",e);}
@@ -78,7 +78,7 @@ public final class AniRuntime {
     }
     private static void toggleServer(boolean enabled) {
         if(serverPointer==0)return;
-        try { Class.forName("J.N").getMethod("VJZZ",int.class,long.class,boolean.class,boolean.class).invoke(null,0,serverPointer,enabled,true); }
+        try { Class.forName("J.N").getMethod(EngineSymbols.JNI_DEVTOOLS_SET_ENABLED,int.class,long.class,boolean.class,boolean.class).invoke(null,EngineSymbols.JNI_DEVTOOLS_SET_ENABLED_SELECTOR,serverPointer,enabled,true); }
         catch(Exception e){status="Browser controls could not connect";}
     }
     public static void intent(Activity a,Intent intent) {
@@ -177,9 +177,18 @@ public final class AniRuntime {
         if(Build.VERSION.SDK_INT>=30){
             window.setDecorFitsSystemWindows(false);
             WindowInsetsController controller=window.getInsetsController();
-            if(controller!=null){controller.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);controller.hide(WindowInsets.Type.systemBars());}
+            if(controller!=null){
+                if(immersive){
+                    controller.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_DEFAULT);
+                    controller.show(WindowInsets.Type.navigationBars());
+                    controller.hide(WindowInsets.Type.statusBars());
+                }else{
+                    controller.setSystemBarsBehavior(WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+                    controller.hide(WindowInsets.Type.systemBars());
+                }
+            }
         }
-        int flags=View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY|View.SYSTEM_UI_FLAG_FULLSCREEN|View.SYSTEM_UI_FLAG_HIDE_NAVIGATION|View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION|View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+        int flags=FullscreenNavigation.visibility(immersive);
         if(decor.getSystemUiVisibility()!=flags)decor.setSystemUiVisibility(flags);
         if((window.getAttributes().flags&WindowManager.LayoutParams.FLAG_FULLSCREEN)==0)window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
@@ -219,13 +228,13 @@ public final class AniRuntime {
     static String currentUrl() {
         Activity a=active.get();if(!alive(a))return "";
         try {
-            Object tab=a.getClass().getMethod("n4").invoke(a);if(tab==null)return "";
+            Object tab=a.getClass().getMethod(EngineSymbols.ACTIVITY_CURRENT_TAB).invoke(a);if(tab==null)return "";
             Object url=tab.getClass().getMethod("getUrl").invoke(tab);
-            return (String)url.getClass().getField("a").get(url);
+            return (String)url.getClass().getField(EngineSymbols.GURL_SPEC).get(url);
         }catch(Exception e){return "";}
     }
     private static boolean normalProfile(Activity a){
-        try {Object tab=a.getClass().getMethod("n4").invoke(a);return tab!=null&&!((Boolean)tab.getClass().getMethod("isIncognito").invoke(tab));}
+        try {Object tab=a.getClass().getMethod(EngineSymbols.ACTIVITY_CURRENT_TAB).invoke(a);return tab!=null&&!((Boolean)tab.getClass().getMethod("isIncognito").invoke(tab));}
         catch(Exception e){return false;} // Unknown profile must never persist browsing URLs.
     }
     private static void captureLocation(Activity a){
@@ -237,7 +246,7 @@ public final class AniRuntime {
         ResumeStore.capture(context,a.getTaskId(),url);
     }
     private static String currentUrlFor(Activity a){
-        try{Object tab=a.getClass().getMethod("n4").invoke(a);Object url=tab.getClass().getMethod("getUrl").invoke(tab);return (String)url.getClass().getField("a").get(url);}catch(Exception e){return "";}
+        try{Object tab=a.getClass().getMethod(EngineSymbols.ACTIVITY_CURRENT_TAB).invoke(a);Object url=tab.getClass().getMethod("getUrl").invoke(tab);return (String)url.getClass().getField(EngineSymbols.GURL_SPEC).get(url);}catch(Exception e){return "";}
     }
     static String taskUrl(int taskId){
         for(Activity a:lastLocations.keySet())if(a!=null&&!a.isDestroyed()&&a.getTaskId()==taskId)return currentUrlFor(a);

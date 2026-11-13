@@ -22,10 +22,10 @@ internal object DrawerWarmup {
                 val initial = Snapshot(apps, TileStore(app).all(), snapshot?.files.orEmpty())
                 snapshot = initial
                 coroutineScope {
-                    launch { runCatching { RecentFiles.read(app) }.onSuccess { files -> if (snapshot === initial) snapshot = initial.copy(files = files) } }
+                    launch { runCatching { if (DrawerPreferences(app).showRecentFiles()) RecentFiles.read(app) else emptyList() }.onSuccess { files -> if (snapshot === initial) snapshot = initial.copy(files = files) } }
                     val workers = Semaphore(3)
                     apps.take(60).map { entry -> async {
-                        workers.withPermit { IconCache.appIcon(app, entry.packageName, entry.activityName) }
+                        workers.withPermit { IconCache.dockIcon(app, entry.packageName, entry.activityName) }
                     } }.awaitAll()
                 }
             }

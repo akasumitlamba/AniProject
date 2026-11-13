@@ -12,6 +12,39 @@ import app.anihome.launcher.R
 
 /** Short motion follows the invoking gesture and respects Android's animator setting. */
 internal object MotionUi {
+    /** Material 3 emphasized curves: fast start with a long settle reads as smooth on 60 Hz panels. */
+    val EMPHASIZED_DECELERATE = android.view.animation.PathInterpolator(.05f, .7f, .1f, 1f)
+    val EMPHASIZED_ACCELERATE = android.view.animation.PathInterpolator(.3f, 0f, .8f, .15f)
+    val STANDARD = android.view.animation.PathInterpolator(.2f, 0f, 0f, 1f)
+
+    /** Zero when the user disabled animations, so end states apply immediately. */
+    @Suppress("UNUSED_PARAMETER")
+    fun duration(view: View, millis: Long): Long = if (ValueAnimator.areAnimatorsEnabled()) millis else 0L
+
+    /** Slide a sheet back toward the edge it came from, then run [done] exactly once. */
+    fun exit(view: View, direction: String, done: () -> Unit) {
+        (view.getTag(R.id.motion_entry_state) as? Entrance)?.finish()
+        if (!ValueAnimator.areAnimatorsEnabled() || !view.isAttachedToWindow || view.width == 0) { done(); return }
+        var ran = false
+        fun once() { if (!ran) { ran = true; done() } }
+        val distance = (if (direction == "UP" || direction == "DOWN") view.height else view.width).toFloat()
+        view.animate().cancel()
+        view.animate()
+            .translationX(when (direction) { "RIGHT" -> -distance; "LEFT" -> distance; else -> 0f })
+            .translationY(when (direction) { "UP" -> distance; "DOWN" -> -distance; else -> 0f })
+            .alpha(.6f).setDuration(200).setInterpolator(EMPHASIZED_ACCELERATE).withLayer()
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) = once()
+                override fun onAnimationCancel(animation: Animator) = once()
+            }).start()
+    }
+
+    /** Press feedback for custom tiles: a quick, interruptible scale that never sticks. */
+    fun press(view: View, pressed: Boolean) {
+        if (!ValueAnimator.areAnimatorsEnabled()) return
+        view.animate().scaleX(if (pressed) .96f else 1f).scaleY(if (pressed) .96f else 1f)
+            .setDuration(if (pressed) 90 else 160).setInterpolator(STANDARD).start()
+    }
     fun expand(parent: ViewGroup) {
         if (!ValueAnimator.areAnimatorsEnabled() || !parent.isLaidOut) return
         TransitionManager.beginDelayedTransition(parent, AutoTransition().apply {
@@ -34,8 +67,8 @@ internal object MotionUi {
         private val animate = Runnable {
             if (!finished) {
                 if (!view.isAttachedToWindow || !ValueAnimator.areAnimatorsEnabled()) finish()
-                else view.animate().translationX(0f).translationY(0f).setDuration(280)
-                    .setInterpolator(android.view.animation.PathInterpolator(.2f, 0f, 0f, 1f))
+                else view.animate().translationX(0f).translationY(0f).setDuration(320)
+                    .setInterpolator(EMPHASIZED_DECELERATE)
                     .withLayer().setListener(object : AnimatorListenerAdapter() {
                         override fun onAnimationCancel(animation: Animator) = finish()
                         override fun onAnimationEnd(animation: Animator) = finish()

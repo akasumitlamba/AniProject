@@ -153,14 +153,14 @@ class TileAdapter(
             artworkJob?.cancel()
             // Clear recycled artwork immediately; disk decode and package artwork stay off the UI thread.
             val cachedArt = if (tile.iconOnly) null else tile.artworkPath?.let(IconCache::cachedFileIcon)
-            val cachedIcon = if (tile.iconOnly) IconCache.cachedDockIcon(tile.packageName!!, tile.activityName)
-                else cachedArt ?: tile.iconPath?.let(IconCache::cachedFileIcon)
-                    ?: tile.packageName?.let { IconCache.cachedAppIcon(it, tile.activityName) }
+            val cachedIcon = cachedArt ?: if (tile.iconPath != null) {
+                IconCache.cachedShapedFileIcon(context, tile.iconPath)
+            } else tile.packageName?.let { IconCache.cachedDockIcon(context, it, tile.activityName) }
             renderArtwork(tile, cachedArt, cachedIcon)
             val requestedImageCached = when {
                 tile.iconOnly -> cachedIcon != null
                 tile.artworkPath != null -> cachedArt != null
-                tile.iconPath != null -> IconCache.cachedFileIcon(tile.iconPath) != null
+                tile.iconPath != null -> IconCache.cachedShapedFileIcon(context, tile.iconPath) != null
                 else -> cachedIcon != null
             }
             if (requestedImageCached) {
@@ -171,10 +171,8 @@ class TileAdapter(
             artworkJob = owner?.lifecycleScope?.launch {
                 val images = withContext(Dispatchers.IO) {
                     val artwork = if (tile.iconOnly) null else tile.artworkPath?.let(IconCache::fileIcon)
-                    val bitmap: Bitmap? = if (tile.iconOnly) IconCache.dockIcon(context, tile.packageName!!, tile.activityName) else artwork ?: when (tile.kind) {
-                        HomeTile.Kind.APP -> tile.iconPath?.let(IconCache::fileIcon) ?: IconCache.appIcon(context, tile.packageName!!, tile.activityName)
-                        HomeTile.Kind.WEB -> tile.iconPath?.let(IconCache::fileIcon)
-                    }
+                    val bitmap = artwork ?: tile.iconPath?.let { IconCache.shapedFileIcon(context, it) }
+                        ?: tile.packageName?.let { IconCache.dockIcon(context, it, tile.activityName) }
                     artwork to bitmap
                 }
                 if (this@Holder.tile == tile) renderArtwork(tile, images.first, images.second)

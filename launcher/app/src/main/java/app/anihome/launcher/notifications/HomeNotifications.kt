@@ -59,6 +59,13 @@ class HomeNotifications : NotificationListenerService() {
             val service = connected ?: return false
             return runCatching { service.snoozeNotification(key, 60 * 60 * 1000L); true }.getOrDefault(false)
         }
+        /** Notification listeners may request Do Not Disturb without separate policy access. */
+        fun requestDoNotDisturb(enabled: Boolean): Boolean {
+            val service = connected ?: return false
+            return runCatching {
+                service.requestInterruptionFilter(if (enabled) INTERRUPTION_FILTER_PRIORITY else INTERRUPTION_FILTER_ALL); true
+            }.getOrDefault(false)
+        }
         fun clearAll(result: (Boolean) -> Unit = {}) {
             val service = connected ?: return result(false)
             service.cancel(service.current.keys.toSet(), result)

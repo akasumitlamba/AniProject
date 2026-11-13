@@ -18,6 +18,9 @@ public final class NativeStripTest {
         public void u(int reason,boolean visible){flags=visible?flags&~reason:flags|reason;}
     }
     public static void main(String[] args)throws Exception{
+        NativeStrip.OWNER="a";NativeStrip.LAYER="C";NativeStrip.FLAGS="w0";NativeStrip.SET_VISIBLE="u";
+        NativeStrip.HIDDEN="p";NativeStrip.RESPONSIVE="u";NativeStrip.WIDTH="q";NativeStrip.THRESHOLD="n";
+        NativeStrip.HEIGHT="e";NativeStrip.EXTRA="r";NativeStrip.UPDATE="b";
         Layer layer=new Layer();
         if(NativeStrip.layerHidden(layer))throw new AssertionError("Other hide reasons must not imply our own flag");
         NativeStrip.layerVisible(layer,false);

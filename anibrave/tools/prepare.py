@@ -14,6 +14,8 @@ DECODED = WORK / 'decoded' / 'smali_classes5'
 PATCH = WORK / 'compiled' / 'patches'
 RES = WORK / 'resources'
 NS = 'http://schemas.android.com/apk/res/android'
+PACKAGE = os.environ.get('ANIBRAVE_PACKAGE', 'app.anibrave.main')  # QA builds install side by side
+SYMBOLS = json.loads((BASE / 'engine-symbols.json').read_text())['symbols']
 ET.register_namespace('android', NS)
 
 def rewrite(relative, transform):
@@ -55,11 +57,11 @@ def devtools(text):
 
 rewrite('org/chromium/chrome/browser/DevToolsServer.smali', devtools)
 def prefix(text):
-    verify_native_initialization(text)
+    verify_native_initialization(text, SYMBOLS['jni.devtoolsInitSelector'])
     before='const-string v4, "chrome"'
     if text.count(before)!=1:raise RuntimeError('DevTools socket prefix changed')
     return text.replace(before,'const-string v4, "anibrave"')
-rewrite('ylf.smali',prefix)
+rewrite(SYMBOLS['class.devtoolsPrefix'] + '.smali', prefix)
 
 def activity(text):
     text=inject(text,'public final onResume()V','    invoke-static/range {p0 .. p0}, Lapp/anibrave/AniRuntime;->resume(Landroid/app/Activity;)V')
@@ -72,7 +74,7 @@ rewrite('org/chromium/chrome/browser/customtabs/FullScreenCustomTabActivity.smal
 # Preserve classes/component names; change install identity, permissions, provider authorities.
 manifest=RES/'AndroidManifest.xml'
 tree=ET.parse(manifest);root=tree.getroot()
-root.set('package','app.anibrave.main')
+root.set('package',PACKAGE)
 upstream=json.loads((BASE/'upstream.json').read_text())
 version=json.loads((BASE/'version.json').read_text())
 root.set('{'+NS+'}versionName',version['name'])
@@ -82,7 +84,7 @@ engine_meta=next((n for n in app.findall('meta-data') if n.get('{'+NS+'}name')==
 if engine_meta is None: engine_meta=ET.SubElement(app,'meta-data')
 engine_meta.set('{'+NS+'}name','app.anibrave.BRAVE_VERSION')
 engine_meta.set('{'+NS+'}value',upstream['tag'][1:])
-app.set('{'+NS+'}label','AniBrave')
+app.set('{'+NS+'}label','AniBrave' if PACKAGE=='app.anibrave.main' else 'AniBrave QA')
 app.set('{'+NS+'}allowBackup','false')
 app.set('{'+NS+'}icon','@mipmap/anibrave_icon')
 app.set('{'+NS+'}roundIcon','@mipmap/anibrave_icon')
@@ -92,12 +94,12 @@ configure_tasks(app)
 for node in root.iter():
     for key,value in list(node.attrib.items()):
         if value.startswith('com.brave.browser'):
-            node.set(key,value.replace('com.brave.browser','app.anibrave.main'))
+            node.set(key,value.replace('com.brave.browser',PACKAGE))
 tree.write(manifest,encoding='utf-8',xml_declaration=True)
 for file in list((RES/'res').glob('values*/strings.xml')) + list((RES/'res'/'xml').glob('*.xml')):
     text=file.read_text(encoding='utf-8')
-    changed=text.replace('com.brave.browser','app.anibrave.main')
-    changed=re.sub(r'(<string name="APKTOOL_RENAMED_0x7f140450">).*?(</string>)',r'\1AniBrave\2',changed)
+    changed=text.replace('com.brave.browser',PACKAGE)
+    changed=re.sub(r'(<string name="'+re.escape(SYMBOLS['res.string.appName'])+r'">).*?(</string>)',r'\1'+('AniBrave' if PACKAGE=='app.anibrave.main' else 'AniBrave QA')+r'\2',changed)
     if changed!=text:file.write_text(changed,encoding='utf-8')
 
 # Transparent lion shared with AniHome; avoid the former baked-in black card.
@@ -128,13 +130,16 @@ if not any(node.get('{'+NS+'}name')=='app.anibrave.HistoryImportActivity' for no
     tree.write(manifest,encoding='utf-8',xml_declaration=True)
 # Reserve native toolbar space beside the tab switcher, so Brave's layout and
 # scrolling own the feature button instead of overlaying website content.
-for name,style in [('APKTOOL_RENAMED_0x7f0e04de.xml','APKTOOL_RENAMED_0x7f1506a0'),('APKTOOL_RENAMED_0x7f0e04da.xml','APKTOOL_RENAMED_0x7f15069f')]:
-    path=RES/'res'/'layout'/name
+for key in ['res.layout.toolbar','res.layout.toolbarTablet']:
+    path=RES/'res'/'layout'/(SYMBOLS[key]+'.xml')
     layout=ET.parse(path); element=layout.getroot()
     if not any(node.get('{'+NS+'}id')=='@+id/anibrave_features' for node in element.iter()):
         matches=[(parent,node) for parent in element.iter() for node in parent if node.get('{'+NS+'}id')=='@id/tab_switcher_button']
-        if len(matches)!=1:raise RuntimeError('Expected native tab switcher in '+name)
+        if len(matches)!=1:raise RuntimeError('Expected native tab switcher in '+path.name)
         parent,tabs=matches[0]
+        # Inherit the tab switcher's own toolbar-button style for this engine.
+        style=tabs.get('style','').removeprefix('@style/')
+        if not style:raise RuntimeError('Native tab switcher style missing in '+path.name)
         icon=ET.Element('ImageButton',{'{'+NS+'}id':'@+id/anibrave_features','{'+NS+'}src':'@drawable/anibrave_features','{'+NS+'}tint':'?android:attr/textColorPrimary','{'+NS+'}contentDescription':'AniBrave features','{'+NS+'}tooltipText':'AniBrave features','{'+NS+'}padding':'12dp','style':'@style/'+style})
         parent.insert(list(parent).index(tabs),icon)
         layout.write(path,encoding='utf-8',xml_declaration=True)

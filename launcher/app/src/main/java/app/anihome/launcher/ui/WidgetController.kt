@@ -197,6 +197,7 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
             text = when (kind) {
                 BuiltInWidgetPolicy.CLOCK -> "Uses your device's time format and local date. No setup needed."
                 BuiltInWidgetPolicy.BATTERY -> "Live battery level and charging status. No setup needed."
+                BuiltInWidgetPolicy.WEATHER -> "Current weather and today's high and low from Open-Meteo (free, no account). Tap it to choose your city; only that city is sent."
                 else -> "Tap the widget to write a note. It stays in AniHome on this device."
             } + "\nStarts at 2 × 2 cells, the space of one app tile. Resize or move it in Edit mode."
             setTextColor(ContextCompat.getColor(activity, R.color.text)); setPadding(0, dp(12), 0, 0)
@@ -351,10 +352,33 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
         val entry = entries.firstOrNull { it.id == id } ?: return
         val actions = mutableListOf<HomeMenu.Item>()
         if (entry.kind == "note") actions += HomeMenu.Item(1, "Edit note", R.drawable.ic_edit) { editNote(entry) }
+        if (entry.kind == BuiltInWidgetPolicy.WEATHER) actions += HomeMenu.Item(5, "Change city", R.drawable.ic_edit) {
+            (anchor as? android.view.ViewGroup)?.let { findWeather(it) }?.changeCity()
+                ?: Weather.chooseCity(activity, kotlinx.coroutines.MainScope()) { refresh() }
+        }
+        val info = if (BuiltInWidgetPolicy.usesProviderHost(entry.kind, entry.id)) runCatching { manager.getAppWidgetInfo(entry.id) }.getOrNull() else null
+        if (info?.configure != null && (android.os.Build.VERSION.SDK_INT < 28 ||
+                info.widgetFeatures and AppWidgetProviderInfo.WIDGET_FEATURE_RECONFIGURABLE != 0)) {
+            actions += HomeMenu.Item(3, "Widget settings", R.drawable.ic_settings) {
+                runCatching { host.startAppWidgetConfigureActivityForResult(activity, entry.id, 0, RECONFIGURE_REQUEST, null) }
+                    .onFailure { Toast.makeText(activity, "This widget has no settings to change", Toast.LENGTH_SHORT).show() }
+            }
+        }
+        info?.provider?.packageName?.let { pkg -> activity.packageManager.getLaunchIntentForPackage(pkg) }?.let { launch ->
+            actions += HomeMenu.Item(4, "Open app", R.drawable.ic_apps) { runCatching { activity.startActivity(launch) } }
+        }
         actions += HomeMenu.Item(2, "Remove widget", R.drawable.ic_close) { remove(entry) }
         HomeMenu.show(anchor, builtIns.title(entry.kind), actions, keepGesture = true)
     }
 
+    private fun findWeather(group: android.view.ViewGroup): WeatherCard? {
+        for (i in 0 until group.childCount) {
+            val child = group.getChildAt(i)
+            if (child is WeatherCard) return child
+            if (child is android.view.ViewGroup) findWeather(child)?.let { return it }
+        }
+        return null
+    }
     private fun remove(entry: Entry) {
         MaterialAlertDialogBuilder(activity).setTitle("Remove widget?")
             .setNegativeButton("Cancel", null).setPositiveButton("Remove") { _, _ ->
@@ -414,15 +438,8 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
                 this.editing = this@WidgetController.editing
                 resizeSelected = editing
                 setPadding(0, 0, 0, 0)
-                onLongPress = {
-                    if (!this@WidgetController.editing) {
-                        onEditRequested()
-                        grid.doOnLayout {
-                            val position = (grid.adapter as? HomeBoardAdapter)?.positionOfWidget(entry.id) ?: RecyclerView.NO_POSITION
-                            grid.findViewHolderForAdapterPosition(position)?.let(onStartDrag)
-                        }
-                    } else onStartDrag(holder)
-                }
+                // Same as tiles: hold shows options, hold-and-drag moves (edit mode follows the drop).
+                onLongPress = { onStartDrag(holder) }
                 contentDescription = if (editing) "$title, ${entry.columns} by ${entry.rows} cells. Drag edges to resize; hold the centre to move." else null
                 importantForAccessibility = if (editing) View.IMPORTANT_FOR_ACCESSIBILITY_YES else View.IMPORTANT_FOR_ACCESSIBILITY_AUTO
             }
@@ -499,7 +516,10 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
             updateProvider()
         }
     }
-    private companion object { const val CONFIGURE_REQUEST = 5020 }
+    private companion object {
+        const val CONFIGURE_REQUEST = 5020
+        const val RECONFIGURE_REQUEST = 0x5243
+    }
 
     private class WidgetHolder(val container: FrameLayout) : RecyclerView.ViewHolder(container)
 }

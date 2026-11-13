@@ -31,6 +31,7 @@ internal class HomeBoardLayoutManager(private val context: Context, private val 
         calculate(width).forEachIndexed { index, p ->
             val view = recycler.getViewForPosition(index)
             addView(view)
+            if (!board.previewing) resetMovement(view)
             val gap = ArtworkUi.dp(context, 8)
             val left = paddingLeft + (p.x * cellWidth).toInt() + gap
             val top = paddingTop + (p.y * cellHeight).toInt() + gap
@@ -38,6 +39,43 @@ internal class HomeBoardLayoutManager(private val context: Context, private val 
             val bottom = paddingTop + ((p.y + p.rows) * cellHeight).toInt() - gap
             view.measure(View.MeasureSpec.makeMeasureSpec(right - left, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(bottom - top, View.MeasureSpec.EXACTLY))
             layoutDecoratedWithMargins(view, left, top, right, bottom)
+        }
+    }
+    private fun resetMovement(view: View) {
+        view.animate().cancel()
+        view.translationX = 0f
+        view.translationY = 0f
+        view.scaleX = 1f; view.scaleY = 1f; view.translationZ = 0f
+    }
+    /** Rebinding can interrupt a neighbor's animation; never retain that fractional offset. */
+    fun settlePreview(draggedKey: String? = null) {
+        for (index in 0 until childCount) {
+            val view = getChildAt(index) ?: continue
+            if (draggedKey != null && board.keyAt(getPosition(view)) == draggedKey) continue
+            resetMovement(view)
+        }
+    }
+    /** Move neighbors immediately while ItemTouchHelper keeps the dragged view under the finger. */
+    fun preview(draggedKey: String) {
+        for (index in 0 until childCount) {
+            val view = getChildAt(index) ?: continue
+            val key = board.keyAt(getPosition(view)) ?: continue
+            if (key == draggedKey) continue
+            val p = board.placements.firstOrNull { it.key == key } ?: continue
+            val gap = ArtworkUi.dp(context, 8)
+            val left = paddingLeft + (p.x * cellWidth).toInt() + gap
+            val top = paddingTop + (p.y * cellHeight).toInt() + gap
+            val right = paddingLeft + ((p.x + p.columns) * cellWidth).toInt() - gap
+            val bottom = paddingTop + ((p.y + p.rows) * cellHeight).toInt() - gap
+            if (view.left == left && view.top == top) continue
+            val oldLeft = view.left + view.translationX
+            val oldTop = view.top + view.translationY
+            view.animate().cancel()
+            layoutDecoratedWithMargins(view, left, top, right, bottom)
+            if (android.animation.ValueAnimator.areAnimatorsEnabled()) {
+                view.translationX = oldLeft - left; view.translationY = oldTop - top
+                view.animate().translationX(0f).translationY(0f).setDuration(200).setInterpolator(MotionUi.STANDARD).start()
+            } else { view.translationX = 0f; view.translationY = 0f }
         }
     }
     override fun supportsPredictiveItemAnimations() = false

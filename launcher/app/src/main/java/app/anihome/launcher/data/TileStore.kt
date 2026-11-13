@@ -68,7 +68,11 @@ class TileStore(context: Context, private val databaseOverride: android.database
             if (iconPath != null) put("icon_path", iconPath)
         }
         val id = if (existing != null) { db.update(TABLE, values, "id=?", arrayOf(existing.toString())); existing }
-        else { values.put("position", nextPosition()); values.put("created_at", System.currentTimeMillis()); db.insertOrThrow(TABLE, null, values) }
+        else {
+            values.put("position", nextPosition()); values.put("created_at", System.currentTimeMillis())
+            values.put("artwork_origin", "pending") // A matching store banner may replace the shortcut icon.
+            db.insertOrThrow(TABLE, null, values)
+        }
         if (iconPath != null && previousIcon != null && previousIcon != iconPath) {
             IconCache.invalidateFile(previousIcon); File(previousIcon).delete()
         }
@@ -80,6 +84,7 @@ class TileStore(context: Context, private val databaseOverride: android.database
             put("kind", HomeTile.Kind.WEB.name)
             put("label", label)
             put("url", url)
+            put("artwork_origin", "pending") // A store banner for this site replaces the favicon.
             put("color", color)
             put("position", nextPosition())
             put("created_at", System.currentTimeMillis())
@@ -150,8 +155,16 @@ class TileStore(context: Context, private val databaseOverride: android.database
     /** Compare-and-set protects a manual selection/reset, including a late download race. */
     fun finishAutomaticArtwork(id: Long, path: String?): Boolean = db.update(TABLE, ContentValues().apply {
         put("artwork_path", path); put("artwork_origin", if (path == null) "icon" else "automatic")
-    }, "id=? AND kind=? AND artwork_origin='pending' AND tile_style='banner' AND artwork_path IS NULL AND shortcut_id IS NULL",
-        arrayOf(id.toString(), HomeTile.Kind.APP.name)) == 1
+    }, "id=? AND artwork_origin='pending' AND tile_style='banner' AND artwork_path IS NULL",
+        arrayOf(id.toString())) == 1
+
+    /**
+     * One-time backfill: website and shortcut tiles predating automatic banners were never
+     * checked. Only tiles without chosen artwork are queued; manual images are untouched.
+     */
+    fun queueMissingBanners(): Int = db.update(TABLE, ContentValues().apply { put("artwork_origin", "pending") },
+        "artwork_path IS NULL AND tile_style='banner' AND artwork_origin<>'pending' AND (kind=? OR shortcut_id IS NOT NULL)",
+        arrayOf(HomeTile.Kind.WEB.name))
 
     fun remove(id: Long, updatePins: Boolean = true, preserveAssets: Boolean = false) {
         val removed = byId(id) ?: return

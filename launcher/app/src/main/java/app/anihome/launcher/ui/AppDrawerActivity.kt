@@ -35,6 +35,7 @@ class AppDrawerActivity : AppCompatActivity() {
     private var onHome: Set<String> = emptySet()
     private var homeWebsites: List<HomeTile> = emptyList()
     private var favoritesSection: View? = null
+    private var favoritesGrid: GridLayoutManager? = null
     private var searchResults: android.widget.LinearLayout? = null
     private var webResults: android.widget.LinearLayout? = null
     private val selected = linkedSetOf<String>()
@@ -71,6 +72,7 @@ class AppDrawerActivity : AppCompatActivity() {
         }
         val availableDp = resources.configuration.screenWidthDp - 2 * resources.getDimension(R.dimen.page_padding) / resources.displayMetrics.density
         binding.list.layoutManager = GridLayoutManager(this, if (resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT) 4 else (availableDp / 96f).toInt().coerceIn(3, 8))
+        applyMenuOpacity()
         binding.list.adapter = adapter
         binding.list.itemAnimator = null
         if (!(AdaptiveLayout.tablet(this) && resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT)) {
@@ -79,6 +81,7 @@ class AppDrawerActivity : AppCompatActivity() {
         buildLibrary()
         binding.btnBack.setOnClickListener { finish() }
         if (!pickMode) {
+            if (!preferences.showRecentFiles()) binding.search.hint = "Search apps"
             searchResults = android.widget.LinearLayout(this).apply { orientation = android.widget.LinearLayout.VERTICAL }
             binding.root.addView(searchResults, 1)
             webResults = android.widget.LinearLayout(this).apply { orientation = android.widget.LinearLayout.VERTICAL }
@@ -109,6 +112,14 @@ class AppDrawerActivity : AppCompatActivity() {
             HomeMenu.show(anchor, "Apps", listOf(
                 HomeMenu.Item(1, if (showHidden) "Show visible apps" else "Hidden apps (${preferences.hidden().size})", R.drawable.ic_visibility, checked = showHidden) {
                     showHidden = !showHidden; filter()
+                },
+                HomeMenu.Item(2, "Icon shape", R.drawable.ic_apps) { chooseIconShape() },
+                HomeMenu.Item(3, "Background opacity", R.drawable.ic_visibility) { chooseMenuOpacity() },
+                HomeMenu.Item(5, "Recent apps", R.drawable.ic_recents, checked = preferences.showRecentApps()) {
+                    preferences.setShowRecentApps(!preferences.showRecentApps()); recreate()
+                },
+                HomeMenu.Item(4, "Recent files", R.drawable.ic_folder, checked = preferences.showRecentFiles()) {
+                    preferences.setShowRecentFiles(!preferences.showRecentFiles()); recreate()
                 }
             ))
         }
@@ -176,11 +187,14 @@ class AppDrawerActivity : AppCompatActivity() {
         val hidden = preferences.hidden()
         adapter.items = all.filter { (it.key() in hidden) == showHidden && (q.isEmpty() || it.label.lowercase(Locale.ROOT).contains(q) || it.packageName.lowercase(Locale.ROOT).contains(q)) }
         adapter.notifyDataSetChanged()
-        favorites.items = all.filter { it.key() in onHome && it.key() !in hidden && (q.isEmpty() || it.label.lowercase(Locale.ROOT).contains(q)) }
+        // One row only, exactly as wide as the app grid below: no sideways scrolling.
+        val columns = (binding.list.layoutManager as? GridLayoutManager)?.spanCount ?: 4
+        favoritesGrid?.spanCount = columns
+        favorites.items = AppFrequency.recent(this, all.filter { it.key() !in hidden }).filter { q.isEmpty() || it.label.contains(q, true) }.take(columns)
         favorites.notifyDataSetChanged()
-        favoritesSection?.visibility = if (favorites.items.isEmpty()) View.GONE else View.VISIBLE
+        favoritesSection?.visibility = if (favorites.items.isEmpty() || !preferences.showRecentApps()) View.GONE else View.VISIBLE
         renderSearchResults()
-        frequent.items = AppFrequency.rank(this, all.filter { it.key() !in hidden }, onHome).take(if (AdaptiveLayout.tablet(this)) 8 else AdaptiveLayout.columns(resources.configuration.screenWidthDp - 28f, resources.configuration.fontScale, 5)).filter {
+        frequent.items = AppFrequency.recent(this, all.filter { it.key() !in hidden }).take(if (AdaptiveLayout.tablet(this)) 8 else AdaptiveLayout.columns(resources.configuration.screenWidthDp - 28f, resources.configuration.fontScale, 5)).filter {
             q.isEmpty() || it.label.lowercase(Locale.ROOT).contains(q) || it.packageName.lowercase(Locale.ROOT).contains(q)
         }
         frequent.notifyDataSetChanged()
@@ -189,7 +203,7 @@ class AppDrawerActivity : AppCompatActivity() {
             binding.loading.visibility == View.VISIBLE -> ""
             all.isEmpty() -> "No apps available"
             adapter.items.isEmpty() -> "No matching apps"
-            dockPickMode -> "Choose up to five apps; the dock shows as many as fit."
+            dockPickMode -> "Choose up to five apps; swipe the dock if needed to reach every pin."
             pickMode -> "Choose apps, then add them together"
             else -> ""
         }
@@ -218,7 +232,7 @@ class AppDrawerActivity : AppCompatActivity() {
             addAction(Intent.ACTION_PACKAGE_CHANGED); addAction(Intent.ACTION_PACKAGE_REPLACED)
             addDataScheme("package")
         }, androidx.core.content.ContextCompat.RECEIVER_EXPORTED)
-        if (!pickMode) runCatching { contentResolver.registerContentObserver(Uri.parse("content://media"), true, fileObserver) }
+        if (!pickMode && preferences.showRecentFiles()) runCatching { contentResolver.registerContentObserver(Uri.parse("content://media"), true, fileObserver) }
     }
     private val packagesChanged = object : android.content.BroadcastReceiver() {
         override fun onReceive(context: android.content.Context, intent: Intent) {
@@ -243,18 +257,44 @@ class AppDrawerActivity : AppCompatActivity() {
             }
         }
     }
+    private fun applyMenuOpacity() {
+        window.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
+        window.addFlags(android.view.WindowManager.LayoutParams.FLAG_SHOW_WALLPAPER)
+        binding.root.setBackgroundColor(android.graphics.Color.argb(preferences.opacity() * 255 / 100, 20, 20, 20))
+    }
+    private fun chooseIconShape() = ShapePicker.show(this) {
+        adapter.notifyDataSetChanged(); favorites.notifyDataSetChanged(); frequent.notifyDataSetChanged()
+    }
+    private fun chooseMenuOpacity() {
+        val body = android.widget.LinearLayout(this).apply {
+            orientation = android.widget.LinearLayout.VERTICAL
+            val padding = ArtworkUi.dp(context, 20); setPadding(padding, 0, padding, padding)
+        }
+        SettingsPanel(this).slider(body, "Background opacity", preferences.opacity()) {
+            preferences.setOpacity(it); applyMenuOpacity()
+        }
+        com.google.android.material.dialog.MaterialAlertDialogBuilder(this).setTitle("Application menu")
+            .setView(body).setPositiveButton("Done", null).show()
+    }
     private fun buildPhoneLibrary() {
         val parent = binding.list.parent as android.widget.LinearLayout
         val index = parent.indexOfChild(binding.list)
-        if (resources.configuration.screenHeightDp >= 560) {
+        run {
             val grid = RecyclerView(this).apply {
-                adapter = frequent; layoutManager = GridLayoutManager(this@AppDrawerActivity, 4); itemAnimator = null
+                adapter = favorites; layoutManager = GridLayoutManager(this@AppDrawerActivity, 4).also { favoritesGrid = it }; itemAnimator = null; isNestedScrollingEnabled = false
             }
-            fitColumns(grid, 5)
-            parent.addView(grid, index, android.widget.LinearLayout.LayoutParams(-1, -2))
-            parent.addView(View(this).apply { setBackgroundColor(0xff484848.toInt()) }, index + 1,
+            val recentSection = android.widget.LinearLayout(this).apply {
+                orientation = android.widget.LinearLayout.VERTICAL
+                addView(ArtworkUi.title(this@AppDrawerActivity, "Recent apps").apply { textSize = 14f }, android.widget.LinearLayout.LayoutParams(-1, ArtworkUi.dp(context, 32)))
+                addView(grid, android.widget.LinearLayout.LayoutParams(-1, ArtworkUi.dp(context, 108)))
+            }
+            favoritesSection = recentSection
+            parent.addView(recentSection, index, android.widget.LinearLayout.LayoutParams(-1, -2))
+            recentSection.addView(View(this).apply { setBackgroundColor(0xff484848.toInt()) },
                 android.widget.LinearLayout.LayoutParams(-1, ArtworkUi.dp(this, 1)).apply { topMargin = ArtworkUi.dp(this@AppDrawerActivity, 6); bottomMargin = ArtworkUi.dp(this@AppDrawerActivity, 8) })
         }
+        favoritesSection?.visibility = View.GONE
+        if (!preferences.showRecentFiles()) return
         recentBody = RecyclerView(this).apply { layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this@AppDrawerActivity); itemAnimator = null }
         val recent = recentBody.apply { visibility = View.GONE }
         val sheet = android.widget.LinearLayout(this).apply {
@@ -330,10 +370,10 @@ class AppDrawerActivity : AppCompatActivity() {
                 }
             }
         }
-        binding.search.hint = "Search apps and files"
+        binding.search.hint = if (preferences.showRecentFiles()) "Search apps and files" else "Search apps"
     }
     private fun buildLibrary() {
-        binding.root.setBackgroundColor(0xff141414.toInt())
+        applyMenuOpacity()
         if (pickMode) return
         if (!AdaptiveLayout.tablet(this)) { buildPhoneLibrary(); return }
         val landscape = resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
@@ -354,26 +394,26 @@ class AppDrawerActivity : AppCompatActivity() {
         val recent = section("Recent files")
         recentBody = RecyclerView(this).apply { layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this@AppDrawerActivity); itemAnimator = null }
         recent.addView(recentBody, android.widget.LinearLayout.LayoutParams(-1, 0, 1f))
-        container.addView(recent, android.widget.LinearLayout.LayoutParams(0, -1, if (landscape) .25f else .30f))
+        if (preferences.showRecentFiles()) container.addView(recent, android.widget.LinearLayout.LayoutParams(0, -1, if (landscape) .25f else .30f))
         val appsColumn = android.widget.LinearLayout(this).apply { orientation = android.widget.LinearLayout.VERTICAL }
-        container.addView(appsColumn, android.widget.LinearLayout.LayoutParams(0, -1, if (landscape) .75f else .70f))
-        val fav = section("On Home").also { favoritesSection = it }
+        container.addView(appsColumn, android.widget.LinearLayout.LayoutParams(0, -1, if (!preferences.showRecentFiles()) 1f else if (landscape) .75f else .70f))
+        val fav = section("Recent apps").also { favoritesSection = it; it.visibility = View.GONE }
         fav.addView(RecyclerView(this).apply {
             adapter = favorites
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this@AppDrawerActivity, RecyclerView.HORIZONTAL, false)
-            itemAnimator = null
+            layoutManager = GridLayoutManager(this@AppDrawerActivity, 4).also { favoritesGrid = it }
+            itemAnimator = null; isNestedScrollingEnabled = false
         }, android.widget.LinearLayout.LayoutParams(-1, ArtworkUi.dp(this, 112)))
         appsColumn.addView(fav, android.widget.LinearLayout.LayoutParams(-1, -2))
         val apps = section("All applications")
         apps.addView(binding.list, android.widget.LinearLayout.LayoutParams(-1, 0, 1f))
         appsColumn.addView(apps, android.widget.LinearLayout.LayoutParams(-1, 0, 1f))
         val pageDp = resources.getDimension(R.dimen.page_padding) / resources.displayMetrics.density
-        val gridWidth = (resources.configuration.screenWidthDp - pageDp * 2) * (if (landscape) .75f else .70f) - 16
+        val gridWidth = (resources.configuration.screenWidthDp - pageDp * 2) * (if (!preferences.showRecentFiles()) 1f else if (landscape) .75f else .70f) - 16
         (binding.list.layoutManager as GridLayoutManager).spanCount = if (!landscape) 4 else (gridWidth / 96).toInt().coerceIn(2, 8)
-        binding.search.hint = "Search apps and files"
+        binding.search.hint = if (preferences.showRecentFiles()) "Search apps and files" else "Search apps"
     }
     private fun refreshFiles() {
-        if (pickMode || !::recentBody.isInitialized) return
+        if (pickMode || !preferences.showRecentFiles() || !::recentBody.isInitialized) return
         filesJob?.cancel()
         filesJob = lifecycleScope.launch {
             val files = withContext(Dispatchers.IO) { RecentFiles.read(this@AppDrawerActivity) }
@@ -382,7 +422,7 @@ class AppDrawerActivity : AppCompatActivity() {
         }
     }
     private fun renderFiles() {
-        if (!::recentBody.isInitialized) return
+        if (!preferences.showRecentFiles() || !::recentBody.isInitialized) return
         val q = binding.search.text?.toString().orEmpty().trim()
         val files = cachedFiles.filter { q.isEmpty() || it.name.contains(q, ignoreCase = true) }
         val permissionNeeded = !RecentFiles.hasMediaAccess(this)
@@ -412,11 +452,31 @@ class AppDrawerActivity : AppCompatActivity() {
                 setPadding(0, ArtworkUi.dp(context, 6), 0, ArtworkUi.dp(context, 6))
                 isFocusable = true
             }
-            row.addView(android.widget.ImageView(this@AppDrawerActivity).apply { setImageResource(R.drawable.ic_file); setColorFilter(-1) }, android.widget.LinearLayout.LayoutParams(ArtworkUi.dp(this@AppDrawerActivity, 24), ArtworkUi.dp(this@AppDrawerActivity, 24)))
-            row.addView(android.widget.TextView(this@AppDrawerActivity).apply {
-                text = file.name + "\n" + android.text.format.DateUtils.getRelativeTimeSpanString(file.modified, System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)
-                setTextColor(-1); textSize = 12f; maxLines = 3; ellipsize = android.text.TextUtils.TruncateAt.END
-                setPadding(ArtworkUi.dp(context, 8), 0, 0, 0)
+            val preview = android.widget.ImageView(this@AppDrawerActivity).apply {
+                scaleType = android.widget.ImageView.ScaleType.CENTER_CROP; clipToOutline = true
+                outlineProvider = object : android.view.ViewOutlineProvider() {
+                    override fun getOutline(view: View, outline: android.graphics.Outline) = outline.setRoundRect(0, 0, view.width, view.height, ArtworkUi.dp(view.context, 10).toFloat())
+                }
+                val ready = RecentFileThumbs.cached(file)
+                if (ready != null) setImageBitmap(ready) else setImageResource(RecentFileIcons.resource(file))
+                if (ready == null && RecentFileThumbs.supported(file)) lifecycleScope.launch {
+                    val thumb = withContext(Dispatchers.IO) { RecentFileThumbs.load(applicationContext, file) }
+                    if (thumb != null && isAttachedToWindow) { alpha = 0f; setImageBitmap(thumb); animate().alpha(1f).setDuration(150).start() }
+                }
+            }
+            row.addView(preview, android.widget.LinearLayout.LayoutParams(ArtworkUi.dp(this@AppDrawerActivity, 40), ArtworkUi.dp(this@AppDrawerActivity, 40)))
+            // One-line name with a middle ellipsis keeps the extension readable; age on its own line.
+            row.addView(android.widget.LinearLayout(this@AppDrawerActivity).apply {
+                orientation = android.widget.LinearLayout.VERTICAL
+                setPadding(ArtworkUi.dp(context, 10), 0, 0, 0)
+                addView(android.widget.TextView(context).apply {
+                    text = file.name; setTextColor(-1); textSize = 13f; maxLines = 1; isSingleLine = true
+                    ellipsize = android.text.TextUtils.TruncateAt.MIDDLE
+                })
+                addView(android.widget.TextView(context).apply {
+                    text = android.text.format.DateUtils.getRelativeTimeSpanString(file.modified, System.currentTimeMillis(), android.text.format.DateUtils.MINUTE_IN_MILLIS)
+                    setTextColor(0xffb8bcc4.toInt()); textSize = 11f; maxLines = 1
+                })
             }, android.widget.LinearLayout.LayoutParams(0, -2, 1f))
             row.setOnClickListener { openRecentFile(file) }
             row.addView(android.widget.ImageButton(this).apply {
@@ -483,21 +543,21 @@ class AppDrawerActivity : AppCompatActivity() {
     }
     private fun options(app: InstalledApp, anchor: View) {
         val hidden = app.key() in preferences.hidden()
-        val actions = mutableListOf<HomeMenu.Item>()
-        if (app.key() !in onHome) actions += HomeMenu.Item(1, "Add to Home", R.drawable.ic_add) { addApps(listOf(app), true) }
+        val actions = AppShortcuts.menuItems(this, app.packageName, app.component).toMutableList()
+        if (app.key() !in onHome) actions += HomeMenu.Item(1, "Add to Home", R.drawable.ic_add, inline = true, short = "Home") { addApps(listOf(app), true) }
         val docked = app.component in DockApps.pins(this)
-        actions += HomeMenu.Item(5, if (docked) "Unpin from dock" else "Pin to dock", R.drawable.ic_apps) {
+        actions += HomeMenu.Item(5, if (docked) "Unpin from dock" else "Pin to dock", R.drawable.ic_pin_dock, inline = true, short = if (docked) "Unpin" else "Dock") {
             if (!docked && DockApps.pins(this).size >= 5) Toast.makeText(this, "Dock stores up to five apps. Unpin one first.", Toast.LENGTH_SHORT).show()
             else { DockApps.toggle(this, app.component); Toast.makeText(this, if (docked) "Removed from dock" else "Pinned to dock", Toast.LENGTH_SHORT).show() }
         }
-        actions += HomeMenu.Item(2, if (hidden) "Show again" else "Hide from Apps", R.drawable.ic_visibility) {
+        actions += HomeMenu.Item(2, if (hidden) "Show again" else "Hide from Apps", R.drawable.ic_visibility, inline = true, short = if (hidden) "Show" else "Hide") {
             preferences.hide(app.key(), !hidden); filter()
         }
-        actions += HomeMenu.Item(3, "Uninstall", R.drawable.ic_delete) {
+        actions += HomeMenu.Item(3, "Uninstall", R.drawable.ic_delete, inline = true, short = "Uninstall") {
             runCatching { startActivity(Intent(Intent.ACTION_DELETE, Uri.parse("package:${app.packageName}"))) }
                 .onFailure { appInfo(app) }
         }
-        actions += HomeMenu.Item(4, "App info", R.drawable.ic_settings) { appInfo(app) }
+        actions += HomeMenu.Item(4, "App info", R.drawable.ic_info, inline = true, short = "Info") { appInfo(app) }
         HomeMenu.show(anchor, app.label, actions)
     }
     private fun renderSearchResults() {
@@ -546,7 +606,7 @@ class AppDrawerActivity : AppCompatActivity() {
         var items = emptyList<InstalledApp>()
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
             val item = DrawerItemWarmup.take(parent)
-            if (this == favorites && AdaptiveLayout.tablet(this@AppDrawerActivity)) item.root.layoutParams = RecyclerView.LayoutParams(ArtworkUi.dp(this@AppDrawerActivity, 96), ViewGroup.LayoutParams.MATCH_PARENT)
+            if (this == favorites) item.root.layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             return Holder(item)
         }
         override fun getItemCount() = items.size
@@ -559,11 +619,11 @@ class AppDrawerActivity : AppCompatActivity() {
         fun bind(app: InstalledApp) {
             job?.cancel(); key = app.key()
             binding.label.text = app.label
-            val cached = IconCache.cachedAppIcon(app.packageName, app.activityName)
+            val cached = IconCache.cachedDockIcon(this@AppDrawerActivity, app.packageName, app.activityName)
             if (cached != null) binding.icon.setImageBitmap(cached) else binding.icon.setImageResource(R.drawable.ic_apps)
             // No PackageManager or bitmap conversion on the UI thread.
             job = if (cached != null) null else lifecycleScope.launch {
-                val icon = withContext(Dispatchers.IO) { iconWorkers.withPermit { IconCache.appIcon(applicationContext, app.packageName, app.activityName) } }
+                val icon = withContext(Dispatchers.IO) { iconWorkers.withPermit { IconCache.dockIcon(applicationContext, app.packageName, app.activityName) } }
                 if (key == app.key()) binding.icon.setImageBitmap(icon)
             }
             val checked = app.key() in onHome || app.key() in selected

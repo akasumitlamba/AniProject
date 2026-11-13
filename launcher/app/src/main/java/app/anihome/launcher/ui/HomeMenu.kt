@@ -22,12 +22,17 @@ import app.anihome.launcher.R
 /** Compact opaque surface anchored to the control that opened it; keyboard/D-pad focus is retained. */
 object HomeMenu {
     data class Item(val id: Int, val title: String, val icon: Int, val detail: String? = null,
-        val checked: Boolean? = null, val action: () -> Unit)
+        val checked: Boolean? = null, val drawable: android.graphics.drawable.Drawable? = null,
+        /** Inline items render as a compact icon row (with [short] as the caption) above the list. */
+        val inline: Boolean = false, val short: String? = null, val action: () -> Unit)
 
     private var active: PopupWindow? = null
     fun dismiss() { active?.dismiss(); active = null }
     fun finishGesture() { active?.let { if (!it.isFocusable) { it.isFocusable = true; it.update() } } }
-    fun show(anchor: View, title: String, items: List<Item>, keepGesture: Boolean = false) {
+    /** Show at a touch point (screen coordinates), e.g. a long press on empty Home. */
+    fun showAt(anchor: View, screenX: Int, screenY: Int, title: String, items: List<Item>) =
+        show(anchor, title, items, keepGesture = false, at = android.graphics.Point(screenX, screenY))
+    fun show(anchor: View, title: String, items: List<Item>, keepGesture: Boolean = false, at: android.graphics.Point? = null) {
         if (!anchor.isAttachedToWindow || items.isEmpty()) return
         dismiss()
         val context = anchor.context
@@ -45,14 +50,46 @@ object HomeMenu {
         })
         val scroll = ScrollView(context).apply {
             addView(list); isFillViewport = false
-            background = surface(0xf5222428.toInt(), 20); clipToOutline = true
+            background = surface(0xF5191B21.toInt(), 22).apply { setStroke(dp(1), 0x1FFFFFFF) }; clipToOutline = true
         }
         val popup = PopupWindow(scroll, width, ViewGroup.LayoutParams.WRAP_CONTENT, !keepGesture).apply {
             setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
             elevation = dp(12).toFloat(); isOutsideTouchable = true; isClippingEnabled = true
             inputMethodMode = PopupWindow.INPUT_METHOD_NOT_NEEDED
         }
-        items.forEach { item ->
+        // Compact icon actions first, so common actions never need scrolling.
+        val actions = items.filter { it.inline }
+        if (actions.isNotEmpty()) {
+            // Fixed grid so actions line up the same way in every menu, however many there are.
+            val columns = if (actions.size > 5) (actions.size + 1) / 2 else 4.coerceAtLeast(actions.size)
+            val row = android.widget.GridLayout(context).apply { columnCount = columns; setPadding(dp(2), 0, dp(2), dp(6)) }
+            actions.forEach { item ->
+                val cell = LinearLayout(context).apply {
+                    orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER_HORIZONTAL
+                    setPadding(dp(2), dp(6), dp(2), dp(6)); isClickable = true; isFocusable = true
+                    background = RippleDrawable(ColorStateList.valueOf(0x33ffffff), null, surface(-1, 12))
+                    contentDescription = item.title; tooltipText = item.title
+                    setOnClickListener { popup.dismiss(); item.action() }
+                }
+                cell.addView(ImageView(context).apply {
+                    setImageResource(item.icon); scaleType = ImageView.ScaleType.CENTER
+                    imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.text))
+                    background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(0xff34373d.toInt()) }
+                    importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+                }, LinearLayout.LayoutParams(dp(44), dp(44)))
+                cell.addView(TextView(context).apply {
+                    text = item.short ?: item.title; textSize = 11f; maxLines = 1; ellipsize = TextUtils.TruncateAt.END
+                    gravity = Gravity.CENTER; setTextColor(0xffd0d3d8.toInt())
+                    importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+                }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(4) })
+                row.addView(cell, android.widget.GridLayout.LayoutParams(android.widget.GridLayout.spec(android.widget.GridLayout.UNDEFINED),
+                    android.widget.GridLayout.spec(android.widget.GridLayout.UNDEFINED, 1f)).apply { this.width = 0 })
+            }
+            list.addView(row, LinearLayout.LayoutParams(-1, ViewGroup.LayoutParams.WRAP_CONTENT))
+            if (actions.size < items.size) list.addView(View(context).apply { setBackgroundColor(0x22ffffff) },
+                LinearLayout.LayoutParams(-1, dp(1)).apply { setMargins(dp(10), 0, dp(10), dp(4)) })
+        }
+        items.filterNot { it.inline }.forEach { item ->
             val row = LinearLayout(context).apply {
                 id = View.generateViewId()
                 orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL
@@ -72,7 +109,13 @@ object HomeMenu {
                     info.isChecked = item.checked == true
                 }
             })
-            if (item.icon != 0) row.addView(ImageView(context).apply {
+            // App-provided shortcut artwork keeps its own colours.
+            if (item.drawable != null) row.addView(ImageView(context).apply {
+                setImageDrawable(item.drawable); scaleType = ImageView.ScaleType.FIT_CENTER
+                setPadding(dp(6), dp(6), dp(6), dp(6))
+                importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+            }, LinearLayout.LayoutParams(dp(40), dp(40)))
+            else if (item.icon != 0) row.addView(ImageView(context).apply {
                 setImageResource(item.icon)
                 imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, if (item.checked == true) R.color.cyan else R.color.text))
                 setPadding(dp(8), dp(8), dp(8), dp(8))
@@ -103,11 +146,20 @@ object HomeMenu {
         popup.height = scroll.measuredHeight
         popup.setOnDismissListener { if (active === popup) active = null; if (!keepGesture && anchor.isAttachedToWindow) anchor.requestFocus() }
         active = popup
-        val location = IntArray(2).also(anchor::getLocationOnScreen)
-        val x = (location[0] + anchor.width - width).coerceIn(bounds.left + dp(12), (bounds.right - width - dp(12)).coerceAtLeast(bounds.left + dp(12)))
-        val below = location[1] + anchor.height + dp(8)
+        val location = at?.let { intArrayOf(it.x, it.y) } ?: IntArray(2).also(anchor::getLocationOnScreen)
+        val anchorWidth = if (at != null) 0 else anchor.width
+        val anchorHeight = if (at != null) 0 else anchor.height
+        val preferredX = if (at != null) location[0] - width / 2 else location[0] + anchorWidth - width
+        val x = preferredX.coerceIn(bounds.left + dp(12), (bounds.right - width - dp(12)).coerceAtLeast(bounds.left + dp(12)))
+        val below = location[1] + anchorHeight + dp(8)
         val y = (if (below + popup.height <= bounds.bottom) below else location[1] - popup.height - dp(8))
             .coerceIn(bounds.top + dp(8), (bounds.bottom - popup.height - dp(8)).coerceAtLeast(bounds.top + dp(8)))
         popup.showAtLocation(anchor.rootView, Gravity.TOP or Gravity.LEFT, x, y)
+        if (android.animation.ValueAnimator.areAnimatorsEnabled()) {
+            scroll.pivotX = (location[0] - x).toFloat().coerceIn(0f, width.toFloat())
+            scroll.pivotY = if (y >= location[1]) 0f else popup.height.toFloat()
+            scroll.alpha = 0f; scroll.scaleX = .92f; scroll.scaleY = .92f
+            scroll.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(180).setInterpolator(MotionUi.EMPHASIZED_DECELERATE).start()
+        }
     }
 }

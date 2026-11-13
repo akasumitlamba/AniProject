@@ -4,6 +4,21 @@
   "curation": "India-focused mainstream apps and existing device utilities; not a live ranked top chart",
   "entries": [
     {
+      "id": "anihome-settings",
+      "name": "AniHome Settings",
+      "file": "images/anihome-settings.webp",
+      "packages": [],
+      "aliases": [
+        "AniHome Settings",
+        "Launcher settings"
+      ],
+      "webHosts": [],
+      "sha256": "33e5c07170525936b4a6820d92326caf40fc754fb0ddcc820f3af19a5e1389db",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 60
+    },
+    {
       "id": "youtube-music",
       "name": "YouTube Music",
       "file": "images/youtube-music.webp",

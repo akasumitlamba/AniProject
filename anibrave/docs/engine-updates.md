@@ -21,6 +21,24 @@ The installed app and tested production pin remain unchanged. No APK is built,
 signed, auto-merged, published or installed by this workflow. Actions creates PRs
 only in the private AniBrowser workspace, avoiding duplicate public automation.
 
+## Mapping engine internals
+
+Every engine-specific Chromium name AniBrave touches lives in `anibrave/engine-symbols.json`;
+`anibrave/src/EngineSymbols.java` is generated from it. To move to a new engine, decode both
+official APKs with apktool and run:
+
+```sh
+python3 anibrave/tools/map_engine.py --old <decoded-current> --new <decoded-candidate> --tag vX.Y.Z --write
+```
+
+The mapper starts at stable, unobfuscated anchors (ChromeTabbedActivity, TabModel,
+ToolbarControlContainer, DevToolsServer) and follows the same fields and methods into the new
+engine, matching each member by normalized shape, declaration position, implementation bytecode
+and return-type structure. Toolbar layouts are matched by content and the button style is
+inherited from the tab switcher. Anything ambiguous fails closed with the competing candidates.
+Mapping the current engine onto itself must reproduce every name; `test_engine_symbols.py`
+keeps the generated Java in sync with the JSON and the pin in `upstream.json`.
+
 ## Completing an upgrade
 
 The native integration is pinned to Brave's internal Java/smali APIs, obfuscated
@@ -51,7 +69,19 @@ Sources: [GitHub release API](https://docs.github.com/en/rest/releases/releases)
 [scheduled workflows](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule).
 
 
-## Tested engine: 1.98.60
+## Tested engine: 1.99.57
+
+AniBrave 1.1.0 uses official Brave 1.99.57 / Chromium 157.0.8103.79 (ARM64 SHA-256
+`9843fa41…0b054`). Brave 1.100.54 was published the same week without Android packages, so 1.99.57
+is the newest Android stable. Fifteen obfuscated names changed (tab selector, tab model, tab
+closing, strip transition, controls manager, compositor flags, toolbar layouts and the app-name
+string); the mapper resolved all of them without manual overrides. The DevTools JNI slots and the
+shortcut native-ready callback were unchanged. A side-by-side QA package started on the physical
+tablet, showed the features button beside Tabs, opened the features menu and the playback-speed
+dialog on a real video, and connected the internal page-control socket. Signed-in protected
+streaming still needs live acceptance.
+
+## Previously tested engine: 1.98.60
 
 AniBrave 0.2.1 uses official Brave 1.98.60 / Chromium 156.0.8078.48.
 The official release was published on 21 October 2026. The ARM64 input is pinned

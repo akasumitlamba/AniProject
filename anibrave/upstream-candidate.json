@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "status": "compatibility-review-required",
+  "current_tag": "v1.98.60",
+  "proposed_tag": "v1.98.62",
+  "repository": "brave/brave-browser",
+  "asset": "Bravearm64Universal.apk",
+  "sha256": "5ff464f11be641858c1a7a1df652cf1099c1bd92f385dffb4f031b59bf1fa43b",
+  "bytes": 211080965,
+  "download_url": "https://github.com/brave/brave-browser/releases/download/v1.98.62/Bravearm64Universal.apk",
+  "release_url": "https://github.com/brave/brave-browser/releases/tag/v1.98.62"
+}

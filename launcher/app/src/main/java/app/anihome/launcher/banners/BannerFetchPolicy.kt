@@ -9,12 +9,12 @@ object BannerFetchPolicy {
     fun permits(pause: Pause, nowMillis: Long, explicitRetry: Boolean = false): Boolean =
         explicitRetry || nowMillis >= pause.untilMillis
     fun reason(status: Int) = when (status) {
-        401 -> "GitHub access is invalid or expired."
-        403 -> "GitHub denied access or limited requests."
+        401 -> "Store access is invalid or expired."
+        403 -> "The store denied access or limited requests."
         404 -> "The banner source is private or unavailable."
         410 -> "The banner source is no longer available."
-        429 -> "GitHub's request limit was reached."
-        else -> "GitHub is unavailable."
+        429 -> "The store’s request limit was reached."
+        else -> "The store is unavailable."
     }
 }
 

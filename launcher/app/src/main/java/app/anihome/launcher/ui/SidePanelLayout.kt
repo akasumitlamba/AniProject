@@ -30,8 +30,12 @@ internal object SidePanelLayout {
         }
         return PanelGeometryPolicy.bounds(size.width(), size.height(), minOf(ArtworkUi.dp(activity, 360), (size.width() - ArtworkUi.dp(activity, 48)).coerceAtLeast(1)))
     }
-    fun apply(activity: AppCompatActivity, window: Window): PanelGeometryPolicy.Bounds {
-        val bounds = bounds(activity)
+    fun phone(activity: AppCompatActivity) = activity.resources.configuration.smallestScreenWidthDp < 600
+    fun screenWidth(activity: AppCompatActivity) = bounds(activity).let { if (Build.VERSION.SDK_INT >= 30) activity.windowManager.currentWindowMetrics.bounds.width() else {
+        val metrics = android.util.DisplayMetrics(); @Suppress("DEPRECATION") activity.windowManager.defaultDisplay.getRealMetrics(metrics); metrics.widthPixels } }
+    fun apply(activity: AppCompatActivity, window: Window, right: Boolean = false, full: Boolean = false): PanelGeometryPolicy.Bounds {
+        // Phones have no width to spare in any orientation: the panel always fills the screen.
+        val bounds = bounds(activity).let { if (full || phone(activity)) it.copy(width = screenWidth(activity)) else it }
         HomeFullscreen.apply(window)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR)
@@ -40,9 +44,9 @@ internal object SidePanelLayout {
         if (Build.VERSION.SDK_INT >= 28) window.attributes = window.attributes.apply {
             layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         }
-        // Always physical left, including in RTL layouts.
+        // Physical left (or right when opened from the right edge), including in RTL layouts.
         @Suppress("RtlHardcoded")
-        val edge = Gravity.LEFT
+        val edge = if (right) Gravity.RIGHT else Gravity.LEFT
         window.setGravity(edge or Gravity.TOP)
         window.setLayout(bounds.width, bounds.height)
         window.attributes = window.attributes.apply { x = bounds.x; y = bounds.y; screenOrientation = activity.requestedOrientation }

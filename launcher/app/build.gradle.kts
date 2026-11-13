@@ -27,8 +27,8 @@ android {
         testInstrumentationRunner = "app.anihome.launcher.RegressionInstrumentation"
         minSdk = 26
         targetSdk = 35
-        versionCode = 45
-        versionName = "1.0.0"
+        versionCode = 48
+        versionName = "1.1.0"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -49,6 +49,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            // Debug builds install beside the signed launcher, so device QA never replaces
+            // the everyday home screen, its layout database or its signing identity.
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+            resValue("string", "app_name", "AniHome Debug")
+        }
         release {
             // Public artifacts must not embed private repository provenance.
             vcsInfo { include = false }
@@ -83,10 +90,10 @@ dependencies {
     implementation("dev.rikka.shizuku:api:13.1.5")
     implementation("dev.rikka.shizuku:provider:13.1.5")
     implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.appcompat:appcompat:1.8.0")
     implementation("androidx.activity:activity-ktx:1.9.3")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
-    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 

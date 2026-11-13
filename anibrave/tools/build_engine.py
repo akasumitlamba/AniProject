@@ -25,6 +25,14 @@ def sha(path):
   while block:=stream.read(1024*1024):h.update(block)
  return h.hexdigest()
 
+def load_signing_properties(keystore):
+ """Optional ignored <keystore>.properties beside the key: storePassword=, keyPassword=, keyAlias=."""
+ props=keystore.with_suffix('.properties')
+ if os.environ.get('ANIBRAVE_KS_PASS') or not props.is_file():return
+ values=dict(line.split('=',1) for line in props.read_text().splitlines() if '=' in line and not line.lstrip().startswith('#'))
+ for env,key in [('ANIBRAVE_KS_PASS','storePassword'),('ANIBRAVE_KEY_PASS','keyPassword'),('ANIBRAVE_KEY_ALIAS','keyAlias')]:
+  if values.get(key,'').strip():os.environ.setdefault(env,values[key].strip())
+
 def main():
  p=argparse.ArgumentParser(description=__doc__)
  p.add_argument('--input',type=Path,required=True)
@@ -33,8 +41,10 @@ def main():
  p.add_argument('--sdk',type=Path,default=ROOT/'.tools/sdk')
  args=p.parse_args();pin=json.loads((BASE/'upstream.json').read_text())
  if sha(args.input)!=pin['sha256']:raise RuntimeError('Official upstream APK hash mismatch')
+ load_signing_properties(args.keystore)
  if not args.keystore.is_file() or not os.environ.get('ANIBRAVE_KS_PASS'):raise RuntimeError('Existing private key and signing password environment required')
- work=ROOT/'.tools/engine-build'/pin['sha256'];compiled=work/'compiled';compiled.mkdir(parents=True,exist_ok=True)
+ package=os.environ.get('ANIBRAVE_PACKAGE','app.anibrave.main')
+ work=ROOT/'.tools/engine-build'/(pin['sha256']+('' if package=='app.anibrave.main' else '-'+package));compiled=work/'compiled';compiled.mkdir(parents=True,exist_ok=True)
  env=dict(os.environ,ANIBRAVE_ENGINE_WORK=str(work),ANIBRAVE_UPSTREAM_APK=str(args.input.resolve()))
  def run(*cmd):subprocess.run([str(c) for c in cmd],check=True,cwd=ROOT,env=env)
  jars=ROOT/'.tools/engine-tools';jars.mkdir(exist_ok=True)

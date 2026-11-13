@@ -50,7 +50,7 @@ internal class BuiltInWidgets(private val context: Context) {
     }
     private fun syncUpdates() {
         handler.removeCallbacks(ticker)
-        val live = running && attached.any { it.kind != BuiltInWidgetPolicy.NOTE }
+        val live = running && attached.any { it.kind != BuiltInWidgetPolicy.NOTE && it.kind != BuiltInWidgetPolicy.WEATHER }
         if (!live) {
             if (registered) runCatching { context.unregisterReceiver(receiver) }
             registered = false
@@ -65,7 +65,9 @@ internal class BuiltInWidgets(private val context: Context) {
             addAction(Intent.ACTION_LOCALE_CHANGED)
         }
         runCatching {
-            val sticky = ContextCompat.registerReceiver(context, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED)
+            // System-only protected broadcasts. Before Android 13, AndroidX emulates NOT_EXPORTED with a
+            // private permission the system sender lacks, so battery/USB updates were silently denied.
+            val sticky = ContextCompat.registerReceiver(context, receiver, filter, ContextCompat.RECEIVER_EXPORTED)
             registered = true
             if (sticky?.action == Intent.ACTION_BATTERY_CHANGED) readBattery(sticky)
         }
@@ -80,9 +82,11 @@ internal class BuiltInWidgets(private val context: Context) {
         BuiltInWidgetPolicy.CLOCK -> "Clock & date"
         BuiltInWidgetPolicy.BATTERY -> "Battery"
         BuiltInWidgetPolicy.NOTE -> "Quick note"
+        BuiltInWidgetPolicy.WEATHER -> "Weather"
         else -> "AniHome widget"
     }
-    fun create(kind: String, note: String = "", onNote: (() -> Unit)? = null): View = Card(kind, note).apply {
+    fun create(kind: String, note: String = "", onNote: (() -> Unit)? = null): View =
+        if (kind == BuiltInWidgetPolicy.WEATHER) WeatherCard(context) else Card(kind, note).apply {
         updateContent()
         if (kind == BuiltInWidgetPolicy.NOTE && onNote != null) {
             isClickable = true; isFocusable = true

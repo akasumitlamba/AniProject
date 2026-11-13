@@ -29,7 +29,7 @@ final class ContinuationController {
     private static final Runnable pendingTimeout=()->{JSONObject p=pending();if(p!=null){if(p.optLong("expires")<=System.currentTimeMillis())forgetPresentation(null);else scheduleExpiry(p);}};
     private static void scheduleExpiry(JSONObject p){UI.removeCallbacks(pendingTimeout);if(p!=null)UI.postDelayed(pendingTimeout,Math.max(0,p.optLong("expires")-System.currentTimeMillis()));}
     private static ContinuationStore store(Activity a){if(store==null)store=new ContinuationStore(a.getApplicationContext());return store;}
-    private static Object currentTab(Activity a){try{return a.getClass().getMethod("n4").invoke(a);}catch(Exception e){return null;}}
+    private static Object currentTab(Activity a){try{return a.getClass().getMethod(EngineSymbols.ACTIVITY_CURRENT_TAB).invoke(a);}catch(Exception e){return null;}}
     private static int scope(Object t){try{return ((Number)t.getClass().getMethod("getId").invoke(t)).intValue();}catch(Exception e){return -1;}}
     private static boolean valid(Activity a,Object t,String page){return a!=null&&a==AniRuntime.continuationActivity()&&t!=null&&currentTab(a)==t&&WatchUrl.same(page,AniRuntime.currentUrl());}
     static JSONObject normalized(JSONObject id){try{JSONObject n=new JSONObject(id.toString());if(!n.optString("seriesTitle").isEmpty())n.put("title",n.optString("seriesTitle"));return n;}catch(Exception e){return id;}}
@@ -103,7 +103,7 @@ final class ContinuationController {
     }
     private static void navigate(Activity a,Object t,String expected,String destination){
         if(!valid(a,t,expected)||!ResumeLocation.valid(destination)||SiteKey.watchHost(destination).isEmpty())return;
-        try{Class<?> params=Class.forName("org.chromium.content_public.browser.LoadUrlParams");Object request=params.getConstructor(int.class,String.class).newInstance(0,destination);Class.forName("org.chromium.chrome.browser.tab.Tab").getMethod("k",params).invoke(t,request);hide();}
+        try{Class<?> params=Class.forName("org.chromium.content_public.browser.LoadUrlParams");Object request=params.getConstructor(int.class,String.class).newInstance(0,destination);Class.forName("org.chromium.chrome.browser.tab.Tab").getMethod(EngineSymbols.TAB_LOAD_URL,params).invoke(t,request);hide();}
         catch(Exception failure){notice="Open the site manually; your continuation is saved.";render();}
     }
     static void navigateRequest(String targetId,String page,String destination){UI.post(()->{if(!targetId.equals(target)||!valid(owner,tab,page)||!SiteKey.of(page).equals(SiteKey.of(destination))||pending()==null)return;navigate(owner,tab,page,destination);});}

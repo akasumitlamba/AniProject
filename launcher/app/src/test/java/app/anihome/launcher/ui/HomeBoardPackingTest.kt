@@ -62,4 +62,40 @@ class HomeBoardPackingTest {
         val result = HomeBoardPacking.pack(listOf(HomeBoardPacking.Item("widget", 2, 2)), 4, mapOf("widget" to HomeBoardPacking.Cell(-2, Int.MAX_VALUE)))
         assertEquals(0, result.single().x); assertEquals(0, result.single().y)
     }
+    @Test fun addingAppsReservesExistingWidgetCellsEvenWhenTilesComeFirst() {
+        val old = listOf(HomeBoardPacking.Item("tile:1", 2, 2), HomeBoardPacking.Item("widget:1", 4, 2))
+        val before = HomeBoardPacking.pack(old, 6, emptyMap())
+        val anchors = before.associate { it.key to HomeBoardPacking.Cell(it.x, it.y) }
+        val after = HomeBoardPacking.pack(listOf(old[0], HomeBoardPacking.Item("new", 2, 2), old[1]), 6, anchors)
+        assertEquals(before.last(), after.last())
+        assertEquals(2, after[1].y)
+        checkNoOverlap(after, 6)
+    }
+    @Test fun dragPreviewDisplacesNeighborsBeforeDropAndCanReturnToOrigin() {
+        val items = (0..5).map { HomeBoardPacking.Item("tile:$it", 2, 2) }
+        val before = HomeBoardPacking.pack(items, 6, emptyMap())
+        val anchors = before.associate { it.key to HomeBoardPacking.Cell(it.x, it.y) }
+        val preview = HomeBoardPacking.pack(items, 6, anchors + ("tile:0" to HomeBoardPacking.Cell(2, 0)), "tile:0")
+        assertEquals(2, preview.first().x)
+        assertNotEquals(before[1], preview[1])
+        assertEquals(before[2], preview[2])
+        assertEquals(before, HomeBoardPacking.pack(items, 6, anchors, "tile:0"))
+        checkNoOverlap(preview, 6)
+    }
+
+    @Test fun bannersNeverSettleBetweenWholeTileSlots() {
+        val items = (0..7).map { HomeBoardPacking.Item("tile:$it", 2, 2, alignment = 2) }
+        val packed = HomeBoardPacking.pack(items, 8, mapOf("tile:0" to HomeBoardPacking.Cell(3, 3)), "tile:0")
+        assertTrue(packed.all { it.x % 2 == 0 && it.y % 2 == 0 })
+        checkNoOverlap(packed, 8)
+    }
+    @Test fun compactIconsCanStillFillCellsBesideWidgets() {
+        val items = listOf(HomeBoardPacking.Item("widget", 3, 3), HomeBoardPacking.Item("icon", 1, 1), HomeBoardPacking.Item("tile", 2, 2, 2))
+        val packed = HomeBoardPacking.pack(items, 6, emptyMap())
+        assertEquals(3, packed[1].x)
+        assertEquals(0, packed[2].x % 2)
+        assertEquals(0, packed[2].y % 2)
+        checkNoOverlap(packed, 6)
+    }
+
 }

@@ -5,20 +5,44 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.json.JSONObject
 
-/** One adapter and one coordinate space: widgets no longer occupy a separate section. */
+/**
+ * One adapter and one coordinate space: widgets no longer occupy a separate section.
+ * Each grid width keeps its own saved layout, so rotating a tablet between a 6- and an
+ * 8-cell board never strands tiles in the old width or leaves an empty column.
+ */
 internal class HomeBoardAdapter(context: Context, private val tiles: TileAdapter, private val widgets: WidgetController) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val prefs = context.getSharedPreferences("home_board", 0)
     private val desired = linkedMapOf<String, HomeBoardPacking.Cell>()
     var priority: String? = null
     var editing = false
+    var loaded = false
     var placements = emptyList<HomeBoardPacking.Placement>()
         private set
     private val widgetAdapter = widgets.homeAdapter
-    init {
+    /** Grid width (in cells) that `desired` and `placements` currently describe. */
+    private var activeColumns = 0
+    /** Set when a width is shown for the first time: reflow the previous reading order. */
+    private var reflowFrom: List<HomeBoardPacking.Placement>? = null
+    private var adoptedLegacy = false
+    private fun decode(json: String?): Map<String, HomeBoardPacking.Cell>? = json?.let {
         runCatching {
-            val saved = JSONObject(prefs.getString("cells", "{}")!!)
-            saved.keys().forEach { key -> val cell = saved.getJSONObject(key); desired[key] = HomeBoardPacking.Cell(cell.getInt("x"), cell.getInt("y")) }
-        }
+            val saved = JSONObject(it)
+            saved.keys().asSequence().associateWith { key -> saved.getJSONObject(key).let { c -> HomeBoardPacking.Cell(c.getInt("x"), c.getInt("y")) } }
+        }.getOrNull()
+    }
+    private fun switchColumns(columns: Int) {
+        val previous = placements
+        desired.clear(); reflowFrom = null
+        // The unversioned "cells" layout predates per-width layouts; it belongs to the first width shown.
+        val saved = decode(prefs.getString("layout_$columns", null))
+        val legacy = if (saved == null && activeColumns == 0 && prefs.all.keys.none { it.startsWith("layout_") }) decode(prefs.getString("cells", null)) else null
+        adoptedLegacy = legacy != null
+        if (saved != null) desired.putAll(saved) else if (legacy != null) desired.putAll(legacy)
+        else if (previous.isNotEmpty()) reflowFrom = previous
+        activeColumns = columns
+        placements = emptyList()
+    }
+    init {
         fun observer(widget: Boolean) = object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() { notifyDataSetChanged() }
             override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) { notifyItemRangeChanged(positionStart + if (widget) tiles.itemCount else 0, itemCount, payload) }
@@ -34,14 +58,57 @@ internal class HomeBoardAdapter(context: Context, private val tiles: TileAdapter
     fun positionOfWidget(id: Int): Int = widgets.indexOf(id).takeIf { it >= 0 }?.plus(tiles.itemCount) ?: RecyclerView.NO_POSITION
     fun isWidget(position: Int) = position >= tiles.itemCount && position < itemCount
     fun pack(columns: Int): List<HomeBoardPacking.Placement> {
-        val items = tiles.currentList.map { HomeBoardPacking.Item("tile:${it.id}", if (it.iconOnly) 1 else 2, if (it.iconOnly) 1 else 2) } +
+        if (dragOrigin != null && columns == activeColumns) return placements
+        if (columns != activeColumns) { dragOrigin = null; previewCell = null; switchColumns(columns) }
+        val items = tiles.currentList.map { HomeBoardPacking.Item("tile:${it.id}", if (it.iconOnly) 1 else 2, if (it.iconOnly) 1 else 2, if (it.iconOnly) 1 else 2) } +
             (0 until widgetAdapter.itemCount).map { HomeBoardPacking.Item("widget:${widgets.idAt(it)}", widgets.columnsAt(it), widgets.rowsAt(it)) }
+        // Reserve every existing item before placing newly added apps or widgets.
+        placements.forEach { desired.putIfAbsent(it.key, HomeBoardPacking.Cell(it.x, it.y)) }
         val active = items.map { it.key }.toSet()
         val removed = placements.any { it.key !in active }
-        placements = if (removed) HomeBoardPacking.compact(items, columns, placements)
-            else HomeBoardPacking.pack(items, columns, desired, priority)
-        if (removed) { priority = null; desired.clear(); persist() }
+        val reflow = reflowFrom
+        placements = when {
+            reflow != null -> HomeBoardPacking.compact(items, columns, reflow)
+            removed -> HomeBoardPacking.compact(items, columns, placements)
+            else -> HomeBoardPacking.pack(items, columns, desired, priority)
+        }
+        // A legacy layout saved on a narrower board leaves a whole tile column empty; reflow it once.
+        if (adoptedLegacy && placements.isNotEmpty() && placements.maxOf { it.x + it.columns } <= columns - 2) {
+            placements = HomeBoardPacking.compact(items, columns, placements)
+            desired.clear()
+        }
+        // Tiles load asynchronously; keep the one-time check pending until there is something to place.
+        if (placements.isNotEmpty()) adoptedLegacy = false
+        if (removed || reflow != null) { priority = null; desired.clear(); reflowFrom = null }
+        if (loaded) persist()
         return placements
+    }
+    private var dragOrigin: List<HomeBoardPacking.Placement>? = null
+    private var previewCell: HomeBoardPacking.Cell? = null
+    val previewing: Boolean get() = dragOrigin != null
+    fun beginDrag() {
+        dragOrigin = placements.toList()
+        previewCell = null
+    }
+    fun previewMove(key: String, x: Int, y: Int, columns: Int): Boolean {
+        val origin = dragOrigin ?: return false
+        val item = origin.firstOrNull { it.key == key } ?: return false
+        fun HomeBoardPacking.Placement.packingItem() = HomeBoardPacking.Item(this.key, this.columns, this.rows, if (this.key.startsWith("tile:") && this.columns > 1) 2 else 1)
+        val cell = HomeBoardPacking.snap(item.packingItem(), columns, x, y)
+        if (cell == previewCell) return false
+        previewCell = cell
+        val anchors = origin.associate { it.key to HomeBoardPacking.Cell(it.x, it.y) }.toMutableMap()
+        anchors[key] = cell
+        placements = HomeBoardPacking.pack(origin.map { it.packingItem() }, columns, anchors, key)
+        return true
+    }
+    fun finishDrag(cancelled: Boolean) {
+        val origin = dragOrigin ?: return
+        if (cancelled) placements = origin
+        dragOrigin = null; previewCell = null; priority = null
+        desired.clear()
+        persist()
+        notifyDataSetChanged()
     }
     private var geometryOrigin: HomeBoardPacking.Cell? = null
     fun beginGeometryChange(key: String) {
@@ -67,7 +134,11 @@ internal class HomeBoardAdapter(context: Context, private val tiles: TileAdapter
         desired.keys.retainAll(active)
         val saved = JSONObject()
         desired.forEach { (key, cell) -> saved.put(key, JSONObject().put("x", cell.x).put("y", cell.y)) }
-        prefs.edit().putString("cells", saved.toString()).apply()
+        val encoded = saved.toString()
+        if (activeColumns <= 0) return
+        if (prefs.getString("layout_$activeColumns", null) != encoded) prefs.edit().putString("layout_$activeColumns", encoded)
+            // Interim per-width keys from a pre-release build may hold an unreflowed layout.
+            .apply { prefs.all.keys.filter { it.startsWith("cells_") }.forEach(::remove) }.apply()
     }
 
     override fun getItemCount() = tiles.itemCount + widgetAdapter.itemCount

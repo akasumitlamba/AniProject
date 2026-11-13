@@ -8,9 +8,18 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 class BannerRepository(private val context: Context) {
-    private val cache = File(context.cacheDir, "banner-store").apply { mkdirs() }
-    private val catalogFile = File(cache, "catalog.json")
-    private val policyPreferences = context.getSharedPreferences("banner-network-policy", Context.MODE_PRIVATE)
+    private val base = BannerSource.configured(context)
+    // Downloaded artwork is user content, not disposable Android cache.
+    private val cache = File(context.filesDir, "banner-store").apply { mkdirs() }
+    private val catalogFile = File(cache, "catalog-${BannerRules.hash(base.toByteArray()).take(16)}.json")
+    init {
+        val legacy = File(context.cacheDir, "banner-store")
+        legacy.listFiles()?.filter { it.isFile && it.length() <= IMAGE_LIMIT && (it.name.matches(Regex("[a-f0-9]{64}\\.(webp|png)")) || it.name == "catalog.json" && base == BannerSource.DEFAULT_BASE) }?.forEach { file ->
+            val destination = if (file.name == "catalog.json") catalogFile else File(cache, file.name)
+            if (!destination.exists()) runCatching { write(destination, file.readBytes()) }
+        }
+    }
+    private val policyPreferences = context.getSharedPreferences("banner-network-policy-${BannerRules.hash(base.toByteArray()).take(16)}", Context.MODE_PRIVATE)
     private val failedImages = mutableSetOf<String>()
     private fun pause() = BannerFetchPolicy.Pause(policyPreferences.getLong("until", 0), policyPreferences.getInt("status", 0))
     @Synchronized fun cooldownReason(): String? = pause().let {
@@ -22,9 +31,9 @@ class BannerRepository(private val context: Context) {
         failedImages.clear()
     }
     private fun migratePublicSource() {
-        if (policyPreferences.getString("source", null) == BannerSource.REPOSITORY) return
+        if (policyPreferences.getString("source", null) == base) return
         LegacyBannerAccess.clear(context)
-        policyPreferences.edit().clear().putString("source", BannerSource.REPOSITORY).apply()
+        policyPreferences.edit().clear().putString("source", base).apply()
         failedImages.clear()
     }
     @Synchronized fun catalog(refresh: Boolean = false): List<BannerEntry> {
@@ -66,8 +75,8 @@ class BannerRepository(private val context: Context) {
     }
     private fun request(path: String, limit: Int): ByteArray {
         require(path == "catalog.json" || BannerRules.safeFile(path))
-        val url = URL(BannerSource.url(path))
-        require(url.protocol == "https" && url.host == "raw.githubusercontent.com")
+        val url = URL(BannerSource.url(path, base))
+        require(url.protocol == "https" && url.host == URL(base).host && url.path.startsWith(URL(base).path))
         val currentPause = pause()
         if (!BannerFetchPolicy.permits(currentPause, System.currentTimeMillis())) throw BannerApiException(currentPause.status, paused = true)
         val connection = url.openConnection() as HttpURLConnection
@@ -97,7 +106,7 @@ class BannerRepository(private val context: Context) {
             }
         } catch (error: Exception) {
             if (error is BannerApiException) throw error
-            throw BannerApiException(null, paused = false, friendlyReason = "GitHub couldn't provide this banner. Check your connection, then tap Retry.")
+            throw BannerApiException(null, paused = false, friendlyReason = "The store couldn't provide this banner. Check your connection, then tap Retry.")
         } finally { connection.disconnect() }
     }
     private fun write(file: File, bytes: ByteArray) {

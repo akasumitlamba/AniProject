@@ -43,7 +43,8 @@ object InstalledApps {
         val collator = Collator.getInstance()
         return pm.queryIntentActivities(intent, 0)
             .asSequence()
-            .filter { it.activityInfo.packageName != context.packageName }
+            // AniHome itself is the Home screen; only its Settings app appears in the app list.
+            .filter { it.activityInfo.packageName != context.packageName || it.activityInfo.name.endsWith(".HomeSettingsActivity") }
             .map {
                 InstalledApp(
                     label = it.loadLabel(pm).toString(),

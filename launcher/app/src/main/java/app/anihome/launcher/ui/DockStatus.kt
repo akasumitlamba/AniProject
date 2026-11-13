@@ -76,7 +76,9 @@ internal class DockStatus(context: Context) : LinearLayout(context) {
     fun start() {
         if (registered) return
         val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED).apply { addAction(USB_STATE) }
-        ContextCompat.registerReceiver(context.applicationContext, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED)
+        // System-only protected broadcasts. Before Android 13, AndroidX emulates NOT_EXPORTED with a
+        // private permission the system sender lacks, so battery/USB updates were silently denied.
+        ContextCompat.registerReceiver(context.applicationContext, receiver, filter, ContextCompat.RECEIVER_EXPORTED)
         registered = true
         // Seed immediately from Android's sticky broadcasts; no privileged service is needed.
         listOf(Intent.ACTION_BATTERY_CHANGED, USB_STATE).forEach { action ->

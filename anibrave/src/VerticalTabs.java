@@ -118,25 +118,25 @@ final class VerticalTabs {
     private void strip(boolean reconcileHeight) throws Exception {
         View control=find("control_container");
         if(control==null) return;
-        Object compositor=field(control,"z");
+        Object compositor=field(control,EngineSymbols.CONTROL_COMPOSITOR);
         if(compositor==null) return;
-        Object transition=field(compositor,"E");
+        Object transition=field(compositor,EngineSymbols.COMPOSITOR_STRIP_TRANSITION);
         // Phones do not have a horizontal strip transition coordinator.
         if(transition==null) return;
-        Object controller=field(transition,"J");
+        Object controller=field(transition,EngineSymbols.STRIP_TRANSITION_CONTROLLER);
         if(controller==null) return;
         if(stripController!=controller) {
             restoreStrip(); stripController=controller;stripCoordinator=transition;
-            originalStripHidden=(Boolean)field(controller,"p");
+            originalStripHidden=(Boolean)field(controller,EngineSymbols.CONTROLLER_HIDDEN);
         }
         // Native scroll/resize policy must also know the strip is hidden; a
         // zero height alone leaves its compositor layer alive while scrolling.
-        boolean changed=!(Boolean)field(controller,"p");
-        if(changed)transition.getClass().getMethod("e",boolean.class).invoke(transition,true);
+        boolean changed=!(Boolean)field(controller,EngineSymbols.CONTROLLER_HIDDEN);
+        if(changed)transition.getClass().getMethod(EngineSymbols.STRIP_TRANSITION_SET_HIDDEN,boolean.class).invoke(transition,true);
         hideStripLayer();
         // e(true) already schedules the native capture. Only the 750ms refresh
         // retries a stalled height; pre-draw must not enqueue captures per frame.
-        if(reconcileHeight&&!changed&&((Number)field(controller,"m")).intValue()!=0)
+        if(reconcileHeight&&!changed&&((Number)field(controller,EngineSymbols.CONTROLLER_CURRENT_HEIGHT)).intValue()!=0)
             NativeStrip.request(activity,control,controller,0,handler);
     }
     private void hideStripLayer() throws Exception {
@@ -159,7 +159,7 @@ final class VerticalTabs {
     private void restoreStrip() {
         restoreStripLayer();
         if(stripController!=null) try {
-            if(stripCoordinator!=null)stripCoordinator.getClass().getMethod("e",boolean.class).invoke(stripCoordinator,originalStripHidden);
+            if(stripCoordinator!=null)stripCoordinator.getClass().getMethod(EngineSymbols.STRIP_TRANSITION_SET_HIDDEN,boolean.class).invoke(stripCoordinator,originalStripHidden);
             NativeStrip.immediate(stripController,NativeStrip.desired(stripController));
         } catch(Exception ignored) {}
         if(stripController!=null)NativeStrip.cancel(stripController);

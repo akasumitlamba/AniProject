@@ -1,5 +1,14 @@
 # Release history
 
+## 1.1.0 — Control Center, volume panel and AniHome Settings
+
+See [the full 1.1.0 release notes](docs/releases/1.1.0.md) for every change.
+
+- **AniHome**: Control Center in the notification panel (20 one-tap controls including night light, sound mode, mobile data, hotspot and stay awake, app actions as controls, sliders, now playing, edit, side or full-screen layout, blurred glass), a swipe-down panel in every app, AniHome's own volume panel with per-app volume, a separate AniHome Settings app, Bluetooth device icons and per-device menu (connect/disconnect, forget, auto-connect), Wi-Fi auto-connect, a weather widget, recent-file previews, iOS-style hold/drag on Home, a Home menu with wallpaper, a new dock clock, pinned or recent dock apps, smooth icon edges, store banners for websites and shortcuts, and Shizuku guidance.
+- **AniBrave Android**: Brave 1.99.57 / Chromium 157, current Chrome identity for site views, fewer false page-control warnings, and first-swipe Back in fullscreen shortcuts.
+- **AniBrave desktop extension**: the mobile site view reports the browser's real Chrome version.
+- **Banners**: AniHome Settings banner (178 total).
+
 ## 1.0.0 — launch release
 
 AniHome, AniBrave Android and the desktop extension launch together at 1.0.0, retaining the completed navigation, playback, history, launcher, widget and artwork features. See [the full launch feature guide](docs/releases/1.0.0.md). Android upgrade codes are 45 and 429705625; the existing signing identities are retained. This is version alignment of the validated feature baseline, not a new Brave engine update. Pre-launch release records are removed after verified delivery; their technical history and Git tags are retained.

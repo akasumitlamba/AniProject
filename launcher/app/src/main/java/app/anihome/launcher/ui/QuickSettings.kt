@@ -58,12 +58,19 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
             if (listening) result(response)
         }
     }
-    private fun authorizeControls() {
-        if (!bridge.authorize()) {
-            val intent = activity.packageManager.getLaunchIntentForPackage("moe.shizuku.privileged.api")
-            if (intent != null) launch(intent)
-            else Toast.makeText(activity, "Install and start Shizuku to enable direct connections", Toast.LENGTH_LONG).show()
+    /** Shizuku-backed shell toggles for the Control Center; never runs while another radio action is pending. */
+    val privilegedReady: Boolean get() = bridge.ready
+    val privilegedConnecting: Boolean get() = bridge.connecting
+    fun systemToggle(id: String, enabled: Boolean, done: (String) -> Unit) {
+        val service = bridge.service ?: run { done("Connect Shizuku in Home settings to use this control"); return }
+        activity.lifecycleScope.launch {
+            val result = withContext(Dispatchers.IO) { runCatching { service.setSystemToggle(id, enabled) }.getOrDefault("Shizuku is unavailable") }
+            done(result)
         }
+    }
+    fun connectPrivileged() = authorizeControls()
+    private fun authorizeControls() {
+        if (app.anihome.launcher.controls.ShizukuGate.require(activity, "Direct Wi-Fi and Bluetooth control")) bridge.authorize()
     }
     private var renderedSection: String? = null
     private var listening = false
@@ -107,7 +114,11 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
                     }
                     BluetoothDevice.ACTION_FOUND -> device?.let { found[it.address] = it }
                     BluetoothDevice.ACTION_ACL_CONNECTED -> device?.let { connected.add(it.address); remember(it); if (pendingBluetooth == it.address) { pendingBluetooth = null; handler.removeCallbacks(bluetoothTimeout); status = "" } }
-                    BluetoothDevice.ACTION_ACL_DISCONNECTED -> device?.let { connected.remove(it.address) }
+                    BluetoothDevice.ACTION_ACL_DISCONNECTED -> device?.let {
+                        connected.remove(it.address)
+                        if (!app.anihome.launcher.controls.BluetoothDevices.autoConnect(activity, it))
+                            app.anihome.launcher.controls.BluetoothDevices.setAutoConnect(activity, profiles, it, false)
+                    }
                     BluetoothAdapter.ACTION_DISCOVERY_FINISHED -> { scanningBluetooth = false; status = "Search complete" }
                     WifiManager.NETWORK_STATE_CHANGED_ACTION -> {
                         @Suppress("DEPRECATION") val ssid = wifi?.connectionInfo?.ssid?.removeSurrounding("\"")
@@ -128,7 +139,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         if (next == expandedHeight) return
         expandedHeight = next
         scrollView?.let { scroll ->
-            scroll.limit = if (selected == "Settings") Int.MAX_VALUE else (expandedHeight - dp(40)).coerceAtLeast(dp(32)); scroll.requestLayout()
+            scroll.limit = Int.MAX_VALUE; scroll.requestLayout()
         }
     }
     fun attach(parent: LinearLayout, sheetHeight: Int) {
@@ -177,7 +188,8 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         activity.startActivity(intent)
         returnToPanel = true
     }
-    private fun row(parent: LinearLayout, title: String, detail: String = "", active: Boolean = false, click: () -> Unit) {
+    private fun row(parent: LinearLayout, title: String, detail: String = "", active: Boolean = false, icon: Int = 0,
+                    longClick: ((View) -> Unit)? = null, click: () -> Unit) {
         val label = TextView(activity).apply {
             text = android.text.SpannableString(if (detail.isEmpty()) title else "$title\n$detail").apply {
                 setSpan(android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, title.length, 0)
@@ -192,8 +204,34 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
             foreground = ContextCompat.getDrawable(activity, app.anihome.launcher.R.drawable.bg_drawer_item)
             clipToOutline = true
             isFocusable = true; setOnClickListener { click() }
+            if (icon != 0) {
+                setCompoundDrawablesRelativeWithIntrinsicBounds(icon, 0, if (longClick != null) app.anihome.launcher.R.drawable.ic_more_vertical else 0, 0)
+                compoundDrawablePadding = dp(12)
+                compoundDrawableTintList = android.content.res.ColorStateList.valueOf(if (active) 0xff8ab4ff.toInt() else 0xffd0d3da.toInt())
+            }
+            longClick?.let { menu -> setOnLongClickListener { menu(this); true } }
+        }
+        // The ⋯ at the end of a device row opens its options too.
+        if (longClick != null) label.setOnTouchListener { v, e ->
+            if (e.actionMasked == android.view.MotionEvent.ACTION_UP && e.x > v.width - dp(48)) { longClick(v); true } else false
         }
         parent.addView(label, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(6) })
+    }
+    /** Control Center owns the toggle grid; radio lists render into its slot instead of a footer. */
+    var showControlRow = true
+    var radioParent: LinearLayout? = null
+    val section: String? get() = selected
+    val rotationAutomatic: Boolean get() = rotationMode() == "Auto"
+    fun toggleRotation() = cycleRotation()
+    /** Same as tapping the old footer button: expand/collapse Wi-Fi or Bluetooth and scan. */
+    fun openSection(name: String) {
+        wifiDraft = null
+        selected = if (selected == name) null else name
+        status = ""
+        render()
+        if (selected == name && ((name == "Wi-Fi" && granted(Manifest.permission.ACCESS_FINE_LOCATION) && wifi?.isWifiEnabled == true) ||
+            (name == "Bluetooth" && allowedBluetooth() && runCatching { bluetooth?.isEnabled == true }.getOrDefault(false) &&
+                (Build.VERSION.SDK_INT >= 31 || granted(Manifest.permission.ACCESS_FINE_LOCATION))))) scan()
     }
     fun showSettings() { selected = "Settings"; wifiDraft = null; render() }
     fun showNotifications() { selected = null; wifiDraft = null; status = ""; render() }
@@ -210,23 +248,28 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         if (selected == "Settings" && renderedSection == "Settings") return
         if (wifiDraft != null) return // Radio broadcasts must not destroy an in-progress password.
         val previousScroll = if (renderedSection == selected) scrollView?.scrollY ?: 0 else 0
-        if (renderedSection != selected) MotionUi.expand(parent)
+        // Sections open as full-height pages in the panel, so long device lists scroll freely.
+        val target = parent
+        // Fade pages in once laid out; never start a transition while views are being replaced.
+        if (renderedSection != selected) parent.post { parent.alpha = .0f; parent.animate().alpha(1f).setDuration(MotionUi.duration(parent, 180)).start() }
         renderedSection = selected
-        parent.removeAllViews()
-        if (selected != null) parent.addView(View(activity).apply { setBackgroundColor(0xff484848.toInt()) }, LinearLayout.LayoutParams(-1, dp(1)))
+        parent.removeAllViews(); radioParent?.removeAllViews()
+
         // A single expanded section shares the remaining height with notifications.
         selected?.let { section ->
             val sectionRoot = LinearLayout(activity).apply {
                 orientation = LinearLayout.VERTICAL
-                setBackgroundColor(ContextCompat.getColor(activity, app.anihome.launcher.R.color.ink_soft))
+                // Pages sit directly on the panel's frosted backdrop; their cards carry the surfaces.
+                background = null
+                clipToOutline = true
                 setPadding(0, dp(2), 0, dp(4))
                 layoutParams = LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(8) }
             }
-            val scroll = LimitedScroll(activity, if (section == "Settings") Int.MAX_VALUE else (expandedHeight - dp(40)).coerceAtLeast(dp(32))).apply { isFillViewport = false }
+            val scroll = LimitedScroll(activity, Int.MAX_VALUE).apply { isFillViewport = false; isVerticalScrollBarEnabled = true }
             scrollView = scroll
             val body = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL }
             scroll.addView(body)
-            parent.addView(sectionRoot, LinearLayout.LayoutParams(-1, if (section == "Settings") 0 else -2, if (section == "Settings") 1f else 0f))
+            target.addView(sectionRoot, LinearLayout.LayoutParams(-1, 0, 1f))
             when (section) {
                 "Settings" -> {
                     settingsContent(body)
@@ -236,10 +279,18 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
                     note(body, "Nearby-device access changed. Reopen this panel to grant access.")
                 }
             }
-            sectionRoot.addView(scroll, LinearLayout.LayoutParams(-1, if (section == "Settings") -1 else -2))
+            // Two-pane settings scroll each pane independently, so no outer scroll there.
+            if (section == "Settings" && SettingsPanel.twoPane(activity)) {
+                scroll.removeView(body); scrollView = null
+                sectionRoot.addView(body, LinearLayout.LayoutParams(-1, 0, 1f))
+            } else sectionRoot.addView(scroll, LinearLayout.LayoutParams(-1, 0, 1f))
             scroll.post { scroll.scrollTo(0, previousScroll) }
         }
-        val controls = LinearLayout(activity)
+        if (!showControlRow) return
+        val controls = LinearLayout(activity).apply {
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(dp(4), dp(4), dp(4), dp(4))
+        }
         listOf("Wi-Fi", "Bluetooth", "Rotation", "Settings").forEach { name ->
             val column = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL }
             val icon = when (name) { "Wi-Fi" -> app.anihome.launcher.R.drawable.ic_wifi; "Bluetooth" -> app.anihome.launcher.R.drawable.ic_bluetooth; "Settings" -> app.anihome.launcher.R.drawable.ic_settings; else -> when (rotationMode()) { "Fixed" -> app.anihome.launcher.R.drawable.ic_rotation_locked; "Landscape" -> app.anihome.launcher.R.drawable.ic_landscape; else -> app.anihome.launcher.R.drawable.ic_rotation } }
@@ -247,7 +298,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
                 setImageResource(icon)
                 imageTintList = android.content.res.ColorStateList.valueOf(if (selected == name) -1 else 0xffbbbbbb.toInt())
                 scaleType = ImageView.ScaleType.CENTER_INSIDE
-                setPadding(dp(10), dp(10), dp(10), dp(10)); minimumHeight = dp(44)
+                setPadding(dp(12), dp(12), dp(12), dp(12)); minimumHeight = dp(48)
                 background = GradientDrawable().apply { setColor(if (selected == name) 0xff383838.toInt() else android.graphics.Color.TRANSPARENT); cornerRadius = dp(12).toFloat() }
                 foreground = ContextCompat.getDrawable(activity, app.anihome.launcher.R.drawable.bg_drawer_item)
                 clipToOutline = true; isFocusable = true
@@ -267,8 +318,9 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
                 }
             }
             if (name == "Rotation") rotationTile = tile
-            column.addView(tile, LinearLayout.LayoutParams(-1, dp(44)))
-            controls.addView(column, LinearLayout.LayoutParams(0, -2, 1f).apply { marginEnd = if (name == "Settings") 0 else dp(6) })
+            column.gravity = Gravity.CENTER
+            column.addView(tile, LinearLayout.LayoutParams(dp(48), dp(48)))
+            controls.addView(column, LinearLayout.LayoutParams(0, -2, 1f).apply { marginStart = dp(2); marginEnd = dp(2) })
         }
         parent.addView(controls)
     }
@@ -303,23 +355,43 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
     @Suppress("DEPRECATION")
     private fun frameworkWifiScan(): String = if (runCatching { wifi?.startScan() == true }.getOrDefault(false)) "Searching…"
         else "Showing last scan. Android limits scan frequency; check Wi-Fi and Location."
-    private fun radioHeader(body: LinearLayout, name: String, enabled: Boolean, toggle: (Boolean) -> Unit) {
+    private fun radioHeader(headerParent: LinearLayout, body: LinearLayout, name: String, enabled: Boolean, toggle: (Boolean) -> Unit) {
         val header = LinearLayout(activity).apply { gravity = Gravity.CENTER_VERTICAL; setPadding(dp(12), 0, 0, 0) }
         header.addView(ArtworkUi.title(activity, name).apply { textSize = 14f }, LinearLayout.LayoutParams(0, dp(40), 1f))
-        header.addView(ArtworkUi.plainIcon(activity, app.anihome.launcher.R.drawable.ic_settings, "$name options") {
+        fun headerIcon(icon: Int, label: String, action: () -> Unit) = ArtworkUi.plainIcon(activity, icon, label) { action() }.apply {
+            scaleType = ImageView.ScaleType.CENTER_INSIDE
+            setPadding(dp(8), dp(8), dp(8), dp(8))
+        }
+        header.addView(headerIcon(app.anihome.launcher.R.drawable.ic_settings, "$name options") {
             open(if (name == "Wi-Fi") Settings.ACTION_WIFI_SETTINGS else Settings.ACTION_BLUETOOTH_SETTINGS)
         }, LinearLayout.LayoutParams(dp(40), dp(40)))
-        header.addView(ArtworkUi.plainIcon(activity, app.anihome.launcher.R.drawable.ic_refresh, "Search $name") { scan() }, LinearLayout.LayoutParams(dp(40), dp(40)))
+        header.addView(headerIcon(app.anihome.launcher.R.drawable.ic_refresh, "Search $name") { scan() }, LinearLayout.LayoutParams(dp(40), dp(40)))
         header.addView(androidx.appcompat.widget.SwitchCompat(activity).apply {
             isChecked = enabled; contentDescription = "$name power"; minHeight = dp(40)
             setOnCheckedChangeListener { _, checked -> toggle(checked); render() }
             setPadding(dp(4), 0, dp(4), 0)
         }, LinearLayout.LayoutParams(dp(56), dp(40)))
-        body.addView(header, LinearLayout.LayoutParams(-1, dp(40)))
-        if (!bridge.ready) body.addView(ArtworkUi.textChip(activity, if (bridge.connecting) "Connecting to Shizuku… · Open manager" else "Reconnect direct controls · Shizuku") { authorizeControls() }, LinearLayout.LayoutParams(-1, dp(40)))
+        headerParent.addView(header, LinearLayout.LayoutParams(-1, dp(40)))
+        if (!bridge.ready) {
+            val card = LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL
+                setPadding(dp(12), dp(10), dp(12), dp(10))
+                background = GradientDrawable().apply { setColor(0xff252525.toInt()); cornerRadius = dp(12).toFloat() }
+            }
+            card.addView(TextView(activity).apply {
+                text = if (bridge.connecting) "Connecting to Shizuku…" else "Connect Shizuku for direct controls"
+                textSize = 13f; setTextColor(0xffeeeeee.toInt())
+            })
+            card.addView(TextView(activity).apply {
+                text = "Start Shizuku, then allow AniHome access to manage connections here."
+                textSize = 12f; setTextColor(0xffbbbbbb.toInt()); setPadding(0, dp(4), 0, 0)
+            })
+            card.addView(ArtworkUi.textChip(activity, "Open Shizuku") { authorizeControls() }, LinearLayout.LayoutParams(-1, dp(44)).apply { topMargin = dp(8) })
+            body.addView(card, LinearLayout.LayoutParams(-1, -2).apply { marginStart = dp(12); marginEnd = dp(12); topMargin = dp(8); bottomMargin = dp(10) })
+        }
     }
     private fun wifiRows(body: LinearLayout, header: LinearLayout) {
-        radioHeader(header, "Wi-Fi", wifi?.isWifiEnabled == true) { enabled ->
+        radioHeader(header, body, "Wi-Fi", wifi?.isWifiEnabled == true) { enabled ->
             if (bridge.ready) {
                 privileged({ if (it.setWifiPower(enabled)) "" else "Wi-Fi power change failed" }); return@radioHeader
             }
@@ -343,9 +415,10 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         @Suppress("DEPRECATION") val results = runCatching { wifi?.scanResults.orEmpty() }.getOrDefault(emptyList())
         val networks = results.filter { it.SSID.isNotBlank() }.groupBy { it.SSID }.map { (_, group) -> group.maxBy { it.level } }
             .sortedWith(compareByDescending<ScanResult> { it.SSID == current }.thenByDescending { recent.getLong("wifi:${it.SSID}", 0) }.thenByDescending { it.level })
-        if (!current.isNullOrEmpty() && networks.none { it.SSID == current }) row(body, current, "Connected", true) { }
+        if (!current.isNullOrEmpty() && networks.none { it.SSID == current }) row(body, current, "Connected", true, app.anihome.launcher.R.drawable.ic_wifi, { wifiMenu(it, current) }) { }
         if (networks.isEmpty()) note(body, "No networks yet. Search with Wi-Fi and Location enabled.")
-        networks.forEach { result -> row(body, result.SSID, if (result.SSID == current) "Connected" else if (recent.contains("wifi:${result.SSID}")) "Recently connected" else if (result.capabilities.contains("PSK") || result.capabilities.contains("SAE")) "Password protected" else "Available", result.SSID == current) {
+        networks.forEach { result -> row(body, result.SSID, if (result.SSID == current) "Connected" else if (recent.contains("wifi:${result.SSID}")) "Recently connected" else if (result.capabilities.contains("PSK") || result.capabilities.contains("SAE")) "Password protected" else "Available", result.SSID == current,
+            app.anihome.launcher.R.drawable.ic_wifi, if (result.SSID == current || recent.contains("wifi:${result.SSID}")) { anchor -> wifiMenu(anchor, result.SSID) } else null) {
             if (!bridge.ready) {
                 bridge.reconnect()
                 status = "Direct Wi-Fi access is not ready. Tap Enable direct controls to enable Shizuku, then select the network again."
@@ -399,6 +472,11 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
     }
     private fun connectBluetooth(device: BluetoothDevice) {
         bluetooth?.cancelDiscovery()
+        // Auto-connect off blocks Android from connecting; allow it for this tap (restored on disconnect).
+        if (!app.anihome.launcher.controls.BluetoothDevices.autoConnect(activity, device)) {
+            app.anihome.launcher.controls.BluetoothDevices.setAutoConnect(activity, profiles, device, true)
+            activity.getSharedPreferences("quick_connections", android.content.Context.MODE_PRIVATE).edit().putBoolean("auto:${device.address}", false).apply()
+        }
         if (!bridge.ready) {
             bridge.reconnect()
             status = "Direct Bluetooth access is not ready. Tap Enable direct controls to enable Shizuku, then select the device again."
@@ -425,7 +503,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         }
     }
     private fun bluetoothRows(body: LinearLayout, header: LinearLayout) {
-        radioHeader(header, "Bluetooth", runCatching { bluetooth?.isEnabled == true }.getOrDefault(false)) { enabled ->
+        radioHeader(header, body, "Bluetooth", runCatching { bluetooth?.isEnabled == true }.getOrDefault(false)) { enabled ->
             @Suppress("DEPRECATION")
             val changed = Build.VERSION.SDK_INT < 33 && allowedBluetooth() && runCatching {
                 if (enabled) bluetooth?.enable() == true else bluetooth?.disable() == true
@@ -454,7 +532,8 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
                 recent.contains("bt:${device.address}") -> if (device.bondState == BluetoothDevice.BOND_BONDED) "Recently connected · Paired" else "Previously connected · Tap to pair"
                 device.bondState == BluetoothDevice.BOND_BONDED -> "Paired · Tap to connect"
                 else -> "Available · Tap to pair"
-            }, device.address in connected) {
+            }, device.address in connected, app.anihome.launcher.controls.BluetoothDevices.icon(device),
+                if (device.bondState == BluetoothDevice.BOND_BONDED) { anchor -> deviceMenu(anchor, device) } else null) {
                 runCatching {
                     if (device.bondState == BluetoothDevice.BOND_NONE) {
                         bluetooth?.cancelDiscovery()
@@ -465,6 +544,46 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
                 }.onFailure { Toast.makeText(activity, "Device unavailable. Search again.", Toast.LENGTH_SHORT).show() }
             }
         }
+    }
+    /** Saved-network options. Auto-connect needs Android 11+ and Shizuku. */
+    private fun wifiMenu(anchor: View, ssid: String) {
+        val key = "wifiauto:$ssid"
+        val auto = recent.getBoolean(key, true)
+        HomeMenu.show(anchor, ssid, listOf(
+            HomeMenu.Item(1, "Wi-Fi settings", app.anihome.launcher.R.drawable.ic_settings, inline = true, short = "Settings") { open(Settings.ACTION_WIFI_SETTINGS) },
+            HomeMenu.Item(2, "Auto-connect", app.anihome.launcher.R.drawable.ic_wifi,
+                if (auto) "Joins by itself when in range" else "Only joins when you tap it", checked = auto) {
+                if (Build.VERSION.SDK_INT < 30) { Toast.makeText(activity, "Android 10 doesn't support per-network auto-connect.", Toast.LENGTH_LONG).show(); return@Item }
+                if (!app.anihome.launcher.controls.ShizukuGate.require(activity, "Wi-Fi auto-connect")) return@Item
+                systemToggle("wifi_autojoin:$ssid", !auto) { result ->
+                    if (result.isEmpty()) recent.edit().putBoolean(key, !auto).apply()
+                    else Toast.makeText(activity, result, Toast.LENGTH_SHORT).show()
+                    render()
+                }
+            }))
+    }
+    /** Per-device options: connect/disconnect, auto-connect on/off, forget. */
+    private fun deviceMenu(anchor: View, device: BluetoothDevice) {
+        val actions = app.anihome.launcher.controls.BluetoothDevices
+        val isConnected = device.address in connected
+        val auto = actions.autoConnect(activity, device)
+        val items = mutableListOf<HomeMenu.Item>()
+        items += if (isConnected) HomeMenu.Item(1, "Disconnect", app.anihome.launcher.R.drawable.ic_close, inline = true, short = "Disconnect") {
+            if (actions.disconnect(profiles, device)) { status = "Disconnecting…"; render() }
+            else Toast.makeText(activity, "This Android version blocks disconnecting from other apps. Use Bluetooth settings.", Toast.LENGTH_LONG).show()
+        } else HomeMenu.Item(2, "Connect", app.anihome.launcher.R.drawable.ic_bluetooth, inline = true, short = "Connect") { connectBluetooth(device) }
+        items += HomeMenu.Item(3, "Forget", app.anihome.launcher.R.drawable.ic_delete, inline = true, short = "Forget") {
+            if (actions.forget(device)) { connected.remove(device.address); render() }
+            else Toast.makeText(activity, "Couldn't forget this device here. Use Bluetooth settings.", Toast.LENGTH_SHORT).show()
+        }
+        items += HomeMenu.Item(4, "Bluetooth settings", app.anihome.launcher.R.drawable.ic_settings, inline = true, short = "Settings") { open(Settings.ACTION_BLUETOOTH_SETTINGS) }
+        items += HomeMenu.Item(5, "Auto-connect", app.anihome.launcher.R.drawable.ic_bluetooth,
+            if (auto) "Reconnects by itself when nearby" else "Only connects when you tap it", checked = auto) {
+            if (!actions.setAutoConnect(activity, profiles, device, !auto))
+                Toast.makeText(activity, "Android didn't allow changing auto-connect for this device.", Toast.LENGTH_LONG).show()
+            render()
+        }
+        HomeMenu.show(anchor, device.name ?: device.address, items)
     }
     private fun rotationMode(): String = if (RotationControl.mode(activity) == "Auto") "Auto" else "Fixed"
     private fun cycleRotation() = setAutomaticRotation(rotationMode() != "Auto")

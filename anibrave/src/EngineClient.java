@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 final class EngineClient implements Runnable {
+    private volatile String chromeMajor="157";
     static final class Page {
         final String session, target, type, parent;
         String browserContext = "";
@@ -79,8 +80,8 @@ final class EngineClient implements Runnable {
     private void view(Page p) throws Exception {
         if(SiteKey.of(root(p).url).isEmpty()) return;
         int mode=mode(p);
-        String ua=mode==0 ? "Mozilla/5.0 (Linux; Android "+Build.VERSION.RELEASE+") AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Mobile Safari/537.36"
-            : "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36";
+        String ua=mode==0 ? "Mozilla/5.0 (Linux; Android "+Build.VERSION.RELEASE+") AppleWebKit/537.36 (KHTML, like Gecko) Chrome/"+chromeMajor+".0.0.0 Mobile Safari/537.36"
+            : "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/"+chromeMajor+".0.0.0 Safari/537.36";
         if(p.userAgentMode!=mode){
             send("Emulation.setUserAgentOverride",json("userAgent",ua,"platform",mode==0?"Linux armv8l":"Linux x86_64"),p.session);
             p.userAgentMode=mode;
@@ -151,6 +152,8 @@ final class EngineClient implements Runnable {
         while(running) {
             try {
                 JSONObject version=new JSONObject(LocalWebSocket.get("/json/version"));
+                // Identity overrides must match the running engine, never a stale literal.
+                chromeMajor=UserAgents.chromeMajor(version.optString("Browser"),chromeMajor);
                 String path=URI.create(version.getString("webSocketDebuggerUrl")).getRawPath();
                 socket=new LocalWebSocket(path); pages.clear(); attachedTargets.clear(); iconRequests.clear();frameRequests.clear();
                 defaultBrowserContext="";
@@ -188,7 +191,13 @@ final class EngineClient implements Runnable {
             if(result!=null&&result.has("defaultBrowserContextId"))defaultBrowserContext=result.optString("defaultBrowserContextId");
             JSONArray targets=result==null?null:result.optJSONArray("targetInfos");
             if(targets!=null) for(int i=0;i<targets.length();i++) attach(targets.getJSONObject(i),null);
-            if(message.has("error")) {android.util.Log.w("AniBrave", "Page command failed: " + message.optJSONObject("error")); AniRuntime.engineWarning("Some page controls are unavailable; reopen the site");}
+            if(message.has("error")) {
+                JSONObject error=message.optJSONObject("error");
+                // Navigation destroys contexts/sessions between an event and our command. The
+                // replacement context is configured on executionContextCreated, so stay quiet.
+                if(EngineErrors.transientRace(error==null?null:error.optString("message"))) android.util.Log.d("AniBrave", "Ignored stale page command: " + error);
+                else {android.util.Log.w("AniBrave", "Page command failed: " + error); AniRuntime.engineWarning("Some page controls are unavailable; reopen the site");}
+            }
             return;
         }
         if(method.equals("Target.targetCreated")) { attach(params.getJSONObject("targetInfo"),session); return; }

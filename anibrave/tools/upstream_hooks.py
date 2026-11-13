@@ -24,9 +24,9 @@ def bootstrap_shortcut_controls(text):
     return text.replace(call, call + '\n    invoke-static/range {p0 .. p0}, Lapp/anibrave/AniRuntime;->shortcutReady(Landroid/app/Activity;)V')
 
 
-def verify_native_initialization(text):
+def verify_native_initialization(text, selector=4):
     """The overloaded generated JNI slot must match this engine's server init."""
-    if 'const/4 v3, 0x4' not in text or 'invoke-static {v3, v4}, LJ/N;->JO(ILjava/lang/Object;)J' not in text:
+    if f'const/4 v3, {selector:#x}' not in text or 'invoke-static {v3, v4}, LJ/N;->JO(ILjava/lang/Object;)J' not in text:
         raise RuntimeError('DevTools native initialization selector changed')
     if text.count('const-string v4, "chrome"') != 1:
         raise RuntimeError('DevTools initialization prefix changed')

@@ -13,12 +13,22 @@ import java.io.File
 /** Uses a dedicated QA cache directory and database, never the user's launcher data. */
 class RegressionInstrumentation : Instrumentation() {
     private var navigationOnly = false
+    private var layoutOnly = false
+    private var appearanceOnly = false
     private var checks = 0
     private fun verify(ok: Boolean, name: String) { check(ok) { name }; checks++ }
-    override fun onCreate(arguments: Bundle?) { super.onCreate(arguments); navigationOnly = arguments?.getString("navigation_only") == "true"; start() }
+    override fun onCreate(arguments: Bundle?) { super.onCreate(arguments); navigationOnly = arguments?.getString("navigation_only") == "true"; layoutOnly = arguments?.getString("layout_only") == "true"; appearanceOnly = arguments?.getString("appearance_only") == "true"; start() }
     override fun onStart() {
         val results = Bundle()
         try {
+            if (appearanceOnly) {
+                results.putString("stream", AppearanceRegression.run(this) + "\n")
+                finish(Activity.RESULT_OK, results); return
+            }
+            if (layoutOnly) {
+                results.putString("stream", HomeLayoutRegression.run(this) + "\n")
+                finish(Activity.RESULT_OK, results); return
+            }
             if (navigationOnly) {
                 results.putString("stream", NavigationRegression.run(this) + "\n")
                 finish(Activity.RESULT_OK, results); return
@@ -57,7 +67,7 @@ class RegressionInstrumentation : Instrumentation() {
             }
             IconCache.invalidateFile(shortcutArt.path)
             val pkg = targetContext.packageName
-            verify(IconCache.appIcon(targetContext, pkg, null) != null, "generic app icon is warm before shortcut binding")
+            verify(IconCache.dockIcon(targetContext, pkg, null) != null, "generic shaped app icon is warm before shortcut binding")
             lateinit var imageHolder: TileAdapter.Holder
             lateinit var imageAdapter: TileAdapter
             lateinit var registry: androidx.lifecycle.LifecycleRegistry
@@ -79,7 +89,7 @@ class RegressionInstrumentation : Instrumentation() {
                 runOnMainSync {
                     val image = imageHolder.itemView.findViewById<android.widget.ImageView>(R.id.icon)
                     val bitmap = (image.drawable as? android.graphics.drawable.BitmapDrawable)?.bitmap
-                    loadedShortcut = bitmap?.getPixel(0,0) == android.graphics.Color.MAGENTA
+                    loadedShortcut = bitmap?.let { it.getPixel(it.width / 2, it.height / 2) } == android.graphics.Color.MAGENTA
                 }
                 if (!loadedShortcut) Thread.sleep(20)
             }

@@ -4,7 +4,9 @@ const queues = new Map();
 function serial(key, fn) { const next = (queues.get(key) || Promise.resolve()).catch(()=>{}).then(fn); queues.set(key,next); next.finally(()=>{if(queues.get(key)===next) queues.delete(key);}).catch(()=>{}); return next; }
 const get = async key => (await chrome.storage.local.get(key))[key];
 async function context(tabId, sourceURL) { const tab = await chrome.tabs.get(tabId); const url = sourceURL || tab.url; const host = hostKey(url); if(!host) throw Error('Open a regular website to use AniBrave.'); return {tab,host,url}; }
-const mobileUA = 'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36';
+// Mobile identity follows the running browser's Chromium version, never a stale literal.
+const chromeMajor = (globalThis.navigator?.userAgent?.match(/Chrome\/(\d+)/) || [])[1] || '130';
+const mobileUA = `Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${chromeMajor}.0.0.0 Mobile Safari/537.36`;
 const dropping = new Set(), suppressReapply = new Set();
 async function device(tabId, mode, retry = true) {
   const target = {tabId}; const own = await chrome.storage.session.get('attached'); const attached = own.attached || [];
@@ -19,7 +21,7 @@ async function device(tabId, mode, retry = true) {
   }
   if(!attached.includes(tabId)) { await chrome.debugger.attach(target,'1.3'); await chrome.storage.session.set({attached:[...attached,tabId]}); }
   try {
-    await chrome.debugger.sendCommand(target,'Emulation.setUserAgentOverride',{userAgent:mobileUA,platform:'Linux armv8l',userAgentMetadata:{brands:[{brand:'Chromium',version:'130'}],fullVersionList:[{brand:'Chromium',version:'130.0.0.0'}],platform:'Android',platformVersion:'13.0.0',architecture:'arm',model:'Pixel 7',mobile:true}});
+    await chrome.debugger.sendCommand(target,'Emulation.setUserAgentOverride',{userAgent:mobileUA,platform:'Linux armv8l',userAgentMetadata:{brands:[{brand:'Chromium',version:chromeMajor}],fullVersionList:[{brand:'Chromium',version:`${chromeMajor}.0.0.0`}],platform:'Android',platformVersion:'13.0.0',architecture:'arm',model:'Pixel 7',mobile:true}});
     if(mode==='mobile') await chrome.debugger.sendCommand(target,'Emulation.setDeviceMetricsOverride',{width:412,height:915,screenWidth:412,screenHeight:915,deviceScaleFactor:1,mobile:true});
     else await chrome.debugger.sendCommand(target,'Emulation.clearDeviceMetricsOverride');
     await chrome.debugger.sendCommand(target,'Emulation.setTouchEmulationEnabled',{enabled:mode==='mobile',maxTouchPoints:1});

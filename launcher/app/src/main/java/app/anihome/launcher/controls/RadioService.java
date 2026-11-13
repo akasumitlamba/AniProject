@@ -105,5 +105,108 @@ public final class RadioService extends IRadioService.Stub {
         } catch (Exception ignored) { /* Unsupported platform interface, no guessed transaction IDs. */ }
         return -1;
     }
+    /**
+     * Shell-level system toggles. Only these fixed identifiers are accepted and each maps to a
+     * constant command; no caller text reaches a shell. Returns "" on success or a short reason.
+     */
+    @Override public String setSystemToggle(String id, boolean enabled) {
+        try {
+            switch (id) {
+                case "dark":
+                    return run("cmd", "uimode", "night", enabled ? "yes" : "no");
+                case "battery_saver":
+                    if (run("cmd", "power", "set-mode", enabled ? "1" : "0").isEmpty()) return "";
+                    return run("settings", "put", "global", "low_power", enabled ? "1" : "0");
+                case "location":
+                    if (android.os.Build.VERSION.SDK_INT >= 30) return run("cmd", "location", "set-location-enabled", enabled ? "true" : "false");
+                    return run("settings", "put", "secure", "location_mode", enabled ? "3" : "0");
+                case "airplane": {
+                    Object manager = shell.getSystemService(Context.CONNECTIVITY_SERVICE);
+                    manager.getClass().getMethod("setAirplaneMode", boolean.class).invoke(manager, enabled);
+                    return "";
+                }
+                case "night_light":
+                    return run("settings", "put", "secure", "night_display_activated", enabled ? "1" : "0");
+                case "invert":
+                    return run("settings", "put", "secure", "accessibility_display_inversion_enabled", enabled ? "1" : "0");
+                case "mobile_data":
+                    return run("svc", "data", enabled ? "enable" : "disable");
+                case "wifi_power":
+                    return wifi.setWifiEnabled(enabled) ? "" : "Wi-Fi could not be changed";
+                case "bt_power":
+                    return setBluetoothPower(enabled) ? "" : "Bluetooth could not be changed";
+                case "bt_max_devices":
+                    // Developer option "Maximum connected Bluetooth audio devices". Playback still
+                    // goes to one active device unless the phone supports dual audio.
+                    return run("setprop", "persist.bluetooth.maxconnectedaudiodevices", enabled ? "2" : "1");
+                default:
+                    if (id.startsWith("wifi_autojoin:")) return wifiAutojoin(id.substring("wifi_autojoin:".length()), enabled);
+                    return "Unsupported control";
+            }
+        } catch (Exception failure) {
+            Throwable cause = failure instanceof java.lang.reflect.InvocationTargetException ? failure.getCause() : failure;
+            android.util.Log.w("AniHomeRadio", "Toggle " + id + ": " + cause.getClass().getSimpleName());
+            return "Android refused this change";
+        }
+    }
+    /** Android 11+: per-network "Auto-connect" (allowAutojoin). Android 10 has no such switch. */
+    private String wifiAutojoin(String ssid, boolean enabled) throws Exception {
+        if (android.os.Build.VERSION.SDK_INT < 30) return "Android 10 doesn't support per-network auto-connect";
+        for (WifiConfiguration config : wifi.getConfiguredNetworks()) {
+            if (config.SSID != null && config.SSID.replace("\"", "").equals(ssid)) {
+                WifiManager.class.getMethod("allowAutojoin", int.class, boolean.class).invoke(wifi, config.networkId, enabled);
+                return "";
+            }
+        }
+        return "Network not saved on this device";
+    }
+    private static String run(String... command) throws Exception {
+        Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
+        StringBuilder output = new StringBuilder();
+        try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(process.getInputStream()))) {
+            String line; while ((line = reader.readLine()) != null && output.length() < 400) output.append(line).append('\n');
+        }
+        if (!process.waitFor(5, java.util.concurrent.TimeUnit.SECONDS)) { process.destroy(); return "Timed out"; }
+        String text = output.toString().trim();
+        boolean failed = process.exitValue() != 0 || text.startsWith("Unknown") || text.contains("Exception") || text.contains("Error");
+        return failed ? (text.isEmpty() ? "Command failed" : text.split("\n")[0]) : "";
+    }
+    /** Players are listed with their owner uid; shell can see unanonymized playback configs. */
+    @Override public String activePlayers() {
+        org.json.JSONArray out = new org.json.JSONArray();
+        try {
+            android.media.AudioManager audio = (android.media.AudioManager) shell.getSystemService(Context.AUDIO_SERVICE);
+            java.util.Set<Integer> seen = new java.util.HashSet<>();
+            for (android.media.AudioPlaybackConfiguration config : audio.getActivePlaybackConfigurations()) {
+                int uid = (int) android.media.AudioPlaybackConfiguration.class.getMethod("getClientUid").invoke(config);
+                if (uid <= 0 || !seen.add(uid)) continue;
+                String[] packages = shell.getPackageManager().getPackagesForUid(uid);
+                if (packages == null || packages.length == 0) continue;
+                out.put(new org.json.JSONObject().put("uid", uid).put("package", packages[0]));
+            }
+        } catch (Exception failure) {
+            android.util.Log.w("AniHomeRadio", "Players: " + failure.getClass().getSimpleName());
+        }
+        return out.toString();
+    }
+    @Override public boolean setAppVolume(int uid, float volume) {
+        boolean applied = false;
+        try {
+            android.media.AudioManager audio = (android.media.AudioManager) shell.getSystemService(Context.AUDIO_SERVICE);
+            java.lang.reflect.Method owner = android.media.AudioPlaybackConfiguration.class.getMethod("getClientUid");
+            java.lang.reflect.Method proxy = android.media.AudioPlaybackConfiguration.class.getMethod("getPlayerProxy");
+            for (android.media.AudioPlaybackConfiguration config : audio.getActivePlaybackConfigurations()) {
+                if ((int) owner.invoke(config) != uid) continue;
+                Object player = proxy.invoke(config);
+                if (player == null) continue;
+                player.getClass().getMethod("setVolume", float.class).invoke(player, Math.max(0f, Math.min(1f, volume)));
+                applied = true;
+            }
+        } catch (Exception failure) {
+            Throwable cause = failure instanceof java.lang.reflect.InvocationTargetException ? failure.getCause() : failure;
+            android.util.Log.w("AniHomeRadio", "App volume: " + cause.getClass().getSimpleName() + " " + cause.getMessage());
+        }
+        return applied;
+    }
     @Override public void destroy() { System.exit(0); }
 }
