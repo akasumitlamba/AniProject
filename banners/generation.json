@@ -520,6 +520,10 @@
     {
       "id": "rawcam",
       "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for RawCam, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Use the Pixel Camera emblem as a deliberate visual substitute for RawCam. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
+    },
+    {
+      "id": "audible",
+      "prompt": "Create one full-bleed 1.62:1 AniHome tile for Audible using its official app icon as identity reference and Google Keep as a reference for composition and scale. Use the inner book and sound waves without the rounded icon container. Set the integrated navy Audible lockup large on a golden-orange background with subtle arc-derived sweeps. Use the word audible once. No borders, watermark, or extra copy."
     }
   ],
   "artworkTreatments": {
@@ -546,6 +550,7 @@
     "opera": "lockup",
     "ludo-king": "lockup",
     "concepts": "text",
-    "wipro-smart": "text"
+    "wipro-smart": "text",
+    "audible": "ImageGen composition with Audible’s orange palette and the inner book-and-sound symbol."
   }
 }

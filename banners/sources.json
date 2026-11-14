@@ -1426,5 +1426,13 @@
     "sourceUrl": "https://github.com/a1024/RawCam",
     "referenceSourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.GoogleCamera",
     "identityNotes": "Deliberate Pixel Camera artwork substitute for RawCam; this is not the upstream RawCam application icon."
+  },
+  {
+    "id": "audible",
+    "name": "Audible",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.audible.application&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/pK4LAE_Faa6mN0CBrOAO_QxFloLuO4FdIQtrAZJaZZUyiRnJ_yHG-Co70Xnxn_j-UQVIBVbfCtbyAzUERtVaTFA=s0-br30",
+    "artworkTreatment": "ImageGen composition with Audible’s orange palette and the inner book-and-sound symbol.",
+    "verifiedPlayTitle": "Audible: Audiobooks & Podcasts - Apps on Google Play"
   }
 ]

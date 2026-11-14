@@ -3134,6 +3134,20 @@
       "category": "utilities",
       "tabletPriority": 65,
       "sha256": "180f3b52c2f988cc45f3b990067d5235eea5d761fe2e3dc04892c6995db592d8"
+    },
+    {
+      "id": "audible",
+      "name": "Audible",
+      "file": "images/audible.webp",
+      "packages": [
+        "com.audible.application"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "dbe1fbda22daa0ee16ce28d8692474b0c6ec94fcd3a1e5312c232117dbde3c91"
     }
   ]
 }
