@@ -20,7 +20,8 @@ class BannerRepository(private val context: Context) {
         }
     }
     private val policyPreferences = context.getSharedPreferences("banner-network-policy-${BannerRules.hash(base.toByteArray()).take(16)}", Context.MODE_PRIVATE)
-    private val failedImages = mutableSetOf<String>()
+    /** Files that just failed, with when; retried automatically after [FAILURE_MEMORY_MS]. */
+    private val failedImages = java.util.concurrent.ConcurrentHashMap<String, Long>()
     private fun pause() = BannerFetchPolicy.Pause(policyPreferences.getLong("until", 0), policyPreferences.getInt("status", 0))
     @Synchronized fun cooldownReason(): String? = pause().let {
         if (BannerFetchPolicy.permits(it, System.currentTimeMillis())) null else BannerFetchPolicy.reason(it.status)
@@ -48,34 +49,56 @@ class BannerRepository(private val context: Context) {
         runCatching { parse(catalogFile.readBytes()) }.getOrNull()?.let { return it }
         return parse(context.resources.openRawResource(app.anihome.launcher.R.raw.banner_catalog).use { it.readBytes() })
     }
-    @Synchronized fun image(entry: BannerEntry, allowNetwork: Boolean = false): File {
+    /**
+     * The banner's file: cached, bundled, or downloaded. Downloads run outside the repository
+     * lock (at most [PARALLEL] at once, one per file), so a long store list loads quickly and a
+     * slow banner never holds the others back.
+     */
+    fun image(entry: BannerEntry, allowNetwork: Boolean = false): File {
         require(BannerRules.safeFile(entry.file) && entry.sha256.matches(Regex("[a-f0-9]{64}")))
         val target = File(cache, "${entry.sha256}.${entry.file.substringAfterLast('.')}")
-        if (target.exists() && target.length() <= IMAGE_LIMIT && BannerRules.hash(target.readBytes()) == entry.sha256) return target
-        val bundled = runCatching { context.assets.open(entry.file).use { it.readBytes() } }.getOrNull()
-        val bytes = if (bundled != null && bundled.size <= IMAGE_LIMIT && BannerRules.hash(bundled) == entry.sha256) bundled
-            else if (allowNetwork) {
-                if (entry.file in failedImages) throw BannerApiException(null, friendlyReason = "This banner is unavailable. Tap Retry to try again.")
-                try { request(entry.file, IMAGE_LIMIT) }
-                catch (error: Exception) { failedImages.add(entry.file); throw error }
-            } else error("Banner not cached")
-        if (BannerRules.hash(bytes) != entry.sha256) {
-            failedImages.add(entry.file)
-            throw BannerApiException(null, friendlyReason = "Banner verification failed. Bundled banners remain available.")
+        synchronized(fileLock(target.name)) {
+            if (target.exists() && target.length() <= IMAGE_LIMIT && BannerRules.hash(target.readBytes()) == entry.sha256) return target
+            val bundled = runCatching { context.assets.open(entry.file).use { it.readBytes() } }.getOrNull()
+            val bytes = if (bundled != null && bundled.size <= IMAGE_LIMIT && BannerRules.hash(bundled) == entry.sha256) bundled
+                else if (allowNetwork) {
+                    failedImages[entry.file]?.let { at ->
+                        if (System.currentTimeMillis() - at < FAILURE_MEMORY_MS) throw BannerApiException(null, friendlyReason = "This banner is unavailable right now. Try again in a moment.")
+                        failedImages.remove(entry.file)
+                    }
+                    try { download(entry) }
+                    catch (error: Exception) { failedImages[entry.file] = System.currentTimeMillis(); throw error }
+                } else error("Banner not cached")
+            write(target, bytes)
+            return target
         }
-        val bounds = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
-        android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size, bounds)
-        if (bounds.outWidth !in 320..4096 || bounds.outHeight !in 1..4096 ||
-            kotlin.math.abs(bounds.outWidth.toDouble() / bounds.outHeight - 1.62) >= 0.035) {
-            failedImages.add(entry.file)
-            throw BannerApiException(null, friendlyReason = "The downloaded banner is invalid. Bundled banners remain available.")
-        }
-        write(target, bytes)
-        return target
     }
-    private fun request(path: String, limit: Int): ByteArray {
+
+    /** Downloads and verifies one banner, retrying once past a stale CDN copy. */
+    private fun download(entry: BannerEntry): ByteArray {
+        permits.acquire()
+        try {
+            // The content hash in the URL keys caches by version, so an updated banner never
+            // arrives as the previous image (which would fail verification).
+            var bytes = request(entry.file, IMAGE_LIMIT, "v=${entry.sha256.take(16)}")
+            if (BannerRules.hash(bytes) != entry.sha256) bytes = request(entry.file, IMAGE_LIMIT, "v=${entry.sha256.take(16)}&t=${System.currentTimeMillis()}")
+            if (BannerRules.hash(bytes) != entry.sha256)
+                throw BannerApiException(null, friendlyReason = "This banner is being updated in the store. Try again in a few minutes.")
+            val bounds = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
+            android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size, bounds)
+            if (bounds.outWidth !in 320..4096 || bounds.outHeight !in 1..4096 ||
+                kotlin.math.abs(bounds.outWidth.toDouble() / bounds.outHeight - 1.62) >= 0.035)
+                throw BannerApiException(null, friendlyReason = "The downloaded banner is invalid. Bundled banners remain available.")
+            return bytes
+        } finally { permits.release() }
+    }
+    private val fileLocks = java.util.concurrent.ConcurrentHashMap<String, Any>()
+    private fun fileLock(name: String) = fileLocks.getOrPut(name) { Any() }
+
+    private fun request(path: String, limit: Int, query: String? = null): ByteArray {
         require(path == "catalog.json" || BannerRules.safeFile(path))
-        val url = URL(BannerSource.url(path, base))
+        require(query == null || query.matches(Regex("v=[a-f0-9]{1,64}(&t=[0-9]{1,20})?")))
+        val url = URL(BannerSource.url(path, base) + (query?.let { "?$it" } ?: ""))
         require(url.protocol == "https" && url.host == URL(base).host && url.path.startsWith(URL(base).path))
         val currentPause = pause()
         if (!BannerFetchPolicy.permits(currentPause, System.currentTimeMillis())) throw BannerApiException(currentPause.status, paused = true)
@@ -118,7 +141,7 @@ class BannerRepository(private val context: Context) {
         require(bytes.size <= 1024 * 1024)
         val root = JSONObject(bytes.toString(Charsets.UTF_8))
         require(root.getInt("schema") == 1)
-        val entries = root.getJSONArray("entries"); require(entries.length() in 1..2000)
+        val entries = root.getJSONArray("entries"); require(entries.length() in 1..5000)
         val ids = mutableSetOf<String>()
         val files = mutableSetOf<String>()
         val packages = mutableSetOf<String>()
@@ -127,7 +150,8 @@ class BannerRepository(private val context: Context) {
             require(array.length() <= 100)
             return List(array.length()) { array.getString(it).also { value -> require(value.length <= 256) } }
         }
-        return List(entries.length()) { i ->
+        // A single malformed or duplicate row is skipped; it must not hide the whole catalog.
+        val parsed = (0 until entries.length()).mapNotNull { i -> runCatching {
             val row = entries.getJSONObject(i)
             val id = row.getString("id"); val name = row.getString("name"); val file = row.getString("file"); val hash = row.getString("sha256")
             require(id.matches(Regex("[a-z0-9]+(?:-[a-z0-9]+)*")) && ids.add(id))
@@ -141,7 +165,15 @@ class BannerRepository(private val context: Context) {
             val priority = row.optInt("tabletPriority", 0)
             require(category.matches(Regex("[a-z0-9]+(?:-[a-z0-9]+)*")) && category.length <= 40 && priority in 0..100)
             BannerEntry(id, name, file, appPackages, strings(row, "aliases"), hosts, hash, category, priority)
-        }
+        }.getOrNull() }
+        require(parsed.isNotEmpty())
+        return parsed
     }
-    private companion object { const val IMAGE_LIMIT = 4 * 1024 * 1024 }
+    private companion object {
+        const val IMAGE_LIMIT = 4 * 1024 * 1024
+        const val FAILURE_MEMORY_MS = 60_000L
+        const val PARALLEL = 4
+        /** Shared by every repository instance: the store, automatic banners and prefetch. */
+        val permits = java.util.concurrent.Semaphore(PARALLEL)
+    }
 }

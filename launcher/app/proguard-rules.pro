@@ -4,3 +4,6 @@
 }
 
 -keep class app.anihome.launcher.controls.RadioService { *; }
+
+# Shizuku starts the gesture-navigation task service by class name.
+-keep class app.anihome.launcher.nav.TaskService { public <init>(); }

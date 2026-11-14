@@ -52,7 +52,7 @@ class PanelActivity : AppCompatActivity() {
         panelUi.attach(parent)
     }
 
-    override fun onDestroy() { if (panel.isShowing) panel.dismiss(); super.onDestroy() }
+    override fun onDestroy() { if (panel.isShowing) panel.dismissNow(); super.onDestroy() }
 
     companion object { const val EXTRA_EDGE = "edge" }
 }

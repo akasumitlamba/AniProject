@@ -150,6 +150,7 @@ class TileAdapter(
             binding.notificationBadge.minWidth = ArtworkUi.dp(context, if (tile.iconOnly) 18 else 44)
             binding.notificationBadge.setPadding(ArtworkUi.dp(context, if (tile.iconOnly) 4 else 12), 0, ArtworkUi.dp(context, 4), ArtworkUi.dp(context, if (tile.iconOnly) 0 else 7))
             binding.notificationBadge.textSize = if (tile.iconOnly) 9f else 11f
+            binding.bannerLoading.visibility = if (tile.artworkOrigin == "pending" && !tile.iconOnly && tile.artworkPath == null) View.VISIBLE else View.GONE
             artworkJob?.cancel()
             // Clear recycled artwork immediately; disk decode and package artwork stay off the UI thread.
             val cachedArt = if (tile.iconOnly) null else tile.artworkPath?.let(IconCache::cachedFileIcon)

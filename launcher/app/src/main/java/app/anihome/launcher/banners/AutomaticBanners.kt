@@ -30,6 +30,7 @@ object AutomaticBanners {
                 while (true) {
                     val pending = store.all().filter { it.artworkOrigin == "pending" }
                     if (pending.isEmpty()) { drained = true; break }
+                    val missing = mutableListOf<String>(); val failed = mutableListOf<String>()
                     for (tile in pending) {
                         var output: File? = null
                         var attached = false
@@ -42,13 +43,17 @@ object AutomaticBanners {
                                 source.copyTo(output)
                             }
                             attached = store.finishAutomaticArtwork(tile.id, output?.absolutePath)
-                            if (attached) TileEvents.notifyChanged()
+                            if (attached) {
+                                TileEvents.notifyChanged()
+                                if (match == null) missing += tile.label // Not in the store: keeps its icon.
+                            }
                         } catch (cancel: CancellationException) { throw cancel }
                         catch (_: Exception) {
                             // Offline, missing, or invalid images leave the normal application icon.
-                            if (store.finishAutomaticArtwork(tile.id, null)) TileEvents.notifyChanged()
+                            if (store.finishAutomaticArtwork(tile.id, null)) { TileEvents.notifyChanged(); failed += tile.label }
                         } finally { if (!attached) output?.delete() }
                     }
+                    announce(app, missing, failed)
                 }
             } catch (cancel: CancellationException) { throw cancel }
             catch (_: Exception) { /* Persisted pending rows can resume after the next Home refresh. */ }
@@ -56,6 +61,23 @@ object AutomaticBanners {
                 running.set(false)
                 if (drained && runCatching { TileStore(app).all().any { it.artworkOrigin == "pending" } }.getOrDefault(false)) enqueue(app)
             }
+        }
+    }
+
+    /** One short message per batch: which tiles keep their icon because there's no banner. */
+    private fun announce(context: Context, missing: List<String>, failed: List<String>) {
+        fun names(list: List<String>) = when (list.size) {
+            1 -> list[0]
+            2 -> "${list[0]} and ${list[1]}"
+            else -> "${list[0]}, ${list[1]} and ${list.size - 2} more"
+        }
+        val text = when {
+            missing.isNotEmpty() -> "The banner store has no banner for ${names(missing)}, so ${if (missing.size == 1) "its" else "their"} icon is shown"
+            failed.isNotEmpty() -> "Couldn't get a banner for ${names(failed)} right now, so ${if (failed.size == 1) "its" else "their"} icon is shown"
+            else -> return
+        }
+        android.os.Handler(android.os.Looper.getMainLooper()).post {
+            android.widget.Toast.makeText(context, text, android.widget.Toast.LENGTH_LONG).show()
         }
     }
 

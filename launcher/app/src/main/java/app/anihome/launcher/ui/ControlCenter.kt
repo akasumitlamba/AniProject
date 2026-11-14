@@ -523,9 +523,16 @@ internal class ControlCenter(
      */
     private fun privileged(id: String, on: Boolean, fallback: Intent, state: () -> Boolean) {
         if (!quick.privilegedReady) {
-            // Explain Shizuku once ready-to-act; otherwise this setting is still reachable by long-press.
-            if (app.anihome.launcher.controls.ShizukuGate.require(activity, "One-tap system toggles")) quick.connectPrivileged()
-            return
+            val gate = app.anihome.launcher.controls.ShizukuGate
+            if (gate.ready(activity)) {
+                // Shizuku is fine, the helper just isn't bound yet: connect and retry once.
+                quick.connectPrivileged()
+                handler.postDelayed({ if (attached) { if (quick.privilegedReady) privileged(id, on, fallback, state) else launch(fallback) } }, 900)
+                return
+            }
+            // No Shizuku: open Android's own setting, with at most a small daily hint.
+            gate.hint(activity, "This control")
+            launch(fallback); return
         }
         quick.systemToggle(id, on) { result ->
             if (!attached) return@systemToggle

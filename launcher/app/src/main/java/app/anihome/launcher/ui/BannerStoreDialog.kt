@@ -204,8 +204,10 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
                     setStatus("Opening…")
                     val result = withContext(Dispatchers.IO) { runCatching { repository.image(entry, allowNetwork) } }
                     val file = result.getOrNull()
+                    val error = result.exceptionOrNull()
                     if (file != null) { dialog.dismiss(); onSelect(file) }
-                    else if (allowNetwork || result.exceptionOrNull() is BannerApiException) showFailure(result.exceptionOrNull()!!)
+                    else if ((error as? BannerApiException)?.paused == true) showFailure(error)
+                    else if (allowNetwork) setStatus("Couldn't load ${entry.name}", (error as? BannerApiException)?.friendlyReason ?: "Check your connection, then tap the banner again.")
                     else setStatus("Banner unavailable offline", "Refresh to update, or use Gallery / AI prompt in More.")
                 }
             }
@@ -222,7 +224,9 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
                     }
                 }
                 val bitmap = result.getOrNull()
-                if (generation == networkGeneration && result.exceptionOrNull() is BannerApiException) showFailure(result.exceptionOrNull()!!)
+                // Only a paused/limited source takes the store offline; one missing banner just stays blank.
+                val error = result.exceptionOrNull()
+                if (generation == networkGeneration && (error as? BannerApiException)?.paused == true) showFailure(error)
                 if (holder.id == entry.id) holder.image.setImageBitmap(bitmap) else bitmap?.recycle()
             }
         }

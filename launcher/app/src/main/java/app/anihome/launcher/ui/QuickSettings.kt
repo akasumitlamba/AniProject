@@ -68,9 +68,13 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
             done(result)
         }
     }
-    fun connectPrivileged() = authorizeControls()
+    fun connectPrivileged() = connectQuietly()
     private fun authorizeControls() {
         if (app.anihome.launcher.controls.ShizukuGate.require(activity, "Direct Wi-Fi and Bluetooth control")) bridge.authorize()
+    }
+    /** Connects to Shizuku when it is already set up; never prompts. */
+    fun connectQuietly() {
+        if (app.anihome.launcher.controls.ShizukuGate.ready(activity)) bridge.authorize()
     }
     private var renderedSection: String? = null
     private var listening = false
@@ -379,14 +383,14 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
                 background = GradientDrawable().apply { setColor(0xff252525.toInt()); cornerRadius = dp(12).toFloat() }
             }
             card.addView(TextView(activity).apply {
-                text = if (bridge.connecting) "Connecting to Shizuku…" else "Connect Shizuku for direct controls"
+                text = if (bridge.connecting) "Connecting to Shizuku…" else "Optional: switch networks right here"
                 textSize = 13f; setTextColor(0xffeeeeee.toInt())
             })
             card.addView(TextView(activity).apply {
-                text = "Start Shizuku, then allow AniHome access to manage connections here."
+                text = "With Shizuku set up, AniHome can connect and switch directly. Without it, tapping opens Android's settings."
                 textSize = 12f; setTextColor(0xffbbbbbb.toInt()); setPadding(0, dp(4), 0, 0)
             })
-            card.addView(ArtworkUi.textChip(activity, "Open Shizuku") { authorizeControls() }, LinearLayout.LayoutParams(-1, dp(44)).apply { topMargin = dp(8) })
+            card.addView(ArtworkUi.textChip(activity, "Set up Shizuku") { authorizeControls() }, LinearLayout.LayoutParams(-1, dp(44)).apply { topMargin = dp(8) })
             body.addView(card, LinearLayout.LayoutParams(-1, -2).apply { marginStart = dp(12); marginEnd = dp(12); topMargin = dp(8); bottomMargin = dp(10) })
         }
     }
@@ -419,9 +423,12 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         if (networks.isEmpty()) note(body, "No networks yet. Search with Wi-Fi and Location enabled.")
         networks.forEach { result -> row(body, result.SSID, if (result.SSID == current) "Connected" else if (recent.contains("wifi:${result.SSID}")) "Recently connected" else if (result.capabilities.contains("PSK") || result.capabilities.contains("SAE")) "Password protected" else "Available", result.SSID == current,
             app.anihome.launcher.R.drawable.ic_wifi, if (result.SSID == current || recent.contains("wifi:${result.SSID}")) { anchor -> wifiMenu(anchor, result.SSID) } else null) {
-            if (!bridge.ready) {
+            if (!bridge.ready && !app.anihome.launcher.controls.ShizukuGate.ready(activity)) {
+                // No Shizuku: Android's own Wi-Fi picker does the connecting.
+                open(if (Build.VERSION.SDK_INT >= 29) Settings.Panel.ACTION_WIFI else Settings.ACTION_WIFI_SETTINGS)
+            } else if (!bridge.ready) {
                 bridge.reconnect()
-                status = "Direct Wi-Fi access is not ready. Tap Enable direct controls to enable Shizuku, then select the network again."
+                status = "Connecting to Shizuku… tap the network again in a moment."
                 render()
             } else if (needsPasswordFor != result.SSID) connectWifi(body, result, null) else credentials(body, result)
         } }
@@ -472,6 +479,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
     }
     private fun connectBluetooth(device: BluetoothDevice) {
         bluetooth?.cancelDiscovery()
+        if (!bridge.ready && !app.anihome.launcher.controls.ShizukuGate.ready(activity)) { open(Settings.ACTION_BLUETOOTH_SETTINGS); return }
         // Auto-connect off blocks Android from connecting; allow it for this tap (restored on disconnect).
         if (!app.anihome.launcher.controls.BluetoothDevices.autoConnect(activity, device)) {
             app.anihome.launcher.controls.BluetoothDevices.setAutoConnect(activity, profiles, device, true)
@@ -479,7 +487,7 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         }
         if (!bridge.ready) {
             bridge.reconnect()
-            status = "Direct Bluetooth access is not ready. Tap Enable direct controls to enable Shizuku, then select the device again."
+            status = "Connecting to Shizuku… tap the device again in a moment."
             render(); return
         }
         if (radioBusy) { status = "Please wait for the current radio action."; render(); return }
@@ -554,7 +562,10 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
             HomeMenu.Item(2, "Auto-connect", app.anihome.launcher.R.drawable.ic_wifi,
                 if (auto) "Joins by itself when in range" else "Only joins when you tap it", checked = auto) {
                 if (Build.VERSION.SDK_INT < 30) { Toast.makeText(activity, "Android 10 doesn't support per-network auto-connect.", Toast.LENGTH_LONG).show(); return@Item }
-                if (!app.anihome.launcher.controls.ShizukuGate.require(activity, "Wi-Fi auto-connect")) return@Item
+                if (!app.anihome.launcher.controls.ShizukuGate.ready(activity)) {
+                    Toast.makeText(activity, "Per-network auto-connect needs Shizuku. Set it up in AniHome Settings → Shizuku.", Toast.LENGTH_LONG).show(); return@Item
+                }
+                if (!privilegedReady) { connectQuietly(); Toast.makeText(activity, "Connecting to Shizuku… try again in a moment", Toast.LENGTH_SHORT).show(); return@Item }
                 systemToggle("wifi_autojoin:$ssid", !auto) { result ->
                     if (result.isEmpty()) recent.edit().putBoolean(key, !auto).apply()
                     else Toast.makeText(activity, result, Toast.LENGTH_SHORT).show()

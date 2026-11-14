@@ -18,7 +18,10 @@ class PackageChangeReceiver : BroadcastReceiver() {
             try {
                 if (intent.action == Intent.ACTION_PACKAGE_REMOVED && !replacing) {
                     TileStore(context).removePackage(packageName)
+                    app.anihome.launcher.banners.BannerPrefetch.removed(context, packageName)
                 }
+                // Have the store banner ready before the app is ever added to Home.
+                if (intent.action == Intent.ACTION_PACKAGE_ADDED && !replacing) app.anihome.launcher.banners.BannerPrefetch.installed(context, packageName)
                 InstalledApps.invalidate()
                 IconCache.invalidate(packageName)
                 TileEvents.notifyChanged()

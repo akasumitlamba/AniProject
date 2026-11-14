@@ -135,6 +135,9 @@ public final class RadioService extends IRadioService.Stub {
                     return wifi.setWifiEnabled(enabled) ? "" : "Wi-Fi could not be changed";
                 case "bt_power":
                     return setBluetoothPower(enabled) ? "" : "Bluetooth could not be changed";
+                case "grant_secure_settings":
+                    // One-time grant so AniHome can hide/restore the navigation bar for its gestures.
+                    return run("pm", "grant", "app.anihome.launcher", "android.permission.WRITE_SECURE_SETTINGS");
                 case "bt_max_devices":
                     // Developer option "Maximum connected Bluetooth audio devices". Playback still
                     // goes to one active device unless the phone supports dual audio.
@@ -171,23 +174,66 @@ public final class RadioService extends IRadioService.Stub {
         boolean failed = process.exitValue() != 0 || text.startsWith("Unknown") || text.contains("Exception") || text.contains("Error");
         return failed ? (text.isEmpty() ? "Command failed" : text.split("\n")[0]) : "";
     }
-    /** Players are listed with their owner uid; shell can see unanonymized playback configs. */
+    /**
+     * Apps playing sound right now. Where Android hands shell the full playback configs, each
+     * app gets a volume slider. Where it anonymises them (Android 10: shell lacks
+     * MODIFY_AUDIO_ROUTING), the owners come from the audio service's own report and the app
+     * can be muted instead.
+     */
     @Override public String activePlayers() {
         org.json.JSONArray out = new org.json.JSONArray();
+        java.util.Set<Integer> seen = new java.util.HashSet<>();
         try {
             android.media.AudioManager audio = (android.media.AudioManager) shell.getSystemService(Context.AUDIO_SERVICE);
-            java.util.Set<Integer> seen = new java.util.HashSet<>();
+            java.lang.reflect.Method owner = android.media.AudioPlaybackConfiguration.class.getMethod("getClientUid");
+            java.lang.reflect.Method proxy = android.media.AudioPlaybackConfiguration.class.getMethod("getPlayerProxy");
             for (android.media.AudioPlaybackConfiguration config : audio.getActivePlaybackConfigurations()) {
-                int uid = (int) android.media.AudioPlaybackConfiguration.class.getMethod("getClientUid").invoke(config);
+                int uid = (int) owner.invoke(config);
                 if (uid <= 0 || !seen.add(uid)) continue;
-                String[] packages = shell.getPackageManager().getPackagesForUid(uid);
-                if (packages == null || packages.length == 0) continue;
-                out.put(new org.json.JSONObject().put("uid", uid).put("package", packages[0]));
+                addPlayer(out, uid, proxy.invoke(config) != null);
             }
         } catch (Exception failure) {
             android.util.Log.w("AniHomeRadio", "Players: " + failure.getClass().getSimpleName());
         }
+        if (out.length() == 0) {
+            // "ID:15 -- type:… -- u/pid:10133/4567 -- state:started -- attr:…"
+            java.util.regex.Matcher match = java.util.regex.Pattern.compile("u/pid:(\\d+)/\\d+ -- state:started").matcher(report("dumpsys", "audio"));
+            while (match.find()) {
+                int uid = Integer.parseInt(match.group(1));
+                if (uid >= 10000 && seen.add(uid)) addPlayer(out, uid, false);
+            }
+        }
         return out.toString();
+    }
+    private void addPlayer(org.json.JSONArray out, int uid, boolean volume) {
+        try {
+            String[] packages = shell.getPackageManager().getPackagesForUid(uid);
+            if (packages == null || packages.length == 0) return;
+            out.put(new org.json.JSONObject().put("uid", uid).put("package", packages[0])
+                .put("volume", volume).put("muted", report("appops", "get", packages[0], "PLAY_AUDIO").contains("ignore")));
+        } catch (Exception ignored) { /* skip this player */ }
+    }
+    @Override public boolean setAppMuted(String packageName, boolean muted) {
+        try {
+            if (shell.getPackageManager().getPackageUid(packageName, 0) < 10000) return false; // apps only
+            return run("appops", "set", packageName, "PLAY_AUDIO", muted ? "ignore" : "allow").isEmpty();
+        } catch (Exception failure) {
+            return false;
+        }
+    }
+    /** Full output of a fixed diagnostic command (bounded), for parsing. */
+    private static String report(String... command) {
+        try {
+            Process process = new ProcessBuilder(command).redirectErrorStream(true).start();
+            StringBuilder output = new StringBuilder();
+            try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(process.getInputStream()))) {
+                String line; while ((line = reader.readLine()) != null && output.length() < 512_000) output.append(line).append('\n');
+            }
+            process.waitFor(5, java.util.concurrent.TimeUnit.SECONDS);
+            return output.toString();
+        } catch (Exception failure) {
+            return "";
+        }
     }
     @Override public boolean setAppVolume(int uid, float volume) {
         boolean applied = false;

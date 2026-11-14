@@ -75,6 +75,8 @@
     <string name="action_notifications">Open notifications</string>
     <string name="action_recents">Open recent apps</string>
     <string name="home_controls_name">AniHome controls</string>
+    <string name="navigation_service_name">AniHome navigation</string>
+    <string name="navigation_service_description">AniHome\'s gesture navigation: a thin handle on the bottom edge for Home, Back, Recents and switching apps. It only reacts to touches on that edge and notices which app is in front so the handle can stay visible on Home. It does not read screen content.</string>
     <string name="home_controls_description">Lets the Home buttons turn the screen off and open recent apps. It does not read screen content or monitor your interactions.</string>
     <string name="action_more">More controls</string>
 </resources>

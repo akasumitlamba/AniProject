@@ -50,7 +50,7 @@ internal class RadioBridge(private val activity: AppCompatActivity, private val 
     }
     val connecting get() = binding || warming
     private val args = Shizuku.UserServiceArgs(ComponentName(activity, RadioService::class.java))
-        .daemon(false).processNameSuffix("radios").tag("anihome-radios").version(24)
+        .daemon(false).processNameSuffix("radios").tag("anihome-radios").version(26)
     private val connection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, binder: IBinder) {
             handler.removeCallbacks(bindingTimeout)

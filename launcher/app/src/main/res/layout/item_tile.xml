@@ -59,6 +59,11 @@
             android:layout_gravity="top|end" android:elevation="9dp" android:gravity="center"
             android:minWidth="44dp" android:paddingStart="12dp" android:paddingEnd="4dp" android:paddingBottom="7dp" android:textColor="#FFFFFF"
             android:textSize="11sp" android:textStyle="bold" android:visibility="gone" android:background="@drawable/bg_banner_notification_tag" />
+        <!-- Shown while the store banner for a newly added tile is being fetched. -->
+        <ProgressBar android:id="@+id/banner_loading" android:layout_width="26dp" android:layout_height="26dp"
+            android:layout_gravity="bottom|end" android:layout_margin="8dp" android:padding="4dp" android:elevation="9dp"
+            android:indeterminate="true" android:indeterminateTint="#FFFFFF" android:background="@drawable/bg_loading_chip"
+            android:contentDescription="Loading banner" android:visibility="gone" />
         </FrameLayout>
         <ImageView
             android:id="@+id/remove"

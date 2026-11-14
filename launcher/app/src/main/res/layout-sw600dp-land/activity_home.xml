@@ -109,7 +109,7 @@
         <ImageButton android:id="@+id/btn_edit" style="@style/Widget.AniHome.BorderlessIconButton" android:layout_marginTop="4dp"
             android:src="@drawable/ic_edit" android:contentDescription="@string/action_edit" android:tooltipText="@string/action_edit" android:visibility="gone" />
         <ImageButton android:id="@+id/btn_apps" style="@style/Widget.AniHome.BorderlessIconButton" android:layout_marginTop="4dp"
-            android:src="@drawable/ic_apps" android:contentDescription="@string/action_all_apps" android:tooltipText="@string/action_all_apps" />
+            android:src="@drawable/ic_dock_apps" android:background="@drawable/bg_dock_apps" android:contentDescription="@string/action_all_apps" android:tooltipText="@string/action_all_apps" />
     </LinearLayout>
 
     <TextView

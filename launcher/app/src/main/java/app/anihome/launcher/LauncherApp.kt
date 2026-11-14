@@ -12,13 +12,22 @@ import kotlinx.coroutines.launch
 class LauncherApp : Application() {
     val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
+    private fun processName(): String =
+        if (android.os.Build.VERSION.SDK_INT >= 28) getProcessName()
+        else runCatching { java.io.File("/proc/self/cmdline").readText().trim('\u0000', ' ') }.getOrDefault(packageName)
+
     override fun onCreate() {
         super.onCreate()
-        if (android.os.Build.VERSION.SDK_INT >= 28) {
-            val process = getProcessName()
-            if (process != packageName) WebView.setDataDirectorySuffix(process)
+        val process = processName()
+        if (process != packageName) {
+            // Secondary processes (gesture navigation) only need their own WebView directory.
+            if (android.os.Build.VERSION.SDK_INT >= 28) WebView.setDataDirectorySuffix(process)
+            return
         }
+        // Lets the navigation process receive Shizuku's binder from this (provider) process.
+        rikka.shizuku.ShizukuProvider.enableMultiProcessSupport(true)
         scope.launch { app.anihome.launcher.data.InstalledApps.list(this@LauncherApp) }
+        app.anihome.launcher.banners.BannerPrefetch.sweep(this)
         scope.launch {
             LauncherDb.get(this@LauncherApp).writableDatabase
             Seed.ensure(this@LauncherApp, TileStore(this@LauncherApp))

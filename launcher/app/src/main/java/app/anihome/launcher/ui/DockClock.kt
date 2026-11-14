@@ -57,14 +57,23 @@ internal class DockClock(context: Context) : LinearLayout(context) {
         time.textSize = if (vertical) 17f else 18f
         date.textSize = 11f
         time.gravity = gravity; date.gravity = gravity
+        listOf(time, date, barView, percent).forEach { (it.parent as? android.view.ViewGroup)?.removeView(it) }
         addView(time, LayoutParams(-2, -2))
-        addView(date, LayoutParams(-2, -2).apply { topMargin = dp(1) })
-        // Battery: slim bar + percentage on one line.
-        listOf(barView, percent).forEach { (it.parent as? android.view.ViewGroup)?.removeView(it) }
+        // Battery icon + percentage on one line.
         val battery = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
-        battery.addView(barView, LayoutParams(dp(if (vertical) 18 else 20), dp(8)))
+        battery.addView(barView, LayoutParams(dp(22), dp(11)))
         battery.addView(percent, LayoutParams(-2, -2).apply { marginStart = dp(4) })
-        addView(battery, LayoutParams(-2, -2).apply { topMargin = dp(4) })
+        if (vertical) {
+            // Side dock: narrow, so time / date / battery stack.
+            addView(date, LayoutParams(-2, -2).apply { topMargin = dp(1) })
+            addView(battery, LayoutParams(-2, -2).apply { topMargin = dp(4) })
+        } else {
+            // Bottom dock: two lines (time, then date · battery) so nothing touches the dock edge.
+            val second = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
+            second.addView(date, LayoutParams(-2, -2))
+            second.addView(battery, LayoutParams(-2, -2).apply { marginStart = dp(8) })
+            addView(second, LayoutParams(-2, -2).apply { topMargin = dp(3) })
+        }
         setPadding(dp(if (vertical) 0 else 6), 0, dp(if (vertical) 0 else 6), 0)
     }
 
@@ -78,13 +87,31 @@ internal class DockClock(context: Context) : LinearLayout(context) {
     private inner class BatteryBar : android.graphics.drawable.Drawable() {
         var percentLevel = -1; var charging = false
         private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        private val bolt = android.graphics.Path()
+        /** A real battery: outlined body, terminal cap, level fill inside, bolt while charging. */
         override fun draw(canvas: Canvas) {
-            val b = RectF(bounds); val r = b.height() / 2
-            paint.color = 0x40FFFFFF; canvas.drawRoundRect(b, r, r, paint)
+            val d = context.resources.displayMetrics.density
+            val stroke = 1.3f * d; val cap = 2f * d; val gap = 1.3f * d
+            val body = RectF(bounds.left + stroke / 2, bounds.top + stroke / 2, bounds.right - cap - stroke / 2, bounds.bottom - stroke / 2)
+            val r = body.height() * .3f
+            paint.style = Paint.Style.STROKE; paint.strokeWidth = stroke; paint.color = 0xB3FFFFFF.toInt()
+            canvas.drawRoundRect(body, r, r, paint)
+            paint.style = Paint.Style.FILL
+            val capHeight = body.height() * .42f
+            canvas.drawRoundRect(RectF(body.right + stroke / 2, body.centerY() - capHeight / 2, bounds.right.toFloat(), body.centerY() + capHeight / 2), cap / 2, cap / 2, paint)
             if (percentLevel < 0) return
             paint.color = when { charging -> 0xFF34C759.toInt(); percentLevel <= 15 -> 0xFFFF453A.toInt(); percentLevel <= 30 -> 0xFFFFD60A.toInt(); else -> 0xFFFFFFFF.toInt() }
-            val fill = RectF(b.left, b.top, b.left + (b.width() * percentLevel / 100f).coerceAtLeast(b.height()), b.bottom)
-            canvas.drawRoundRect(fill, r, r, paint)
+            val inner = RectF(body.left + stroke / 2 + gap, body.top + stroke / 2 + gap, body.right - stroke / 2 - gap, body.bottom - stroke / 2 - gap)
+            val fill = RectF(inner.left, inner.top, inner.left + inner.width() * (percentLevel.coerceIn(4, 100) / 100f), inner.bottom)
+            canvas.drawRoundRect(fill, r * .6f, r * .6f, paint)
+            if (charging) {
+                val cx = body.centerX(); val cy = body.centerY(); val h = body.height() * .78f; val w = h * .55f
+                bolt.reset()
+                bolt.moveTo(cx + w * .15f, cy - h / 2); bolt.lineTo(cx - w / 2, cy + h * .06f); bolt.lineTo(cx - w * .02f, cy + h * .06f)
+                bolt.lineTo(cx - w * .15f, cy + h / 2); bolt.lineTo(cx + w / 2, cy - h * .06f); bolt.lineTo(cx + w * .02f, cy - h * .06f); bolt.close()
+                paint.color = 0xFF15171C.toInt(); paint.style = Paint.Style.STROKE; paint.strokeWidth = 1.2f * d; canvas.drawPath(bolt, paint)
+                paint.style = Paint.Style.FILL; paint.color = -1; canvas.drawPath(bolt, paint)
+            }
         }
         override fun setAlpha(alpha: Int) = Unit
         override fun setColorFilter(filter: android.graphics.ColorFilter?) = Unit

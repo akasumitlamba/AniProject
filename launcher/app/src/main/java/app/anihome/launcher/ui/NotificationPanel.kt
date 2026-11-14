@@ -36,9 +36,20 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
     val privilegedReady: Boolean get() = quickSettings.privilegedReady
     fun systemToggle(id: String, enabled: Boolean, done: (String) -> Unit) = quickSettings.systemToggle(id, enabled, done)
     fun connectPrivileged() = quickSettings.connectPrivileged()
+    /** Connects to Shizuku if needed (retrying briefly), then runs a fixed shell-level toggle. */
+    fun privilegedToggle(id: String, enabled: Boolean, done: (String) -> Unit, tries: Int = 6) {
+        if (!privilegedReady && tries > 0) {
+            connectPrivileged()
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({ privilegedToggle(id, enabled, done, tries - 1) }, 600)
+            return
+        }
+        systemToggle(id, enabled, done)
+    }
     private val expandedKeys = mutableSetOf<String>()
     val isShowing: Boolean get() = dialog?.isShowing == true
     fun dismiss() { dialog?.dismiss() }
+    /** Closes at once, without the slide-out (the host is going away). */
+    fun dismissNow() { instantDismiss = true; runCatching { dialog?.dismiss() }; instantDismiss = false }
     fun resume() { if (quickSettings.consumeReturn()) show(restoreSection = true) }
     fun onConfigurationChanged() {
         dialog?.window?.let { quickSettings.resize(SidePanelLayout.apply(activity, it, rightSide, PanelStyle.wide(activity)).height) }
@@ -199,10 +210,16 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
             private var leaving = false
             // Slide back toward the edge instead of vanishing; Back, outside taps and actions all share it.
             override fun dismiss() {
-                if (leaving || !isShowing || instantDismiss) { super.dismiss(); return }
+                if (leaving || !isShowing || instantDismiss || !canAnimate()) { close(); return }
                 leaving = true
-                MotionUi.exit(root, direction) { super.dismiss() }
+                MotionUi.exit(root, direction) { close() }
             }
+            /** The host activity can be torn down while the exit animation runs (an app opened, Android
+             * reclaimed it). Its window is then already gone: Android still runs our dismiss cleanup,
+             * but removing the window throws, which used to crash AniHome. */
+            private fun canAnimate() = window?.decorView?.isAttachedToWindow == true &&
+                !activity.isFinishing && !activity.isDestroyed
+            private fun close() { runCatching { super.dismiss() } }
             override fun onWindowFocusChanged(hasFocus: Boolean) {
                 super.onWindowFocusChanged(hasFocus)
                 if (hasFocus) window?.let(HomeFullscreen::apply)
@@ -403,18 +420,23 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
             }
         }
     }
-    /** Single non-recycled header (Control Center + section title) scrolling with the cards. */
+    /**
+     * Single header (Control Center + section title) scrolling with the cards. The list only ever
+     * sees a wrapper it owns; the shared content moves into whichever wrapper is bound, so it is
+     * never pulled out of the RecyclerView behind its back (that corrupts its child state).
+     */
     private class Header(private val content: View) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun getItemCount() = 1
         override fun getItemViewType(position: Int) = 0x0cc
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            (content.parent as? ViewGroup)?.removeView(content)
-            // Full-span when the list is a two-column grid; a plain row otherwise.
-            content.layoutParams = RecyclerView.LayoutParams(-1, -2)
-            return object : RecyclerView.ViewHolder(content) {}.apply { setIsRecyclable(false) }
+            val wrapper = FrameLayout(parent.context).apply { layoutParams = RecyclerView.LayoutParams(-1, -2) }
+            return object : RecyclerView.ViewHolder(wrapper) {}
         }
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
+            val wrapper = holder.itemView as FrameLayout
+            if (content.parent === wrapper) return
+            (content.parent as? ViewGroup)?.removeView(content)
+            wrapper.addView(content, FrameLayout.LayoutParams(-1, -2))
         }
     }
     private class Card(root: View, val label: TextView, val title: TextView, val body: TextView, val close: ImageButton, val icon: ImageView, val actions: LinearLayout, val actionScroll: View, val expand: ImageButton) : RecyclerView.ViewHolder(root) {

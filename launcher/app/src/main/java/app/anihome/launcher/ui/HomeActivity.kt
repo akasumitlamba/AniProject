@@ -939,6 +939,30 @@ class HomeActivity : AppCompatActivity() {
             }
             panel.text(this, "Android's own status bar stays as it is. Swiping down from the top edge opens AniHome's notifications and controls instead of Android's shade, in any app. The lock screen is left alone.")
         }
+        if (app.anihome.launcher.nav.NavigationMode.available()) panel.section("Navigation", R.drawable.ic_settings_navigation,
+            summary = { if (app.anihome.launcher.nav.NavigationMode.gesturesOn(this)) "AniHome gestures" else "Android buttons" }) {
+            val nav = app.anihome.launcher.nav.NavigationMode
+            panel.radios(this, listOf("AniHome gestures", "Android buttons"), if (nav.gesturesOn(ui)) 0 else 1) { choice ->
+                val gestures = choice == 0
+                fun apply() {
+                    if (nav.setGestures(ui, gestures)) Toast.makeText(ui, if (gestures) "AniHome gestures are on" else "Android's navigation buttons are back", Toast.LENGTH_SHORT).show()
+                    else Toast.makeText(ui, "Android didn't allow the change", Toast.LENGTH_LONG).show()
+                }
+                val gate = app.anihome.launcher.controls.ShizukuGate
+                when {
+                    nav.canSwitch(ui) -> apply()
+                    !gate.require(ui, "Switching navigation") -> Unit
+                    else -> {
+                        Toast.makeText(ui, "Setting up…", Toast.LENGTH_SHORT).show()
+                        notificationPanel.privilegedToggle("grant_secure_settings", true, { result ->
+                            if (nav.canSwitch(ui)) apply()
+                            else Toast.makeText(ui, "Couldn't set up navigation: ${result.ifEmpty { "permission not granted" }}", Toast.LENGTH_LONG).show()
+                        })
+                    }
+                }
+            }
+            panel.text(this, "AniHome gestures use a thin handle on the bottom edge, with no bar taking up space. Swipe up for Home, swipe up and hold for recent apps, drag sideways to switch apps, double-tap for Back. Shizuku makes apps shrink into Home and slide while you swipe; without it the gestures still work. Android buttons bring back the standard navigation bar. Setting this up the first time needs Shizuku.")
+        }
         panel.section("Sound & Bluetooth", R.drawable.ic_cc_volume,
             summary = { if (app.anihome.launcher.controls.VolumePanel.enabled(this)) "AniHome volume panel" else "Android volume panel" }) {
             panel.toggle(this, "AniHome volume panel", app.anihome.launcher.controls.VolumePanel.enabled(ui)) {
@@ -946,7 +970,8 @@ class HomeActivity : AppCompatActivity() {
                 if (it && !HomeControlsService.connected()) {
                     Toast.makeText(ui, "Turn on AniHome controls in Accessibility, then come back", Toast.LENGTH_LONG).show()
                     runCatching { ui.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) }
-                } else if (it) app.anihome.launcher.controls.ShizukuGate.require(ui, "Per-app volume")
+                } else if (it && !app.anihome.launcher.controls.ShizukuGate.ready(ui))
+                    Toast.makeText(ui, "On. Per-app volume sliders appear once Shizuku is set up (AniHome Settings → Shizuku).", Toast.LENGTH_LONG).show()
             }
             panel.text(this, "Volume buttons open AniHome's panel: media, ring, notifications, alarm, and a slider for each app playing sound (with Shizuku). Calls and the lock screen keep Android's panel.")
             panel.toggle(this, "Keep two Bluetooth audio devices connected", getSharedPreferences("anihome", MODE_PRIVATE).getBoolean("bt_two_devices", false)) { on ->
@@ -962,6 +987,12 @@ class HomeActivity : AppCompatActivity() {
                 }, 800)
             }
             panel.text(this, "Lets two headphones or speakers stay connected so you can switch between them in the Bluetooth list instantly. Android plays sound on one at a time, unless your phone has its own dual-audio feature.")
+        }
+        panel.section("Shizuku", R.drawable.ic_cc_shizuku, summary = { app.anihome.launcher.controls.ShizukuGate.summary(this) }) {
+            panel.text(this, "Optional. Shizuku is a free helper that lets AniHome switch system settings in one tap, without root: night light, invert colours, mobile data, battery saver, location and airplane mode, per-app volume, two Bluetooth audio devices, and per-network Wi-Fi auto-connect. Without it those controls open Android's own settings instead.")
+            panel.action(this, if (app.anihome.launcher.controls.ShizukuGate.ready(ui)) "Shizuku is connected" else "Set up Shizuku, step by step") {
+                app.anihome.launcher.controls.ShizukuGate.showSetup(ui)
+            }
         }
         panel.section("Gestures", R.drawable.ic_gestures) {
             if (!HomeControlsService.connected()) panel.text(this, "Lock and Recent apps need AniHome controls in Android accessibility settings.")
