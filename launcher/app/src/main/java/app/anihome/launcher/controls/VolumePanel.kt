@@ -53,7 +53,12 @@ internal class VolumePanel(private val service: AccessibilityService) {
         val rpc = radio ?: return
         Thread {
             val list = runCatching { org.json.JSONArray(rpc.activePlayers()) }.getOrNull()
-            handler.post { players = list ?: org.json.JSONArray(); if (root != null && expanded && !dragging) refresh() }
+            handler.post {
+                val next = list ?: org.json.JSONArray()
+                val changed = players?.toString() != next.toString()
+                players = next
+                if (changed && root != null && expanded && !dragging) refresh()
+            }
         }.start()
     }
     private fun dp(v: Int) = (v * service.resources.displayMetrics.density).toInt()
@@ -135,7 +140,7 @@ internal class VolumePanel(private val service: AccessibilityService) {
         val panel = LinearLayout(service).apply {
             orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER_HORIZONTAL
             setPadding(dp(12), dp(14), dp(12), dp(10))
-            background = GradientDrawable().apply { setColor(0xF5141519.toInt()); cornerRadius = dp(34).toFloat(); setStroke(dp(1), 0x1FFFFFFF) }
+            background = GradientDrawable().apply { setColor(0xFC141519.toInt()); cornerRadius = dp(34).toFloat(); setStroke(dp(1), 0x1FFFFFFF) }
             elevation = dp(10).toFloat()
         }
         root = panel
@@ -144,7 +149,10 @@ internal class VolumePanel(private val service: AccessibilityService) {
                 if (e.actionMasked == MotionEvent.ACTION_OUTSIDE) { dismiss(); return true }
                 return super.dispatchTouchEvent(e)
             }
-        }.apply { clipToPadding = false; setPadding(dp(12), dp(12), dp(12), dp(12)); addView(panel) }
+        }.apply {
+            clipToPadding = false; setPadding(dp(12), dp(12), dp(12), dp(12))
+            addView(panel, android.widget.FrameLayout.LayoutParams(-2, -2, Gravity.END or Gravity.CENTER_VERTICAL))
+        }
         frame = window
         refresh()
         val params = WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT,
@@ -207,15 +215,19 @@ internal class VolumePanel(private val service: AccessibilityService) {
             streamColumn(columns, "Alarm", R.drawable.ic_alarm, AudioManager.STREAM_ALARM, sliderHeight)
             note = appColumns(columns, sliderHeight)
         }
-        // Many apps: scroll sideways inside the panel rather than running off screen.
-        val widest = metrics.widthPixels - dp(80)
-        val scroller = object : android.widget.HorizontalScrollView(service) {
-            override fun onMeasure(w: Int, h: Int) = super.onMeasure(View.MeasureSpec.makeMeasureSpec(widest, View.MeasureSpec.AT_MOST), h)
-        }.apply { isHorizontalScrollBarEnabled = false; overScrollMode = View.OVER_SCROLL_NEVER; addView(columns) }
-        panel.addView(scroller)
+        // All columns side by side. Only when they can't fit on screen does the row scroll, and
+        // then at an explicit width, so no column is ever cut off at the panel's edges.
+        columns.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
+        val available = metrics.widthPixels - dp(72)
+        val scroller: View = if (columns.measuredWidth <= available) columns
+            else android.widget.HorizontalScrollView(service).apply {
+                isHorizontalScrollBarEnabled = false; overScrollMode = View.OVER_SCROLL_NEVER; addView(columns)
+                layoutParams = LinearLayout.LayoutParams(available, -2)
+            }
+        panel.addView(scroller, scroller.layoutParams ?: LinearLayout.LayoutParams(-2, -2))
         note?.let {
             panel.addView(TextView(service).apply {
-                text = it; textSize = 11.5f; setTextColor(0xFFB3B6BE.toInt()); gravity = Gravity.CENTER; maxWidth = dp(260)
+                text = it; textSize = 11.5f; setTextColor(0xFFB3B6BE.toInt()); gravity = Gravity.CENTER; maxWidth = maxOf(dp(200), minOf(columns.measuredWidth, dp(300)))
                 setLineSpacing(0f, 1.1f)
             }, LinearLayout.LayoutParams(-2, -2).apply { topMargin = dp(10); gravity = Gravity.CENTER_HORIZONTAL })
         }
@@ -224,9 +236,8 @@ internal class VolumePanel(private val service: AccessibilityService) {
             setImageResource(R.drawable.ic_expand_more); rotation = if (expanded) -90f else 90f
             background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(0x24FFFFFF) }
             imageTintList = ColorStateList.valueOf(-1); contentDescription = if (expanded) "Fewer volumes" else "All volumes and apps"
-            setOnClickListener { expanded = !expanded; if (expanded) { players = null; fetchPlayers() }; refresh(); keepOpen() }
+            setOnClickListener { expanded = !expanded; if (expanded) fetchPlayers(); refresh(); keepOpen() }
         }, LinearLayout.LayoutParams(dp(36), dp(36)).apply { topMargin = dp(12); gravity = Gravity.CENTER_HORIZONTAL })
-        if (expanded) { scroller.alpha = 0f; scroller.animate().alpha(1f).setDuration(140).start() }
         fitWindow()
     }
 
@@ -291,7 +302,15 @@ internal class VolumePanel(private val service: AccessibilityService) {
                 else -> "Per-app volume needs Shizuku (AniHome Settings → Shizuku)"
             }
         }
-        val list = players ?: run { fetchPlayers(); return "Finding apps playing sound…" }
+        val playing = players ?: run { fetchPlayers(); return "Finding apps playing sound…" }
+        // Apps muted here stay listed (a muted app may stop "playing"), so they can be unmuted.
+        val muted = mutedApps()
+        val list = org.json.JSONArray(playing.toString())
+        val listed = (0 until list.length()).map { list.getJSONObject(it).getString("package") }.toSet()
+        muted.filter { it !in listed }.forEach { pkg ->
+            val uid = runCatching { service.packageManager.getApplicationInfo(pkg, 0).uid }.getOrNull() ?: return@forEach
+            list.put(org.json.JSONObject().put("uid", uid).put("package", pkg).put("volume", false).put("muted", true))
+        }
         if (list.length() == 0) return "Play something to adjust apps one by one"
         row.addView(View(service).apply { setBackgroundColor(0x22FFFFFF) }, LinearLayout.LayoutParams(dp(1), height).apply { marginStart = dp(8); marginEnd = dp(8); bottomMargin = dp(24) })
         val pm = service.packageManager
@@ -312,12 +331,23 @@ internal class VolumePanel(private val service: AccessibilityService) {
                 muteColumn(row, name, icon, p.optBoolean("muted"), height) { muted ->
                     Thread {
                         val ok = runCatching { rpc.setAppMuted(pkg, muted) }.getOrDefault(false)
-                        handler.post { if (!ok) android.widget.Toast.makeText(service, "Android didn't allow muting $name", android.widget.Toast.LENGTH_SHORT).show(); fetchPlayers() }
+                        if (ok) rememberMuted(pkg, muted)
+                        handler.post {
+                            if (!ok) android.widget.Toast.makeText(service, "Android didn't allow muting $name", android.widget.Toast.LENGTH_SHORT).show()
+                            if (root != null && expanded && !dragging) refresh() // show the new state at once
+                            fetchPlayers()
+                        }
                     }.start()
                 }
             }
         }
         return if (muteOnly) "Tap an app to mute or unmute it. This Android version only lets AniHome mute apps, not set their level." else null
+    }
+
+    private fun mutedApps(): Set<String> = levels.getStringSet("muted", emptySet()).orEmpty()
+    private fun rememberMuted(pkg: String, muted: Boolean) {
+        val next = mutedApps().toMutableSet().apply { if (muted) add(pkg) else remove(pkg) }
+        levels.edit().putStringSet("muted", next).apply()
     }
 
     /** An app that can only be muted here: a tall tile with its icon; tap to toggle. */
@@ -328,7 +358,7 @@ internal class VolumePanel(private val service: AccessibilityService) {
             typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
         }, LinearLayout.LayoutParams(-2, -2).apply { bottomMargin = dp(8) })
         val tile = android.widget.FrameLayout(service).apply {
-            background = GradientDrawable().apply { cornerRadius = dp(26).toFloat(); setColor(if (muted) app.anihome.launcher.ui.ControlCenter.SURFACE_HIGH else 0xF2FFFFFF.toInt()) }
+            background = GradientDrawable().apply { cornerRadius = dp(20).toFloat(); setColor(if (muted) app.anihome.launcher.ui.ControlCenter.SURFACE_HIGH else 0xF2FFFFFF.toInt()) }
             isClickable = true; isFocusable = true
             contentDescription = "$label, ${if (muted) "muted" else "sound on"}. Tap to ${if (muted) "unmute" else "mute"}"
             setOnClickListener { toggle(!muted); keepOpen() }

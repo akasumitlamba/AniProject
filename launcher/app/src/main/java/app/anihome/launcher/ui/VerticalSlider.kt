@@ -29,26 +29,25 @@ internal class VerticalSlider(context: Context, private val icon: Drawable?, lab
 
     init { contentDescription = label; isFocusable = true; isClickable = true }
 
-    private val mask = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = 0xFFFFFFFF.toInt() }
-    private val trackIn = Paint().apply { xfermode = android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.SRC_IN) }
-    private val fillAtop = Paint().apply { xfermode = android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.SRC_ATOP) }
+    private val shape = android.graphics.Path()
+    private val level = android.graphics.Path()
 
     /**
-     * A capsule (fully round ends, like iOS) drawn as an anti-aliased mask: the track and the
-     * level fill are painted inside it, so the edges stay smooth at any size.
+     * Rounded pill. Both the track and the level are plain anti-aliased shapes (the level is the
+     * pill cut at the current height), so the corners stay smooth and the level stays bright.
      */
     override fun onDraw(canvas: Canvas) {
         rect.set(0f, 0f, width.toFloat(), height.toFloat())
-        val radius = minOf(width, height) / 2f
-        val layer = canvas.saveLayer(rect, null)
-        canvas.drawRoundRect(rect, radius, radius, mask)
-        trackIn.color = track.color
-        canvas.drawRect(rect, trackIn)
-        val level = if (max == 0) 0f else value.toFloat() / max
-        val top = height * (1f - level)
-        fillAtop.color = fill.color
-        canvas.drawRect(0f, top, width.toFloat(), height.toFloat(), fillAtop)
-        canvas.restoreToCount(layer)
+        val radius = minOf(width, height) * .38f
+        canvas.drawRoundRect(rect, radius, radius, track)
+        val fraction = if (max == 0) 0f else value.toFloat() / max
+        val top = height * (1f - fraction)
+        if (fraction > 0f) {
+            shape.reset(); shape.addRoundRect(rect, radius, radius, android.graphics.Path.Direction.CW)
+            level.reset(); level.addRect(0f, top, width.toFloat(), height.toFloat(), android.graphics.Path.Direction.CW)
+            level.op(shape, android.graphics.Path.Op.INTERSECT)
+            canvas.drawPath(level, fill)
+        }
         icon?.let {
             val size = (20 * density).toInt(); val left = (width - size) / 2; val bottom = height - (16 * density).toInt()
             it.setBounds(left, bottom - size, left + size, bottom)
