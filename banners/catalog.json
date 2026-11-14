@@ -3148,6 +3148,2838 @@
       "tabletPriority": 98,
       "popular": true,
       "sha256": "dbe1fbda22daa0ee16ce28d8692474b0c6ec94fcd3a1e5312c232117dbde3c91"
+    },
+    {
+      "id": "capcut",
+      "name": "CapCut",
+      "file": "images/capcut.webp",
+      "packages": [
+        "com.lemon.lvoverseas"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "e0a6fc47fca7a2e08232d5416b4b25623517091b0403d3a26e7e331715fa4a75"
+    },
+    {
+      "id": "vn-video-editor",
+      "name": "VN Video Editor",
+      "file": "images/vn-video-editor.webp",
+      "packages": [
+        "com.frontrow.vlog"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "3882c7c3cdb7820ce7e45c84556b55424ba7f917f4cc12af491669659b0f1dff"
+    },
+    {
+      "id": "inshot",
+      "name": "InShot",
+      "file": "images/inshot.webp",
+      "packages": [
+        "com.camerasideas.instashot"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "b5b455446221fe9ba2c0e77456823004fcf0811e31bf5b1a327279d8eaf50305"
+    },
+    {
+      "id": "kinemaster",
+      "name": "KineMaster",
+      "file": "images/kinemaster.webp",
+      "packages": [
+        "com.nexstreaming.app.kinemasterfree"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "b05083cacf6eeaeaa317bbbe4a0aef3c3d7c3f615a46d94c1fff0b7067352c8d"
+    },
+    {
+      "id": "filmora",
+      "name": "Filmora",
+      "file": "images/filmora.webp",
+      "packages": [
+        "com.wondershare.filmorago"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "e4ea8f9139a794186f1be4b8c25ed3a5252b8ab4136d425288376f5ab0c6ac5a"
+    },
+    {
+      "id": "alight-motion",
+      "name": "Alight Motion",
+      "file": "images/alight-motion.webp",
+      "packages": [
+        "com.alightcreative.motion"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "55bb7d484ad6406c2d3a0d6c48f5376826c6d9d212d77c1eabf0a0984a71276b"
+    },
+    {
+      "id": "picsart",
+      "name": "Picsart",
+      "file": "images/picsart.webp",
+      "packages": [
+        "com.picsart.studio"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "950d2eedbac6cb1e769de7e7d7f62723c574e67cb94f2ccfa8baf1bba7fcffe5"
+    },
+    {
+      "id": "snapseed",
+      "name": "Snapseed",
+      "file": "images/snapseed.webp",
+      "packages": [
+        "com.niksoftware.snapseed"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "975103fa0cf037e184a68cf695c6e5c09187558c55bd08214634a59ece0c1d87"
+    },
+    {
+      "id": "vsco",
+      "name": "VSCO",
+      "file": "images/vsco.webp",
+      "packages": [
+        "com.vsco.cam"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "9b3d14ed7ddbb1d783c3e08a93c75b8b61305c790cb19c35e228638ec79e21b4"
+    },
+    {
+      "id": "remini",
+      "name": "Remini",
+      "file": "images/remini.webp",
+      "packages": [
+        "com.bigwinepot.nwdn.international"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "9dc9fba4e520abab6a31def8708824c21f9b1faea1d8aaf368c9238e96bb64eb"
+    },
+    {
+      "id": "photoroom",
+      "name": "PhotoRoom",
+      "file": "images/photoroom.webp",
+      "packages": [
+        "com.photoroom.app"
+      ],
+      "aliases": [
+        "PhotoRoom"
+      ],
+      "webHosts": [],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "c46acc81811615273e6aefc2042fcce8ca6006b85dbf89f1dd4652f70e1cf993"
+    },
+    {
+      "id": "bitwarden",
+      "name": "Bitwarden",
+      "file": "images/bitwarden.webp",
+      "packages": [
+        "com.x8bit.bitwarden"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "fa27791d9401123e12cef6b443e428466c71e044cbc2eeac3915a5383e8e7938"
+    },
+    {
+      "id": "1password",
+      "name": "1Password",
+      "file": "images/1password.webp",
+      "packages": [
+        "com.onepassword.android"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "8faf3d585afa9e0c96ef6f9cfa114de9ef28ca6ec9fcc05dacb7bd8faf38b8d3"
+    },
+    {
+      "id": "google-authenticator",
+      "name": "Google Authenticator",
+      "file": "images/google-authenticator.webp",
+      "packages": [
+        "com.google.android.apps.authenticator2"
+      ],
+      "aliases": [
+        "Authenticator"
+      ],
+      "webHosts": [],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "62c8f1337e90d1f1cf7ad5818680a85d63cb80bd9ee4fc2369c3cd82f35af95b"
+    },
+    {
+      "id": "microsoft-authenticator",
+      "name": "Microsoft Authenticator",
+      "file": "images/microsoft-authenticator.webp",
+      "packages": [
+        "com.azure.authenticator"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "2383723049db3a22eeca81c71163b2857275d028e0cf7ef85c885e654ff08cc1"
+    },
+    {
+      "id": "samsung-wallet",
+      "name": "Samsung Wallet",
+      "file": "images/samsung-wallet.webp",
+      "packages": [
+        "com.samsung.android.spay"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "payments",
+      "tabletPriority": 28,
+      "popular": true,
+      "sha256": "7ecd866854d5ef2815df42ed22bdb6437bc3a9eaf7f12a8b5908fade7302b99a"
+    },
+    {
+      "id": "samsung-internet",
+      "name": "Samsung Internet",
+      "file": "images/samsung-internet.webp",
+      "packages": [
+        "com.sec.android.app.sbrowser"
+      ],
+      "aliases": [
+        "Samsung Browser"
+      ],
+      "webHosts": [],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "d942abeead384fda483757c1b24cec09953348e9e79068ea56c64cb228945ccc"
+    },
+    {
+      "id": "samsung-health",
+      "name": "Samsung Health",
+      "file": "images/samsung-health.webp",
+      "packages": [
+        "com.sec.android.app.shealth"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "health",
+      "tabletPriority": 68,
+      "popular": true,
+      "sha256": "7edff4086f75a5dd558358e9511261978d06fb3d6cb9ddba59a518151f52757b"
+    },
+    {
+      "id": "samsung-smart-switch",
+      "name": "Samsung Smart Switch",
+      "file": "images/samsung-smart-switch.webp",
+      "packages": [
+        "com.sec.android.easyMover"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "34f0feb0ace8770b8a8b3e3d381bca3c2381ac8fda9444f984e12d52d1ce0452"
+    },
+    {
+      "id": "galaxy-wearable",
+      "name": "Galaxy Wearable",
+      "file": "images/galaxy-wearable.webp",
+      "packages": [
+        "com.samsung.android.app.watchmanager"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "a9a5fb044a86ea75d3a46d70d6ca73ff69b54557d72a72533c55ceb976da534d"
+    },
+    {
+      "id": "smartthings",
+      "name": "SmartThings",
+      "file": "images/smartthings.webp",
+      "packages": [
+        "com.samsung.android.oneconnect"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "9f21b116b67a7fef336038207f459f9e8094daa60cdbe0e8c1c71117f1e7c624"
+    },
+    {
+      "id": "google-home",
+      "name": "Google Home",
+      "file": "images/google-home.webp",
+      "packages": [
+        "com.google.android.apps.chromecast.app"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "c5e27e3396c1855ccd863e7f738e1f2a4882e01c858a847e0eea85c1ce5e8b58"
+    },
+    {
+      "id": "amazon-alexa",
+      "name": "Amazon Alexa",
+      "file": "images/amazon-alexa.webp",
+      "packages": [
+        "com.amazon.dee.app"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "944737c4309f001583fbbcf902f97f54dc3ca97a61ce3ea9238eeee3476b7cc0"
+    },
+    {
+      "id": "fitbit",
+      "name": "Fitbit",
+      "file": "images/fitbit.webp",
+      "packages": [
+        "com.fitbit.FitbitMobile"
+      ],
+      "aliases": [
+        "Google Health (Fitbit)"
+      ],
+      "webHosts": [],
+      "category": "health",
+      "tabletPriority": 68,
+      "popular": true,
+      "sha256": "3e098ae5048fa0cf815c34588e4015bb8955f1660a6314a2dadb7bbc84ae7368"
+    },
+    {
+      "id": "strava",
+      "name": "Strava",
+      "file": "images/strava.webp",
+      "packages": [
+        "com.strava"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "health",
+      "tabletPriority": 68,
+      "popular": true,
+      "sha256": "d0f670fa86c6df6e09b0d5e64228d28bcd2324e38d7bb47ec8a782e41f110a28"
+    },
+    {
+      "id": "nike-run-club",
+      "name": "Nike Run Club",
+      "file": "images/nike-run-club.webp",
+      "packages": [
+        "com.nike.plusgps"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "health",
+      "tabletPriority": 68,
+      "popular": true,
+      "sha256": "64693cb39bbd4cbb4c7b49ef2ca69751b5cf663dc875e6a4ec3014329885c491"
+    },
+    {
+      "id": "myfitnesspal",
+      "name": "MyFitnessPal",
+      "file": "images/myfitnesspal.webp",
+      "packages": [
+        "com.myfitnesspal.android"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "health",
+      "tabletPriority": 68,
+      "popular": true,
+      "sha256": "eaa41ee64b12e85922c04d7c3592b1a65e69590797968653ccfee81353fc392f"
+    },
+    {
+      "id": "healthify",
+      "name": "Healthify",
+      "file": "images/healthify.webp",
+      "packages": [
+        "com.healthifyme.basic"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "health",
+      "tabletPriority": 68,
+      "popular": true,
+      "sha256": "1c045d2db457d37d319f936d5a26b1511f2ba2cc7fa05a21207ab2a87dfc000a"
+    },
+    {
+      "id": "cult-fit",
+      "name": "Cult.fit",
+      "file": "images/cult-fit.webp",
+      "packages": [
+        "fit.cure.android"
+      ],
+      "aliases": [
+        "cult.fit"
+      ],
+      "webHosts": [],
+      "category": "health",
+      "tabletPriority": 68,
+      "popular": true,
+      "sha256": "aa673cbe59e598d7e33d962cf3bccef03aef2ce525c5b993aa69eeba21a2d7c7"
+    },
+    {
+      "id": "headspace",
+      "name": "Headspace",
+      "file": "images/headspace.webp",
+      "packages": [
+        "com.getsomeheadspace.android"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "health",
+      "tabletPriority": 68,
+      "popular": true,
+      "sha256": "69908ab7abcec73876e5a3ad58b306885b38f1dc2be6d4571eea9a9c8eda1595"
+    },
+    {
+      "id": "calm",
+      "name": "Calm",
+      "file": "images/calm.webp",
+      "packages": [
+        "com.calm.android"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "health",
+      "tabletPriority": 68,
+      "popular": true,
+      "sha256": "f81cf4d598e1f13377105090cffb37c936a59c11ef287cb5f08846ee0906f548"
+    },
+    {
+      "id": "todoist",
+      "name": "Todoist",
+      "file": "images/todoist.webp",
+      "packages": [
+        "com.todoist"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "2af8fa2ffa1c4e111cb4d12d4c7afe00a0bf539c004c95a588c9cbb48469f2ba"
+    },
+    {
+      "id": "trello",
+      "name": "Trello",
+      "file": "images/trello.webp",
+      "packages": [
+        "com.trello"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "trello.com"
+      ],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "938b737bc24f8331b5cf2e53a6efbdfc2009139d4b15e84b6f7960c20c0d420d"
+    },
+    {
+      "id": "slack",
+      "name": "Slack",
+      "file": "images/slack.webp",
+      "packages": [
+        "com.Slack"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "slack.com",
+        "app.slack.com"
+      ],
+      "category": "communication",
+      "tabletPriority": 76,
+      "popular": true,
+      "sha256": "4e65721939f095137f8cc9cfb56390bdf2c120ceb593d01da5ff08a22f8c9773"
+    },
+    {
+      "id": "google-docs",
+      "name": "Google Docs",
+      "file": "images/google-docs.webp",
+      "packages": [
+        "com.google.android.apps.docs.editors.docs"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "e0e07b85e435a92c7bed783b541f66248cadaee3f4d86013821055e857800545"
+    },
+    {
+      "id": "google-sheets",
+      "name": "Google Sheets",
+      "file": "images/google-sheets.webp",
+      "packages": [
+        "com.google.android.apps.docs.editors.sheets"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "fd24317066fd03a6c12ed12ee0ecbb0e14071043ab745275f3bce8236455f15c"
+    },
+    {
+      "id": "google-slides",
+      "name": "Google Slides",
+      "file": "images/google-slides.webp",
+      "packages": [
+        "com.google.android.apps.docs.editors.slides"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "e83812a7f989e82dd15c6c4b116c5346c0f149500d088ec691b69f8916561613"
+    },
+    {
+      "id": "google-classroom",
+      "name": "Google Classroom",
+      "file": "images/google-classroom.webp",
+      "packages": [
+        "com.google.android.apps.classroom"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "classroom.google.com"
+      ],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "87ff898e15caf8b03bbcc7c9f7ff7a6b501a72c5beb09b7008798e2ab67f18d9"
+    },
+    {
+      "id": "microsoft-to-do",
+      "name": "Microsoft To Do",
+      "file": "images/microsoft-to-do.webp",
+      "packages": [
+        "com.microsoft.todos"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "4bd902131b202fa41b5e485e64fa327368ae6d7da723c4b5410f7d310f7b3139"
+    },
+    {
+      "id": "obsidian",
+      "name": "Obsidian",
+      "file": "images/obsidian.webp",
+      "packages": [
+        "md.obsidian"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "3f3a2add95487edbc1af6a4d16ea598256894d415f7b690aeaf9278e2b19f349"
+    },
+    {
+      "id": "evernote",
+      "name": "Evernote",
+      "file": "images/evernote.webp",
+      "packages": [
+        "com.evernote"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "0093507bf0ac8434521aec367a94fce2f9dc9543844a9b3183aeb6538c2f1e22"
+    },
+    {
+      "id": "dropbox",
+      "name": "Dropbox",
+      "file": "images/dropbox.webp",
+      "packages": [
+        "com.dropbox.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "dropbox.com"
+      ],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "ee31fcf65b40666903057455027c7df8af1fce054415967dd9df64204823745e"
+    },
+    {
+      "id": "wps-office",
+      "name": "WPS Office",
+      "file": "images/wps-office.webp",
+      "packages": [
+        "cn.wps.moffice_eng"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "d88fc78842d5986140e6f9e45ae2913f1c5f81d75598952e036a9ecee1724e2c"
+    },
+    {
+      "id": "camscanner",
+      "name": "CamScanner",
+      "file": "images/camscanner.webp",
+      "packages": [
+        "com.intsig.camscanner"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "bd4ea9c76e17f1ff269398fa30ee235ef52c4280089e1d998686cac9ed2061b7"
+    },
+    {
+      "id": "adobe-scan",
+      "name": "Adobe Scan",
+      "file": "images/adobe-scan.webp",
+      "packages": [
+        "com.adobe.scan.android"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "d4f47bf33a14a90f1e535243847e39aec8aaebe49f72c0c850c99d647d543e41"
+    },
+    {
+      "id": "pocket-casts",
+      "name": "Pocket Casts",
+      "file": "images/pocket-casts.webp",
+      "packages": [
+        "au.com.shiftyjelly.pocketcasts"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "0f820fb9a29ded28f5a040e2a23b3f871c4c40d418958e4a51c3c4954d651321"
+    },
+    {
+      "id": "soundcloud",
+      "name": "SoundCloud",
+      "file": "images/soundcloud.webp",
+      "packages": [
+        "com.soundcloud.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "soundcloud.com",
+        "m.soundcloud.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "a01fb31e08dcaaa918b4dd3dc75b1f7a44049fad91282c3228922e737591c2b5"
+    },
+    {
+      "id": "shazam",
+      "name": "Shazam",
+      "file": "images/shazam.webp",
+      "packages": [
+        "com.shazam.android"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "366205e11c20dc0d8c2f2a6626afac1d81425262a1a8af0e4aeeb8614de51c07"
+    },
+    {
+      "id": "tidal",
+      "name": "TIDAL",
+      "file": "images/tidal.webp",
+      "packages": [
+        "com.aspiro.tidal"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "540cfc84f2639871998c3875c70febbaa1590cbc9078e974cbecaa2a8f1ff8a0"
+    },
+    {
+      "id": "tunein-radio",
+      "name": "TuneIn Radio",
+      "file": "images/tunein-radio.webp",
+      "packages": [
+        "tunein.player"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "6383655e632643307a8d44c8147d450e290260195bfa0f349e1849f8b1ef9774"
+    },
+    {
+      "id": "tiktok",
+      "name": "TikTok",
+      "file": "images/tiktok.webp",
+      "packages": [
+        "com.zhiliaoapp.musically"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "tiktok.com",
+        "m.tiktok.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "a25cf8996d4800644e402b98dcd8220142ec68304e7578d3b327883ca432f14f"
+    },
+    {
+      "id": "moj",
+      "name": "Moj",
+      "file": "images/moj.webp",
+      "packages": [
+        "in.mohalla.video"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "970b71f6f4ef41b420b7779ed8a9115d1ec8eb5657a60bca9c3485f0c4c8ac76"
+    },
+    {
+      "id": "sharechat",
+      "name": "ShareChat",
+      "file": "images/sharechat.webp",
+      "packages": [
+        "in.mohalla.sharechat"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "communication",
+      "tabletPriority": 76,
+      "popular": true,
+      "sha256": "7491cf80262c0bcebc9eadb141dde379ddf221044bab9a57ad40d479d8052d53"
+    },
+    {
+      "id": "line",
+      "name": "LINE",
+      "file": "images/line.webp",
+      "packages": [
+        "jp.naver.line.android"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "communication",
+      "tabletPriority": 76,
+      "popular": true,
+      "sha256": "b4b22e2e548a4202a36639405c2dc8c5433cfc8af74e7be78dcf61986c2455a5"
+    },
+    {
+      "id": "imo",
+      "name": "imo",
+      "file": "images/imo.webp",
+      "packages": [
+        "com.imo.android.imoim"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "communication",
+      "tabletPriority": 76,
+      "popular": true,
+      "sha256": "7e7a52fe2a7b7f3a26f94e91cdc469c9ac346ec7b75cd800978a443dd98f540d"
+    },
+    {
+      "id": "opera-mini",
+      "name": "Opera Mini",
+      "file": "images/opera-mini.webp",
+      "packages": [
+        "com.opera.mini.native"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "743cb9ddd2e3401dc4ccdc453b58312378ea779be44653249f2dbbed3942f15e"
+    },
+    {
+      "id": "tor-browser",
+      "name": "Tor Browser",
+      "file": "images/tor-browser.webp",
+      "packages": [
+        "org.torproject.torbrowser"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "48c1f62ca691f622d447163bb1f0892ae0beeef9624dc63db3da242d79899768"
+    },
+    {
+      "id": "wikipedia",
+      "name": "Wikipedia",
+      "file": "images/wikipedia.webp",
+      "packages": [
+        "org.wikipedia"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "wikipedia.org",
+        "en.wikipedia.org",
+        "en.m.wikipedia.org"
+      ],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "7bb8ad5e9f774b8470e30a2ea0d67f12a09af9869d1bfe864ec7de9a7d3374a9"
+    },
+    {
+      "id": "brilliant",
+      "name": "Brilliant",
+      "file": "images/brilliant.webp",
+      "packages": [
+        "org.brilliant.android"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "0e64ceba5d9ef125ab138ec69fac25c002e204e494d58bccc44ad8d66dde46b7"
+    },
+    {
+      "id": "quizlet",
+      "name": "Quizlet",
+      "file": "images/quizlet.webp",
+      "packages": [
+        "com.quizlet.quizletandroid"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "f768a6217e84fb2e53180c24987e7e075173091979e1775124123ec6864dbf9a"
+    },
+    {
+      "id": "ankidroid",
+      "name": "AnkiDroid",
+      "file": "images/ankidroid.webp",
+      "packages": [
+        "com.ichi2.anki"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "d7828f8b33fd8d77af693da75a7a5c2cf7ecc9d5f154183b9912c77c79070bbd"
+    },
+    {
+      "id": "khan-academy-kids",
+      "name": "Khan Academy Kids",
+      "file": "images/khan-academy-kids.webp",
+      "packages": [
+        "org.khankids.android"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "d93f0b6c5500f2c8a46463861b7939deb3ff855fe02b157e1fe84a23e8d80456"
+    },
+    {
+      "id": "photomath",
+      "name": "Photomath",
+      "file": "images/photomath.webp",
+      "packages": [
+        "com.microblink.photomath"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "8ed97db0ebf37ec8d9024e1a88679d20c79126443da475eb3b8e0d6df97b6788"
+    },
+    {
+      "id": "unacademy",
+      "name": "Unacademy",
+      "file": "images/unacademy.webp",
+      "packages": [
+        "com.unacademyapp"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "b75dcae6eb94d673e6fff72084c8b042d33a768e5b9c60d97a1fbdb809092dfd"
+    },
+    {
+      "id": "physics-wallah",
+      "name": "Physics Wallah",
+      "file": "images/physics-wallah.webp",
+      "packages": [
+        "xyz.penpencil.physicswala"
+      ],
+      "aliases": [
+        "PW"
+      ],
+      "webHosts": [],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "ffe480674d43137823fe91f366a072029cf30c26aad92f77c37cdcb1aefc6255"
+    },
+    {
+      "id": "brainly",
+      "name": "Brainly",
+      "file": "images/brainly.webp",
+      "packages": [
+        "co.brainly"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "3f399383fcb4c7c6cf239570ae8d96df097f7e639fc1315172b3ce3efd17a75e"
+    },
+    {
+      "id": "webtoon",
+      "name": "WEBTOON",
+      "file": "images/webtoon.webp",
+      "packages": [
+        "com.naver.linewebtoon"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "webtoons.com"
+      ],
+      "category": "reading",
+      "tabletPriority": 91,
+      "popular": true,
+      "sha256": "306880b1c6b17fd23048d2051950f8f55d41ed7ee22c9d2b1d76df08f861df85"
+    },
+    {
+      "id": "manga-plus",
+      "name": "MANGA Plus",
+      "file": "images/manga-plus.webp",
+      "packages": [
+        "jp.co.shueisha.mangaplus"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "mangaplus.shueisha.co.jp"
+      ],
+      "category": "reading",
+      "tabletPriority": 91,
+      "popular": true,
+      "sha256": "629bcc8b2927c746bcb3529e4e7b4a2a374223f6a4c88c79a86f0f0a5936b066"
+    },
+    {
+      "id": "libby",
+      "name": "Libby",
+      "file": "images/libby.webp",
+      "packages": [
+        "com.overdrive.mobile.android.libby"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "libbyapp.com"
+      ],
+      "category": "reading",
+      "tabletPriority": 91,
+      "popular": true,
+      "sha256": "86e888afbcf56d80339fe4226fdee647478322bad068444b57b5141956b42d2b"
+    },
+    {
+      "id": "kobo-books",
+      "name": "Kobo Books",
+      "file": "images/kobo-books.webp",
+      "packages": [
+        "com.kobobooks.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "kobo.com"
+      ],
+      "category": "reading",
+      "tabletPriority": 91,
+      "popular": true,
+      "sha256": "f9ed72b83d1f89b2e3cc71c52f16724fd35fdc8ac503e17d07da4adbaa148949"
+    },
+    {
+      "id": "nykaa",
+      "name": "Nykaa",
+      "file": "images/nykaa.webp",
+      "packages": [
+        "com.fsn.nykaa"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "nykaa.com"
+      ],
+      "category": "shopping",
+      "tabletPriority": 49,
+      "popular": true,
+      "sha256": "6b0e8bf3046462cf549d3aedb5998dbda32c1c4a793fdadf4da77b5e53fb5783"
+    },
+    {
+      "id": "tata-neu",
+      "name": "Tata Neu",
+      "file": "images/tata-neu.webp",
+      "packages": [
+        "com.tatadigital.tcp"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "tataneu.com"
+      ],
+      "category": "shopping",
+      "tabletPriority": 49,
+      "popular": true,
+      "sha256": "033c0722f381085dac80c02e3cd86e254601ead0b39842407d32307fbe411175"
+    },
+    {
+      "id": "decathlon",
+      "name": "Decathlon",
+      "file": "images/decathlon.webp",
+      "packages": [
+        "com.decathlon.app"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "shopping",
+      "tabletPriority": 49,
+      "popular": true,
+      "sha256": "3694dee3d9c4a8727b697c050cecd77cfa1ae1bb73cbed7a28f6299b2bba6d0a"
+    },
+    {
+      "id": "olx-india",
+      "name": "OLX India",
+      "file": "images/olx-india.webp",
+      "packages": [
+        "com.olx.southasia"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "olx.in"
+      ],
+      "category": "shopping",
+      "tabletPriority": 49,
+      "popular": true,
+      "sha256": "1ef1fa4428edb7e4beb218bcd8550777ead80dfaeeecd5981b4d2dd991488121"
+    },
+    {
+      "id": "skyscanner",
+      "name": "Skyscanner",
+      "file": "images/skyscanner.webp",
+      "packages": [
+        "net.skyscanner.android.main"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "skyscanner.com",
+        "skyscanner.co.in"
+      ],
+      "category": "travel",
+      "tabletPriority": 57,
+      "popular": true,
+      "sha256": "de566b60b317a147ec1dbaa5551aa0e157a3e048feb564141f475e7f14565c6c"
+    },
+    {
+      "id": "indigo",
+      "name": "IndiGo",
+      "file": "images/indigo.webp",
+      "packages": [
+        "in.goindigo.android"
+      ],
+      "aliases": [
+        "IndiGo Airlines"
+      ],
+      "webHosts": [
+        "goindigo.in"
+      ],
+      "category": "travel",
+      "tabletPriority": 57,
+      "popular": true,
+      "sha256": "70f7be367e1253152ca5b3b6347746cf113fd1400e39189f14114bb56e76a754"
+    },
+    {
+      "id": "indrive",
+      "name": "inDrive",
+      "file": "images/indrive.webp",
+      "packages": [
+        "sinet.startup.inDriver"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "travel",
+      "tabletPriority": 57,
+      "popular": true,
+      "sha256": "866eea2deca3e10bc4d088977272b0e350a311971871a6b592d6f0e9ef9436f2"
+    },
+    {
+      "id": "google-earth",
+      "name": "Google Earth",
+      "file": "images/google-earth.webp",
+      "packages": [
+        "com.google.earth"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "travel",
+      "tabletPriority": 57,
+      "popular": true,
+      "sha256": "1a2225fd45a8588a6017c19ea0813594214de36f55134af730c7115f5e8ff2c2"
+    },
+    {
+      "id": "waze",
+      "name": "Waze",
+      "file": "images/waze.webp",
+      "packages": [
+        "com.waze"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "travel",
+      "tabletPriority": 57,
+      "popular": true,
+      "sha256": "44d302806cc37de2cafa46a63b79be107dc729be0d1f67673a5de2c691a38f47"
+    },
+    {
+      "id": "cricbuzz",
+      "name": "Cricbuzz",
+      "file": "images/cricbuzz.webp",
+      "packages": [
+        "com.cricbuzz.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "cricbuzz.com",
+        "m.cricbuzz.com"
+      ],
+      "category": "sports",
+      "tabletPriority": 79,
+      "popular": true,
+      "sha256": "c422c9dc739451607897bc0c74bdf9c6350c1b55e68dc3b0979b80f56823d9f2"
+    },
+    {
+      "id": "moneycontrol",
+      "name": "Moneycontrol",
+      "file": "images/moneycontrol.webp",
+      "packages": [
+        "com.divum.MoneyControl"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "moneycontrol.com"
+      ],
+      "category": "finance",
+      "tabletPriority": 49,
+      "popular": true,
+      "sha256": "4816319fe7af89a4b06c266bd5a094e52a2e10ddb3309c99821ddaa29aa3d111"
+    },
+    {
+      "id": "upstox",
+      "name": "Upstox",
+      "file": "images/upstox.webp",
+      "packages": [
+        "in.upstox.app"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "finance",
+      "tabletPriority": 49,
+      "popular": true,
+      "sha256": "2a1dcb1280298f44b22103a0640887d53e462909bcb6a119f2c3ac7ebbda9f44"
+    },
+    {
+      "id": "google-news",
+      "name": "Google News",
+      "file": "images/google-news.webp",
+      "packages": [
+        "com.google.android.apps.magazines"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "news.google.com"
+      ],
+      "category": "news",
+      "tabletPriority": 71,
+      "popular": true,
+      "sha256": "4ab957bea0a0a6221bc674cfac310a10d020d6bf00a8f1aee2c3a1cf98aabc7d"
+    },
+    {
+      "id": "the-times-of-india",
+      "name": "The Times of India",
+      "file": "images/the-times-of-india.webp",
+      "packages": [
+        "com.toi.reader.activities"
+      ],
+      "aliases": [
+        "TOI"
+      ],
+      "webHosts": [
+        "timesofindia.indiatimes.com"
+      ],
+      "category": "news",
+      "tabletPriority": 71,
+      "popular": true,
+      "sha256": "4bcc01dbf5547071f9b64110d690c6f69843ac7afef960dd99c4ad68e93355e7"
+    },
+    {
+      "id": "paramount",
+      "name": "Paramount+",
+      "file": "images/paramount.webp",
+      "packages": [
+        "com.cbs.ott"
+      ],
+      "aliases": [
+        "Paramount Plus"
+      ],
+      "webHosts": [],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "c2a3980ac77ff2d31fada344380bf41d3a70393e774027277e0a1803626f2f50"
+    },
+    {
+      "id": "hbo-max",
+      "name": "HBO Max",
+      "file": "images/hbo-max.webp",
+      "packages": [
+        "com.wbd.stream"
+      ],
+      "aliases": [
+        "Max"
+      ],
+      "webHosts": [
+        "max.com",
+        "hbomax.com",
+        "play.max.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "357fe66ae77f3bd3c43b7aa9a036de44408d28148a1fe4e1cf28e32bcc2c8fe3"
+    },
+    {
+      "id": "disney",
+      "name": "Disney+",
+      "file": "images/disney.webp",
+      "packages": [
+        "com.disney.disneyplus"
+      ],
+      "aliases": [
+        "Disney Plus"
+      ],
+      "webHosts": [
+        "disneyplus.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "58dbe59870b7e8e1d955ac55a414e3864adee0fa502fdaf1619864ab4aed6ce8"
+    },
+    {
+      "id": "hulu",
+      "name": "Hulu",
+      "file": "images/hulu.webp",
+      "packages": [
+        "com.hulu.plus"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "hulu.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "6b537104f8ed531ed54b306c14728afb5f00f0483eba13e882fff0ecde4c5402"
+    },
+    {
+      "id": "tubi",
+      "name": "Tubi",
+      "file": "images/tubi.webp",
+      "packages": [
+        "com.tubitv"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "tubitv.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "b8917bb7b40b36039bbb43ff082e57e5dd77ee82687bf131ce04fae28df0755a"
+    },
+    {
+      "id": "steam",
+      "name": "Steam",
+      "file": "images/steam.webp",
+      "packages": [
+        "com.valvesoftware.android.steam.community"
+      ],
+      "aliases": [
+        "Steam Mobile"
+      ],
+      "webHosts": [
+        "store.steampowered.com"
+      ],
+      "category": "games",
+      "tabletPriority": 96,
+      "popular": true,
+      "sha256": "d5c6290a626fd7d8557f5b30389f4ab8925a568ac663dec6f0e3c4145a7901e6"
+    },
+    {
+      "id": "ea-sports-fc-mobile",
+      "name": "EA SPORTS FC Mobile",
+      "file": "images/ea-sports-fc-mobile.webp",
+      "packages": [
+        "com.ea.gp.fifamobile"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "tabletPriority": 96,
+      "popular": true,
+      "sha256": "ed740e4990f72bc0931b2ea1893e10689aa26e28e57d45fb2691487fcd709e9c"
+    },
+    {
+      "id": "minecraft",
+      "name": "Minecraft",
+      "file": "images/minecraft.webp",
+      "packages": [
+        "com.mojang.minecraftpe"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "tabletPriority": 96,
+      "popular": true,
+      "sha256": "5361e3a2cbe376fcc97b2c6631e814c126e239185596a563e6ac1c78557caf17"
+    },
+    {
+      "id": "genshin-impact",
+      "name": "Genshin Impact",
+      "file": "images/genshin-impact.webp",
+      "packages": [
+        "com.miHoYo.GenshinImpact"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "tabletPriority": 96,
+      "popular": true,
+      "sha256": "e5ec12ee72c539b90c2acb7ff65b66c5123ddcb401be3f8c4e87e04f53daa600"
+    },
+    {
+      "id": "call-of-duty-mobile",
+      "name": "Call of Duty: Mobile",
+      "file": "images/call-of-duty-mobile.webp",
+      "packages": [
+        "com.activision.callofduty.shooter"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "tabletPriority": 96,
+      "popular": true,
+      "sha256": "195843a93360617abfda579bda629d225ff89c0fd45646ee4a56583d9b347d39"
+    },
+    {
+      "id": "pokemon-go",
+      "name": "Pokémon GO",
+      "file": "images/pokemon-go.webp",
+      "packages": [
+        "com.nianticlabs.pokemongo"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "tabletPriority": 96,
+      "popular": true,
+      "sha256": "a233e71218479d0babb8a9d1d8be71a2de57d37097528bcb017d0d82c778350f"
+    },
+    {
+      "id": "among-us",
+      "name": "Among Us",
+      "file": "images/among-us.webp",
+      "packages": [
+        "com.innersloth.spacemafia"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "tabletPriority": 96,
+      "popular": true,
+      "sha256": "1f277451b65e5035d0d9732c4e677ee5cf482e5331f0f323f376e4607dfd39a6"
+    },
+    {
+      "id": "pokemon-tcg-pocket",
+      "name": "Pokémon TCG Pocket",
+      "file": "images/pokemon-tcg-pocket.webp",
+      "packages": [
+        "jp.pokemon.pokemontcgp"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "tabletPriority": 96,
+      "popular": true,
+      "sha256": "c852cc51cd45536a2e14471b8f20c590294f914376563030742043f879c6e2d0"
+    },
+    {
+      "id": "asphalt-legends",
+      "name": "Asphalt Legends",
+      "file": "images/asphalt-legends.webp",
+      "packages": [
+        "com.gameloft.android.ANMP.GloftA9HM"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "tabletPriority": 96,
+      "popular": true,
+      "sha256": "ea9cf3e1adf879908fa2024a683e00b763e8e51c863de499b702c7a17f1a89d5"
+    },
+    {
+      "id": "hill-climb-racing",
+      "name": "Hill Climb Racing",
+      "file": "images/hill-climb-racing.webp",
+      "packages": [
+        "com.fingersoft.hillclimb"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "tabletPriority": 96,
+      "popular": true,
+      "sha256": "3fa0541c07bbf8541f79928882549e048e526c1835aa928b1e2bfaee13df5343"
+    },
+    {
+      "id": "internet-archive",
+      "name": "Internet Archive",
+      "file": "images/internet-archive.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "archive.org"
+      ],
+      "category": "reading",
+      "tabletPriority": 91,
+      "popular": true,
+      "sha256": "fd79e050173929c3a71409495319da21114f58928401fe27c77187d487577955"
+    },
+    {
+      "id": "wayback-machine",
+      "name": "Wayback Machine",
+      "file": "images/wayback-machine.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "web.archive.org"
+      ],
+      "category": "reading",
+      "tabletPriority": 91,
+      "popular": true,
+      "sha256": "48f47f072435247aff37949c504497daaf7fd4df0cf5cf5ce5f9e8b0da543adb"
+    },
+    {
+      "id": "project-gutenberg",
+      "name": "Project Gutenberg",
+      "file": "images/project-gutenberg.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "gutenberg.org"
+      ],
+      "category": "reading",
+      "tabletPriority": 91,
+      "popular": true,
+      "sha256": "aacd8820808895f06d2daabc721440353ff99f579c64f957297a4efdde443088"
+    },
+    {
+      "id": "open-library",
+      "name": "Open Library",
+      "file": "images/open-library.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "openlibrary.org"
+      ],
+      "category": "reading",
+      "tabletPriority": 91,
+      "popular": true,
+      "sha256": "2f4d596ee2a91235b3828222c0a06e500871ba8cdc8d625f672bc423e77b65b1"
+    },
+    {
+      "id": "goodreads",
+      "name": "Goodreads",
+      "file": "images/goodreads.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "goodreads.com"
+      ],
+      "category": "reading",
+      "tabletPriority": 91,
+      "popular": true,
+      "sha256": "b6b6ceb9425e2c35bbe0c1566725ec6580049d3355095cb1d464e82fec6aaaf2"
+    },
+    {
+      "id": "medium",
+      "name": "Medium",
+      "file": "images/medium.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "medium.com"
+      ],
+      "category": "reading",
+      "tabletPriority": 91,
+      "popular": true,
+      "sha256": "e076ecf77e40bb26d4370d68004ce7556df7c5e880763ae84e110cf6026ecc61"
+    },
+    {
+      "id": "substack",
+      "name": "Substack",
+      "file": "images/substack.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "substack.com"
+      ],
+      "category": "reading",
+      "tabletPriority": 91,
+      "popular": true,
+      "sha256": "dfaddc851a3a5aa72601166f166b54aa40ff2294a1601ad4024527b8cde187ca"
+    },
+    {
+      "id": "anilist",
+      "name": "AniList",
+      "file": "images/anilist.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "anilist.co"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "b80dc4da05a57db4e4030a77c1c2271f576781d1a6f6840c0416570c8af223e5"
+    },
+    {
+      "id": "myanimelist",
+      "name": "MyAnimeList",
+      "file": "images/myanimelist.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "myanimelist.net"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "a1ef29e10b3d6b2d2c158b5855775aebfab71c41bd06f8c9bd451c7106ff5a90"
+    },
+    {
+      "id": "anime-planet",
+      "name": "Anime-Planet",
+      "file": "images/anime-planet.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "anime-planet.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "1233bb3721a909fd2995afb5c1c2780666c094e50b35cc2ae9bd950a381632c9"
+    },
+    {
+      "id": "viz",
+      "name": "VIZ",
+      "file": "images/viz.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "viz.com"
+      ],
+      "category": "reading",
+      "tabletPriority": 91,
+      "popular": true,
+      "sha256": "ccfacca0cba9e0197c8686454b948438d3797d7caaebdf732485399f9d92280f"
+    },
+    {
+      "id": "hidive",
+      "name": "HIDIVE",
+      "file": "images/hidive.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "hidive.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "37d673703bee2c093cd887b3e51fba6d4248816d51e679604736289a56740664"
+    },
+    {
+      "id": "twitch",
+      "name": "Twitch",
+      "file": "images/twitch.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "twitch.tv",
+        "m.twitch.tv"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "96e23edc3563f9107aa701d2b69816cc230ba443daa9aaa9ce9172bf436b53c3"
+    },
+    {
+      "id": "vimeo",
+      "name": "Vimeo",
+      "file": "images/vimeo.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "vimeo.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "3f390bf03c163585a796aa2a09cd8825d31901ee0050b01a089f62a6218649ab"
+    },
+    {
+      "id": "dailymotion",
+      "name": "Dailymotion",
+      "file": "images/dailymotion.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "dailymotion.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "c534557b22405fb23cc979ea428205e135da2220c7d3389ee534012517a9f4a9"
+    },
+    {
+      "id": "bilibili",
+      "name": "Bilibili",
+      "file": "images/bilibili.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "bilibili.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "2b58498e397eab11ee0b7d8e971016d6d0555f10e16d71a4b5c3a67c5f77707f"
+    },
+    {
+      "id": "bandcamp",
+      "name": "Bandcamp",
+      "file": "images/bandcamp.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "bandcamp.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "ee8dbb901c4b53e6ff5f29908c3b431b725427801edefaaaf031456ff17c3b8f"
+    },
+    {
+      "id": "last-fm",
+      "name": "Last.fm",
+      "file": "images/last-fm.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "last.fm"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "acd09927c06d658f98df23d2708965bbf6140004aed8b0f02d4545c0c528ebbf"
+    },
+    {
+      "id": "radio-garden",
+      "name": "Radio Garden",
+      "file": "images/radio-garden.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "radio.garden"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "ca69f3edbacc870e56731d501b8572f8c1036b27ff5e08644154d585e220c0e0"
+    },
+    {
+      "id": "apple-podcasts",
+      "name": "Apple Podcasts",
+      "file": "images/apple-podcasts.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "podcasts.apple.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "34f0aa758934c1fadbbddb3c0adf62adc78a0553f18575bc3b3adbb63ad7620c"
+    },
+    {
+      "id": "letterboxd",
+      "name": "Letterboxd",
+      "file": "images/letterboxd.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "letterboxd.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "f538f16fddb13f73dfb4ae77370d63ce1f231176c38affb7f4b6971eaf715c44"
+    },
+    {
+      "id": "the-movie-database",
+      "name": "The Movie Database",
+      "file": "images/the-movie-database.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "themoviedb.org"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "e5115801fffd034c15cbfa43f50da9c0374e6d440dfd25b28461a38899e92ed5"
+    },
+    {
+      "id": "rotten-tomatoes",
+      "name": "Rotten Tomatoes",
+      "file": "images/rotten-tomatoes.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "rottentomatoes.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "e7ba9c60bf3c62267347dc7134a45d6cf11ad9fce73d99c789e3e01ecd99a4aa"
+    },
+    {
+      "id": "justwatch",
+      "name": "JustWatch",
+      "file": "images/justwatch.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "justwatch.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "22731cf7a32e7040c72516e9b6e64901e7cabdd493feaf3c5f3a9f373ea81367"
+    },
+    {
+      "id": "plex",
+      "name": "Plex",
+      "file": "images/plex.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "plex.tv"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "64588f10b8ed0af33acf89c0ccce209a858923beb85ef0e853ac9db2b0654a23"
+    },
+    {
+      "id": "gog",
+      "name": "GOG",
+      "file": "images/gog.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "gog.com"
+      ],
+      "category": "games",
+      "tabletPriority": 96,
+      "popular": true,
+      "sha256": "d3b33eeeb54dbca1334b6624a68e14eca34d2fdf58ef4a6bf53253c1befd18c7"
+    },
+    {
+      "id": "lichess",
+      "name": "Lichess",
+      "file": "images/lichess.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "lichess.org"
+      ],
+      "category": "games",
+      "tabletPriority": 96,
+      "popular": true,
+      "sha256": "7249d0b5beecd2343074f88ea11de734ef23d8f10e027dacc55f5c638c8e3ac8"
+    },
+    {
+      "id": "geoguessr",
+      "name": "GeoGuessr",
+      "file": "images/geoguessr.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "geoguessr.com"
+      ],
+      "category": "games",
+      "tabletPriority": 96,
+      "popular": true,
+      "sha256": "af1767f1075f705ef7107d2a06157a9104ce0abcc60a221e4beef02d8f4d08b1"
+    },
+    {
+      "id": "ign",
+      "name": "IGN",
+      "file": "images/ign.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "ign.com"
+      ],
+      "category": "games",
+      "tabletPriority": 96,
+      "popular": true,
+      "sha256": "e94399b60a0514676e28c5f8941b7c2537c6110ef10efcbd4097e757e20b2d12"
+    },
+    {
+      "id": "gamespot",
+      "name": "GameSpot",
+      "file": "images/gamespot.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "gamespot.com"
+      ],
+      "category": "games",
+      "tabletPriority": 96,
+      "popular": true,
+      "sha256": "c20a02c08ace2de6235216c1a79d35a367c55614b3fc2d036ed84d3bd54c072e"
+    },
+    {
+      "id": "fandom",
+      "name": "Fandom",
+      "file": "images/fandom.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "fandom.com"
+      ],
+      "category": "entertainment",
+      "tabletPriority": 98,
+      "popular": true,
+      "sha256": "bae9d74e32be0763f6437828d1dce0b27d7d0001ae40611da68d0bcb0cf67a72"
+    },
+    {
+      "id": "speedtest",
+      "name": "Speedtest",
+      "file": "images/speedtest.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "speedtest.net"
+      ],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "88b4f5b8f9536f5e667bfaf987872ce3d714ae38f34f2ccc83c20a669e396855"
+    },
+    {
+      "id": "fast-com",
+      "name": "Fast.com",
+      "file": "images/fast-com.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "fast.com"
+      ],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "b6019d5cf0e158f47427458efcd4c2d22aa1eb3cdab8afded8ac74d3fbc904d8"
+    },
+    {
+      "id": "downdetector",
+      "name": "DownDetector",
+      "file": "images/downdetector.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "downdetector.com"
+      ],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "02093cb9b029178b127b941308b47bfb1ea833efd31bc1152423b47b927b6914"
+    },
+    {
+      "id": "virustotal",
+      "name": "VirusTotal",
+      "file": "images/virustotal.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "virustotal.com"
+      ],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "af9394fdf6765a0afe0594fee60659cbbe446e9ccd652e58d588b9f8046b9371"
+    },
+    {
+      "id": "pdf24-tools",
+      "name": "PDF24 Tools",
+      "file": "images/pdf24-tools.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "tools.pdf24.org"
+      ],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "9b987fd3e9e91e0aa4a8f848f794ed189aff9ca3c0367b4a52cbcb00faf4ba62"
+    },
+    {
+      "id": "ilovepdf",
+      "name": "iLovePDF",
+      "file": "images/ilovepdf.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "ilovepdf.com"
+      ],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "ef277235fa522afc71cecfa3ee391049e0f454370bd1d8cbfa759d02e6b2abc5"
+    },
+    {
+      "id": "smallpdf",
+      "name": "Smallpdf",
+      "file": "images/smallpdf.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "smallpdf.com"
+      ],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "8cd71e6b551ce9831b56d8b7f6aa45a35898203d65a1ff4d12c13be4c4a4623e"
+    },
+    {
+      "id": "photopea",
+      "name": "Photopea",
+      "file": "images/photopea.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "photopea.com"
+      ],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "9317be0bff0dd66c40e1746ce97e0fc0ac76a8ea654f9128b0222e7cf22b2459"
+    },
+    {
+      "id": "behance",
+      "name": "Behance",
+      "file": "images/behance.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "behance.net"
+      ],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "87b3e17ad02bc7465e84e28328c41f1f1aef1d4e38166914bdee657ad0fc9c2e"
+    },
+    {
+      "id": "dribbble",
+      "name": "Dribbble",
+      "file": "images/dribbble.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "dribbble.com"
+      ],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "63032ae5baf33fc4bfcdc9247dfbd3b60debbd7bfe4b2f0edb9954e0288b0b26"
+    },
+    {
+      "id": "unsplash",
+      "name": "Unsplash",
+      "file": "images/unsplash.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "unsplash.com"
+      ],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "d0ad3653de38de8643090cc762b7148174c217d935ab4ea0af538f34e0726748"
+    },
+    {
+      "id": "deviantart",
+      "name": "DeviantArt",
+      "file": "images/deviantart.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "deviantart.com"
+      ],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "5ede590af5a8f853b0d426266ecb8481aa43a935bc2c4395ed86a1ca2885697c"
+    },
+    {
+      "id": "artstation",
+      "name": "ArtStation",
+      "file": "images/artstation.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "artstation.com"
+      ],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "29aededf22050d8e8c45aad21fbeb8f033e8556fd92042cd8f1fe2d63abc0067"
+    },
+    {
+      "id": "google-fonts",
+      "name": "Google Fonts",
+      "file": "images/google-fonts.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "fonts.google.com"
+      ],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "30a9bd097e5cac01960557de19c8115155483f859d4a02a0dac34dd948a2fd01"
+    },
+    {
+      "id": "google-calendar",
+      "name": "Google Calendar",
+      "file": "images/google-calendar.webp",
+      "packages": [],
+      "aliases": [
+        "Google Calendar Web"
+      ],
+      "webHosts": [
+        "calendar.google.com"
+      ],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "9e0cf8db814973ade414420477d14ac6912de4f2ea79e831fb55643a4686373b"
+    },
+    {
+      "id": "google-scholar",
+      "name": "Google Scholar",
+      "file": "images/google-scholar.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "scholar.google.com"
+      ],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "ae1a16d06372b8581178bfb4163d3bd7f8811da1334055b78a65079903c43bf2"
+    },
+    {
+      "id": "google-trends",
+      "name": "Google Trends",
+      "file": "images/google-trends.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "trends.google.com"
+      ],
+      "category": "news",
+      "tabletPriority": 71,
+      "popular": true,
+      "sha256": "e4af9fe672d4abcdde4159a628c57e9f79737721448bbebce6b1a6d06c5536eb"
+    },
+    {
+      "id": "google-arts-culture",
+      "name": "Google Arts & Culture",
+      "file": "images/google-arts-culture.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "artsandculture.google.com"
+      ],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "7edf9b65a68604d4d102b24e4c0f3d1e3dc7b8a43ac3c5f990cc86023b5bcb1e"
+    },
+    {
+      "id": "openstreetmap",
+      "name": "OpenStreetMap",
+      "file": "images/openstreetmap.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "openstreetmap.org"
+      ],
+      "category": "travel",
+      "tabletPriority": 57,
+      "popular": true,
+      "sha256": "23c8e4067b38ec1751f2e96607033144d811725f74b1a7d9add3cdf380f0f3b5"
+    },
+    {
+      "id": "weather-com",
+      "name": "Weather.com",
+      "file": "images/weather-com.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "weather.com"
+      ],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "690e8f36aa7538315c3b9698daaac6a5d7ee9ecaed21c75be1a41507bd3b7549"
+    },
+    {
+      "id": "windy",
+      "name": "Windy",
+      "file": "images/windy.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "windy.com"
+      ],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "6bcdbfa06a8c03ecd5407ef60ea09399f2b76c3c25528c03692c257b43febe48"
+    },
+    {
+      "id": "timeanddate",
+      "name": "Timeanddate",
+      "file": "images/timeanddate.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "timeanddate.com"
+      ],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "cc4d3d4b60de87f0198a58aafd72b95508ee14d0f47ba0c180117a0a6c4bf153"
+    },
+    {
+      "id": "deepl",
+      "name": "DeepL",
+      "file": "images/deepl.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "deepl.com"
+      ],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "38949ac13e696e685d2ba722de400e77f67d27801b76fd5df5a65aa3f73156c1"
+    },
+    {
+      "id": "wolfram-alpha",
+      "name": "Wolfram Alpha",
+      "file": "images/wolfram-alpha.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "wolframalpha.com"
+      ],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "cd2e3ddb0eb9a99bf05b678ed06db7750f667b0d6af66000044b0099d49d1311"
+    },
+    {
+      "id": "desmos",
+      "name": "Desmos",
+      "file": "images/desmos.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "desmos.com"
+      ],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "f3c3182b9231b80d9f3aebf246df7a6a1ca081dc479b8f8471bb74474f73aa72"
+    },
+    {
+      "id": "geogebra",
+      "name": "GeoGebra",
+      "file": "images/geogebra.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "geogebra.org"
+      ],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "d47cfdd7f0f269b82e0aae834d9eee5d94d5484076d74103a57fa18a61654af7"
+    },
+    {
+      "id": "mit-opencourseware",
+      "name": "MIT OpenCourseWare",
+      "file": "images/mit-opencourseware.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "ocw.mit.edu"
+      ],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "dc84d8695c4c7ebd2d1872888e374c65c82062783de3c28b9ce03ee8885b1d3e"
+    },
+    {
+      "id": "edx",
+      "name": "edX",
+      "file": "images/edx.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "edx.org"
+      ],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "1d6b6d5a6babb0b5637c5e98456937301478a2ded75ac7eacf239f3f3b2f0c85"
+    },
+    {
+      "id": "freecodecamp",
+      "name": "freeCodeCamp",
+      "file": "images/freecodecamp.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "freecodecamp.org"
+      ],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "7360dd4083c4b5d2d0ea4647ee75260ae207f6dfaf58ed08d4308cad5c7bfd61"
+    },
+    {
+      "id": "w3schools",
+      "name": "W3Schools",
+      "file": "images/w3schools.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "w3schools.com"
+      ],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "ed7029a9e783a37c422016b3932add166cc66c4693c1ebafc72b4992c842854f"
+    },
+    {
+      "id": "stack-overflow",
+      "name": "Stack Overflow",
+      "file": "images/stack-overflow.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "stackoverflow.com"
+      ],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "40f29ef96d04161df1a5dafba5cae8d67c9e86897d83e6b34ef2745972b87c5e"
+    },
+    {
+      "id": "dev-community",
+      "name": "Dev Community",
+      "file": "images/dev-community.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "dev.to"
+      ],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "c2c0f7032cf91d7edb3d380de1159f1eac25e2acfc2e0d10b9e3e882c7213653"
+    },
+    {
+      "id": "hacker-news",
+      "name": "Hacker News",
+      "file": "images/hacker-news.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "news.ycombinator.com"
+      ],
+      "category": "news",
+      "tabletPriority": 71,
+      "popular": true,
+      "sha256": "884e05027efdb709f9993996358185929aa0b782615ffc53ec905c5cc8ec5d17"
+    },
+    {
+      "id": "product-hunt",
+      "name": "Product Hunt",
+      "file": "images/product-hunt.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "producthunt.com"
+      ],
+      "category": "news",
+      "tabletPriority": 71,
+      "popular": true,
+      "sha256": "0dec7fe8abfebe60da559184e3c32b6508036f29fa219630cb8cea7ecd8bd6ef"
+    },
+    {
+      "id": "gitlab",
+      "name": "GitLab",
+      "file": "images/gitlab.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "gitlab.com"
+      ],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "de61ca70ca8a823c6e4050da14ed151b3b7e9b50275a75e7969fe898c633ef48"
+    },
+    {
+      "id": "codepen",
+      "name": "CodePen",
+      "file": "images/codepen.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "codepen.io"
+      ],
+      "category": "creativity",
+      "tabletPriority": 93,
+      "popular": true,
+      "sha256": "98f27682fc528aec02cf42e5415d17b91bc02e0b17e6dc232fb195b4b4fc2f4f"
+    },
+    {
+      "id": "replit",
+      "name": "Replit",
+      "file": "images/replit.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "replit.com"
+      ],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "c87e09c624a070cb0def64c26953cb2b3555ddc97d40fba7c685d62c5175f658"
+    },
+    {
+      "id": "hugging-face",
+      "name": "Hugging Face",
+      "file": "images/hugging-face.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "huggingface.co"
+      ],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "501cf02c0007e2ef9758b94289d8d2fb3001205f6400ebac168a3b2780e9079a"
+    },
+    {
+      "id": "microsoft-copilot",
+      "name": "Microsoft Copilot",
+      "file": "images/microsoft-copilot.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "copilot.microsoft.com"
+      ],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "3bb63757a9ca67291fe2eb28fe6285024b45c3330d5cd0dfcdbaca4588bf182e"
+    },
+    {
+      "id": "notebooklm",
+      "name": "NotebookLM",
+      "file": "images/notebooklm.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "notebooklm.google.com"
+      ],
+      "category": "learning",
+      "tabletPriority": 90,
+      "popular": true,
+      "sha256": "657ad78ff7c73bfec694d9e6a8f6d1e900d55b3a3aceafab26dc367e22bc3fe7"
+    },
+    {
+      "id": "airtable",
+      "name": "Airtable",
+      "file": "images/airtable.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "airtable.com"
+      ],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "d702790de52a60573820172033dd5ef42c8387ef64cf22605ad548396655e900"
+    },
+    {
+      "id": "calendly",
+      "name": "Calendly",
+      "file": "images/calendly.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "calendly.com"
+      ],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "2bd776ed203da81a1523c824d58b9a1268f83e193d0270ade232acba9f1c0973"
+    },
+    {
+      "id": "miro",
+      "name": "Miro",
+      "file": "images/miro.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "miro.com"
+      ],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "4703ab6bca9c9bec9f05e2879736a8dab007dccc4775d2c04f227ca23adb2a79"
+    },
+    {
+      "id": "notion-calendar",
+      "name": "Notion Calendar",
+      "file": "images/notion-calendar.webp",
+      "packages": [],
+      "aliases": [
+        "Cron"
+      ],
+      "webHosts": [
+        "calendar.notion.so"
+      ],
+      "category": "productivity",
+      "tabletPriority": 84,
+      "popular": true,
+      "sha256": "75996f4867416da4cbc17808c3cd6bbbeac22c0f1ddeb15ff2709a25573efed3"
+    },
+    {
+      "id": "yahoo-mail",
+      "name": "Yahoo Mail",
+      "file": "images/yahoo-mail.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "mail.yahoo.com"
+      ],
+      "category": "communication",
+      "tabletPriority": 76,
+      "popular": true,
+      "sha256": "ddf6a26c3350b793a9597a63503bf5368f926af9533da3c6ffa1e52bbabc90c5"
+    },
+    {
+      "id": "yahoo",
+      "name": "Yahoo",
+      "file": "images/yahoo.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "yahoo.com"
+      ],
+      "category": "news",
+      "tabletPriority": 71,
+      "popular": true,
+      "sha256": "92c8897dd13211968fde36c331250a8c4e8f0414768bb9b33c618455cc6eb182"
+    },
+    {
+      "id": "ap-news",
+      "name": "AP News",
+      "file": "images/ap-news.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "apnews.com"
+      ],
+      "category": "news",
+      "tabletPriority": 71,
+      "popular": true,
+      "sha256": "602b4cfe95b93f03c39bc50cddc484a96008bedb9707d2c897ccb6cf25ec94f6"
+    },
+    {
+      "id": "the-new-york-times",
+      "name": "The New York Times",
+      "file": "images/the-new-york-times.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "nytimes.com"
+      ],
+      "category": "news",
+      "tabletPriority": 71,
+      "popular": true,
+      "sha256": "94b4408078e0b76a872525a059c5480b2c54c3abef5524a933c2e433d2e8d142"
+    },
+    {
+      "id": "the-hindu",
+      "name": "The Hindu",
+      "file": "images/the-hindu.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "thehindu.com"
+      ],
+      "category": "news",
+      "tabletPriority": 71,
+      "popular": true,
+      "sha256": "282133ccb021ef49fcf6b89aaf549e6d99eec0d9222fef1f15aba8b4c156c1bb"
+    },
+    {
+      "id": "indian-express",
+      "name": "Indian Express",
+      "file": "images/indian-express.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "indianexpress.com"
+      ],
+      "category": "news",
+      "tabletPriority": 71,
+      "popular": true,
+      "sha256": "0a76e034606752d9229232b8e5bca0147c1447ac4a9d9003062a7fb45792251b"
+    },
+    {
+      "id": "hindustan-times",
+      "name": "Hindustan Times",
+      "file": "images/hindustan-times.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "hindustantimes.com"
+      ],
+      "category": "news",
+      "tabletPriority": 71,
+      "popular": true,
+      "sha256": "3c20767bc1f30e042b6198d09dd1fa5008f3d0544271cc821328caeead92ee36"
+    },
+    {
+      "id": "india-today",
+      "name": "India Today",
+      "file": "images/india-today.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "indiatoday.in"
+      ],
+      "category": "news",
+      "tabletPriority": 71,
+      "popular": true,
+      "sha256": "556413ef0d33156eb03829db25ee4ef8d90730fe704763ea09ef65f8f13c54e7"
+    },
+    {
+      "id": "tradingview",
+      "name": "TradingView",
+      "file": "images/tradingview.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "tradingview.com"
+      ],
+      "category": "finance",
+      "tabletPriority": 49,
+      "popular": true,
+      "sha256": "90f85dfe35482554b5d8e369fbd919f496820236f0c6c0ada12b22fbad4cbeca"
+    },
+    {
+      "id": "yahoo-finance",
+      "name": "Yahoo Finance",
+      "file": "images/yahoo-finance.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "finance.yahoo.com"
+      ],
+      "category": "finance",
+      "tabletPriority": 49,
+      "popular": true,
+      "sha256": "5d5e159975aff92f9beab77743acbe78f2a35891610d2d2d1b5c9a35d95ade16"
+    },
+    {
+      "id": "uidai",
+      "name": "UIDAI",
+      "file": "images/uidai.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "uidai.gov.in"
+      ],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "7a07eff3042eb3fbd968d43515e9adbf66ea8537e9a8a48f1f6f4ea0d1966067"
+    },
+    {
+      "id": "passport-seva",
+      "name": "Passport Seva",
+      "file": "images/passport-seva.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "passportindia.gov.in"
+      ],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "b71c40e881744be637d72e533a7346f0ebf61c98706ce66b6845faebeaffbe76"
+    },
+    {
+      "id": "espncricinfo",
+      "name": "ESPNcricinfo",
+      "file": "images/espncricinfo.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "espncricinfo.com"
+      ],
+      "category": "sports",
+      "tabletPriority": 79,
+      "popular": true,
+      "sha256": "b2cb44840c4daa7d74bb308544bf027233f9feb1fccfdbd1478d0b7d1413bc70"
+    },
+    {
+      "id": "espn",
+      "name": "ESPN",
+      "file": "images/espn.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "espn.com"
+      ],
+      "category": "sports",
+      "tabletPriority": 79,
+      "popular": true,
+      "sha256": "c4e984777b4663d1624b4b43434cb4b8c88351979f374359b5965431a86e4c0f"
+    },
+    {
+      "id": "icc-cricket",
+      "name": "ICC Cricket",
+      "file": "images/icc-cricket.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "icc-cricket.com"
+      ],
+      "category": "sports",
+      "tabletPriority": 79,
+      "popular": true,
+      "sha256": "19b0e0409e8e060fd028858c641e8ca871ec4a125a6d373546b6e886590e0410"
+    },
+    {
+      "id": "formula-1",
+      "name": "Formula 1",
+      "file": "images/formula-1.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "formula1.com"
+      ],
+      "category": "sports",
+      "tabletPriority": 79,
+      "popular": true,
+      "sha256": "8562ba51cac90786b36a3613902f6faf4d68ceefcfe902e30fa7b18656d0983a"
+    },
+    {
+      "id": "olympics",
+      "name": "Olympics",
+      "file": "images/olympics.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "olympics.com"
+      ],
+      "category": "sports",
+      "tabletPriority": 79,
+      "popular": true,
+      "sha256": "304c0fa82ffb410f52804aaf5c95674d05374fe6d5f0506ef43415e0f7ecd409"
+    },
+    {
+      "id": "etsy",
+      "name": "Etsy",
+      "file": "images/etsy.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "etsy.com"
+      ],
+      "category": "shopping",
+      "tabletPriority": 49,
+      "popular": true,
+      "sha256": "51de01b40cddb900735cd2b25a2397ac97575c5721ce8fdd159e13e89e033338"
+    },
+    {
+      "id": "indiamart",
+      "name": "IndiaMART",
+      "file": "images/indiamart.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "indiamart.com"
+      ],
+      "category": "shopping",
+      "tabletPriority": 49,
+      "popular": true,
+      "sha256": "1ed5edb98662496afc86c7e3765d0d32f91c84f6b7f3856031a83416aa103d98"
+    },
+    {
+      "id": "justdial",
+      "name": "Justdial",
+      "file": "images/justdial.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "justdial.com"
+      ],
+      "category": "utilities",
+      "tabletPriority": 56,
+      "popular": true,
+      "sha256": "5572f392226015b66214386e9f43b68485bc47bf5065ecb47349f82fa86b3237"
+    },
+    {
+      "id": "best-buy",
+      "name": "Best Buy",
+      "file": "images/best-buy.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "bestbuy.com"
+      ],
+      "category": "shopping",
+      "tabletPriority": 49,
+      "popular": true,
+      "sha256": "f29e6b5404b807f44685f763f2e7381a9a4c059cb21a30cc1af906c33aa0ca4c"
+    },
+    {
+      "id": "alibaba-com",
+      "name": "Alibaba.com",
+      "file": "images/alibaba-com.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "alibaba.com"
+      ],
+      "category": "shopping",
+      "tabletPriority": 49,
+      "popular": true,
+      "sha256": "ed00750a16d3f223b825c0006f770f5862e37b2737209cacfd8819ee5aa198f2"
     }
   ]
 }
