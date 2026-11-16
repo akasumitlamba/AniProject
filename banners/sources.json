@@ -61,9 +61,9 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.jio.myjio&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/NXcAxgd2mmvEOKDR7vZSywec4JYoFTsS7VzrGkh2QwOgCXbiAT_3qRqY3tpmkVomRDdv2IgxZRQapqBnFErg7w=s0-br30",
     "verifiedPlayTitle": "MyJio: For Everything Jio - Apps on Google Play",
-    "brandColor": "#0A2885",
+    "brandColor": "#FFFFFF",
     "artworkReferenceUrl": "https://play-lh.googleusercontent.com/NXcAxgd2mmvEOKDR7vZSywec4JYoFTsS7VzrGkh2QwOgCXbiAT_3qRqY3tpmkVomRDdv2IgxZRQapqBnFErg7w=s0-br30",
-    "artworkTreatment": "text"
+    "artworkTreatment": "Composition using the symbol from the official app icon."
   },
   {
     "id": "paytm",
@@ -131,7 +131,7 @@
     "verifiedPlayTitle": "Naukri: Job Search App - Apps on Google Play",
     "brandColor": "#4A90E2",
     "artworkReferenceUrl": "https://play-lh.googleusercontent.com/8XpMlCAY1Xsr2fO4u86b6AFErfh9zq7FPZzpio4X9eAKSEhUJfFPmu_KX9jK-iEsAXZVWDt9FORixVf61yJo=s0-br30",
-    "artworkTreatment": "text"
+    "artworkTreatment": "Individually generated artwork using the app identity reference."
   },
   {
     "id": "linkedin",
@@ -189,7 +189,7 @@
     "verifiedPlayTitle": "Flipkart Online Shopping App - Apps on Google Play",
     "brandColor": "#2874F0",
     "artworkReferenceUrl": "https://play-lh.googleusercontent.com/mlWjVjxflQoYJHBBgDQ08FqT8i3KnDG__2RH8P-GWOKlEPAIo8TllTZo3HDQ3J5zlO6oAhc1FAv0Bf2on0wL8w=s0-br30",
-    "artworkTreatment": "text"
+    "artworkTreatment": "Individually generated artwork using the app identity reference."
   },
   {
     "id": "amazon",
@@ -377,7 +377,9 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.zeptoconsumerapp&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/jrtmMFv4qjtgMPQeaQzUFZ3EYBkHd_8OFYl6O1Ngt5Pey52RJAR4u8K4IoPILkJz76a7s5U3DNaY3r3xnl7t8X4=s0-br30",
     "verifiedPlayTitle": "Zepto: Groceries in minutes - Apps on Google Play",
-    "brandColor": "#5A1692"
+    "brandColor": "#5A1692",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/jrtmMFv4qjtgMPQeaQzUFZ3EYBkHd_8OFYl6O1Ngt5Pey52RJAR4u8K4IoPILkJz76a7s5U3DNaY3r3xnl7t8X4=s0-br30",
+    "artworkTreatment": "Individually generated artwork using the app identity reference."
   },
   {
     "id": "bigbasket",
@@ -405,7 +407,7 @@
     "verifiedPlayTitle": "Meesho: Online Shopping App - Apps on Google Play",
     "brandColor": "#F43397",
     "artworkReferenceUrl": "https://play-lh.googleusercontent.com/lQrsRJ7PT25f2J8n14Zp4j0695_2NIpIUEQpG6bEuljhk7oJ8q_GeA5iYgWm1DiDq0WFPBWP4iaJcXi4XPwoWCk=s0-br30",
-    "artworkTreatment": "lockup"
+    "artworkTreatment": "Individually generated artwork using the app identity reference."
   },
   {
     "id": "jiomart",
@@ -431,7 +433,7 @@
     "verifiedPlayTitle": "Ola: Book Cab, Auto, Bike Taxi - Apps on Google Play",
     "brandColor": "#C8DD41",
     "artworkReferenceUrl": "https://play-lh.googleusercontent.com/X2EES6J1Q6cf18gTsBX-yWvsLrDm31TjwjwbSGE8t8w-v1uEIpHDNExfTF3tw_bbOqeRuYZhPg5mOu-kLWKhJ64=s0-br30",
-    "artworkTreatment": "text"
+    "artworkTreatment": "Individually generated artwork using the app identity reference."
   },
   {
     "id": "rapido",
@@ -473,7 +475,7 @@
     "verifiedPlayTitle": "Goibibo: Hotel, Flight & Train - Apps on Google Play",
     "brandColor": "#F26722",
     "artworkReferenceUrl": "https://play-lh.googleusercontent.com/0a5E7RrRoJLWcCpTLqlkanPO9rD-6RQ8_cP7L5CIZP5diVaW9ytfmO_roFa-c4qZhwaVQCaITYDo4h3IEIq79A=s0-br30",
-    "artworkTreatment": "text"
+    "artworkTreatment": "Individually generated artwork using the app identity reference."
   },
   {
     "id": "redbus",
@@ -493,7 +495,7 @@
     "verifiedPlayTitle": "BookMyShow | Movies & Events - Apps on Google Play",
     "brandColor": "#F84464",
     "artworkReferenceUrl": "https://play-lh.googleusercontent.com/TB_8RMvDjxGmx06LBK-8opRFJ0msb6hSZalEtOMBmxgJ4jYE_i0BmdRuMWChCE76tLnxoytZ75Cew_r0_JDd=s0-br30",
-    "artworkTreatment": "text"
+    "artworkTreatment": "Individually generated artwork using the app identity reference."
   },
   {
     "id": "airtel",
@@ -509,7 +511,9 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=in.org.npci.upiapp&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/rPJLwugORRZudZYpG6HrP2ejHgdinQzqkKgdPvsoCM5jc_7d507xaYCVUWELWOTu2OEEdwtZNJ7ySq5Mpj2S7DQ=s0-br30",
     "verifiedPlayTitle": "BHIM Bharat's Own Payments App - Apps on Google Play",
-    "brandColor": "#EE7B23"
+    "brandColor": "#FFFFFF",
+    "artworkReferenceUrl": "https://www.bhimupi.org.in/images/bhim/logo.png",
+    "artworkTreatment": "Composition using the published brand artwork."
   },
   {
     "id": "mobikwik",
@@ -517,9 +521,9 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.mobikwik_new&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/Uvs56Ws0HOjsm7iOkl7nWaPHutFkZBwr6JoMu4bGCSGyQUyGD8FwzPF-LdrkTZC9M2vVDIF9ocznlv2y334Z=s0-br30",
     "verifiedPlayTitle": "MobiKwik: Loans, UPI & Wallet - Apps on Google Play",
-    "brandColor": "#0066FF",
-    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/Uvs56Ws0HOjsm7iOkl7nWaPHutFkZBwr6JoMu4bGCSGyQUyGD8FwzPF-LdrkTZC9M2vVDIF9ocznlv2y334Z=s0-br30",
-    "artworkTreatment": "text"
+    "brandColor": "#F1F6FF",
+    "artworkReferenceUrl": "https://www.mobikwik.com/assets/images/mbk-logo.svg",
+    "artworkTreatment": "Composition using the published brand artwork."
   },
   {
     "id": "yono-sbi",
@@ -553,7 +557,9 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.zerodha.kite3&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/NOgiEaLywYeSsxQL4qZIwQhXxBN-3Gdx-6RUAzBxU6kCW6fzg4t7mY6pKgu3T5-dwaLmClxxG1TQl7wntzpr=s0-br30",
     "verifiedPlayTitle": "Zerodha Kite - Trade & Invest - Apps on Google Play",
-    "brandColor": "#FF5722"
+    "brandColor": "#FF5722",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/NOgiEaLywYeSsxQL4qZIwQhXxBN-3Gdx-6RUAzBxU6kCW6fzg4t7mY6pKgu3T5-dwaLmClxxG1TQl7wntzpr=s0-br30",
+    "artworkTreatment": "Individually generated artwork using the app identity reference."
   },
   {
     "id": "digilocker",
@@ -655,9 +661,9 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.indeed.android.jobsearch&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/w6ltLlZlgLQYlmaMvbVyyttJAI3rXLjoz0i2pW9lltNTxRk9bQF7HmwkelKPWjVk_s6Et-VCFKhJzsyeC9xNNA=s0-br30",
     "verifiedPlayTitle": "Indeed Job Search - Apps on Google Play",
-    "brandColor": "#2164F3",
-    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/w6ltLlZlgLQYlmaMvbVyyttJAI3rXLjoz0i2pW9lltNTxRk9bQF7HmwkelKPWjVk_s6Et-VCFKhJzsyeC9xNNA=s0-br30",
-    "artworkTreatment": "text"
+    "brandColor": "#F5F8FF",
+    "artworkReferenceUrl": "https://www.indeed.com/",
+    "artworkTreatment": "Composition using the published brand artwork."
   },
   {
     "id": "apna",
@@ -676,8 +682,8 @@
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/LbjoYTPK5ZlNO3GDMZsFoGoRXHLoA2iTAUvJF7ePRZzbRPu7En-Go3wWXPXEdCL6grpkPHHavvzalozZrbJi=s0-br30",
     "verifiedPlayTitle": "Coursera: Grow your career - Apps on Google Play",
     "brandColor": "#0056D2",
-    "artworkReferenceUrl": "https://coursera.org/",
-    "artworkTreatment": "lockup"
+    "artworkReferenceUrl": "https://www.coursera.org/about/brand-guide/",
+    "artworkTreatment": "Composition using the published brand artwork."
   },
   {
     "id": "udemy",
@@ -1286,7 +1292,7 @@
     "verifiedPlayTitle": "Concepts: Sketch, Note, Draw - Apps on Google Play",
     "brandColor": "#171C27",
     "artworkReferenceUrl": "https://play-lh.googleusercontent.com/N040rmpKIeM49dsl3Ac02dT4XBemfi7BL_1w9-Ci7SYS1Kr3vOqeZ7dgCaLQkwHaPnpMlElI7p-qvINn5vqJIg=s0-br30",
-    "artworkTreatment": "text"
+    "artworkTreatment": "Individually generated artwork using the app identity reference."
   },
   {
     "id": "xodo",
@@ -1376,7 +1382,7 @@
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/UyHQPG0pA3T-NwEhBXRALKDZKXuha9oABwfjXPs-bc5CSGNPtDlaVmWq7MEIGGGtKF4zuRU04a8OJS4lHqNPV_I=s0-br30",
     "verifiedPlayTitle": "Wipro Next Smart Home - Apps on Google Play",
     "artworkReferenceUrl": "https://play-lh.googleusercontent.com/UyHQPG0pA3T-NwEhBXRALKDZKXuha9oABwfjXPs-bc5CSGNPtDlaVmWq7MEIGGGtKF4zuRU04a8OJS4lHqNPV_I=s0-br30",
-    "artworkTreatment": "text"
+    "artworkTreatment": "Individually generated artwork using the app identity reference."
   },
   {
     "id": "audiofx",
@@ -1464,8 +1470,10 @@
     "name": "KineMaster",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.nexstreaming.app.kinemasterfree&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/Jc_gKnGxM5p4_FuWQ_v2k6HlMaCcExeIDt--PkcWrLj_VQ2OyMPhDaycC1s9wG3yOwjviVA4M1go0O-foAx0=s0-br30",
-    "artworkTreatment": "Individual ImageGen composition using the linked brand identity reference.",
-    "verifiedPlayTitle": "KineMaster - AI Video Editor - Apps on Google Play"
+    "artworkTreatment": "Composition using the reel emblem from the official app icon.",
+    "verifiedPlayTitle": "KineMaster - AI Video Editor - Apps on Google Play",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/Jc_gKnGxM5p4_FuWQ_v2k6HlMaCcExeIDt--PkcWrLj_VQ2OyMPhDaycC1s9wG3yOwjviVA4M1go0O-foAx0=s0-br30",
+    "brandColor": "#F92D45"
   },
   {
     "id": "filmora",
@@ -1880,8 +1888,9 @@
     "name": "Opera Mini",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.opera.mini.native&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/uctp149Gc_EUSjIYIxRs5rsPM6tvLRl0E6B8JT_oAUkkCy7f7wfaFjQiKeL_BAUaU91FMrgzHFqya7iiSL13=s0-br30",
-    "artworkTreatment": "Individual ImageGen composition using the linked brand identity reference.",
-    "verifiedPlayTitle": "Opera Mini: Fast Web Browser - Apps on Google Play"
+    "artworkTreatment": "Individually generated artwork using the app identity reference.",
+    "verifiedPlayTitle": "Opera Mini: Fast Web Browser - Apps on Google Play",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/uctp149Gc_EUSjIYIxRs5rsPM6tvLRl0E6B8JT_oAUkkCy7f7wfaFjQiKeL_BAUaU91FMrgzHFqya7iiSL13=s0-br30"
   },
   {
     "id": "tor-browser",
@@ -1954,14 +1963,6 @@
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/2PisL-eEF56tavzVU7P5i-dmeZUX7SFVWMWhhSHFgiz1rEXCtImtMMReufn-OghK341U9NLhIjaCQfdK6A-bpRo=s0-br30",
     "artworkTreatment": "Individual ImageGen composition using the linked brand identity reference.",
     "verifiedPlayTitle": "PW - India's Learning Platform - Apps on Google Play"
-  },
-  {
-    "id": "brainly",
-    "name": "Brainly",
-    "sourceUrl": "https://play.google.com/store/apps/details?id=co.brainly&hl=en&gl=IN",
-    "referenceSourceUrl": "https://play-lh.googleusercontent.com/8inupbNs8xYPGzaIkyNsGTj7frD-IiUA4N44qyjqsj8UXzwkyqXSeuc-rKY3NnzrnPc_KEf8rfC6srEckGLGBA=s0-br30",
-    "artworkTreatment": "Individual ImageGen composition using the linked brand identity reference.",
-    "verifiedPlayTitle": "Brainly-Math Solver, Study App - Apps on Google Play"
   },
   {
     "id": "webtoon",
@@ -2192,8 +2193,10 @@
     "name": "Pokémon GO",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.nianticlabs.pokemongo&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/DUA40mf0fd6lUkU_Pvfw78BOoY37nPNM5tKw0tf4sCqzJfNwR84wqj-J00WN99QaZ89SpruNsU1xX7sDw6uBZg=s0-br30",
-    "artworkTreatment": "Individual ImageGen composition using the linked brand identity reference.",
-    "verifiedPlayTitle": "Pokémon GO - Apps on Google Play"
+    "artworkTreatment": "Composition using the published brand artwork.",
+    "verifiedPlayTitle": "Pokémon GO - Apps on Google Play",
+    "artworkReferenceUrl": "https://assets.pgo.webstore.nianticlabs.com/pgo/site_assets/Logo-Outline.png",
+    "brandColor": "#142E51"
   },
   {
     "id": "among-us",
@@ -2750,7 +2753,9 @@
     "name": "Notion Calendar",
     "sourceUrl": "https://calendar.notion.so/",
     "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=calendar.notion.so&sz=128",
-    "artworkTreatment": "Individual ImageGen composition using the linked brand identity reference."
+    "artworkTreatment": "Composition using the published brand artwork.",
+    "artworkReferenceUrl": "https://www.notion.com/product/calendar",
+    "brandColor": "#F8F7F4"
   },
   {
     "id": "yahoo-mail",
@@ -3338,12 +3343,13 @@
   },
   {
     "id": "viber",
-    "name": "Rakuten Viber",
+    "name": "Viber",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.viber.voip&hl=en&gl=IN",
-    "brandColor": "#522BA0",
-    "artworkTreatment": "Individually generated ImageGen banner.",
+    "brandColor": "#6650C8",
+    "artworkTreatment": "Composition using the symbol from the official app icon.",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/iGHZEkEJBBcOyMEETvYrwCXk-eYQ_TaEgBHPKVptKSon4QQHqhD3Zs-tdeINPZucc1sokQ5FJ4ig-YOGh1Lm=s0-br30",
-    "verifiedPlayTitle": "Rakuten Viber Messenger - Apps on Google Play"
+    "verifiedPlayTitle": "Rakuten Viber Messenger - Apps on Google Play",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/iGHZEkEJBBcOyMEETvYrwCXk-eYQ_TaEgBHPKVptKSon4QQHqhD3Zs-tdeINPZucc1sokQ5FJ4ig-YOGh1Lm=s0-br30"
   },
   {
     "id": "tinder",
@@ -3506,10 +3512,11 @@
     "id": "proton-mail",
     "name": "Proton Mail",
     "sourceUrl": "https://play.google.com/store/apps/details?id=ch.protonmail.android&hl=en&gl=IN",
-    "brandColor": "#482B98",
-    "artworkTreatment": "Individually generated ImageGen banner.",
+    "brandColor": "#F7F4FF",
+    "artworkTreatment": "Composition using the published brand artwork.",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/3w_PNTzvsPVG6c0H8C62JgrRDid8fUEnls77E2qhgM_qSPKY3gfxGZH4ZBjM2H0tcPhbBLy-P7fayWDUVeuCjA=s0-br30",
-    "verifiedPlayTitle": "Proton Mail: Encrypted Email - Apps on Google Play"
+    "verifiedPlayTitle": "Proton Mail: Encrypted Email - Apps on Google Play",
+    "artworkReferenceUrl": "https://pmecdn.protonweb.com/image-transformation/?s=c&image=image/upload/v1776940263/static/logos/mail/mail-trademark-b2c-light.svg"
   },
   {
     "id": "proton-drive",
@@ -3646,9 +3653,10 @@
     "id": "runway",
     "name": "Runway",
     "sourceUrl": "https://runwayml.com",
-    "brandColor": "#1B1B20",
-    "artworkTreatment": "Individually generated ImageGen banner.",
-    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=runwayml.com&sz=128"
+    "brandColor": "#F6F5F3",
+    "artworkTreatment": "Composition using the published brand artwork.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=runwayml.com&sz=128",
+    "artworkReferenceUrl": "https://runway.com/images/logos/runway-logo.png"
   },
   {
     "id": "v0",
@@ -3663,8 +3671,9 @@
     "name": "Lovable",
     "sourceUrl": "https://lovable.dev",
     "brandColor": "#4B256D",
-    "artworkTreatment": "Individually generated ImageGen banner.",
-    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=lovable.dev&sz=128"
+    "artworkTreatment": "Individually generated artwork using the app identity reference.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=lovable.dev&sz=128",
+    "artworkReferenceUrl": "https://www.google.com/s2/favicons?domain=lovable.dev&sz=128"
   },
   {
     "id": "deepai",
@@ -3787,17 +3796,19 @@
     "id": "tata-cliq-luxury",
     "name": "Tata CLiQ Luxury",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.tataunistore.luxury",
-    "brandColor": "#2F253D",
-    "artworkTreatment": "Individually generated ImageGen banner.",
-    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=luxury.tatacliq.com&sz=128"
+    "brandColor": "#F9F7F2",
+    "artworkTreatment": "Composition using the published brand artwork.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=luxury.tatacliq.com&sz=128",
+    "artworkReferenceUrl": "https://luxury.tatacliq.com/assets/images/lux_logo_new.svg"
   },
   {
     "id": "swiggy-instamart",
     "name": "Swiggy Instamart",
     "sourceUrl": "https://play.google.com/store/apps/details?id=in.swiggy.android.instamart",
-    "brandColor": "#572AA2",
-    "artworkTreatment": "Individually generated ImageGen banner.",
-    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=instamart.com&sz=128"
+    "brandColor": "#004BFF",
+    "artworkTreatment": "Composition using the published brand artwork.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=instamart.com&sz=128",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/eVvxzc9zxEIWRCnEkJjRsCdVK5oEWINHrmCz8uNBrSi_gLwHK2J94-gqM3LMhnyg7ogq_iV52z3zzzuselZx5Zc=s0-br30"
   },
   {
     "id": "ebay",
@@ -3878,9 +3889,10 @@
     "name": "INDmoney",
     "sourceUrl": "https://play.google.com/store/apps/details?id=in.indwealth&hl=en&gl=IN",
     "brandColor": "#12494F",
-    "artworkTreatment": "Individually generated ImageGen banner.",
+    "artworkTreatment": "Individually generated artwork using the app identity reference.",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/GbJSdICmN3ec1y7Y6D3s76lS5GhEjdL3472CKgQgjZ2UdQeM0CZoU2ne3SBfgxHLhLazZmbYeQj8AjcPSCKZEXE=s0-br30",
-    "verifiedPlayTitle": "INDmoney: US Stocks, F&O, IPO - Apps on Google Play"
+    "verifiedPlayTitle": "INDmoney: US Stocks, F&O, IPO - Apps on Google Play",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/GbJSdICmN3ec1y7Y6D3s76lS5GhEjdL3472CKgQgjZ2UdQeM0CZoU2ne3SBfgxHLhLazZmbYeQj8AjcPSCKZEXE=s0-br30"
   },
   {
     "id": "imobile-icici",

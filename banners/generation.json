@@ -34,10 +34,6 @@
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Adobe Photoshop\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #001E36, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Adobe Photoshop\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
-      "id": "myjio",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"MyJio\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #0A2885, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"MyJio\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
       "id": "signal",
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Signal\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #3A76F0, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Signal\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
@@ -78,10 +74,6 @@
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"DigiLocker\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #5B2D91, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"DigiLocker\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
-      "id": "goibibo",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Goibibo\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #F26722, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Goibibo\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
       "id": "youtube-music",
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"YouTube Music\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #FF0033, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"YouTube Music\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
@@ -112,10 +104,6 @@
     {
       "id": "github",
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"GitHub\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #181717, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"GitHub\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
-      "id": "ola",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Ola\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #C8DD41, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Ola\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
       "id": "opera",
@@ -178,14 +166,6 @@
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"YONO SBI\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #92278F, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"YONO SBI\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
-      "id": "zepto",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Zepto\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #5A1692, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Zepto\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
-      "id": "indeed",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Indeed\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #2164F3, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Indeed\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
       "id": "kindle",
       "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 AniHome tablet launcher banner for \"Amazon Kindle\". Attached image is its genuine official app icon, reproduce the recognizable mark faithfully without invented symbols. Premium clean flat full-bleed brand-color background #1E3F59, authentic large emblem on left, exact text \"Amazon Kindle\" in bold highly readable contrasting sans serif on right, balanced layout with 9% safe margins; long names may wrap into two lines. This is a single app banner, no outer border/rounded outer corners/device frame/slogan/watermark/collage or other apps. Preserve official logo identity and color."
     },
@@ -232,10 +212,6 @@
     {
       "id": "zee5",
       "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for ZEE5, using the linked brand artwork as identity reference. Use one complete centered brand wordmark or logo with no repeated app name. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
-    },
-    {
-      "id": "bookmyshow",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"BookMyShow\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #F84464, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"BookMyShow\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
       "id": "ludo-king",
@@ -286,10 +262,6 @@
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Myntra\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #FF3F6C, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Myntra\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
-      "id": "coursera",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Coursera\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #0056D2, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Coursera\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
       "id": "adobe-lightroom",
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Adobe Lightroom\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #001E36, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Adobe Lightroom\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
@@ -302,20 +274,8 @@
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Prime Video\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #00A8E1, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Prime Video\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
-      "id": "mobikwik",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"MobiKwik\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #0066FF, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"MobiKwik\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
-      "id": "concepts",
-      "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 AniHome tablet launcher banner for \"Concepts\". Attached image is its genuine official app icon, reproduce the recognizable mark faithfully without invented symbols. Premium clean flat full-bleed brand-color background #171C27, authentic large emblem on left, exact text \"Concepts\" in bold highly readable contrasting sans serif on right, balanced layout with 9% safe margins; long names may wrap into two lines. This is a single app banner, no outer border/rounded outer corners/device frame/slogan/watermark/collage or other apps. Preserve official logo identity and color."
-    },
-    {
       "id": "linkedin",
       "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for LinkedIn, using the linked brand artwork as identity reference. Use one complete centered brand wordmark or logo with no repeated app name. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
-    },
-    {
-      "id": "zerodha-kite",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Zerodha Kite\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #FF5722, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Zerodha Kite\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
       "id": "khan-academy",
@@ -354,16 +314,8 @@
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"PhonePe\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #5F259F, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"PhonePe\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
-      "id": "bhim",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"BHIM\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #EE7B23, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"BHIM\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
       "id": "apna",
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"apna\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #1F8268, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"apna\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
-      "id": "flipkart",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Flipkart\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #2874F0, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Flipkart\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
       "id": "canva",
@@ -398,10 +350,6 @@
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Groww\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #00D09C, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Groww\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
-      "id": "meesho",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Meesho\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #F43397, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Meesho\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
       "id": "google-play-books",
       "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 AniHome tablet launcher banner for \"Google Play Books\". Attached image is its genuine official app icon, reproduce the recognizable mark faithfully without invented symbols. Premium clean flat full-bleed brand-color background #4285F4, authentic large emblem on left, exact text \"Google Play Books\" in bold highly readable contrasting sans serif on right, balanced layout with 9% safe margins; long names may wrap into two lines. This is a single app banner, no outer border/rounded outer corners/device frame/slogan/watermark/collage or other apps. Preserve official logo identity and color."
     },
@@ -428,10 +376,6 @@
     {
       "id": "rapido",
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Rapido\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #F9D400, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Rapido\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
-      "id": "naukri",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Naukri\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #4A90E2, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Naukri\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
       "id": "swiggy",
@@ -472,10 +416,6 @@
     {
       "id": "shizuku",
       "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Shizuku, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
-    },
-    {
-      "id": "wipro-smart",
-      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Wipro Smart, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
     },
     {
       "id": "audiofx",
@@ -536,10 +476,6 @@
     {
       "id": "inshot",
       "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"InShot\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #EE2851, large recognizable art, balanced safe margins near 9%, bold readable lettering. Let the brand's own geometry, color and shapes determine composition. Aim for confident scale like classic TV app tiles.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
-    },
-    {
-      "id": "kinemaster",
-      "prompt": "Use case logo-brand. Create one standalone 1.62:1 AniHome launcher banner. Use the given authentic KineMaster reference, and existing AniHome composition example. coral-red. Use only the exact KineMaster wordmark, without any K emblem, circular logo or standalone initial. Use the big white KineMaster word on dynamic red graphic curves with subtle film perforations very far in the corners. No duplicate lettering. 9% safe margins. No border, slogan or other words."
     },
     {
       "id": "filmora",
@@ -746,10 +682,6 @@
       "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"imo\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #EBF3FF, large recognizable art, balanced safe margins near 9%, bold readable lettering. Let the brand's own geometry, color and shapes determine composition. Aim for confident scale like classic TV app tiles.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
     },
     {
-      "id": "opera-mini",
-      "prompt": "One full-bleed 1.62:1 AniHome smart-TV tile in the Opera Mini palette near #30212D. ONLY the single exact wordmark \"Opera Mini\" in large heavy legible display typography, centered within 9% margins. This is a wordmark-only card. Absolutely zero logos, icons, monograms, letter emblems, badges or other text. Use restrained abstract light and layered color in the background to make this specific brand feel polished. No frame, border or watermark."
-    },
-    {
       "id": "tor-browser",
       "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"Tor Browser\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #EEE4FA, large recognizable art, balanced safe margins near 9%, bold readable lettering. Let the brand's own geometry, color and shapes determine composition. Aim for confident scale like classic TV app tiles.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
     },
@@ -784,10 +716,6 @@
     {
       "id": "physics-wallah",
       "prompt": "One full-bleed 1.62:1 AniHome smart-TV tile in the Physics Wallah palette near #F6F3E8. ONLY the single exact wordmark \"Physics Wallah\" in large heavy legible display typography, centered within 9% margins. This is a wordmark-only card. Absolutely zero logos, icons, monograms, letter emblems, badges or other text. Use restrained abstract light and layered color in the background to make this specific brand feel polished. No frame, border or watermark."
-    },
-    {
-      "id": "brainly",
-      "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"Brainly\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #164F48, large recognizable art, balanced safe margins near 9%, bold readable lettering. Let the brand's own geometry, color and shapes determine composition. Aim for confident scale like classic TV app tiles.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
     },
     {
       "id": "webtoon",
@@ -900,10 +828,6 @@
     {
       "id": "call-of-duty-mobile",
       "prompt": "Create one 1.62:1 full-bleed smart-TV launcher banner with the one title \"Call of Duty: Mobile\" prominent in the center. Brand palette black with yellow accents. Lettering should be very large without the words touching the safe margins. Give the backdrop subtle material and lighting related to the game. No persons, creatures, graphic logos, other text, frame, badges, outer rounding or watermark."
-    },
-    {
-      "id": "pokemon-go",
-      "prompt": "A single landscape 1.62:1 full-bleed TV launcher tile. The design uses #313775 and the familiar Pokémon GO palette with a very subtle texture or geometric background. Make a confident, professionally spaced wordmark with the exact standalone name \"Pokémon GO\" rendered in large easy-to-read lettering. Only that name appears. Keep the title within generous margins. No illustration, logo glyph, letter icon, other words, UI, slogans, outer frame or watermark."
     },
     {
       "id": "among-us",
@@ -1218,10 +1142,6 @@
       "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"Miro\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #FFE03E, large recognizable art, balanced safe margins near 9%, bold readable lettering. A large clear emblem or wordmark on a lively but disciplined brand color treatment.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
     },
     {
-      "id": "notion-calendar",
-      "prompt": "A single landscape 1.62:1 full-bleed TV launcher tile. The design uses #F3F2EE and the familiar Notion Calendar palette with a very subtle texture or geometric background. Make a confident, professionally spaced wordmark with the exact standalone name \"Notion Calendar\" rendered in large easy-to-read lettering. Only that name appears. Keep the title within generous margins. No illustration, logo glyph, letter icon, other words, UI, slogans, outer frame or watermark."
-    },
-    {
       "id": "yahoo-mail",
       "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"Yahoo Mail\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #EFE7FF, large recognizable art, balanced safe margins near 9%, bold readable lettering. Let the brand's own geometry, color and shapes determine composition. Aim for confident scale like classic TV app tiles.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
     },
@@ -1482,10 +1402,6 @@
       "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"WeChat\". The single attached reference is the approved identity reference for this brand. Brand field near #078545. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
     },
     {
-      "id": "viber",
-      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Rakuten Viber\". The single attached reference is the approved identity reference for this brand. Brand field near #522BA0. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
-    },
-    {
       "id": "tinder",
       "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Tinder\". The single attached reference is the approved identity reference for this brand. Brand field near #D82150. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
     },
@@ -1558,10 +1474,6 @@
       "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Kaggle\". The single attached reference is the approved identity reference for this brand. Brand field near #166C9C. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
     },
     {
-      "id": "proton-mail",
-      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Proton Mail\". Use a polished flat and restrained tonal geometry background based on #482B98. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
-    },
-    {
       "id": "proton-drive",
       "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Proton Drive\". The single attached reference is the approved identity reference for this brand. Brand field near #482889. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
     },
@@ -1622,16 +1534,8 @@
       "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Midjourney\". The single attached reference is the approved identity reference for this brand. Brand field near #182C45. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
     },
     {
-      "id": "runway",
-      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Runway\". Use a polished flat and restrained tonal geometry background based on #1B1B20. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
-    },
-    {
       "id": "v0",
       "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"v0\". Use a polished flat and restrained tonal geometry background based on #232323. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
-    },
-    {
-      "id": "lovable",
-      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Lovable\". Use a polished flat and restrained tonal geometry background based on #4B256D. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
     },
     {
       "id": "deepai",
@@ -1682,14 +1586,6 @@
       "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"AJIO\". Use a polished flat and restrained tonal geometry background based on #233645. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
     },
     {
-      "id": "tata-cliq-luxury",
-      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for Tata CLiQ Luxury. Use the supplied brand identity, with a large, crisp, single Tata CLiQ Luxury wordmark or integrated brand lockup. Brand palette near #2F253D. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
-    },
-    {
-      "id": "swiggy-instamart",
-      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for Swiggy Instamart. Use the supplied brand identity, with a large, crisp, single Swiggy Instamart wordmark or integrated brand lockup. Brand palette near #572AA2. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
-    },
-    {
       "id": "temu",
       "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Temu\". The single attached reference is the approved identity reference for this brand. Brand field near #C34B15. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
     },
@@ -1712,10 +1608,6 @@
     {
       "id": "angel-one",
       "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Angel One\". Use a polished flat and restrained tonal geometry background based on #225197. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
-    },
-    {
-      "id": "indmoney",
-      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for INDmoney. Use the supplied brand identity, with a large, crisp, single INDmoney wordmark or integrated brand lockup. Brand palette near #12494F. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
     },
     {
       "id": "imobile-icici",
@@ -1780,38 +1672,90 @@
     {
       "id": "geometry-dash-lite",
       "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for Geometry Dash Lite. Use the supplied brand identity, with a large, crisp, single Geometry Dash Lite wordmark or integrated brand lockup. Brand palette near #22549E. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "bookmyshow",
+      "prompt": "One minimal 1.62:1 full bleed AniHome banner for BookMyShow from its supplied official icon. Use the original ticket mark from the source on clean red full bleed. It already reads my, so use the authentic mark as part of a single BookMyShow wordmark or use the genuine ticket containing my as the single main graphic. No separately repeated my. No frame, waves, other lettering or gradients. Keep generous even safe margins."
+    },
+    {
+      "id": "concepts",
+      "prompt": "One minimal 1.62:1 full bleed AniHome banner for Concepts from its supplied official icon. Use the genuine orange C-shaped pen-stroke emblem alone, enlarged and centered on charcoal, without the enclosing icon or standalone word. No frame, waves, other lettering or gradients. Keep generous even safe margins."
+    },
+    {
+      "id": "flipkart",
+      "prompt": "Make one minimal full-bleed landscape 1.62:1 AniHome banner for Flipkart. Use the single brand reference as the only visual source. The official blue speed-line f from the reference becomes the opening letter of a single stylized Flipkart wordmark with the remaining lipkart letters. Solid Flipkart yellow. No separate f, no box. Large artwork, generous even safe margins, crisp geometry, native brand colors, no extra lettering, wavy motifs, texture, outer border, clipping, mockup, or watermark."
+    },
+    {
+      "id": "goibibo",
+      "prompt": "Make one minimal full-bleed landscape 1.62:1 AniHome banner for Goibibo. Use the single brand reference as the only visual source. Use the genuine rounded white go lettering from the mark as the first two letters of the full goibibo name, joined naturally into a SINGLE wordmark. Solid coral orange. No inset circles, no repeated go. Large artwork, generous even safe margins, crisp geometry, native brand colors, no extra lettering, wavy motifs, texture, outer border, clipping, mockup, or watermark."
+    },
+    {
+      "id": "indmoney",
+      "prompt": "Make one minimal full-bleed landscape 1.62:1 AniHome banner for INDmoney. Use the single brand reference as the only visual source. Use the exact official white INDmoney mark with the original up-arrow incorporated into the lettering, large and centered. Pure black full-bleed background, no box or extra graphics. Large artwork, generous even safe margins, crisp geometry, native brand colors, no extra lettering, wavy motifs, texture, outer border, clipping, mockup, or watermark."
+    },
+    {
+      "id": "lovable",
+      "prompt": "Make one minimal full-bleed landscape 1.62:1 AniHome banner for Lovable. Use the single brand reference as the only visual source. Use the authentic multicolor gradient heart mark beside Lovable in bold black on warm off-white. No other gradients outside the heart. Large artwork, generous even safe margins, crisp geometry, native brand colors, no extra lettering, wavy motifs, texture, outer border, clipping, mockup, or watermark."
+    },
+    {
+      "id": "meesho",
+      "prompt": "Make one minimal full-bleed landscape 1.62:1 AniHome banner for Meesho. Use the single brand reference as the only visual source. Use the genuine gold-orange m mark and small genuine lowercase meesho name exactly as the source lockup, but scale up on a full-bleed matching deep plum field. No inset square, extra label or checker corner. Large artwork, generous even safe margins, crisp geometry, native brand colors, no extra lettering, wavy motifs, texture, outer border, clipping, mockup, or watermark."
+    },
+    {
+      "id": "naukri",
+      "prompt": "Make one minimal full-bleed landscape 1.62:1 AniHome banner for Naukri. Use the single brand reference as the only visual source. Preserve the inner angular white ribbon and white dot mark, removing the tile behind it. Solid saturated Naukri royal blue with one white name. Large artwork, generous even safe margins, crisp geometry, native brand colors, no extra lettering, wavy motifs, texture, outer border, clipping, mockup, or watermark."
+    },
+    {
+      "id": "ola",
+      "prompt": "One minimal 1.62:1 full bleed AniHome banner for Ola from its supplied official icon. Preserve the distinct circular black ring with acid green center left, and write Ola once to the right. Pale lime background. No frame, waves, other lettering or gradients. Keep generous even safe margins."
+    },
+    {
+      "id": "opera-mini",
+      "prompt": "Make one minimal full-bleed landscape 1.62:1 AniHome banner for Opera Mini. Use the single brand reference as the only visual source. Use the exact standalone red Opera O and its existing green MINI ribbon as one centered logo. No second Opera or Mini text. White background and no outer badge or square. Large artwork, generous even safe margins, crisp geometry, native brand colors, no extra lettering, wavy motifs, texture, outer border, clipping, mockup, or watermark."
+    },
+    {
+      "id": "wipro-smart",
+      "prompt": "Make one minimal full-bleed landscape 1.62:1 AniHome banner for Wipro Smart. Use the single brand reference as the only visual source. Use the complete genuine multicolor dotted Wipro lockup existing in the source. Add only 'Smart' below it so Wipro appears once. Warm white background with no boxed inset. Large artwork, generous even safe margins, crisp geometry, native brand colors, no extra lettering, wavy motifs, texture, outer border, clipping, mockup, or watermark."
+    },
+    {
+      "id": "zepto",
+      "prompt": "Make one minimal full-bleed landscape 1.62:1 AniHome banner for Zepto. Use the single brand reference as the only visual source. Use the genuine white lowercase zepto wordmark alone on the source's saturated purple. Center by visible letter bounds horizontally and vertically. No tagline. Large artwork, generous even safe margins, crisp geometry, native brand colors, no extra lettering, wavy motifs, texture, outer border, clipping, mockup, or watermark."
+    },
+    {
+      "id": "zerodha-kite",
+      "prompt": "Make one minimal full-bleed landscape 1.62:1 AniHome banner for Zerodha Kite. Use the single brand reference as the only visual source. Extract the orange-red folded kite geometry without its white icon container. Use one charcoal title and the mark on a very pale gray field. High contrast. Large artwork, generous even safe margins, crisp geometry, native brand colors, no extra lettering, wavy motifs, texture, outer border, clipping, mockup, or watermark."
     }
   ],
   "artworkTreatments": {
-    "myjio": "text",
+    "myjio": "Composition using the symbol from the official app icon.",
     "paytm": "lockup",
-    "naukri": "text",
-    "flipkart": "text",
+    "naukri": "Individually generated artwork using the app identity reference.",
+    "flipkart": "Individually generated artwork using the app identity reference.",
     "facebook": "lockup",
     "pinterest": "lockup",
     "bigbasket": "lockup",
-    "meesho": "lockup",
-    "ola": "text",
-    "goibibo": "text",
+    "meesho": "Individually generated artwork using the app identity reference.",
+    "ola": "Individually generated artwork using the app identity reference.",
+    "goibibo": "Individually generated artwork using the app identity reference.",
     "redbus": "lockup",
-    "bookmyshow": "text",
-    "mobikwik": "text",
+    "bookmyshow": "Individually generated artwork using the app identity reference.",
+    "mobikwik": "Composition using the published brand artwork.",
     "yono-sbi": "lockup",
     "zoom": "lockup",
     "notion": "text",
     "canva": "lockup",
-    "indeed": "text",
+    "indeed": "Composition using the published brand artwork.",
     "apna": "lockup",
-    "coursera": "lockup",
+    "coursera": "Composition using the published brand artwork.",
     "opera": "lockup",
     "ludo-king": "lockup",
-    "concepts": "text",
-    "wipro-smart": "text",
+    "concepts": "Individually generated artwork using the app identity reference.",
+    "wipro-smart": "Individually generated artwork using the app identity reference.",
     "audible": "ImageGen composition with Audible’s orange palette and the inner book-and-sound symbol.",
     "capcut": "Individual ImageGen composition using the linked brand identity reference.",
     "vn-video-editor": "Individual ImageGen composition using the linked brand identity reference.",
     "inshot": "Individual ImageGen composition using the linked brand identity reference.",
-    "kinemaster": "Individual ImageGen composition using the linked brand identity reference.",
+    "kinemaster": "Composition using the reel emblem from the official app icon.",
     "filmora": "Individual ImageGen composition using the linked brand identity reference.",
     "alight-motion": "Individual ImageGen composition using the linked brand identity reference.",
     "picsart": "Individual ImageGen composition using the linked brand identity reference.",
@@ -1863,7 +1807,7 @@
     "sharechat": "Individual ImageGen composition using the linked brand identity reference.",
     "line": "Individual ImageGen composition using the linked brand identity reference.",
     "imo": "Individual ImageGen composition using the linked brand identity reference.",
-    "opera-mini": "Individual ImageGen composition using the linked brand identity reference.",
+    "opera-mini": "Individually generated artwork using the app identity reference.",
     "tor-browser": "Individual ImageGen composition using the linked brand identity reference.",
     "wikipedia": "Individual ImageGen composition using the linked brand identity reference.",
     "brilliant": "Individual ImageGen composition using the linked brand identity reference.",
@@ -1873,7 +1817,6 @@
     "photomath": "Individual ImageGen composition using the linked brand identity reference.",
     "unacademy": "Individual ImageGen composition using the linked brand identity reference.",
     "physics-wallah": "Individual ImageGen composition using the linked brand identity reference.",
-    "brainly": "Individual ImageGen composition using the linked brand identity reference.",
     "webtoon": "Individual ImageGen composition using the linked brand identity reference.",
     "manga-plus": "Individual ImageGen composition using the linked brand identity reference.",
     "libby": "Individual ImageGen composition using the linked brand identity reference.",
@@ -1902,7 +1845,7 @@
     "minecraft": "Individual ImageGen composition using the linked brand identity reference.",
     "genshin-impact": "Individual ImageGen composition using the linked brand identity reference.",
     "call-of-duty-mobile": "Individual ImageGen composition using the linked brand identity reference.",
-    "pokemon-go": "Individual ImageGen composition using the linked brand identity reference.",
+    "pokemon-go": "Composition using the published brand artwork.",
     "among-us": "Individual ImageGen composition using the linked brand identity reference.",
     "pokemon-tcg-pocket": "Individual ImageGen composition using the linked brand identity reference.",
     "asphalt-legends": "Individual ImageGen composition using the linked brand identity reference.",
@@ -1981,7 +1924,7 @@
     "airtable": "Individual ImageGen composition using the linked brand identity reference.",
     "calendly": "Individual ImageGen composition using the linked brand identity reference.",
     "miro": "Individual ImageGen composition using the linked brand identity reference.",
-    "notion-calendar": "Individual ImageGen composition using the linked brand identity reference.",
+    "notion-calendar": "Composition using the published brand artwork.",
     "yahoo-mail": "Individual ImageGen composition using the linked brand identity reference.",
     "yahoo": "Individual ImageGen composition using the linked brand identity reference.",
     "ap-news": "Individual ImageGen composition using the linked brand identity reference.",
@@ -2052,7 +1995,7 @@
     "sofascore": "Individually generated ImageGen banner.",
     "onefootball": "Individually generated ImageGen banner.",
     "wechat": "Individually generated ImageGen banner.",
-    "viber": "Individually generated ImageGen banner.",
+    "viber": "Composition using the symbol from the official app icon.",
     "tinder": "Individually generated ImageGen banner.",
     "bumble": "Individually generated ImageGen banner.",
     "hinge": "Individually generated ImageGen banner.",
@@ -2071,7 +2014,7 @@
     "veed": "Individually generated ImageGen banner.",
     "clipchamp": "Individually generated ImageGen banner.",
     "kaggle": "Individually generated ImageGen banner.",
-    "proton-mail": "Individually generated ImageGen banner.",
+    "proton-mail": "Composition using the published brand artwork.",
     "proton-drive": "Individually generated ImageGen banner.",
     "mega": "Individually generated ImageGen banner.",
     "wetransfer": "Individually generated ImageGen banner.",
@@ -2087,9 +2030,9 @@
     "suno": "Individually generated ImageGen banner.",
     "elevenlabs": "Individually generated ImageGen banner.",
     "midjourney": "Individually generated ImageGen banner.",
-    "runway": "Individually generated ImageGen banner.",
+    "runway": "Composition using the published brand artwork.",
     "v0": "Individually generated ImageGen banner.",
-    "lovable": "Individually generated ImageGen banner.",
+    "lovable": "Individually generated artwork using the app identity reference.",
     "deepai": "Individually generated ImageGen banner.",
     "where-is-my-train": "Individually generated ImageGen banner.",
     "railone": "Individually generated ImageGen banner.",
@@ -2103,8 +2046,8 @@
     "flightradar24": "Individually generated ImageGen banner.",
     "ajio": "Individually generated ImageGen banner.",
     "firstcry": "Official wordmark composition",
-    "tata-cliq-luxury": "Individually generated ImageGen banner.",
-    "swiggy-instamart": "Individually generated ImageGen banner.",
+    "tata-cliq-luxury": "Composition using the published brand artwork.",
+    "swiggy-instamart": "Composition using the published brand artwork.",
     "ebay": "Official wordmark composition",
     "temu": "Individually generated ImageGen banner.",
     "aliexpress": "Individually generated ImageGen banner.",
@@ -2113,7 +2056,7 @@
     "carousell": "Individually generated ImageGen banner.",
     "navi": "Individually generated ImageGen banner.",
     "angel-one": "Individually generated ImageGen banner.",
-    "indmoney": "Individually generated ImageGen banner.",
+    "indmoney": "Individually generated artwork using the app identity reference.",
     "imobile-icici": "Individually generated ImageGen banner.",
     "idfc-first-bank": "Individually generated ImageGen banner.",
     "bajaj-finance": "Individually generated ImageGen banner.",
@@ -2130,6 +2073,9 @@
     "indian-bikes-driving-3d": "Individually generated ImageGen banner.",
     "stumble-guys": "Individually generated ImageGen banner.",
     "my-talking-tom-2": "Individually generated ImageGen banner.",
-    "geometry-dash-lite": "Individually generated ImageGen banner."
+    "geometry-dash-lite": "Individually generated ImageGen banner.",
+    "bhim": "Composition using the published brand artwork.",
+    "zerodha-kite": "Individually generated artwork using the app identity reference.",
+    "zepto": "Individually generated artwork using the app identity reference."
   }
 }

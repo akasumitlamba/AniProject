@@ -19,97 +19,96 @@ Ranking references are [Similarweb Android apps in India](https://www.similarweb
 | 7 | [Asphalt Legends](https://play.google.com/store/apps/details?id=com.gameloft.android.ANMP.GloftA9HM&hl=en&gl=IN) | `com.gameloft.android.ANMP.GloftA9HM` |
 | 8 | [Audible](https://play.google.com/store/apps/details?id=com.audible.application&hl=en&gl=IN) | `com.audible.application` |
 | 9 | [Bitwarden](https://play.google.com/store/apps/details?id=com.x8bit.bitwarden&hl=en&gl=IN) | `com.x8bit.bitwarden` |
-| 10 | [Brainly](https://play.google.com/store/apps/details?id=co.brainly&hl=en&gl=IN) | `co.brainly` |
-| 11 | [Brilliant](https://play.google.com/store/apps/details?id=org.brilliant.android&hl=en&gl=IN) | `org.brilliant.android` |
-| 12 | [Call of Duty: Mobile](https://play.google.com/store/apps/details?id=com.activision.callofduty.shooter&hl=en&gl=IN) | `com.activision.callofduty.shooter` |
-| 13 | [Calm](https://play.google.com/store/apps/details?id=com.calm.android&hl=en&gl=IN) | `com.calm.android` |
-| 14 | [CamScanner](https://play.google.com/store/apps/details?id=com.intsig.camscanner&hl=en&gl=US) | `com.intsig.camscanner` |
-| 15 | [CapCut](https://play.google.com/store/apps/details?id=com.lemon.lvoverseas&hl=en&gl=US) | `com.lemon.lvoverseas` |
-| 16 | [Cricbuzz](https://play.google.com/store/apps/details?id=com.cricbuzz.android&hl=en&gl=IN) | `com.cricbuzz.android` |
-| 17 | [Cult.fit](https://play.google.com/store/apps/details?id=fit.cure.android&hl=en&gl=IN) | `fit.cure.android` |
-| 18 | [Decathlon](https://play.google.com/store/apps/details?id=com.decathlon.app&hl=en&gl=IN) | `com.decathlon.app` |
-| 19 | [Disney+](https://play.google.com/store/apps/details?id=com.disney.disneyplus&hl=en&gl=IN) | `com.disney.disneyplus` |
-| 20 | [Dropbox](https://play.google.com/store/apps/details?id=com.dropbox.android&hl=en&gl=IN) | `com.dropbox.android` |
-| 21 | [EA SPORTS FC Mobile](https://play.google.com/store/apps/details?id=com.ea.gp.fifamobile&hl=en&gl=IN) | `com.ea.gp.fifamobile` |
-| 22 | [Evernote](https://play.google.com/store/apps/details?id=com.evernote&hl=en&gl=IN) | `com.evernote` |
-| 23 | [Filmora](https://play.google.com/store/apps/details?id=com.wondershare.filmorago&hl=en&gl=IN) | `com.wondershare.filmorago` |
-| 24 | [Fitbit](https://play.google.com/store/apps/details?id=com.fitbit.FitbitMobile&hl=en&gl=IN) | `com.fitbit.FitbitMobile` |
-| 25 | [Galaxy Wearable](https://play.google.com/store/apps/details?id=com.samsung.android.app.watchmanager&hl=en&gl=IN) | `com.samsung.android.app.watchmanager` |
-| 26 | [Genshin Impact](https://play.google.com/store/apps/details?id=com.miHoYo.GenshinImpact&hl=en&gl=IN) | `com.miHoYo.GenshinImpact` |
-| 27 | [Google Authenticator](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en&gl=IN) | `com.google.android.apps.authenticator2` |
-| 28 | [Google Classroom](https://play.google.com/store/apps/details?id=com.google.android.apps.classroom&hl=en&gl=IN) | `com.google.android.apps.classroom` |
-| 29 | [Google Docs](https://play.google.com/store/apps/details?id=com.google.android.apps.docs.editors.docs&hl=en&gl=IN) | `com.google.android.apps.docs.editors.docs` |
-| 30 | [Google Earth](https://play.google.com/store/apps/details?id=com.google.earth&hl=en&gl=IN) | `com.google.earth` |
-| 31 | [Google Home](https://play.google.com/store/apps/details?id=com.google.android.apps.chromecast.app&hl=en&gl=IN) | `com.google.android.apps.chromecast.app` |
-| 32 | [Google News](https://play.google.com/store/apps/details?id=com.google.android.apps.magazines&hl=en&gl=IN) | `com.google.android.apps.magazines` |
-| 33 | [Google Sheets](https://play.google.com/store/apps/details?id=com.google.android.apps.docs.editors.sheets&hl=en&gl=IN) | `com.google.android.apps.docs.editors.sheets` |
-| 34 | [Google Slides](https://play.google.com/store/apps/details?id=com.google.android.apps.docs.editors.slides&hl=en&gl=IN) | `com.google.android.apps.docs.editors.slides` |
-| 35 | [HBO Max](https://play.google.com/store/apps/details?id=com.wbd.stream&hl=en&gl=IN) | `com.wbd.stream` |
-| 36 | [Headspace](https://play.google.com/store/apps/details?id=com.getsomeheadspace.android&hl=en&gl=IN) | `com.getsomeheadspace.android` |
-| 37 | [Healthify](https://play.google.com/store/apps/details?id=com.healthifyme.basic&hl=en&gl=IN) | `com.healthifyme.basic` |
-| 38 | [Hill Climb Racing](https://play.google.com/store/apps/details?id=com.fingersoft.hillclimb&hl=en&gl=IN) | `com.fingersoft.hillclimb` |
-| 39 | [Hulu](https://play.google.com/store/apps/details?id=com.hulu.plus&hl=en&gl=IN) | `com.hulu.plus` |
-| 40 | [imo](https://play.google.com/store/apps/details?id=com.imo.android.imoim&hl=en&gl=IN) | `com.imo.android.imoim` |
-| 41 | [IndiGo](https://play.google.com/store/apps/details?id=in.goindigo.android&hl=en&gl=IN) | `in.goindigo.android` |
-| 42 | [inDrive](https://play.google.com/store/apps/details?id=sinet.startup.inDriver&hl=en&gl=IN) | `sinet.startup.inDriver` |
-| 43 | [InShot](https://play.google.com/store/apps/details?id=com.camerasideas.instashot&hl=en&gl=IN) | `com.camerasideas.instashot` |
-| 44 | [Khan Academy Kids](https://play.google.com/store/apps/details?id=org.khankids.android&hl=en&gl=IN) | `org.khankids.android` |
-| 45 | [KineMaster](https://play.google.com/store/apps/details?id=com.nexstreaming.app.kinemasterfree&hl=en&gl=IN) | `com.nexstreaming.app.kinemasterfree` |
-| 46 | [Kobo Books](https://play.google.com/store/apps/details?id=com.kobobooks.android&hl=en&gl=IN) | `com.kobobooks.android` |
-| 47 | [Libby](https://play.google.com/store/apps/details?id=com.overdrive.mobile.android.libby&hl=en&gl=IN) | `com.overdrive.mobile.android.libby` |
-| 48 | [LINE](https://play.google.com/store/apps/details?id=jp.naver.line.android&hl=en&gl=IN) | `jp.naver.line.android` |
-| 49 | [MANGA Plus](https://play.google.com/store/apps/details?id=jp.co.shueisha.mangaplus&hl=en&gl=IN) | `jp.co.shueisha.mangaplus` |
-| 50 | [Microsoft Authenticator](https://play.google.com/store/apps/details?id=com.azure.authenticator&hl=en&gl=IN) | `com.azure.authenticator` |
-| 51 | [Microsoft To Do](https://play.google.com/store/apps/details?id=com.microsoft.todos&hl=en&gl=IN) | `com.microsoft.todos` |
-| 52 | [Minecraft](https://play.google.com/store/apps/details?id=com.mojang.minecraftpe&hl=en&gl=IN) | `com.mojang.minecraftpe` |
-| 53 | [Moj](https://play.google.com/store/apps/details?id=in.mohalla.video&hl=en&gl=IN) | `in.mohalla.video` |
-| 54 | [Moneycontrol](https://play.google.com/store/apps/details?id=com.divum.MoneyControl&hl=en&gl=IN) | `com.divum.MoneyControl` |
-| 55 | [MyFitnessPal](https://play.google.com/store/apps/details?id=com.myfitnesspal.android&hl=en&gl=IN) | `com.myfitnesspal.android` |
-| 56 | [Nike Run Club](https://play.google.com/store/apps/details?id=com.nike.plusgps&hl=en&gl=IN) | `com.nike.plusgps` |
-| 57 | [Nykaa](https://play.google.com/store/apps/details?id=com.fsn.nykaa&hl=en&gl=IN) | `com.fsn.nykaa` |
-| 58 | [Obsidian](https://play.google.com/store/apps/details?id=md.obsidian&hl=en&gl=IN) | `md.obsidian` |
-| 59 | [OLX India](https://play.google.com/store/apps/details?id=com.olx.southasia&hl=en&gl=IN) | `com.olx.southasia` |
-| 60 | [Opera Mini](https://play.google.com/store/apps/details?id=com.opera.mini.native&hl=en&gl=IN) | `com.opera.mini.native` |
-| 61 | [Paramount+](https://play.google.com/store/apps/details?id=com.cbs.ott&hl=en&gl=IN) | `com.cbs.ott` |
-| 62 | [Photomath](https://play.google.com/store/apps/details?id=com.microblink.photomath&hl=en&gl=IN) | `com.microblink.photomath` |
-| 63 | [PhotoRoom](https://play.google.com/store/apps/details?id=com.photoroom.app&hl=en&gl=IN) | `com.photoroom.app` |
-| 64 | [Physics Wallah](https://play.google.com/store/apps/details?id=xyz.penpencil.physicswala&hl=en&gl=IN) | `xyz.penpencil.physicswala` |
-| 65 | [Picsart](https://play.google.com/store/apps/details?id=com.picsart.studio&hl=en&gl=IN) | `com.picsart.studio` |
-| 66 | [Pocket Casts](https://play.google.com/store/apps/details?id=au.com.shiftyjelly.pocketcasts&hl=en&gl=IN) | `au.com.shiftyjelly.pocketcasts` |
-| 67 | [Pokémon GO](https://play.google.com/store/apps/details?id=com.nianticlabs.pokemongo&hl=en&gl=IN) | `com.nianticlabs.pokemongo` |
-| 68 | [Pokémon TCG Pocket](https://play.google.com/store/apps/details?id=jp.pokemon.pokemontcgp&hl=en&gl=IN) | `jp.pokemon.pokemontcgp` |
-| 69 | [Quizlet](https://play.google.com/store/apps/details?id=com.quizlet.quizletandroid&hl=en&gl=IN) | `com.quizlet.quizletandroid` |
-| 70 | [Remini](https://play.google.com/store/apps/details?id=com.bigwinepot.nwdn.international&hl=en&gl=IN) | `com.bigwinepot.nwdn.international` |
-| 71 | [Samsung Health](https://play.google.com/store/apps/details?id=com.sec.android.app.shealth&hl=en&gl=IN) | `com.sec.android.app.shealth` |
-| 72 | [Samsung Internet](https://play.google.com/store/apps/details?id=com.sec.android.app.sbrowser&hl=en&gl=IN) | `com.sec.android.app.sbrowser` |
-| 73 | [Samsung Smart Switch](https://play.google.com/store/apps/details?id=com.sec.android.easyMover&hl=en&gl=IN) | `com.sec.android.easyMover` |
-| 74 | [Samsung Wallet](https://play.google.com/store/apps/details?id=com.samsung.android.spay&hl=en&gl=IN) | `com.samsung.android.spay` |
-| 75 | [ShareChat](https://play.google.com/store/apps/details?id=in.mohalla.sharechat&hl=en&gl=IN) | `in.mohalla.sharechat` |
-| 76 | [Shazam](https://play.google.com/store/apps/details?id=com.shazam.android&hl=en&gl=IN) | `com.shazam.android` |
-| 77 | [Skyscanner](https://play.google.com/store/apps/details?id=net.skyscanner.android.main&hl=en&gl=IN) | `net.skyscanner.android.main` |
-| 78 | [Slack](https://play.google.com/store/apps/details?id=com.Slack&hl=en&gl=IN) | `com.Slack` |
-| 79 | [SmartThings](https://play.google.com/store/apps/details?id=com.samsung.android.oneconnect&hl=en&gl=IN) | `com.samsung.android.oneconnect` |
-| 80 | [Snapseed](https://play.google.com/store/apps/details?id=com.niksoftware.snapseed&hl=en&gl=IN) | `com.niksoftware.snapseed` |
-| 81 | [SoundCloud](https://play.google.com/store/apps/details?id=com.soundcloud.android&hl=en&gl=IN) | `com.soundcloud.android` |
-| 82 | [Steam](https://play.google.com/store/apps/details?id=com.valvesoftware.android.steam.community&hl=en&gl=IN) | `com.valvesoftware.android.steam.community` |
-| 83 | [Strava](https://play.google.com/store/apps/details?id=com.strava&hl=en&gl=IN) | `com.strava` |
-| 84 | [Tata Neu](https://play.google.com/store/apps/details?id=com.tatadigital.tcp&hl=en&gl=IN) | `com.tatadigital.tcp` |
-| 85 | [The Times of India](https://play.google.com/store/apps/details?id=com.toi.reader.activities&hl=en&gl=IN) | `com.toi.reader.activities` |
-| 86 | [TIDAL](https://play.google.com/store/apps/details?id=com.aspiro.tidal&hl=en&gl=IN) | `com.aspiro.tidal` |
-| 87 | [TikTok](https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically&hl=en&gl=US) | `com.zhiliaoapp.musically` |
-| 88 | [Todoist](https://play.google.com/store/apps/details?id=com.todoist&hl=en&gl=IN) | `com.todoist` |
-| 89 | [Tor Browser](https://play.google.com/store/apps/details?id=org.torproject.torbrowser&hl=en&gl=IN) | `org.torproject.torbrowser` |
-| 90 | [Trello](https://play.google.com/store/apps/details?id=com.trello&hl=en&gl=IN) | `com.trello` |
-| 91 | [Tubi](https://play.google.com/store/apps/details?id=com.tubitv&hl=en&gl=IN) | `com.tubitv` |
-| 92 | [TuneIn Radio](https://play.google.com/store/apps/details?id=tunein.player&hl=en&gl=IN) | `tunein.player` |
-| 93 | [Unacademy](https://play.google.com/store/apps/details?id=com.unacademyapp&hl=en&gl=IN) | `com.unacademyapp` |
-| 94 | [Upstox](https://play.google.com/store/apps/details?id=in.upstox.app&hl=en&gl=IN) | `in.upstox.app` |
-| 95 | [VN Video Editor](https://play.google.com/store/apps/details?id=com.frontrow.vlog&hl=en&gl=IN) | `com.frontrow.vlog` |
-| 96 | [VSCO](https://play.google.com/store/apps/details?id=com.vsco.cam&hl=en&gl=IN) | `com.vsco.cam` |
-| 97 | [Waze](https://play.google.com/store/apps/details?id=com.waze&hl=en&gl=IN) | `com.waze` |
-| 98 | [WEBTOON](https://play.google.com/store/apps/details?id=com.naver.linewebtoon&hl=en&gl=IN) | `com.naver.linewebtoon` |
-| 99 | [Wikipedia](https://play.google.com/store/apps/details?id=org.wikipedia&hl=en&gl=IN) | `org.wikipedia` |
-| 100 | [WPS Office](https://play.google.com/store/apps/details?id=cn.wps.moffice_eng&hl=en&gl=IN) | `cn.wps.moffice_eng` |
+| 10 | [Brilliant](https://play.google.com/store/apps/details?id=org.brilliant.android&hl=en&gl=IN) | `org.brilliant.android` |
+| 11 | [Call of Duty: Mobile](https://play.google.com/store/apps/details?id=com.activision.callofduty.shooter&hl=en&gl=IN) | `com.activision.callofduty.shooter` |
+| 12 | [Calm](https://play.google.com/store/apps/details?id=com.calm.android&hl=en&gl=IN) | `com.calm.android` |
+| 13 | [CamScanner](https://play.google.com/store/apps/details?id=com.intsig.camscanner&hl=en&gl=US) | `com.intsig.camscanner` |
+| 14 | [CapCut](https://play.google.com/store/apps/details?id=com.lemon.lvoverseas&hl=en&gl=US) | `com.lemon.lvoverseas` |
+| 15 | [Cricbuzz](https://play.google.com/store/apps/details?id=com.cricbuzz.android&hl=en&gl=IN) | `com.cricbuzz.android` |
+| 16 | [Cult.fit](https://play.google.com/store/apps/details?id=fit.cure.android&hl=en&gl=IN) | `fit.cure.android` |
+| 17 | [Decathlon](https://play.google.com/store/apps/details?id=com.decathlon.app&hl=en&gl=IN) | `com.decathlon.app` |
+| 18 | [Disney+](https://play.google.com/store/apps/details?id=com.disney.disneyplus&hl=en&gl=IN) | `com.disney.disneyplus` |
+| 19 | [Dropbox](https://play.google.com/store/apps/details?id=com.dropbox.android&hl=en&gl=IN) | `com.dropbox.android` |
+| 20 | [EA SPORTS FC Mobile](https://play.google.com/store/apps/details?id=com.ea.gp.fifamobile&hl=en&gl=IN) | `com.ea.gp.fifamobile` |
+| 21 | [Evernote](https://play.google.com/store/apps/details?id=com.evernote&hl=en&gl=IN) | `com.evernote` |
+| 22 | [Filmora](https://play.google.com/store/apps/details?id=com.wondershare.filmorago&hl=en&gl=IN) | `com.wondershare.filmorago` |
+| 23 | [Fitbit](https://play.google.com/store/apps/details?id=com.fitbit.FitbitMobile&hl=en&gl=IN) | `com.fitbit.FitbitMobile` |
+| 24 | [Galaxy Wearable](https://play.google.com/store/apps/details?id=com.samsung.android.app.watchmanager&hl=en&gl=IN) | `com.samsung.android.app.watchmanager` |
+| 25 | [Genshin Impact](https://play.google.com/store/apps/details?id=com.miHoYo.GenshinImpact&hl=en&gl=IN) | `com.miHoYo.GenshinImpact` |
+| 26 | [Google Authenticator](https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en&gl=IN) | `com.google.android.apps.authenticator2` |
+| 27 | [Google Classroom](https://play.google.com/store/apps/details?id=com.google.android.apps.classroom&hl=en&gl=IN) | `com.google.android.apps.classroom` |
+| 28 | [Google Docs](https://play.google.com/store/apps/details?id=com.google.android.apps.docs.editors.docs&hl=en&gl=IN) | `com.google.android.apps.docs.editors.docs` |
+| 29 | [Google Earth](https://play.google.com/store/apps/details?id=com.google.earth&hl=en&gl=IN) | `com.google.earth` |
+| 30 | [Google Home](https://play.google.com/store/apps/details?id=com.google.android.apps.chromecast.app&hl=en&gl=IN) | `com.google.android.apps.chromecast.app` |
+| 31 | [Google News](https://play.google.com/store/apps/details?id=com.google.android.apps.magazines&hl=en&gl=IN) | `com.google.android.apps.magazines` |
+| 32 | [Google Sheets](https://play.google.com/store/apps/details?id=com.google.android.apps.docs.editors.sheets&hl=en&gl=IN) | `com.google.android.apps.docs.editors.sheets` |
+| 33 | [Google Slides](https://play.google.com/store/apps/details?id=com.google.android.apps.docs.editors.slides&hl=en&gl=IN) | `com.google.android.apps.docs.editors.slides` |
+| 34 | [HBO Max](https://play.google.com/store/apps/details?id=com.wbd.stream&hl=en&gl=IN) | `com.wbd.stream` |
+| 35 | [Headspace](https://play.google.com/store/apps/details?id=com.getsomeheadspace.android&hl=en&gl=IN) | `com.getsomeheadspace.android` |
+| 36 | [Healthify](https://play.google.com/store/apps/details?id=com.healthifyme.basic&hl=en&gl=IN) | `com.healthifyme.basic` |
+| 37 | [Hill Climb Racing](https://play.google.com/store/apps/details?id=com.fingersoft.hillclimb&hl=en&gl=IN) | `com.fingersoft.hillclimb` |
+| 38 | [Hulu](https://play.google.com/store/apps/details?id=com.hulu.plus&hl=en&gl=IN) | `com.hulu.plus` |
+| 39 | [imo](https://play.google.com/store/apps/details?id=com.imo.android.imoim&hl=en&gl=IN) | `com.imo.android.imoim` |
+| 40 | [IndiGo](https://play.google.com/store/apps/details?id=in.goindigo.android&hl=en&gl=IN) | `in.goindigo.android` |
+| 41 | [inDrive](https://play.google.com/store/apps/details?id=sinet.startup.inDriver&hl=en&gl=IN) | `sinet.startup.inDriver` |
+| 42 | [InShot](https://play.google.com/store/apps/details?id=com.camerasideas.instashot&hl=en&gl=IN) | `com.camerasideas.instashot` |
+| 43 | [Khan Academy Kids](https://play.google.com/store/apps/details?id=org.khankids.android&hl=en&gl=IN) | `org.khankids.android` |
+| 44 | [KineMaster](https://play.google.com/store/apps/details?id=com.nexstreaming.app.kinemasterfree&hl=en&gl=IN) | `com.nexstreaming.app.kinemasterfree` |
+| 45 | [Kobo Books](https://play.google.com/store/apps/details?id=com.kobobooks.android&hl=en&gl=IN) | `com.kobobooks.android` |
+| 46 | [Libby](https://play.google.com/store/apps/details?id=com.overdrive.mobile.android.libby&hl=en&gl=IN) | `com.overdrive.mobile.android.libby` |
+| 47 | [LINE](https://play.google.com/store/apps/details?id=jp.naver.line.android&hl=en&gl=IN) | `jp.naver.line.android` |
+| 48 | [MANGA Plus](https://play.google.com/store/apps/details?id=jp.co.shueisha.mangaplus&hl=en&gl=IN) | `jp.co.shueisha.mangaplus` |
+| 49 | [Microsoft Authenticator](https://play.google.com/store/apps/details?id=com.azure.authenticator&hl=en&gl=IN) | `com.azure.authenticator` |
+| 50 | [Microsoft To Do](https://play.google.com/store/apps/details?id=com.microsoft.todos&hl=en&gl=IN) | `com.microsoft.todos` |
+| 51 | [Minecraft](https://play.google.com/store/apps/details?id=com.mojang.minecraftpe&hl=en&gl=IN) | `com.mojang.minecraftpe` |
+| 52 | [Moj](https://play.google.com/store/apps/details?id=in.mohalla.video&hl=en&gl=IN) | `in.mohalla.video` |
+| 53 | [Moneycontrol](https://play.google.com/store/apps/details?id=com.divum.MoneyControl&hl=en&gl=IN) | `com.divum.MoneyControl` |
+| 54 | [MyFitnessPal](https://play.google.com/store/apps/details?id=com.myfitnesspal.android&hl=en&gl=IN) | `com.myfitnesspal.android` |
+| 55 | [Nike Run Club](https://play.google.com/store/apps/details?id=com.nike.plusgps&hl=en&gl=IN) | `com.nike.plusgps` |
+| 56 | [Nykaa](https://play.google.com/store/apps/details?id=com.fsn.nykaa&hl=en&gl=IN) | `com.fsn.nykaa` |
+| 57 | [Obsidian](https://play.google.com/store/apps/details?id=md.obsidian&hl=en&gl=IN) | `md.obsidian` |
+| 58 | [OLX India](https://play.google.com/store/apps/details?id=com.olx.southasia&hl=en&gl=IN) | `com.olx.southasia` |
+| 59 | [Opera Mini](https://play.google.com/store/apps/details?id=com.opera.mini.native&hl=en&gl=IN) | `com.opera.mini.native` |
+| 60 | [Paramount+](https://play.google.com/store/apps/details?id=com.cbs.ott&hl=en&gl=IN) | `com.cbs.ott` |
+| 61 | [Photomath](https://play.google.com/store/apps/details?id=com.microblink.photomath&hl=en&gl=IN) | `com.microblink.photomath` |
+| 62 | [PhotoRoom](https://play.google.com/store/apps/details?id=com.photoroom.app&hl=en&gl=IN) | `com.photoroom.app` |
+| 63 | [Physics Wallah](https://play.google.com/store/apps/details?id=xyz.penpencil.physicswala&hl=en&gl=IN) | `xyz.penpencil.physicswala` |
+| 64 | [Picsart](https://play.google.com/store/apps/details?id=com.picsart.studio&hl=en&gl=IN) | `com.picsart.studio` |
+| 65 | [Pocket Casts](https://play.google.com/store/apps/details?id=au.com.shiftyjelly.pocketcasts&hl=en&gl=IN) | `au.com.shiftyjelly.pocketcasts` |
+| 66 | [Pokémon GO](https://play.google.com/store/apps/details?id=com.nianticlabs.pokemongo&hl=en&gl=IN) | `com.nianticlabs.pokemongo` |
+| 67 | [Pokémon TCG Pocket](https://play.google.com/store/apps/details?id=jp.pokemon.pokemontcgp&hl=en&gl=IN) | `jp.pokemon.pokemontcgp` |
+| 68 | [Quizlet](https://play.google.com/store/apps/details?id=com.quizlet.quizletandroid&hl=en&gl=IN) | `com.quizlet.quizletandroid` |
+| 69 | [Remini](https://play.google.com/store/apps/details?id=com.bigwinepot.nwdn.international&hl=en&gl=IN) | `com.bigwinepot.nwdn.international` |
+| 70 | [Samsung Health](https://play.google.com/store/apps/details?id=com.sec.android.app.shealth&hl=en&gl=IN) | `com.sec.android.app.shealth` |
+| 71 | [Samsung Internet](https://play.google.com/store/apps/details?id=com.sec.android.app.sbrowser&hl=en&gl=IN) | `com.sec.android.app.sbrowser` |
+| 72 | [Samsung Smart Switch](https://play.google.com/store/apps/details?id=com.sec.android.easyMover&hl=en&gl=IN) | `com.sec.android.easyMover` |
+| 73 | [Samsung Wallet](https://play.google.com/store/apps/details?id=com.samsung.android.spay&hl=en&gl=IN) | `com.samsung.android.spay` |
+| 74 | [ShareChat](https://play.google.com/store/apps/details?id=in.mohalla.sharechat&hl=en&gl=IN) | `in.mohalla.sharechat` |
+| 75 | [Shazam](https://play.google.com/store/apps/details?id=com.shazam.android&hl=en&gl=IN) | `com.shazam.android` |
+| 76 | [Skyscanner](https://play.google.com/store/apps/details?id=net.skyscanner.android.main&hl=en&gl=IN) | `net.skyscanner.android.main` |
+| 77 | [Slack](https://play.google.com/store/apps/details?id=com.Slack&hl=en&gl=IN) | `com.Slack` |
+| 78 | [SmartThings](https://play.google.com/store/apps/details?id=com.samsung.android.oneconnect&hl=en&gl=IN) | `com.samsung.android.oneconnect` |
+| 79 | [Snapseed](https://play.google.com/store/apps/details?id=com.niksoftware.snapseed&hl=en&gl=IN) | `com.niksoftware.snapseed` |
+| 80 | [SoundCloud](https://play.google.com/store/apps/details?id=com.soundcloud.android&hl=en&gl=IN) | `com.soundcloud.android` |
+| 81 | [Steam](https://play.google.com/store/apps/details?id=com.valvesoftware.android.steam.community&hl=en&gl=IN) | `com.valvesoftware.android.steam.community` |
+| 82 | [Strava](https://play.google.com/store/apps/details?id=com.strava&hl=en&gl=IN) | `com.strava` |
+| 83 | [Tata Neu](https://play.google.com/store/apps/details?id=com.tatadigital.tcp&hl=en&gl=IN) | `com.tatadigital.tcp` |
+| 84 | [The Times of India](https://play.google.com/store/apps/details?id=com.toi.reader.activities&hl=en&gl=IN) | `com.toi.reader.activities` |
+| 85 | [TIDAL](https://play.google.com/store/apps/details?id=com.aspiro.tidal&hl=en&gl=IN) | `com.aspiro.tidal` |
+| 86 | [TikTok](https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically&hl=en&gl=US) | `com.zhiliaoapp.musically` |
+| 87 | [Todoist](https://play.google.com/store/apps/details?id=com.todoist&hl=en&gl=IN) | `com.todoist` |
+| 88 | [Tor Browser](https://play.google.com/store/apps/details?id=org.torproject.torbrowser&hl=en&gl=IN) | `org.torproject.torbrowser` |
+| 89 | [Trello](https://play.google.com/store/apps/details?id=com.trello&hl=en&gl=IN) | `com.trello` |
+| 90 | [Tubi](https://play.google.com/store/apps/details?id=com.tubitv&hl=en&gl=IN) | `com.tubitv` |
+| 91 | [TuneIn Radio](https://play.google.com/store/apps/details?id=tunein.player&hl=en&gl=IN) | `tunein.player` |
+| 92 | [Unacademy](https://play.google.com/store/apps/details?id=com.unacademyapp&hl=en&gl=IN) | `com.unacademyapp` |
+| 93 | [Upstox](https://play.google.com/store/apps/details?id=in.upstox.app&hl=en&gl=IN) | `in.upstox.app` |
+| 94 | [VN Video Editor](https://play.google.com/store/apps/details?id=com.frontrow.vlog&hl=en&gl=IN) | `com.frontrow.vlog` |
+| 95 | [VSCO](https://play.google.com/store/apps/details?id=com.vsco.cam&hl=en&gl=IN) | `com.vsco.cam` |
+| 96 | [Waze](https://play.google.com/store/apps/details?id=com.waze&hl=en&gl=IN) | `com.waze` |
+| 97 | [WEBTOON](https://play.google.com/store/apps/details?id=com.naver.linewebtoon&hl=en&gl=IN) | `com.naver.linewebtoon` |
+| 98 | [Wikipedia](https://play.google.com/store/apps/details?id=org.wikipedia&hl=en&gl=IN) | `org.wikipedia` |
+| 99 | [WPS Office](https://play.google.com/store/apps/details?id=cn.wps.moffice_eng&hl=en&gl=IN) | `cn.wps.moffice_eng` |
 
 ## Websites
 

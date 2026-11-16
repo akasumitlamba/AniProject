@@ -163,7 +163,7 @@
       "webHosts": [
         "jio.com"
       ],
-      "sha256": "6a019ee43f1215cbde1b095b21461eea114d133344ebd55125a93b56aa068e60",
+      "sha256": "947193c8dad12c0171686f02ac631e92e87104c5a19c5f560e3f6e49bbae8a04",
       "popular": true,
       "category": "utilities",
       "tabletPriority": 35
@@ -316,7 +316,7 @@
       "webHosts": [
         "naukri.com"
       ],
-      "sha256": "9a01744d1fe83b3a03ebfbb9963c0716589ef20e6072c9bfe112c27ea8292712",
+      "sha256": "26ebfd4065932bb9eed762a0e5f47b35f5b8939ada14fb2d00366e1b8e08830a",
       "popular": true,
       "category": "productivity",
       "tabletPriority": 82
@@ -445,7 +445,7 @@
       "webHosts": [
         "flipkart.com"
       ],
-      "sha256": "56c232f32ff248b275615bd6704d630517162655cae85165501f86ff6d7b8d0f",
+      "sha256": "c09ff9413d3b49e463c1b5911aa1af443859684f5ea4e78e7120462f037fb8c8",
       "popular": true,
       "category": "shopping",
       "tabletPriority": 45
@@ -869,7 +869,7 @@
       "webHosts": [
         "zeptonow.com"
       ],
-      "sha256": "0b9b0afbcbc0cc9ac8c216eb29d89eb8136e4154c4bccabb4de25a87feed1fc1",
+      "sha256": "325a1029c9cb14679912ff5b77af7d32cb0e3f901d22d29535fe17241384cdfe",
       "popular": true,
       "category": "shopping",
       "tabletPriority": 45
@@ -923,7 +923,7 @@
       "webHosts": [
         "meesho.com"
       ],
-      "sha256": "7254b727493ffb4c36dab4f9332e604ededd757a24f8a73bae16b2697805916f",
+      "sha256": "5b8b1a3818bc997a922f60be4cf96f385a6a106f4600ea7624564f9882707366",
       "popular": true,
       "category": "shopping",
       "tabletPriority": 45
@@ -977,7 +977,7 @@
       "webHosts": [
         "olacabs.com"
       ],
-      "sha256": "c6e5f1c5adb1b998cf6fce2f237ab47fb9f7817ff0bfaa41c6312f353d627615",
+      "sha256": "ee58b779c371b355f4c105c1094d8ad5fbc707ecd61616b687db3790d6c9fe50",
       "popular": true,
       "category": "shopping",
       "tabletPriority": 45
@@ -1068,7 +1068,7 @@
       "webHosts": [
         "goibibo.com"
       ],
-      "sha256": "2350b7b3782ab858fcc5fbe558083c9e76200318645c45464d2f2d036a466bc2",
+      "sha256": "4081d34c0e8f7a78e680b93c38d60bef52ab71dff598529c8d980b05aaa7874c",
       "popular": true,
       "category": "shopping",
       "tabletPriority": 45
@@ -1104,7 +1104,7 @@
       "webHosts": [
         "bookmyshow.com"
       ],
-      "sha256": "0cfffbff535fede2e735dfbab9de281ece7a1bed557ba97466f36a408e0db3fe",
+      "sha256": "1c54e5f436c55cb86bb1584d1d608c6487111d3e551b19178439145bcd77061c",
       "popular": true,
       "category": "entertainment",
       "tabletPriority": 98
@@ -1140,7 +1140,7 @@
       "webHosts": [
         "bhimupi.org.in"
       ],
-      "sha256": "aae6772e490583c4583a986a801cc3613d70653069a29655398ce8f6714ae431",
+      "sha256": "96dd83cd6d48fe1cc52736402a3c0b49894731be3567f2e94ab937c8e99eedee",
       "popular": true,
       "category": "payments",
       "tabletPriority": 25
@@ -1158,7 +1158,7 @@
       "webHosts": [
         "mobikwik.com"
       ],
-      "sha256": "3b04d0984f344eedc39ca7f5a6d076d0a53903ee2da4b07b483ba506abac5a17",
+      "sha256": "055df5e9d60b8a7e864d7c240eea5bb32e1bb4bb1334d1a6b8ee60bf13b03fb8",
       "popular": true,
       "category": "payments",
       "tabletPriority": 25
@@ -1230,7 +1230,7 @@
       "webHosts": [
         "kite.zerodha.com"
       ],
-      "sha256": "a0f20fc060297b37e934bb25d5739d533066ea667e74500094fe57f0f9764e65",
+      "sha256": "e7a9f8278ac06fd2180caa807239afaf1515feb6e2e4ce567f14a6a6abad88b0",
       "popular": true,
       "category": "payments",
       "tabletPriority": 25
@@ -1443,7 +1443,7 @@
       "webHosts": [
         "indeed.com"
       ],
-      "sha256": "482072f0a48cfe6f7c0128e65488c6f917255ee68b86c488ce879f872445b491",
+      "sha256": "0f42590627917007f65b3ba017275eaf55c7e6c23f6ab7df7d8fee994b4a860e",
       "popular": true,
       "category": "productivity",
       "tabletPriority": 82
@@ -1479,7 +1479,7 @@
       "webHosts": [
         "coursera.org"
       ],
-      "sha256": "18b9ee2e3af957d8ab23ca458f89858eb17894b751e89721d4a56a92d9787651",
+      "sha256": "3af129635ad41b7cca500d2a3d4a6b3d78d32883666566f0679ab1c26c2fb97e",
       "popular": true,
       "category": "learning",
       "tabletPriority": 90
@@ -2811,7 +2811,7 @@
       "webHosts": [
         "concepts.app"
       ],
-      "sha256": "f77f1bc41c18609ffcce3a85cd57b57bd1986e4c8436089e002fd9687a7d6dde",
+      "sha256": "31379e87506d9436f8cd6aac1edcf3dd4d4a6ce6fc74d8d29ed98509be4d9b95",
       "popular": true,
       "category": "creativity",
       "tabletPriority": 94
@@ -2995,7 +2995,7 @@
       "popular": false,
       "category": "utilities",
       "tabletPriority": 65,
-      "sha256": "d0a8686ddcb9efcb9cca1da8c270fb94c4879739156b02d756b51bc2ff3f781b"
+      "sha256": "5b797adcf5c3663d58d9013b4375ef4ff86ae3d6318883cc972f17deb8532f02"
     },
     {
       "id": "audiofx",
@@ -3203,7 +3203,7 @@
       "category": "creativity",
       "tabletPriority": 93,
       "popular": true,
-      "sha256": "b05083cacf6eeaeaa317bbbe4a0aef3c3d7c3f615a46d94c1fff0b7067352c8d"
+      "sha256": "bd6dc818ee536b31d31e5f0de5a76a85f73bdeb6bfa27fbf411838b86abc4689"
     },
     {
       "id": "filmora",
@@ -3956,7 +3956,7 @@
       "category": "utilities",
       "tabletPriority": 56,
       "popular": true,
-      "sha256": "743cb9ddd2e3401dc4ccdc453b58312378ea779be44653249f2dbbed3942f15e"
+      "sha256": "d67128f5b815a360e1fc1ffb854b28167ce343b6b4aecde620c3b4ff2a779032"
     },
     {
       "id": "tor-browser",
@@ -4089,20 +4089,6 @@
       "tabletPriority": 90,
       "popular": true,
       "sha256": "ffe480674d43137823fe91f366a072029cf30c26aad92f77c37cdcb1aefc6255"
-    },
-    {
-      "id": "brainly",
-      "name": "Brainly",
-      "file": "images/brainly.webp",
-      "packages": [
-        "co.brainly"
-      ],
-      "aliases": [],
-      "webHosts": [],
-      "category": "learning",
-      "tabletPriority": 90,
-      "popular": true,
-      "sha256": "3f399383fcb4c7c6cf239570ae8d96df097f7e639fc1315172b3ce3efd17a75e"
     },
     {
       "id": "webtoon",
@@ -4560,7 +4546,7 @@
       "category": "games",
       "tabletPriority": 96,
       "popular": true,
-      "sha256": "a233e71218479d0babb8a9d1d8be71a2de57d37097528bcb017d0d82c778350f"
+      "sha256": "fab931834b4176d8bd1c83d01dda4d01dcbd9bc06d22b35ff612058d44adf7e3"
     },
     {
       "id": "among-us",
@@ -5671,7 +5657,7 @@
       "category": "productivity",
       "tabletPriority": 84,
       "popular": true,
-      "sha256": "75996f4867416da4cbc17808c3cd6bbbeac22c0f1ddeb15ff2709a25573efed3"
+      "sha256": "2d7854a8dd9af1211e22a3ca99332552de522d87c1b0fee5056db645e3430944"
     },
     {
       "id": "yahoo-mail",
@@ -6767,13 +6753,13 @@
     },
     {
       "id": "viber",
-      "name": "Rakuten Viber",
+      "name": "Viber",
       "file": "images/viber.webp",
       "packages": [
         "com.viber.voip"
       ],
       "aliases": [
-        "Viber"
+        "Rakuten Viber"
       ],
       "webHosts": [
         "viber.com"
@@ -6781,7 +6767,7 @@
       "category": "communication",
       "popular": true,
       "tabletPriority": 75,
-      "sha256": "3313a7cff28fbeb3d252f116b333437d5dd68f406f0cbc3d5d7773adf901b671"
+      "sha256": "8c19a46a3d7bef6e5f0577ada6c9207607f829603ccdfd817afa42bfd8bb96fc"
     },
     {
       "id": "tinder",
@@ -7071,7 +7057,7 @@
       "category": "productivity",
       "popular": true,
       "tabletPriority": 88,
-      "sha256": "85e0b973a434fc76cd43b12f64374f90d6bf6cd3ceb8ee70955bd2b6e6180e2f"
+      "sha256": "dad8efea4806a699310e9e58b85b405539c5b349df0d7d206ac946b60799621b"
     },
     {
       "id": "proton-drive",
@@ -7317,7 +7303,7 @@
       "category": "productivity",
       "popular": true,
       "tabletPriority": 88,
-      "sha256": "6988084bd0722c7353268b6f0c54241322adafb100adfe158f21827cf8997f9c"
+      "sha256": "1fda4ef4ef86770614a1f7b5853928b5089f49ef84f9edb5b311057574f947dc"
     },
     {
       "id": "v0",
@@ -7345,7 +7331,7 @@
       "category": "productivity",
       "popular": true,
       "tabletPriority": 88,
-      "sha256": "b658da75784608b3aa506cf7b8b273848de80dc560daa1b693afa1ff9e48fb7b"
+      "sha256": "fc5997523d9f57d7f42cd3e5eafa18f7a0b78c30a697e7f898672e6f2221acec"
     },
     {
       "id": "deepai",
@@ -7567,7 +7553,7 @@
       "category": "shopping",
       "popular": true,
       "tabletPriority": 75,
-      "sha256": "96e918d8258e93ece256a4ce8e1f19aa9997c622c61b8d9e0745b0f11cd15a52"
+      "sha256": "b4180fa17cfb9a5c475797b71e62a582b750b44f9bb24f47cf2285808307d5ff"
     },
     {
       "id": "swiggy-instamart",
@@ -7581,7 +7567,7 @@
       "category": "shopping",
       "popular": true,
       "tabletPriority": 75,
-      "sha256": "532f6da85e082976ccc10f445cd35e44c4fda6a538065a2726fa9bb83f73b210"
+      "sha256": "b8a6b8423ea0ce5b0ab8fff4b3194f0a0abc93c5e15e8f5a7c395d4ef6c6fdb3"
     },
     {
       "id": "ebay",
@@ -7725,7 +7711,7 @@
       "category": "finance",
       "popular": true,
       "tabletPriority": 75,
-      "sha256": "f193c4dd45d6541ce2209aa450092398413f82c5290ab5f169398c57105cd978"
+      "sha256": "5c5f17176399165ff83e4deb780fc4f5c127eacd9829e5e72e95c5c834e66322"
     },
     {
       "id": "imobile-icici",
