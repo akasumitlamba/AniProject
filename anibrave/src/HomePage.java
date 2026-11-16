@@ -12,6 +12,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * AniBrave's homepage (new tabs): clock, a search box that uses the browser's own default
@@ -27,6 +29,12 @@ final class HomePage {
     private static volatile int port;
     private static volatile Context app;
     private static final String token = Long.toHexString(new SecureRandom().nextLong());
+    /** A few connections at once: an idle speculative preconnect must not stall the page. */
+    private static final ExecutorService WORKERS = Executors.newFixedThreadPool(4, r -> {
+        Thread t = new Thread(r, "AniBrave-home-request");
+        t.setDaemon(true);
+        return t;
+    });
 
     private HomePage() {}
 
@@ -46,7 +54,9 @@ final class HomePage {
         } catch (Exception ignored) { /* searches simply won't start */ }
         for (int candidate : PORTS) {
             try {
-                ServerSocket server = new ServerSocket(candidate, 16, InetAddress.getLoopbackAddress());
+                // Explicitly 127.0.0.1: Android's getLoopbackAddress() is ::1, which the
+                // http://127.0.0.1 homepage address can't reach (ERR_CONNECTION_REFUSED).
+                ServerSocket server = new ServerSocket(candidate, 16, InetAddress.getByAddress(new byte[] {127, 0, 0, 1}));
                 port = candidate;
                 Thread thread = new Thread(() -> serve(server), "AniBrave-home");
                 thread.setDaemon(true);
@@ -58,28 +68,37 @@ final class HomePage {
 
     private static void serve(ServerSocket server) {
         while (true) {
-            try (Socket socket = server.accept()) {
-                socket.setSoTimeout(4000);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-                String request = in.readLine();
-                String host = "";
-                for (String line; (line = in.readLine()) != null && !line.isEmpty(); )
-                    if (line.regionMatches(true, 0, "Host:", 0, 5)) host = line.substring(5).trim();
-                OutputStream out = socket.getOutputStream();
-                // Only this exact loopback origin (blocks DNS-rebinding pages from using it).
-                if (request == null || !host.equals("127.0.0.1:" + port)) { respond(out, "403 Forbidden", "text/plain", "", ""); continue; }
-                String[] parts = request.split(" ");
-                String path = parts.length > 1 ? parts[1] : "/";
-                if (path.equals("/") || path.startsWith("/?")) respond(out, "200 OK", "text/html; charset=utf-8", page(), "no-store");
-                else if (path.startsWith("/search?")) {
-                    Uri uri = Uri.parse("http://localhost" + path);
-                    String query = uri.getQueryParameter("q");
-                    if (token.equals(uri.getQueryParameter("t")) && query != null && !query.trim().isEmpty()) search(query.trim());
-                    respond(out, "204 No Content", "text/plain", "", "no-store");
-                } else respond(out, "404 Not Found", "text/plain", "", "");
+            try {
+                Socket socket = server.accept();
+                WORKERS.execute(() -> handle(socket));
             } catch (Exception ignored) {
-                /* one bad request never stops the homepage */
+                /* one bad connection never stops the homepage */
             }
+        }
+    }
+
+    private static void handle(Socket client) {
+        try (Socket socket = client) {
+            socket.setSoTimeout(4000);
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+            String request = in.readLine();
+            String host = "";
+            for (String line; (line = in.readLine()) != null && !line.isEmpty(); )
+                if (line.regionMatches(true, 0, "Host:", 0, 5)) host = line.substring(5).trim();
+            OutputStream out = socket.getOutputStream();
+            // Only this exact loopback origin (blocks DNS-rebinding pages from using it).
+            if (request == null || !host.equals("127.0.0.1:" + port)) { respond(out, "403 Forbidden", "text/plain", "", ""); return; }
+            String[] parts = request.split(" ");
+            String path = parts.length > 1 ? parts[1] : "/";
+            if (path.equals("/") || path.startsWith("/?")) respond(out, "200 OK", "text/html; charset=utf-8", page(), "no-store");
+            else if (path.startsWith("/search?")) {
+                Uri uri = Uri.parse("http://localhost" + path);
+                String query = uri.getQueryParameter("q");
+                if (token.equals(uri.getQueryParameter("t")) && query != null && !query.trim().isEmpty()) search(query.trim());
+                respond(out, "204 No Content", "text/plain", "", "no-store");
+            } else respond(out, "404 Not Found", "text/plain", "", "");
+        } catch (Exception ignored) {
+            /* idle preconnects time out here */
         }
     }
 
