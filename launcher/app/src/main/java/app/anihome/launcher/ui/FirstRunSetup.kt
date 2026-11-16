@@ -18,12 +18,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
  */
 internal object FirstRunSetup {
     private const val KEY = "first_run_setup_v1"
+    private var showing: androidx.appcompat.app.AlertDialog? = null
 
     fun maybeShow(activity: AppCompatActivity, isDefaultHome: () -> Boolean, makeDefault: () -> Unit) {
         val prefs = activity.getSharedPreferences("anihome", Context.MODE_PRIVATE)
-        if (prefs.getBoolean(KEY, false)) return
+        if (prefs.getBoolean(KEY, false) || showing?.isShowing == true) return
         if (isDefaultHome() && HomeNotifications.enabled(activity)) { prefs.edit().putBoolean(KEY, true).apply(); return }
-        prefs.edit().putBoolean(KEY, true).apply() // Shown once; both stay available in Settings → Permissions.
+        // Not marked done until both are granted or the user chooses Later: granting the home role
+        // recreates Home, which used to close this card after the first permission for good.
         fun dp(v: Int) = (v * activity.resources.displayMetrics.density).toInt()
         val body = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(24), dp(4), dp(24), dp(4)) }
         body.addView(TextView(activity).apply {
@@ -53,8 +55,16 @@ internal object FirstRunSetup {
         }
         render()
         val dialog = MaterialAlertDialogBuilder(activity).setTitle("Set up AniHome").setView(body)
-            .setPositiveButton("Done", null).create()
-        dialog.setOnShowListener { dialog.window?.decorView?.viewTreeObserver?.addOnWindowFocusChangeListener { focused -> if (focused) render() } }
+            .setPositiveButton("Done") { _, _ -> prefs.edit().putBoolean(KEY, true).apply() }
+            .setNegativeButton("Later") { _, _ -> prefs.edit().putBoolean(KEY, true).apply() }
+            .setCancelable(false).create()
+        dialog.setOnShowListener { dialog.window?.decorView?.viewTreeObserver?.addOnWindowFocusChangeListener { focused ->
+            if (!focused) return@addOnWindowFocusChangeListener
+            render()
+            if (isDefaultHome() && HomeNotifications.enabled(activity)) { prefs.edit().putBoolean(KEY, true).apply(); dialog.dismiss() }
+        } }
+        dialog.setOnDismissListener { if (showing === dialog) showing = null }
+        showing = dialog
         dialog.show()
     }
 }

@@ -28,6 +28,8 @@ internal object SystemBar {
     val suppressed: Boolean get() = suppressors.isNotEmpty()
     /** An AniHome panel is already on screen (over Home or over an app). */
     val panelOpen: Boolean get() = "panel" in suppressors
+    /** What a pull from the top edge does while AniHome's panel is open (expand its controls). */
+    @Volatile var onTopPull: (() -> Unit)? = null
     fun suppress(token: String, on: Boolean) {
         val changed = if (on) suppressors.add(token) else suppressors.remove(token)
         if (changed) HomeControlsService.updateOverlayVisibility()

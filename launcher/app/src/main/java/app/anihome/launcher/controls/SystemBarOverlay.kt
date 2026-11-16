@@ -115,7 +115,9 @@ internal class SystemBarOverlay(private val service: AccessibilityService) {
 
     private fun openPanel(edge: SystemBar.Edge) = runCatching {
         // One panel at a time: a second swipe while one is open used to stack a duplicate on top.
-        if (SystemBar.panelOpen) return@runCatching
+        // While a panel is open, the pull goes to it (like Android's second pull) instead of
+        // stacking another panel or letting Android's own shade come down over it.
+        if (SystemBar.panelOpen) { SystemBar.onTopPull?.invoke(); return@runCatching }
         service.startActivity(Intent(service, PanelActivity::class.java)
             .putExtra(PanelActivity.EXTRA_EDGE, edge.name)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_ANIMATION or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS))
@@ -251,6 +253,11 @@ internal class SystemBarOverlay(private val service: AccessibilityService) {
     private var systemBarVisible = true
     /** Hidden when Android's bar is hidden (fullscreen apps) or an AniHome screen asks. */
     fun updateVisibility() {
+        // The top catch-zone also exists whenever AniHome's panel is open, even if "swipe down in
+        // every app" is off, so Android's shade can't be pulled over AniHome's panel.
+        val wanted = !locked() && (SystemBar.panelOpen || (SystemBar.edgePanel(service) && app.anihome.launcher.ui.PanelStyle.custom(service)))
+        if (wanted && edgeView == null) addEdge(SystemBar.Edge.TOP)
+        else if (!wanted && edgeView != null) { runCatching { windows.removeView(edgeView) }; edgeView = null }
         val bar = barView ?: return
         val visible = systemBarVisible && !SystemBar.suppressed
         bar.visibility = if (visible) View.VISIBLE else View.INVISIBLE

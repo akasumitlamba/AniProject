@@ -52,24 +52,33 @@ internal class SettingsPanel(private val activity: AppCompatActivity, private va
     private fun label(value: String, size: Float = 13f) = TextView(activity).apply {
         text = value; textSize = size; setTextColor(Color.WHITE); gravity = Gravity.CENTER_VERTICAL
     }
-    private fun row(parent: LinearLayout): LinearLayout {
-        if (parent.childCount > 0) parent.addView(View(activity).apply { setBackgroundColor(0x14FFFFFF) }, LinearLayout.LayoutParams(-1, dp(1)))
-        return LinearLayout(activity).apply {
-            gravity = Gravity.CENTER_VERTICAL; minimumHeight = dp(54); setPadding(dp(2), dp(6), dp(2), dp(6))
-            parent.addView(this, LinearLayout.LayoutParams(-1, -2))
-        }
+    /** Material 3 context for real Material You controls, whatever screen hosts the panel. */
+    private val material by lazy { android.view.ContextThemeWrapper(activity, R.style.Theme_AniHome) }
+    /** One row style for everything: title (and value or hint underneath) on the left, control on the right. */
+    private fun row(parent: LinearLayout): LinearLayout = LinearLayout(activity).apply {
+        gravity = Gravity.CENTER_VERTICAL; minimumHeight = dp(60); setPadding(dp(12), dp(10), dp(8), dp(10))
+        background = android.graphics.drawable.RippleDrawable(ColorStateList.valueOf(0x1FFFFFFF),
+            null, android.graphics.drawable.GradientDrawable().apply { setColor(Color.WHITE); cornerRadius = dp(16).toFloat() })
+        parent.addView(this, LinearLayout.LayoutParams(-1, -2))
     }
+    /** Title with an optional second line (current value, in the accent colour). */
+    private fun titled(title: String, detail: String? = null) = LinearLayout(activity).apply {
+        orientation = LinearLayout.VERTICAL
+        addView(label(title, 15f).apply { setTextColor(0xFFE6E8EE.toInt()) })
+        if (detail != null) addView(label(detail, 13f).apply { setTextColor(ACCENT_SOFT); tag = "detail" })
+    }
+    private val ACCENT_SOFT = 0xFFA8C7FA.toInt()
     fun section(title: String, icon: Int, summary: () -> String = { "" }, content: LinearLayout.() -> Unit) {
         if (twoPane) { specs += Spec(title, icon, palette[specs.size % palette.size], summary, content); return }
         search // Created with the first section so it sits at the top.
         val accent = palette[searchable.size % palette.size]
         val group = LinearLayout(activity).apply {
             orientation = LinearLayout.VERTICAL
-            background = android.graphics.drawable.GradientDrawable().apply { setColor(ControlCenter.SURFACE); cornerRadius = dp(20).toFloat(); setStroke(dp(1), ControlCenter.STROKE) }
+            background = android.graphics.drawable.GradientDrawable().apply { setColor(0xFF1D2027.toInt()); cornerRadius = dp(28).toFloat() }
             clipToOutline = true
         }
         val controls = LinearLayout(activity).apply {
-            orientation = LinearLayout.VERTICAL; setPadding(dp(16), 0, dp(16), dp(8)); visibility = View.GONE
+            orientation = LinearLayout.VERTICAL; setPadding(dp(8), 0, dp(8), dp(12)); visibility = View.GONE
         }
         val toggle = ArtworkUi.plainIcon(activity, R.drawable.ic_expand_more, "Expand $title") { }
         val header = LinearLayout(activity).apply {
@@ -77,10 +86,11 @@ internal class SettingsPanel(private val activity: AppCompatActivity, private va
             background = android.graphics.drawable.RippleDrawable(ColorStateList.valueOf(0x1FFFFFFF), null, null)
         }
         // Coloured badge per section makes the list scannable at a glance.
+        // Tonal tile: the section colour, softened, with the icon in full colour.
         header.addView(ImageView(activity).apply {
-            setImageResource(icon); setColorFilter(Color.WHITE); scaleType = ImageView.ScaleType.CENTER
-            background = android.graphics.drawable.GradientDrawable().apply { shape = android.graphics.drawable.GradientDrawable.OVAL; setColor(accent) }
-        }, LinearLayout.LayoutParams(dp(36), dp(36)))
+            setImageResource(icon); setColorFilter(accent); scaleType = ImageView.ScaleType.CENTER
+            background = android.graphics.drawable.GradientDrawable().apply { cornerRadius = dp(14).toFloat(); setColor((accent and 0x00FFFFFF) or 0x33000000) }
+        }, LinearLayout.LayoutParams(dp(44), dp(44)))
         val texts = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(14), 0, dp(6), 0) }
         val titleView = label(title, 15f).apply { typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL) }
         val summaryView = label("", 12f).apply { setTextColor(0xFFA9ADB6.toInt()); maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END }
@@ -102,39 +112,35 @@ internal class SettingsPanel(private val activity: AppCompatActivity, private va
         }
         header.setOnClickListener { expand() }; toggle.setOnClickListener { expand() }
         rows += controls to toggle; group.addView(header); group.addView(controls)
-        body.addView(group, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(8) })
+        body.addView(group, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(10) })
         searchable += group to (title + " " + summary()).lowercase()
     }
     fun toggle(parent: LinearLayout, title: String, checked: Boolean, changed: (Boolean) -> Unit) {
         val row = row(parent)
-        row.addView(label(title).apply { setPadding(0, 0, dp(12), 0) }, LinearLayout.LayoutParams(0, -2, 1f))
-        val control = androidx.appcompat.widget.SwitchCompat(activity).apply {
-            contentDescription = title; isChecked = checked; minHeight = dp(44)
-            thumbTintList = ColorStateList(arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()), intArrayOf(Color.WHITE, 0xFFD0D3DA.toInt()))
-            trackTintList = ColorStateList(arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()), intArrayOf(ControlCenter.ACCENT, 0x40FFFFFF))
+        row.addView(titled(title).apply { setPadding(0, 0, dp(12), 0) }, LinearLayout.LayoutParams(0, -2, 1f))
+        val control = com.google.android.material.materialswitch.MaterialSwitch(material).apply {
+            contentDescription = title; isChecked = checked
             setOnCheckedChangeListener { _, value -> changed(value) }
         }
-        row.addView(control, LinearLayout.LayoutParams(-2, dp(44)))
+        row.addView(control, LinearLayout.LayoutParams(-2, -2))
         row.setOnClickListener { control.isChecked = !control.isChecked }
     }
+    /** Android list preference: the current value sits under the title; tapping picks from a dialog. */
     fun choice(parent: LinearLayout, title: String, values: List<String>, initial: Int, changed: (Int) -> Unit) {
         val row = row(parent)
-        row.addView(label(title).apply { setPadding(0, 0, dp(10), 0) }, LinearLayout.LayoutParams(0, -2, .43f))
-        val value = label(values[initial.coerceIn(values.indices)]).apply {
-            gravity = Gravity.CENTER; maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END; textSize = 12.5f
-            setPadding(dp(12), dp(6), dp(8), dp(6))
-            setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.ic_expand_more, 0); compoundDrawablePadding = dp(2)
-            compoundDrawableTintList = ColorStateList.valueOf(0xFFBBBBBB.toInt())
-            background = android.graphics.drawable.GradientDrawable().apply { setColor(0x1FFFFFFF); cornerRadius = dp(16).toFloat() }
+        var selected = initial.coerceIn(values.indices)
+        val texts = titled(title, values[selected])
+        row.addView(texts, LinearLayout.LayoutParams(0, -2, 1f))
+        row.isFocusable = true; row.contentDescription = "$title, ${values[selected]}"
+        row.setOnClickListener {
+            com.google.android.material.dialog.MaterialAlertDialogBuilder(activity).setTitle(title)
+                .setSingleChoiceItems(values.toTypedArray(), selected) { dialog, index ->
+                    dialog.dismiss()
+                    if (index == selected) return@setSingleChoiceItems
+                    selected = index; (texts.findViewWithTag<TextView>("detail")).text = values[index]
+                    row.contentDescription = "$title, ${values[index]}"; changed(index)
+                }.setNegativeButton("Cancel", null).show()
         }
-        row.addView(LinearLayout(activity).apply { gravity = Gravity.END or Gravity.CENTER_VERTICAL; addView(value) }, LinearLayout.LayoutParams(0, -2, .57f))
-        var selected = initial
-        row.isFocusable = true; row.contentDescription = "$title, ${value.text}"
-        row.setOnClickListener { HomeMenu.show(row, title, values.mapIndexed { index, name ->
-            HomeMenu.Item(index, name, 0, checked = index == selected) {
-                selected = index; value.text = name; row.contentDescription = "$title, $name"; changed(index)
-            }
-        }) }
     }
     fun radios(parent: LinearLayout, values: List<String>, initial: Int, changed: (Int) -> Unit) {
         val group = RadioGroup(activity).apply { orientation = RadioGroup.VERTICAL }
@@ -154,15 +160,15 @@ internal class SettingsPanel(private val activity: AppCompatActivity, private va
 
     fun action(parent: LinearLayout, title: String, click: () -> Unit) {
         val row = row(parent)
-        row.addView(label(title), LinearLayout.LayoutParams(0, -2, 1f))
+        row.addView(titled(title), LinearLayout.LayoutParams(0, -2, 1f))
         row.addView(ImageView(activity).apply { setImageResource(R.drawable.ic_expand_more); rotation = 270f; setColorFilter(0xffbbbbbb.toInt()) }, LinearLayout.LayoutParams(dp(20), dp(20)))
         row.isFocusable = true; row.setOnClickListener { click() }
     }
     fun slider(parent: LinearLayout, title: String, initial: Int, changed: (Int) -> Unit): View {
-        val container = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; setPadding(0, dp(6), 0, dp(6)) }
+        val container = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(12), dp(8), dp(8), dp(6)) }
         val heading = LinearLayout(activity).apply { gravity = Gravity.CENTER_VERTICAL }
-        heading.addView(label(title), LinearLayout.LayoutParams(0, dp(32), 1f))
-        val value = label("$initial%")
+        heading.addView(label(title, 15f).apply { setTextColor(0xFFE6E8EE.toInt()) }, LinearLayout.LayoutParams(0, dp(32), 1f))
+        val value = label("$initial%", 13f).apply { setTextColor(ACCENT_SOFT) }
         heading.addView(value); container.addView(heading)
         container.addView(androidx.appcompat.widget.AppCompatSeekBar(activity).apply {
             max = 100; progress = initial; contentDescription = title
@@ -177,13 +183,17 @@ internal class SettingsPanel(private val activity: AppCompatActivity, private va
         parent.addView(container, LinearLayout.LayoutParams(-1, -2)); return container
     }
     /** Small group title inside a section. */
+    /** Group label: a thin divider, then the group name in the accent colour. */
     fun heading(parent: LinearLayout, value: String) {
-        parent.addView(label(value, 12f).apply {
-            setTextColor(ControlCenter.ACCENT); setTypeface(null, android.graphics.Typeface.BOLD); setPadding(0, dp(14), 0, dp(2))
+        parent.addView(View(activity).apply { setBackgroundColor(0x1AFFFFFF) }, LinearLayout.LayoutParams(-1, dp(1)).apply { topMargin = dp(10); leftMargin = dp(12); rightMargin = dp(12) })
+        parent.addView(label(value, 13f).apply {
+            setTextColor(ACCENT_SOFT); typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
+            setPadding(dp(12), dp(14), 0, dp(4))
         })
     }
+    /** Helper text under the setting it explains. */
     fun text(parent: LinearLayout, value: String) {
-        parent.addView(label(value, 12f).apply { setTextColor(0xffbbbbbb.toInt()); setPadding(0, dp(8), 0, dp(8)) })
+        parent.addView(label(value, 12.5f).apply { setTextColor(0xFF9AA0AC.toInt()); setPadding(dp(12), dp(2), dp(12), dp(10)); setLineSpacing(0f, 1.15f) })
     }
     fun attach(parent: LinearLayout) {
         if (twoPane) { attachTwoPane(parent); return }

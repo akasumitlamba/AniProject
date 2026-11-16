@@ -36,6 +36,8 @@ class AppDrawerActivity : AppCompatActivity() {
     private var homeWebsites: List<HomeTile> = emptyList()
     private var favoritesSection: View? = null
     private var favoritesGrid: GridLayoutManager? = null
+    /** Columns of the app grid; recent apps use the same count even when the apps are a list. */
+    private var gridColumns = 4
     private var searchResults: android.widget.LinearLayout? = null
     private var webResults: android.widget.LinearLayout? = null
     private val selected = linkedSetOf<String>()
@@ -71,7 +73,8 @@ class AppDrawerActivity : AppCompatActivity() {
             insets
         }
         val availableDp = resources.configuration.screenWidthDp - 2 * resources.getDimension(R.dimen.page_padding) / resources.displayMetrics.density
-        binding.list.layoutManager = GridLayoutManager(this, if (resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT) 4 else (availableDp / 96f).toInt().coerceIn(3, 8))
+        gridColumns = if (resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_PORTRAIT) 4 else (availableDp / 96f).toInt().coerceIn(3, 8)
+        binding.list.layoutManager = GridLayoutManager(this, if (preferences.listView()) 1 else gridColumns)
         applyMenuOpacity()
         binding.list.adapter = adapter
         binding.list.itemAnimator = null
@@ -112,6 +115,9 @@ class AppDrawerActivity : AppCompatActivity() {
             HomeMenu.show(anchor, "Apps", listOf(
                 HomeMenu.Item(1, if (showHidden) "Show visible apps" else "Hidden apps (${preferences.hidden().size})", R.drawable.ic_visibility, checked = showHidden) {
                     showHidden = !showHidden; filter()
+                },
+                HomeMenu.Item(6, if (preferences.listView()) "Show as grid" else "Show as list", if (preferences.listView()) R.drawable.ic_dock_apps else R.drawable.ic_dock_list) {
+                    preferences.setListView(!preferences.listView()); recreate()
                 },
                 HomeMenu.Item(2, "Icon shape", R.drawable.ic_apps) { chooseIconShape() },
                 HomeMenu.Item(3, "Background opacity", R.drawable.ic_visibility) { chooseMenuOpacity() },
@@ -188,7 +194,7 @@ class AppDrawerActivity : AppCompatActivity() {
         adapter.items = all.filter { (it.key() in hidden) == showHidden && (q.isEmpty() || it.label.lowercase(Locale.ROOT).contains(q) || it.packageName.lowercase(Locale.ROOT).contains(q)) }
         adapter.notifyDataSetChanged()
         // One row only, exactly as wide as the app grid below: no sideways scrolling.
-        val columns = (binding.list.layoutManager as? GridLayoutManager)?.spanCount ?: 4
+        val columns = gridColumns
         favoritesGrid?.spanCount = columns
         favorites.items = AppFrequency.recent(this, all.filter { it.key() !in hidden }).filter { q.isEmpty() || it.label.contains(q, true) }.take(columns)
         favorites.notifyDataSetChanged()
@@ -252,7 +258,8 @@ class AppDrawerActivity : AppCompatActivity() {
             if (right - left > 0 && (right - left != oldRight - oldLeft || grid.tag != resources.configuration.fontScale)) {
                 val width = (right - left - grid.paddingLeft - grid.paddingRight) / resources.displayMetrics.density
                 val columns = AdaptiveLayout.columns(width, resources.configuration.fontScale, maximum, if (AdaptiveLayout.tablet(this)) 96f else 80f)
-                (grid.layoutManager as GridLayoutManager).spanCount = columns
+                gridColumns = columns
+                (grid.layoutManager as GridLayoutManager).spanCount = if (grid === binding.list && preferences.listView()) 1 else columns
                 grid.tag = resources.configuration.fontScale
             }
         }
@@ -411,7 +418,8 @@ class AppDrawerActivity : AppCompatActivity() {
         appsColumn.addView(apps, android.widget.LinearLayout.LayoutParams(-1, 0, 1f))
         val pageDp = resources.getDimension(R.dimen.page_padding) / resources.displayMetrics.density
         val gridWidth = (resources.configuration.screenWidthDp - pageDp * 2) * (if (!preferences.showRecentFiles()) 1f else if (landscape) .75f else .70f) - 16
-        (binding.list.layoutManager as GridLayoutManager).spanCount = if (!landscape) 4 else (gridWidth / 96).toInt().coerceIn(2, 8)
+        gridColumns = if (!landscape) 4 else (gridWidth / 96).toInt().coerceIn(2, 8)
+        (binding.list.layoutManager as GridLayoutManager).spanCount = if (preferences.listView()) 1 else gridColumns
         binding.search.hint = if (preferences.showRecentFiles()) "Search apps and files" else "Search apps"
     }
     private fun refreshFiles() {
@@ -609,11 +617,24 @@ class AppDrawerActivity : AppCompatActivity() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
             val item = DrawerItemWarmup.take(parent)
             if (this == favorites) item.root.layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            if (this === adapter && preferences.listView()) asListRow(item)
             return Holder(item)
         }
         override fun getItemCount() = items.size
         override fun onBindViewHolder(holder: Holder, position: Int) = holder.bind(items[position])
         override fun onViewRecycled(holder: Holder) { holder.job?.cancel() }
+    }
+    /** List layout: icon, then the name on one line. Long press still opens the app's options. */
+    private fun asListRow(item: ItemAppBinding) {
+        fun dp(v: Int) = ArtworkUi.dp(this, v)
+        item.row.orientation = android.widget.LinearLayout.HORIZONTAL
+        item.row.gravity = android.view.Gravity.CENTER_VERTICAL
+        item.row.setPadding(dp(12), dp(6), dp(12), dp(6))
+        (item.icon.parent as View).layoutParams = android.widget.LinearLayout.LayoutParams(dp(44), dp(44))
+        item.icon.layoutParams = android.widget.FrameLayout.LayoutParams(dp(40), dp(40), android.view.Gravity.CENTER)
+        item.label.layoutParams = android.widget.LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply { marginStart = dp(16) }
+        item.label.gravity = android.view.Gravity.START or android.view.Gravity.CENTER_VERTICAL
+        item.label.maxLines = 1; item.label.textSize = 15f
     }
     private inner class Holder(private val binding: ItemAppBinding) : RecyclerView.ViewHolder(binding.root) {
         var job: Job? = null

@@ -152,11 +152,17 @@ class TileStore(context: Context, private val databaseOverride: android.database
         previous?.let { IconCache.invalidateFile(it); if (it != path) File(it).delete() }
     }
 
+    /**
+     * Icon keeps any banner the tile had, so switching back restores it. A tile that never had
+     * one (added as an icon) is queued for the store's banner when it becomes a banner tile.
+     */
     fun setTileStyle(id: Long, icon: Boolean) {
         db.update(TABLE, ContentValues().apply {
             put("tile_style", if (icon) "icon" else "banner")
             if (icon) put("artwork_origin", "manual")
         }, "id=? AND kind=? AND shortcut_id IS NULL", arrayOf(id.toString(), HomeTile.Kind.APP.name))
+        if (!icon) db.update(TABLE, ContentValues().apply { put("artwork_origin", "pending") },
+            "id=? AND artwork_path IS NULL", arrayOf(id.toString()))
     }
 
     /** Compare-and-set protects a manual selection/reset, including a late download race. */

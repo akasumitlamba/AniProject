@@ -57,11 +57,11 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
 
     fun show() {
         val root = LinearLayout(activity).apply {
-            orientation = LinearLayout.VERTICAL; setPadding(dp(16), dp(16), dp(16), dp(12))
-            background = ArtworkUi.surface(activity)
+            orientation = LinearLayout.VERTICAL; setPadding(dp(20), dp(16), dp(16), dp(12))
+            background = android.graphics.drawable.GradientDrawable().apply { setColor(MaterialUi.SURFACE_CONTAINER); cornerRadius = dp(28).toFloat() }
         }
         val toolbar = LinearLayout(activity).apply { gravity = Gravity.CENTER_VERTICAL }
-        toolbar.addView(ArtworkUi.title(activity, "Banners"), LinearLayout.LayoutParams(0, dp(48), 1f))
+        toolbar.addView(MaterialUi.title(activity, "Banners"), LinearLayout.LayoutParams(0, -2, 1f))
         refreshButton = ArtworkUi.icon(activity, R.drawable.ic_refresh, "Refresh banners") { reload(true, retryOffered) }
         toolbar.addView(refreshButton)
         toolbar.addView(ArtworkUi.icon(activity, R.drawable.ic_more, "More banner options") { anchor ->
@@ -74,25 +74,19 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
         root.addView(toolbar)
         query = EditText(activity).apply {
             hint = "Search banners"; isSingleLine = true; textSize = 16f
-            setTextColor(-1); setHintTextColor(0xffaab4c5.toInt())
-            background = ArtworkUi.surface(activity, 0xff0b1423.toInt())
+            setTextColor(MaterialUi.ON_SURFACE); setHintTextColor(MaterialUi.ON_SURFACE_VARIANT)
+            background = android.graphics.drawable.GradientDrawable().apply { setColor(MaterialUi.SURFACE_HIGH); cornerRadius = dp(28).toFloat() }
             setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_search, 0, 0, 0)
             compoundDrawablePadding = dp(10); setPadding(dp(14), 0, dp(14), 0)
         }
         root.addView(query, LinearLayout.LayoutParams(-1, dp(48)).apply { topMargin = dp(12); bottomMargin = dp(10) })
-        val filters = LinearLayout(activity).apply { gravity = Gravity.CENTER_VERTICAL }
-        lateinit var favourites: MaterialButton
-        lateinit var all: MaterialButton
-        fun updateFilters() {
-            favourites.isChecked = favouritesOnly; all.isChecked = !favouritesOnly
-            favourites.alpha = if (favouritesOnly) 1f else 0.55f
-            all.alpha = if (favouritesOnly) 0.55f else 1f
-        }
-        favourites = ArtworkUi.chip(activity, "For tablets", R.drawable.ic_tv) { favouritesOnly = true; updateFilters(); filter() }.apply { isCheckable = true }
-        all = ArtworkUi.chip(activity, "All", R.drawable.ic_apps) { favouritesOnly = false; updateFilters(); filter() }.apply { isCheckable = true }
-        filters.addView(favourites, LinearLayout.LayoutParams(-2, dp(48)))
-        filters.addView(all, LinearLayout.LayoutParams(-2, dp(48)).apply { marginStart = dp(8) })
-        updateFilters(); root.addView(filters)
+        // Material filter chips: suggested banners first, or the whole store.
+        val filters = MaterialUi.chipGroup(activity)
+        val favourites = MaterialUi.filterChip(activity, "Suggested").apply { id = View.generateViewId(); setOnClickListener { favouritesOnly = true; filter() } }
+        val all = MaterialUi.filterChip(activity, "All banners").apply { id = View.generateViewId(); setOnClickListener { favouritesOnly = false; filter() } }
+        filters.addView(favourites); filters.addView(all)
+        filters.check(if (favouritesOnly) favourites.id else all.id)
+        root.addView(filters)
         status = TextView(activity).apply {
             textSize = 12f; setTextColor(0xffb9ccdc.toInt()); setPadding(dp(4), dp(8), dp(4), dp(8))
             visibility = View.GONE
@@ -200,7 +194,8 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
             val card = LinearLayout(activity).apply {
                 orientation = LinearLayout.VERTICAL; setPadding(dp(6), dp(6), dp(6), dp(6)); isFocusable = true
-                background = activity.getDrawable(R.drawable.bg_home_menu_row)
+                background = android.graphics.drawable.RippleDrawable(android.content.res.ColorStateList.valueOf(0x33FFFFFF),
+                    android.graphics.drawable.GradientDrawable().apply { setColor(MaterialUi.SURFACE_HIGH); cornerRadius = dp(20).toFloat() }, null)
                 layoutParams = RecyclerView.LayoutParams(-1, -2).apply { setMargins(dp(2), dp(2), dp(2), dp(6)) }
             }
             val image = object : androidx.appcompat.widget.AppCompatImageView(activity) {
@@ -208,7 +203,8 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
                     val width = View.MeasureSpec.getSize(widthMeasureSpec)
                     super.onMeasure(widthMeasureSpec, View.MeasureSpec.makeMeasureSpec((width / 1.62f).toInt(), View.MeasureSpec.EXACTLY))
                 }
-            }.apply { scaleType = ImageView.ScaleType.FIT_CENTER; background = ArtworkUi.surface(activity, 0xff0e1628.toInt()); clipToOutline = true }
+            }.apply { scaleType = ImageView.ScaleType.FIT_CENTER; clipToOutline = true
+                background = android.graphics.drawable.GradientDrawable().apply { setColor(MaterialUi.SURFACE); cornerRadius = dp(14).toFloat() } }
             val label = TextView(activity).apply { setTextColor(-1); textSize = 12f; maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END; setPadding(dp(4), dp(8), dp(4), dp(6)); compoundDrawablePadding = dp(4) }
             val spinner = android.widget.ProgressBar(activity).apply {
                 isIndeterminate = true; indeterminateTintList = android.content.res.ColorStateList.valueOf(0x99FFFFFF.toInt())

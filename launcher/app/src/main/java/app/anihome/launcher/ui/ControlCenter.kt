@@ -164,9 +164,13 @@ internal class ControlCenter(
             sliders.addView(volumeRow, LinearLayout.LayoutParams(-1, dp(34)).apply { topMargin = dp(8) })
         }
     }
+    /** Like Android's shade: every time the panel opens it starts collapsed. */
+    private var expandedNow = false
     private var expanded: Boolean
-        get() = alwaysExpanded || prefs.getBoolean("cc_expanded", false)
-        set(value) { prefs.edit().putBoolean("cc_expanded", value).apply() }
+        get() = alwaysExpanded || expandedNow
+        set(value) { expandedNow = value }
+    val isExpanded get() = expanded
+    fun expandControls() { if (!expanded) applyExpanded(true) }
 
     init { build() }
 

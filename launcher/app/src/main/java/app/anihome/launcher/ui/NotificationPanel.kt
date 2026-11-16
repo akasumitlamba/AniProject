@@ -68,7 +68,10 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
         androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->
             val safe = insets.getInsets(androidx.core.view.WindowInsetsCompat.Type.navigationBars() or androidx.core.view.WindowInsetsCompat.Type.displayCutout())
             val navigation = androidx.core.view.ViewCompat.getRootWindowInsets(activity.window.decorView)?.getInsetsIgnoringVisibility(androidx.core.view.WindowInsetsCompat.Type.navigationBars())?.bottom ?: 0
-            view.setPadding(dp(12) + safe.left, dp(8) + safe.top, dp(12) + safe.right, dp(8) + maxOf(safe.bottom, navigation))
+            // Keep the status bar's height clear at the top even while it is hidden: the top edge
+            // belongs to the pull-down gesture, so no button should sit under it.
+            val statusBar = androidx.core.view.ViewCompat.getRootWindowInsets(activity.window.decorView)?.getInsetsIgnoringVisibility(androidx.core.view.WindowInsetsCompat.Type.statusBars())?.top ?: 0
+            view.setPadding(dp(12) + safe.left, dp(8) + maxOf(safe.top, statusBar), dp(12) + safe.right, dp(8) + maxOf(safe.bottom, navigation))
             insets
         }
         // Settings mode keeps a plain title; notifications mode shows the Control Center instead.
@@ -145,7 +148,7 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
         // closes it once the list is at its end, like Android's shade. Mid-list it still scrolls.
         val swipeUpCloses = direction == "DOWN" || SidePanelLayout.phone(activity)
         list.addOnItemTouchListener(object : RecyclerView.SimpleOnItemTouchListener() {
-            private var startX = 0f; private var startY = 0f; private var closing = false
+            private var startX = 0f; private var startY = 0f; private var closing = false; private var atTop = true
             override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
                 // Only touches that start on the Control Center (top of the header) count.
                 val header = center.view
@@ -153,9 +156,12 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
                     val at = IntArray(2).also(header::getLocationOnScreen); val rvAt = IntArray(2).also(rv::getLocationOnScreen)
                     val top = at[1] - rvAt[1]; e.y >= top && e.y <= top + header.height
                 }
-                if (!wide && center.interceptSwipe(e, overControls)) { closing = false; return true }
+                // Swipes anywhere work while the list is at its top: down expands the controls, up
+                // collapses them, and a further swipe up (controls collapsed, list at its end) closes.
+                if (e.actionMasked == MotionEvent.ACTION_DOWN) atTop = !rv.canScrollVertically(-1)
+                if (!wide && center.interceptSwipe(e, overControls || atTop)) { closing = false; return true }
                 when (e.actionMasked) {
-                    MotionEvent.ACTION_DOWN -> { startX = e.x; startY = e.y; closing = swipeUpCloses && !rv.canScrollVertically(1) }
+                    MotionEvent.ACTION_DOWN -> { startX = e.x; startY = e.y; closing = swipeUpCloses && !rv.canScrollVertically(1) && (wide || !center.isExpanded) }
                     MotionEvent.ACTION_MOVE -> if (closing) {
                         val dy = e.y - startY; val dx = e.x - startX
                         if (dy > dp(8) || kotlin.math.abs(dx) > kotlin.math.abs(dy) * 1.2f && kotlin.math.abs(dx) > dp(16)) closing = false
@@ -241,7 +247,7 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
         dialog = sheet
         sheet.setCancelable(true)
         sheet.setCanceledOnTouchOutside(true)
-        sheet.setOnDismissListener { styleCleanup?.invoke(); styleCleanup = null; app.anihome.launcher.controls.SystemBar.suppress("panel", false); onDismissed?.invoke(); center.detach(); controlCenter = null; quickSettings.radioParent = null; quickSettings.onSectionChanged = null; quickSettings.detach(); collector?.cancel(); collector = null; adapter.items = emptyList(); expandedKeys.clear(); dialog = null
+        sheet.setOnDismissListener { styleCleanup?.invoke(); styleCleanup = null; app.anihome.launcher.controls.SystemBar.onTopPull = null; app.anihome.launcher.controls.SystemBar.suppress("panel", false); onDismissed?.invoke(); center.detach(); controlCenter = null; quickSettings.radioParent = null; quickSettings.onSectionChanged = null; quickSettings.detach(); collector?.cancel(); collector = null; adapter.items = emptyList(); expandedKeys.clear(); dialog = null
             afterDismiss?.let { next -> afterDismiss = null; activity.window.decorView.post(next) } }
         sheet.window?.let { SidePanelLayout.apply(activity, it, rightSide, wide); it.setWindowAnimations(0) }
         sheet.show()
@@ -257,6 +263,7 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
         }
         PanelStyle.listeners += styleListener
         styleCleanup = { PanelStyle.listeners -= styleListener }
+        app.anihome.launcher.controls.SystemBar.onTopPull = { activity.runOnUiThread { controlCenter?.expandControls() } }
         app.anihome.launcher.controls.SystemBar.suppress("panel", true)
         MotionUi.enter(root, direction)
         if (heading.visibility != View.VISIBLE) center.attach()

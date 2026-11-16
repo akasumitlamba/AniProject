@@ -51,7 +51,7 @@ class TileArtworkActivity : AppCompatActivity() {
         val tile = TileStore(this).byId(tileId) ?: run { finish(); return }
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setBackgroundColor(0xff0b1423.toInt())
+            setBackgroundColor(MaterialUi.SURFACE)
             setPadding(dp(20), dp(16), dp(20), dp(16))
         }
         val toolbar = LinearLayout(this).apply { gravity = Gravity.CENTER_VERTICAL }
@@ -60,21 +60,21 @@ class TileArtworkActivity : AppCompatActivity() {
         toolbar.addView(ArtworkUi.icon(this, R.drawable.ic_refresh, "Reset crop") { crop.resetCrop() })
         root.addView(toolbar)
         val sources = LinearLayout(this).apply { gravity = Gravity.CENTER; setPadding(0, dp(12), 0, dp(8)) }
-        sources.addView(ArtworkUi.chip(this, "Store", R.drawable.ic_apps) {
+        sources.addView(MaterialUi.tonal(this, "Store", R.drawable.ic_apps) {
             BannerStoreDialog(this@TileArtworkActivity, tile,
                 onSelect = { file -> load(Uri.fromFile(file)) },
                 onGallery = { picker.launch("image/*") },
                 onAI = { showBannerPrompt(BannerPrompt.forTile(tile.label, tile.packageName ?: tile.url)) }).show()
         }, LinearLayout.LayoutParams(0, dp(48), 1f))
-        choose = ArtworkUi.chip(this, "Gallery", R.drawable.ic_gallery) { picker.launch("image/*") }
+        choose = MaterialUi.tonal(this, "Gallery", R.drawable.ic_gallery) { picker.launch("image/*") }
         sources.addView(choose, LinearLayout.LayoutParams(0, dp(48), 1f).apply { marginStart = dp(8) })
-        sources.addView(ArtworkUi.chip(this, "AI", R.drawable.ic_sparkles) {
+        sources.addView(MaterialUi.tonal(this, "AI", R.drawable.ic_sparkles) {
             showBannerPrompt(BannerPrompt.forTile(tile.label, tile.packageName ?: tile.url))
         }, LinearLayout.LayoutParams(0, dp(48), 1f).apply { marginStart = dp(8) })
         root.addView(sources)
         // The banner on Home never changes by itself; this fetches the store's current one on request.
         lateinit var latest: com.google.android.material.button.MaterialButton
-        latest = ArtworkUi.chip(this, "Get latest banner from store", R.drawable.ic_refresh) {
+        latest = MaterialUi.tonal(this, "Get latest banner from store", R.drawable.ic_refresh) {
             latest.isEnabled = false; latest.text = "Checking the store…"
             lifecycleScope.launch {
                 val result = withContext(kotlinx.coroutines.Dispatchers.IO) { runCatching {
@@ -100,7 +100,7 @@ class TileArtworkActivity : AppCompatActivity() {
             text = "Drag to move · Pinch to zoom"; textSize = 13f; gravity = Gravity.CENTER
             setTextColor(0xffaabbd0.toInt()); setPadding(0, dp(10), 0, dp(12))
         })
-        save = ArtworkUi.chip(this, "Use banner", R.drawable.ic_check) { saveArtwork() }.apply { isEnabled = false }
+        save = MaterialUi.filled(this, "Use banner", R.drawable.ic_check) { saveArtwork() }.apply { isEnabled = false }
         root.addView(save, LinearLayout.LayoutParams(-1, dp(48)))
         setContentView(root)
         ViewCompat.setOnApplyWindowInsetsListener(root) { view, insets ->

@@ -194,10 +194,11 @@ class HomeActivity : AppCompatActivity() {
     private val notificationBadge by lazy { BadgeUi.create(this) }
     private val dockStatus by lazy { DockStatus(this) }
     private val dockClock by lazy { DockClock(this) }
+    private val dockMessage by lazy { DockMessage(this) }
     private val dockAppearance by lazy { DockAppearance(this, binding.controlRail) }
     /** AniHome's panel replaces the status bar on Home; with Android's panel, Android's bar stays. */
     private fun hideStatusBar() {
-        if (PanelStyle.custom(this)) HomeFullscreen.apply(window)
+        if (PanelStyle.custom(this) && !homePreferences.getBoolean(HOME_STATUS_BAR, false)) HomeFullscreen.apply(window)
         else {
             window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN)
             androidx.core.view.WindowInsetsControllerCompat(window, window.decorView).show(WindowInsetsCompat.Type.statusBars())
@@ -241,7 +242,7 @@ class HomeActivity : AppCompatActivity() {
         val iconShape = app.anihome.launcher.data.IconShape.selected(this)
         val vertical = resources.getBoolean(R.bool.vertical_controls)
         val controlSize = if (vertical) 52 else 44
-        val showSearch = homePreferences.getBoolean("show_dock_search", true)
+        val showSearch = homePreferences.getBoolean("show_dock_search", false)
         val showRecents = !tiles.editMode && homePreferences.getBoolean("show_recents_button", AdaptiveLayout.tablet(this@HomeActivity))
         val all = listOf(binding.railBrand, binding.btnSearch, binding.btnAdd, binding.btnNotifications,
             binding.btnSettings, binding.btnEdit, binding.btnMore, binding.btnApps, clock, recents, notificationBadge, notificationControl, dockStatus)
@@ -281,14 +282,16 @@ class HomeActivity : AppCompatActivity() {
         binding.btnNotifications.visibility = View.VISIBLE
         notificationControl.addView(binding.btnNotifications, FrameLayout.LayoutParams(-1, -1))
         notificationControl.addView(notificationBadge, FrameLayout.LayoutParams(-2, dp(16), Gravity.TOP or Gravity.END))
-        if (!vertical) add(rail, notificationControl)
+        val showMessages = homePreferences.getBoolean(DOCK_SHOW_MESSAGES, true)
+        if (!vertical && showMessages) add(rail, notificationControl)
         notificationBadge.textSize = 9f
         notificationBadge.minWidth = dp(if (vertical) 16 else 20)
         notificationBadge.setPadding(dp(if (vertical) 1 else 4), 0, dp(if (vertical) 1 else 4), 0)
         (dockClock.parent as? ViewGroup)?.removeView(dockClock)
         dockClock.vertical = vertical
         dockClock.setOnClickListener { openNotifications() }
-        rail.addView(dockClock, LinearLayout.LayoutParams(if (vertical) -1 else -2, if (vertical) -2 else -1).apply {
+        dockClock.layout()
+        if (dockClock.showsAnything) rail.addView(dockClock, LinearLayout.LayoutParams(if (vertical) -1 else -2, if (vertical) -2 else -1).apply {
             if (vertical) { topMargin = dp(6); bottomMargin = dp(10) } else { marginStart = dp(4); marginEnd = dp(8) }
         })
         binding.btnSearch.setImageResource(R.drawable.ic_google)
@@ -365,11 +368,23 @@ class HomeActivity : AppCompatActivity() {
             isFillViewport = true; isHorizontalScrollBarEnabled = false
             addView(group, ViewGroup.LayoutParams(-2, -1))
         }
-        rail.addView(area, if (vertical) LinearLayout.LayoutParams(-1, 0, 1f) else LinearLayout.LayoutParams(0, -1, 1f))
-        DockCentering.attach(rail, area, group, vertical)
+        // Optional message of the user's own takes the free space; apps then sit right beside it.
+        val message = homePreferences.getString(DockMessage.KEY, "").orEmpty().trim()
+        if (message.isNotEmpty()) {
+            (dockMessage.parent as? ViewGroup)?.removeView(dockMessage)
+            dockMessage.vertical = vertical; dockMessage.text = message
+            rail.addView(dockMessage, if (vertical) LinearLayout.LayoutParams(-1, 0, 1f).apply { topMargin = dp(4); bottomMargin = dp(4) }
+                else LinearLayout.LayoutParams(0, -1, 1f).apply { marginStart = dp(4); marginEnd = dp(4) })
+            rail.addView(area, if (vertical) LinearLayout.LayoutParams(-1, -2) else LinearLayout.LayoutParams(-2, -1))
+        } else {
+            rail.addView(area, if (vertical) LinearLayout.LayoutParams(-1, 0, 1f) else LinearLayout.LayoutParams(0, -1, 1f))
+            DockCentering.attach(rail, area, group, vertical)
+        }
         if (showRecents) add(rail, recents)
-        if (vertical) add(rail, notificationControl)
+        if (vertical && showMessages) add(rail, notificationControl)
         add(rail, binding.btnApps)
+        // The app menu button shows how the menu lists apps: dots grid, or dot-and-line list.
+        binding.btnApps.setImageResource(if (app.anihome.launcher.data.DrawerPreferences(this).listView()) R.drawable.ic_dock_list else R.drawable.ic_dock_apps)
         // Inset the visible circle equally while preserving the full button touch target.
         binding.btnApps.background = android.graphics.drawable.InsetDrawable(
             androidx.core.content.ContextCompat.getDrawable(this, R.drawable.bg_dock_apps), dp(4)
@@ -578,6 +593,8 @@ class HomeActivity : AppCompatActivity() {
         super.onResume()
         val shape = app.anihome.launcher.data.IconShape.selected(this).name
         if (appliedIconShape != shape) { appliedIconShape = shape; tiles.notifyDataSetChanged() }
+        // Grid/list may have been switched from the app menu itself.
+        binding.btnApps.setImageResource(if (app.anihome.launcher.data.DrawerPreferences(this).listView()) R.drawable.ic_dock_list else R.drawable.ic_dock_apps)
         hideStatusBar()
         RotationControl.applyHome(this)
         binding.root.post { if (!isFinishing) FirstRunSetup.maybeShow(this, ::isDefaultHome, ::openHomeSettings) }
@@ -741,6 +758,8 @@ class HomeActivity : AppCompatActivity() {
                 }
                 board.priority = "tile:${tile.id}"
                 TileEvents.notifyChanged()
+                // Became a banner without one: fetch the store's banner now (shows a spinner meanwhile).
+                if (tile.iconOnly) app.anihome.launcher.banners.AutomaticBanners.enqueue(applicationContext)
             }
         }
         actions += HomeMenu.Item(1, getString(R.string.action_rename), R.drawable.ic_edit, inline = true, short = "Rename") { rename(tile) }
@@ -910,6 +929,9 @@ class HomeActivity : AppCompatActivity() {
                 homePreferences.edit().putBoolean("layout_locked", it).apply()
                 if (it && tiles.editMode) setEditMode(false)
             }
+            panel.toggle(this, "Show status bar on Home", homePreferences.getBoolean(HOME_STATUS_BAR, false)) {
+                homePreferences.edit().putBoolean(HOME_STATUS_BAR, it).apply(); hideStatusBar()
+            }
             panel.action(this, "Choose wallpaper") { ui.startActivity(Intent(ui, WallpaperActivity::class.java)) }
             panel.heading(this, "Gestures on Home")
             panel.toggle(this, "Double tap to lock", homePreferences.getBoolean("double_tap_lock", HomeControlsService.connected())) {
@@ -932,9 +954,15 @@ class HomeActivity : AppCompatActivity() {
             panel.toggle(this, "Show recent apps button", homePreferences.getBoolean("show_recents_button", AdaptiveLayout.tablet(ui))) {
                 homePreferences.edit().putBoolean("show_recents_button", it).apply(); configureRail()
             }
-            panel.toggle(this, "Show search button", homePreferences.getBoolean("show_dock_search", true)) {
+            panel.heading(this, "Show in dock")
+            listOf("Time" to DockClock.SHOW_TIME, "Date" to DockClock.SHOW_DATE, "Battery" to DockClock.SHOW_BATTERY, "Messages indicator" to DOCK_SHOW_MESSAGES).forEach { (name, key) ->
+                panel.toggle(this, name, homePreferences.getBoolean(key, true)) { homePreferences.edit().putBoolean(key, it).apply(); configureRail() }
+            }
+            panel.toggle(this, "Search button", homePreferences.getBoolean("show_dock_search", false)) {
                 homePreferences.edit().putBoolean("show_dock_search", it).apply(); configureRail()
             }
+            panel.action(this, "Dock message") { editDockMessage(ui) }
+            panel.text(this, "A short message of your own in the dock. Longer messages slide through like an LED board.")
             val browsers = DockBrowser.choices(ui)
             panel.choice(this, "Web browser", browsers.map { it.label }, browsers.indexOfFirst { it.packageName == DockBrowser.selected(ui) }.coerceAtLeast(0)) {
                 DockBrowser.select(ui, browsers[it].packageName); configureRail()
@@ -954,6 +982,9 @@ class HomeActivity : AppCompatActivity() {
         // 3. App menu.
         panel.section("App menu", R.drawable.ic_settings_apps) {
             ShapePicker.row(ui, this) { tiles.notifyDataSetChanged(); configureRail() }
+            panel.choice(this, "Show apps as", listOf("Grid", "List"), if (app.anihome.launcher.data.DrawerPreferences(ui).listView()) 1 else 0) {
+                app.anihome.launcher.data.DrawerPreferences(ui).setListView(it == 1); configureRail()
+            }
             panel.toggle(this, "Show recent apps", app.anihome.launcher.data.DrawerPreferences(ui).showRecentApps()) {
                 app.anihome.launcher.data.DrawerPreferences(ui).setShowRecentApps(it)
             }
@@ -1102,6 +1133,18 @@ class HomeActivity : AppCompatActivity() {
                 panel.action(this, "Transfer watch history to AniBrave") { notificationPanel.dismiss(); if (ui === this@HomeActivity) transferHistory() else { startActivity(Intent(this@HomeActivity, HomeActivity::class.java).putExtra(EXTRA_TRANSFER, true)); ui.finish() } }
         }
         panel.attach(parent)
+    }
+
+    private fun editDockMessage(ui: AppCompatActivity) {
+        val input = android.widget.EditText(ui).apply {
+            setText(homePreferences.getString(DockMessage.KEY, "")); hint = "Type a message"; isSingleLine = true
+            filters = arrayOf(android.text.InputFilter.LengthFilter(120)); setSelection(text.length)
+        }
+        val box = android.widget.FrameLayout(ui).apply { setPadding(dp(24), dp(8), dp(24), 0); addView(input) }
+        MaterialAlertDialogBuilder(ui).setTitle("Dock message").setView(box)
+            .setPositiveButton("Save") { _, _ -> homePreferences.edit().putString(DockMessage.KEY, input.text.toString().trim()).apply(); configureRail() }
+            .setNeutralButton("Remove") { _, _ -> homePreferences.edit().remove(DockMessage.KEY).apply(); configureRail() }
+            .setNegativeButton("Cancel", null).show()
     }
 
     private fun chooseBannerStore(ui: AppCompatActivity = this) {
@@ -1311,6 +1354,8 @@ class HomeActivity : AppCompatActivity() {
         }
     }
     companion object {
+        const val DOCK_SHOW_MESSAGES = "dock_show_messages"
+        const val HOME_STATUS_BAR = "home_status_bar"
         const val EXTRA_OPEN_SETTINGS = "anihome.open_settings"
         const val EXTRA_TRANSFER = "anihome.transfer_history"
         /** The running launcher, which owns the dock/tiles that settings change. */

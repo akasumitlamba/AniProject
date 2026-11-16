@@ -11,6 +11,9 @@ class DrawerPreferences(context: Context) {
     fun setShowRecentFiles(show: Boolean) { preferences.edit().putBoolean("show_recent_files", show).apply() }
     fun showRecentApps(): Boolean = preferences.getBoolean("show_recent_apps", true)
     fun setShowRecentApps(show: Boolean) { preferences.edit().putBoolean("show_recent_apps", show).apply() }
+    /** "grid" (default) or "list": icon and name on one line. Recent apps stay a row of icons. */
+    fun listView(): Boolean = preferences.getString("app_layout", "grid") == "list"
+    fun setListView(list: Boolean) { preferences.edit().putString("app_layout", if (list) "list" else "grid").apply() }
     fun hidden(): Set<String> = preferences.getStringSet("hidden", emptySet())?.toSet().orEmpty()
     fun hide(key: String, hidden: Boolean) {
         val updated = hidden().toMutableSet()

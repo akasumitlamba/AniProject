@@ -3,7 +3,7 @@ package app.anihome.launcher.ui
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
+import android.graphics.DashPathEffect
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
@@ -12,121 +12,136 @@ import android.view.ScaleGestureDetector
 import android.view.View
 
 /**
- * Wallpaper framing for both orientations. The frame has this device's exact screen shape
- * (portrait, or the same screen turned sideways); the picture moves and zooms under it. Each
- * orientation remembers its own position and zoom, so the two can show different areas.
+ * The whole picture, with two frames on it at once: this screen held upright (portrait) and
+ * turned sideways (landscape), both at the screen's exact shape. Touch a frame to pick it,
+ * drag to move it and pinch to make it smaller (zoom in) or bigger (zoom out). Each frame
+ * is the area shown in that orientation.
  */
 internal class WallpaperCropView(context: Context, private val screenShort: Int, private val screenLong: Int) : View(context) {
     enum class Orientation { PORTRAIT, LANDSCAPE }
 
-    /** Position as the frame centre in image fractions, plus zoom over the smallest fitting scale. */
-    private class Framing(var cx: Float = .5f, var cy: Float = .5f, var zoom: Float = 1f)
+    /** A frame: centre in image pixels and zoom (1 = the largest frame that fits the picture). */
+    private class Frame(var cx: Float = 0f, var cy: Float = 0f, var zoom: Float = 1f)
 
     private var bitmap: Bitmap? = null
-    private val framings = mutableMapOf(Orientation.PORTRAIT to Framing(), Orientation.LANDSCAPE to Framing())
+    private val frames = mapOf(Orientation.PORTRAIT to Frame(), Orientation.LANDSCAPE to Frame())
+    /** The frame being adjusted. */
     var orientation = Orientation.PORTRAIT
-        set(value) { field = value; layoutFrame(); invalidate() }
-    private val frame = RectF()
+        set(value) { field = value; onSelect?.invoke(value); invalidate() }
+    var onSelect: ((Orientation) -> Unit)? = null
+
+    private val density = resources.displayMetrics.density
+    private val imageRect = RectF()
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.FILTER_BITMAP_FLAG)
-    private val shade = Paint().apply { color = 0xB3000000.toInt() }
-    private val outline = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE; style = Paint.Style.STROKE; strokeWidth = 3f }
+    private val shade = Paint().apply { color = 0x99000000.toInt() }
+    private val stroke = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE }
+    private val tag = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val tagText = Paint(Paint.ANTI_ALIAS_FLAG).apply { textSize = 12f * resources.displayMetrics.scaledDensity; color = 0xFF0B1220.toInt(); isFakeBoldText = true }
     private var lastX = 0f
     private var lastY = 0f
 
-    private val current get() = framings.getValue(orientation)
     private fun aspect(o: Orientation) = if (o == Orientation.PORTRAIT) screenShort.toFloat() / screenLong else screenLong.toFloat() / screenShort
-    private fun minScale(image: Bitmap) = maxOf(frame.width() / image.width, frame.height() / image.height)
-    private fun scale(image: Bitmap) = minScale(image) * current.zoom
+    private fun color(o: Orientation) = if (o == Orientation.PORTRAIT) PORTRAIT_COLOR else LANDSCAPE_COLOR
+
+    /** Largest frame of this shape inside the picture, in image pixels. */
+    private fun maxSize(image: Bitmap, o: Orientation): Pair<Float, Float> {
+        val a = aspect(o)
+        var w = image.width.toFloat(); var h = w / a
+        if (h > image.height) { h = image.height.toFloat(); w = h * a }
+        return w to h
+    }
+
+    /** A frame's area in image pixels, kept inside the picture. */
+    private fun area(image: Bitmap, o: Orientation): RectF {
+        val f = frames.getValue(o)
+        val (mw, mh) = maxSize(image, o)
+        val w = mw / f.zoom; val h = mh / f.zoom
+        f.cx = f.cx.coerceIn(w / 2f, image.width - w / 2f); f.cy = f.cy.coerceIn(h / 2f, image.height - h / 2f)
+        return RectF(f.cx - w / 2f, f.cy - h / 2f, f.cx + w / 2f, f.cy + h / 2f)
+    }
+    private fun toView(r: RectF): RectF {
+        val image = bitmap ?: return RectF()
+        val k = imageRect.width() / image.width
+        return RectF(imageRect.left + r.left * k, imageRect.top + r.top * k, imageRect.left + r.right * k, imageRect.top + r.bottom * k)
+    }
 
     private val zoomDetector = ScaleGestureDetector(context, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
-            val image = bitmap ?: return true
-            val old = scale(image)
-            current.zoom = (current.zoom * detector.scaleFactor).coerceIn(1f, 6f)
-            val now = scale(image)
-            // Keep the point under the fingers still while zooming.
-            val focusImageX = (detector.focusX - left(image, old)) / old
-            val focusImageY = (detector.focusY - top(image, old)) / old
-            val newLeft = detector.focusX - focusImageX * now
-            val newTop = detector.focusY - focusImageY * now
-            current.cx = (frame.centerX() - newLeft) / (image.width * now)
-            current.cy = (frame.centerY() - newTop) / (image.height * now)
-            constrain(image); invalidate(); return true
+            // Fingers apart = a bigger frame (zoomed out); together = smaller (zoomed in).
+            val f = frames.getValue(orientation)
+            f.zoom = (f.zoom / detector.scaleFactor).coerceIn(1f, 6f); invalidate(); return true
         }
     })
 
     fun setImage(image: Bitmap) {
         bitmap?.takeIf { it !== image }?.recycle()
         bitmap = image
-        framings.values.forEach { it.cx = .5f; it.cy = .5f; it.zoom = 1f }
-        invalidate()
+        frames.values.forEach { it.cx = image.width / 2f; it.cy = image.height / 2f; it.zoom = 1f }
+        layoutImage(); invalidate()
     }
-    fun reset() { current.cx = .5f; current.cy = .5f; current.zoom = 1f; invalidate() }
+    fun reset() { bitmap?.let { b -> frames.getValue(orientation).apply { cx = b.width / 2f; cy = b.height / 2f; zoom = 1f } }; invalidate() }
 
     /** The chosen area in image pixels for one orientation. */
     fun crop(o: Orientation): Rect? {
         val image = bitmap ?: return null
-        val a = aspect(o)
-        val f = framings.getValue(o)
-        // The visible window in image pixels: the largest [a]-shaped area, divided by zoom.
-        var w = image.width.toFloat(); var h = w / a
-        if (h > image.height) { h = image.height.toFloat(); w = h * a }
-        w /= f.zoom; h /= f.zoom
-        val l = (f.cx * image.width - w / 2f).coerceIn(0f, image.width - w)
-        val t = (f.cy * image.height - h / 2f).coerceIn(0f, image.height - h)
-        return Rect(l.toInt(), t.toInt(), (l + w).toInt().coerceAtMost(image.width), (t + h).toInt().coerceAtMost(image.height))
+        val r = area(image, o)
+        return Rect(r.left.toInt().coerceAtLeast(0), r.top.toInt().coerceAtLeast(0), r.right.toInt().coerceAtMost(image.width), r.bottom.toInt().coerceAtMost(image.height))
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) { layoutFrame() }
-
-    private fun layoutFrame() {
-        if (width == 0 || height == 0) return
-        val a = aspect(orientation)
-        val margin = 24f * resources.displayMetrics.density
-        val availW = width - margin * 2; val availH = height - margin * 2
-        var fw = availW; var fh = fw / a
-        if (fh > availH) { fh = availH; fw = fh * a }
-        frame.set((width - fw) / 2f, (height - fh) / 2f, (width + fw) / 2f, (height + fh) / 2f)
-        bitmap?.let(::constrain)
-    }
-
-    private fun left(image: Bitmap, s: Float) = frame.centerX() - current.cx * image.width * s
-    private fun top(image: Bitmap, s: Float) = frame.centerY() - current.cy * image.height * s
-
-    private fun constrain(image: Bitmap) {
-        val s = scale(image)
-        val halfW = frame.width() / 2f / (image.width * s); val halfH = frame.height() / 2f / (image.height * s)
-        current.cx = current.cx.coerceIn(halfW, 1f - halfW)
-        current.cy = current.cy.coerceIn(halfH, 1f - halfH)
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) = layoutImage()
+    private fun layoutImage() {
+        val image = bitmap ?: return
+        if (width == 0) return
+        val margin = 12f * density
+        val k = minOf((width - 2 * margin) / image.width, (height - 2 * margin) / image.height)
+        val w = image.width * k; val h = image.height * k
+        imageRect.set((width - w) / 2f, (height - h) / 2f, (width + w) / 2f, (height + h) / 2f)
     }
 
     override fun onDraw(canvas: Canvas) {
-        canvas.drawColor(0xff101218.toInt())
         val image = bitmap ?: return
-        val s = scale(image)
-        val l = left(image, s); val t = top(image, s)
-        // The whole picture stays visible, dimmed outside the screen frame, so you can see what to move toward.
-        canvas.drawBitmap(image, null, RectF(l, t, l + image.width * s, t + image.height * s), paint)
-        canvas.drawRect(0f, 0f, width.toFloat(), frame.top, shade)
-        canvas.drawRect(0f, frame.bottom, width.toFloat(), height.toFloat(), shade)
-        canvas.drawRect(0f, frame.top, frame.left, frame.bottom, shade)
-        canvas.drawRect(frame.right, frame.top, width.toFloat(), frame.bottom, shade)
-        val r = 18f * resources.displayMetrics.density * (frame.width() / maxOf(screenShort, 1) * 2f).coerceIn(.3f, 1f)
-        canvas.drawRoundRect(frame, r, r, outline)
+        canvas.drawBitmap(image, null, imageRect, paint)
+        // Dim what neither orientation shows.
+        val inactive = if (orientation == Orientation.PORTRAIT) Orientation.LANDSCAPE else Orientation.PORTRAIT
+        val a = toView(area(image, orientation)); val b = toView(area(image, inactive))
+        canvas.save()
+        canvas.clipOutRect(a); canvas.clipOutRect(b)
+        canvas.drawRect(imageRect, shade)
+        canvas.restore()
+        drawFrame(canvas, b, inactive, active = false)
+        drawFrame(canvas, a, orientation, active = true)
+    }
+
+    private fun drawFrame(canvas: Canvas, r: RectF, o: Orientation, active: Boolean) {
+        val radius = 10f * density
+        stroke.color = color(o); stroke.strokeWidth = (if (active) 3f else 2f) * density
+        stroke.pathEffect = if (active) null else DashPathEffect(floatArrayOf(8f * density, 6f * density), 0f)
+        stroke.alpha = if (active) 255 else 200
+        canvas.drawRoundRect(r, radius, radius, stroke)
+        // Label tab on the frame's top edge.
+        val label = if (o == Orientation.PORTRAIT) "Portrait" else "Landscape"
+        val tw = tagText.measureText(label) + 16f * density; val th = tagText.textSize + 10f * density
+        val left = r.left + 8f * density; val top = r.top + 8f * density
+        tag.color = color(o); tag.alpha = if (active) 255 else 190
+        canvas.drawRoundRect(RectF(left, top, left + tw, top + th), th / 2, th / 2, tag)
+        canvas.drawText(label, left + 8f * density, top + th / 2 - (tagText.descent() + tagText.ascent()) / 2, tagText)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
         val image = bitmap ?: return true
         zoomDetector.onTouchEvent(event)
         when (event.actionMasked) {
-            MotionEvent.ACTION_DOWN -> { parent.requestDisallowInterceptTouchEvent(true); lastX = event.x; lastY = event.y }
+            MotionEvent.ACTION_DOWN -> {
+                parent.requestDisallowInterceptTouchEvent(true); lastX = event.x; lastY = event.y
+                // Touching the other frame (and not the current one) selects it.
+                val other = if (orientation == Orientation.PORTRAIT) Orientation.LANDSCAPE else Orientation.PORTRAIT
+                if (!toView(area(image, orientation)).contains(event.x, event.y) && toView(area(image, other)).contains(event.x, event.y)) orientation = other
+            }
             MotionEvent.ACTION_MOVE -> {
                 if (!zoomDetector.isInProgress && event.pointerCount == 1) {
-                    val s = scale(image)
-                    // Dragging moves the picture; the frame (the screen) stays put.
-                    current.cx -= (event.x - lastX) / (image.width * s)
-                    current.cy -= (event.y - lastY) / (image.height * s)
-                    constrain(image); invalidate()
+                    val k = imageRect.width() / image.width
+                    frames.getValue(orientation).apply { cx += (event.x - lastX) / k; cy += (event.y - lastY) / k }
+                    invalidate()
                 }
                 lastX = event.x; lastY = event.y
             }
@@ -140,4 +155,9 @@ internal class WallpaperCropView(context: Context, private val screenShort: Int,
         return true
     }
     override fun performClick(): Boolean { super.performClick(); return true }
+
+    companion object {
+        const val PORTRAIT_COLOR = 0xFFA8C7FA.toInt()
+        const val LANDSCAPE_COLOR = 0xFFFFB68A.toInt()
+    }
 }

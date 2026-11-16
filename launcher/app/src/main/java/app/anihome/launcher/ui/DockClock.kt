@@ -50,29 +50,37 @@ internal class DockClock(context: Context) : LinearLayout(context) {
     init { isClickable = true; isFocusable = true; layout() }
     private fun dp(v: Int) = ArtworkUi.dp(context, v)
 
-    private fun layout() {
+    // A getter, not a stored property: layout() already runs from init, above this line.
+    private val prefs get() = context.getSharedPreferences("anihome", Context.MODE_PRIVATE)
+    /** Each part can be hidden in AniHome Settings → Dock. */
+    val showsAnything get() = prefs.getBoolean(SHOW_TIME, true) || prefs.getBoolean(SHOW_DATE, true) || prefs.getBoolean(SHOW_BATTERY, true)
+
+    fun layout() {
         removeAllViews()
+        val showTime = prefs.getBoolean(SHOW_TIME, true); val showDate = prefs.getBoolean(SHOW_DATE, true); val showBattery = prefs.getBoolean(SHOW_BATTERY, true)
         orientation = VERTICAL
         gravity = if (vertical) Gravity.CENTER else Gravity.START or Gravity.CENTER_VERTICAL
         time.textSize = if (vertical) 17f else 18f
         date.textSize = 11f
         time.gravity = gravity; date.gravity = gravity
         listOf(time, date, barView, percent).forEach { (it.parent as? android.view.ViewGroup)?.removeView(it) }
-        addView(time, LayoutParams(-2, -2))
+        if (showTime) addView(time, LayoutParams(-2, -2))
         // Battery icon + percentage on one line.
         val battery = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
         battery.addView(barView, LayoutParams(dp(22), dp(11)))
         battery.addView(percent, LayoutParams(-2, -2).apply { marginStart = dp(4) })
+        // With the time hidden, the date takes its larger size so the block still reads well.
+        if (!showTime) date.textSize = if (vertical) 13f else 14f
         if (vertical) {
             // Side dock: narrow, so time / date / battery stack.
-            addView(date, LayoutParams(-2, -2).apply { topMargin = dp(1) })
-            addView(battery, LayoutParams(-2, -2).apply { topMargin = dp(4) })
+            if (showDate) addView(date, LayoutParams(-2, -2).apply { topMargin = dp(if (showTime) 1 else 0) })
+            if (showBattery) addView(battery, LayoutParams(-2, -2).apply { topMargin = dp(4) })
         } else {
             // Bottom dock: two lines (time, then date · battery) so nothing touches the dock edge.
             val second = LinearLayout(context).apply { gravity = Gravity.CENTER_VERTICAL }
-            second.addView(date, LayoutParams(-2, -2))
-            second.addView(battery, LayoutParams(-2, -2).apply { marginStart = dp(8) })
-            addView(second, LayoutParams(-2, -2).apply { topMargin = dp(3) })
+            if (showDate) second.addView(date, LayoutParams(-2, -2))
+            if (showBattery) second.addView(battery, LayoutParams(-2, -2).apply { if (showDate) marginStart = dp(8) })
+            if (second.childCount > 0) addView(second, LayoutParams(-2, -2).apply { if (showTime) topMargin = dp(3) })
         }
         setPadding(dp(if (vertical) 0 else 6), 0, dp(if (vertical) 0 else 6), 0)
     }
@@ -83,6 +91,12 @@ internal class DockClock(context: Context) : LinearLayout(context) {
         ContextCompat.registerReceiver(context, receiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED), ContextCompat.RECEIVER_EXPORTED)?.let { receiver.onReceive(context, it) }
     }
     fun stop() { if (registered) runCatching { context.unregisterReceiver(receiver) }; registered = false }
+
+    companion object {
+        const val SHOW_TIME = "dock_show_time"
+        const val SHOW_DATE = "dock_show_date"
+        const val SHOW_BATTERY = "dock_show_battery"
+    }
 
     private inner class BatteryBar : android.graphics.drawable.Drawable() {
         var percentLevel = -1; var charging = false
