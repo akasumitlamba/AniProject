@@ -6432,6 +6432,1548 @@
       "popular": true,
       "category": "entertainment",
       "tabletPriority": 98
+    },
+    {
+      "id": "bbc-iplayer",
+      "name": "BBC iPlayer",
+      "file": "images/bbc-iplayer.webp",
+      "packages": [
+        "bbc.iplayer.android"
+      ],
+      "aliases": [
+        "iPlayer"
+      ],
+      "webHosts": [],
+      "category": "entertainment",
+      "popular": true,
+      "tabletPriority": 98,
+      "sha256": "10c6c254ebfc69edbe5bf3eba4f46f92ff930a65df14c4b72d359bd854b5e33d"
+    },
+    {
+      "id": "fandango-at-home",
+      "name": "Fandango at Home",
+      "file": "images/fandango-at-home.webp",
+      "packages": [
+        "air.com.vudu.air.DownloaderTablet"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "athome.fandango.com"
+      ],
+      "category": "entertainment",
+      "popular": true,
+      "tabletPriority": 98,
+      "sha256": "5715d0166c3fbcd8e58626d89df68b1efe33265e7e2ec9b4ad56bdc6c54fdd86"
+    },
+    {
+      "id": "xumo-play",
+      "name": "Xumo Play",
+      "file": "images/xumo-play.webp",
+      "packages": [
+        "com.xumo.xumo"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "play.xumo.com"
+      ],
+      "category": "entertainment",
+      "popular": true,
+      "tabletPriority": 98,
+      "sha256": "92b61a4161249d019aae4036ae9f611a0662bf60bcbb84866f544e17c0b56470"
+    },
+    {
+      "id": "criterion-channel",
+      "name": "The Criterion Channel",
+      "file": "images/criterion-channel.webp",
+      "packages": [
+        "com.criterionchannel"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "criterionchannel.com"
+      ],
+      "category": "entertainment",
+      "popular": true,
+      "tabletPriority": 98,
+      "sha256": "e2b3db96600962888a5c4b8dd2992c5d814de6d60022e50abb6ce1a9279b071a"
+    },
+    {
+      "id": "shudder",
+      "name": "Shudder",
+      "file": "images/shudder.webp",
+      "packages": [
+        "com.dramafever.shudder"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "shudder.com"
+      ],
+      "category": "entertainment",
+      "popular": true,
+      "tabletPriority": 98,
+      "sha256": "44f8524cfdd8c2851a027af44c99591543bef8a829a13712c9139c6977a1823d"
+    },
+    {
+      "id": "acorn-tv",
+      "name": "Acorn TV",
+      "file": "images/acorn-tv.webp",
+      "packages": [
+        "com.acorn.tv"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "acorn.tv"
+      ],
+      "category": "entertainment",
+      "popular": true,
+      "tabletPriority": 98,
+      "sha256": "186f8a6aa1fc3bcf873494af905a88dfd8ceae376b82b6301f135093aa355adb"
+    },
+    {
+      "id": "hoopla",
+      "name": "Hoopla",
+      "file": "images/hoopla.webp",
+      "packages": [
+        "com.hoopladigital.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "hoopladigital.com"
+      ],
+      "category": "entertainment",
+      "popular": true,
+      "tabletPriority": 98,
+      "sha256": "52962d03decb4e8989a89d9659599db9c78dc53a256ffe2b629ad738e8a209e5"
+    },
+    {
+      "id": "kocowa",
+      "name": "KOCOWA+",
+      "file": "images/kocowa.webp",
+      "packages": [
+        "com.kocowa.android.mobile"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "kocowa.com"
+      ],
+      "category": "entertainment",
+      "popular": true,
+      "tabletPriority": 98,
+      "sha256": "ca919f2a0bd52eff3e70f2ea1ddaa603f7d0befc8bb329488391f240ff0d1a08"
+    },
+    {
+      "id": "anidb",
+      "name": "AniDB",
+      "file": "images/anidb.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "anidb.net"
+      ],
+      "category": "entertainment",
+      "popular": true,
+      "tabletPriority": 98,
+      "sha256": "f5867174ae2b0fce2e6612636a3118a9fe29975f178a547580e2f95dab2aec24"
+    },
+    {
+      "id": "anime-news-network",
+      "name": "Anime News Network",
+      "file": "images/anime-news-network.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "animenewsnetwork.com"
+      ],
+      "category": "entertainment",
+      "popular": true,
+      "tabletPriority": 98,
+      "sha256": "c8bcb8787b6b60a359d32116c7d1f8e03ceab721d8b3470a50a82af94a4d872a"
+    },
+    {
+      "id": "bbc",
+      "name": "BBC",
+      "file": "images/bbc.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "bbc.com"
+      ],
+      "category": "news",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "553b1ee99bc66d53f8fe64de2565202a6261965d13974e4461c5154d999e1221"
+    },
+    {
+      "id": "msn",
+      "name": "MSN",
+      "file": "images/msn.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "msn.com"
+      ],
+      "category": "news",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "5728a76ae2b1fbe67714f4ab48d317f339ed6279ac1f54ec0287bf7eeb702ab3"
+    },
+    {
+      "id": "ndtv",
+      "name": "NDTV",
+      "file": "images/ndtv.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "ndtv.com"
+      ],
+      "category": "news",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "0e8f74a5233c9d0203b0cad0743df88feb370791d65d5f5a7e303dec6a0f3611"
+    },
+    {
+      "id": "reuters",
+      "name": "Reuters",
+      "file": "images/reuters.webp",
+      "packages": [
+        "com.thomsonreuters.reuters"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "reuters.com"
+      ],
+      "category": "news",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "7bada30e711c7d0b6b01a6c2a540f2163bf60ac3477c7f2dcc9b86dab8194da0"
+    },
+    {
+      "id": "guardian",
+      "name": "The Guardian",
+      "file": "images/guardian.webp",
+      "packages": [
+        "com.guardian"
+      ],
+      "aliases": [
+        "Guardian"
+      ],
+      "webHosts": [
+        "theguardian.com"
+      ],
+      "category": "news",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "698245c994d2f9a3e194a8d1f910639b826116486bd1d74dd37c42f64c23f71e"
+    },
+    {
+      "id": "economic-times",
+      "name": "The Economic Times",
+      "file": "images/economic-times.webp",
+      "packages": [
+        "com.et.reader.activities"
+      ],
+      "aliases": [
+        "Economic Times"
+      ],
+      "webHosts": [
+        "economictimes.indiatimes.com"
+      ],
+      "category": "news",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "8c51fe3514da0e90ac2e67b852a87e3d256ad9d4d960353c280faba4a91c59e3"
+    },
+    {
+      "id": "mint",
+      "name": "Mint",
+      "file": "images/mint.webp",
+      "packages": [
+        "com.htmedia.mint"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "livemint.com"
+      ],
+      "category": "news",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "25bb003bfc1fe7d3ecccdf5ae1d0254acf6df322ccc8b5cb93c97a877ba1e4e2"
+    },
+    {
+      "id": "ipl",
+      "name": "IPL",
+      "file": "images/ipl.webp",
+      "packages": [
+        "com.pulselive.bcci.android"
+      ],
+      "aliases": [
+        "Indian Premier League"
+      ],
+      "webHosts": [
+        "iplt20.com"
+      ],
+      "category": "sports",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "00330cfb55a28a97aaa833135f62a214ea6b3d90150ae224f54fa2d3bbbdb67d"
+    },
+    {
+      "id": "sofascore",
+      "name": "Sofascore",
+      "file": "images/sofascore.webp",
+      "packages": [
+        "com.sofascore.results"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "sofascore.com"
+      ],
+      "category": "sports",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "a0a573cc9ac7614a083b499608c037041bb965e949321e7b8e8d8198b21600ca"
+    },
+    {
+      "id": "onefootball",
+      "name": "OneFootball",
+      "file": "images/onefootball.webp",
+      "packages": [
+        "de.motain.iliga"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "onefootball.com"
+      ],
+      "category": "sports",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "8d1e4d64169a10108b839f4abeee2ebfd4d62a000be9b02bb5b782ab6e448c8e"
+    },
+    {
+      "id": "wechat",
+      "name": "WeChat",
+      "file": "images/wechat.webp",
+      "packages": [
+        "com.tencent.mm"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "wechat.com"
+      ],
+      "category": "communication",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "c9f6084eaf773a2e343103356cb2b35b643837c3846052e119819ba25649a5be"
+    },
+    {
+      "id": "viber",
+      "name": "Rakuten Viber",
+      "file": "images/viber.webp",
+      "packages": [
+        "com.viber.voip"
+      ],
+      "aliases": [
+        "Viber"
+      ],
+      "webHosts": [
+        "viber.com"
+      ],
+      "category": "communication",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "3313a7cff28fbeb3d252f116b333437d5dd68f406f0cbc3d5d7773adf901b671"
+    },
+    {
+      "id": "tinder",
+      "name": "Tinder",
+      "file": "images/tinder.webp",
+      "packages": [
+        "com.tinder"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "tinder.com"
+      ],
+      "category": "communication",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "799b96fd0c2f7e203f9833553c73b02cb207171bbfe150ef424c169a0e977b4e"
+    },
+    {
+      "id": "bumble",
+      "name": "Bumble",
+      "file": "images/bumble.webp",
+      "packages": [
+        "com.bumble.app"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "bumble.com"
+      ],
+      "category": "communication",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "22e473bbd0b31eb625fa3d5c0db9369f027f0e4da9be65b0221996c09af99d17"
+    },
+    {
+      "id": "hinge",
+      "name": "Hinge",
+      "file": "images/hinge.webp",
+      "packages": [
+        "co.hinge.app"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "hinge.co"
+      ],
+      "category": "communication",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "0300114213cc92538e74988e7134c2a83a1a3e95e25099a6de4f9d3698bd98ec"
+    },
+    {
+      "id": "tumblr",
+      "name": "Tumblr",
+      "file": "images/tumblr.webp",
+      "packages": [
+        "com.tumblr"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "tumblr.com"
+      ],
+      "category": "communication",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "584644a4bd1117c63c339fe1531e5e9774e9be0f4f332c69001bdca3c294a7d5"
+    },
+    {
+      "id": "bluesky",
+      "name": "Bluesky",
+      "file": "images/bluesky.webp",
+      "packages": [
+        "xyz.blueskyweb.app"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "bsky.app"
+      ],
+      "category": "communication",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "df6caf9c137abdb5ddc1c321824592bfacaa221263069ae9a0933f817b3c578d"
+    },
+    {
+      "id": "mastodon",
+      "name": "Mastodon",
+      "file": "images/mastodon.webp",
+      "packages": [
+        "org.joinmastodon.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "joinmastodon.org"
+      ],
+      "category": "communication",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "86ec704e482e3c6595ee5b05615236cff29418c5eee4a2bf0741233c51845e15"
+    },
+    {
+      "id": "quora",
+      "name": "Quora",
+      "file": "images/quora.webp",
+      "packages": [
+        "com.quora.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "quora.com"
+      ],
+      "category": "communication",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "9e1c847e37ffdf0aca30c50bbe3889ae7bc5984d6b07cfc6ffb89bf7af693a6d"
+    },
+    {
+      "id": "nextdoor",
+      "name": "Nextdoor",
+      "file": "images/nextdoor.webp",
+      "packages": [
+        "com.nextdoor"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "nextdoor.com"
+      ],
+      "category": "communication",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "05dc886ef49084af35d8663aeec4d06dff6aac6a805bd5915114425f1a4ebb67"
+    },
+    {
+      "id": "edits",
+      "name": "Edits",
+      "file": "images/edits.webp",
+      "packages": [
+        "com.instagram.basel"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "creativity",
+      "popular": true,
+      "tabletPriority": 92,
+      "sha256": "3fb49e3b9b30434aa92999d568710e43f5e324b0a51a7abd83717a3846a61131"
+    },
+    {
+      "id": "coreldraw",
+      "name": "CorelDRAW",
+      "file": "images/coreldraw.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "coreldraw.com"
+      ],
+      "category": "creativity",
+      "popular": true,
+      "tabletPriority": 92,
+      "sha256": "e22842db9e040c1b4ad60b14abb43cc99ea5db1b8972bd1e2d4b1f84992f10b0"
+    },
+    {
+      "id": "figma",
+      "name": "Figma",
+      "file": "images/figma.webp",
+      "packages": [
+        "com.figma.mirror"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "figma.com"
+      ],
+      "category": "creativity",
+      "popular": true,
+      "tabletPriority": 92,
+      "sha256": "1a743c0c84f2317b5eecfdcef6e2f7f1913329ad01844c6fd554aab56b9c9c55"
+    },
+    {
+      "id": "pixlr",
+      "name": "Pixlr",
+      "file": "images/pixlr.webp",
+      "packages": [
+        "com.pixlr.express"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "pixlr.com"
+      ],
+      "category": "creativity",
+      "popular": true,
+      "tabletPriority": 92,
+      "sha256": "5ba8d1463269c57de98667b8398d8dc5a2eb241d1e4d466669cdbf4526057305"
+    },
+    {
+      "id": "photodirector",
+      "name": "PhotoDirector",
+      "file": "images/photodirector.webp",
+      "packages": [
+        "com.cyberlink.photodirector"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "creativity",
+      "popular": true,
+      "tabletPriority": 92,
+      "sha256": "f1455520c8f9c0a214df134a47c4e45eb8d5d5bad191265e4e5d952ee32d1396"
+    },
+    {
+      "id": "wattpad",
+      "name": "Wattpad",
+      "file": "images/wattpad.webp",
+      "packages": [
+        "wp.wattpad"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "wattpad.com"
+      ],
+      "category": "creativity",
+      "popular": true,
+      "tabletPriority": 92,
+      "sha256": "f61824e5ad841a508df28fc792d26fd3e9b6c3f89ee2740537c89cb1e0e81d97"
+    },
+    {
+      "id": "descript",
+      "name": "Descript",
+      "file": "images/descript.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "descript.com"
+      ],
+      "category": "creativity",
+      "popular": true,
+      "tabletPriority": 92,
+      "sha256": "467be79eb35b036ac16d7933eaf097dfd9052ce1368479f570bb586baadb7175"
+    },
+    {
+      "id": "veed",
+      "name": "VEED",
+      "file": "images/veed.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "veed.io"
+      ],
+      "category": "creativity",
+      "popular": true,
+      "tabletPriority": 92,
+      "sha256": "6a63c9009420f4114f20caff1a1095817c708aadb3461024d2e8a69f2c76cc05"
+    },
+    {
+      "id": "clipchamp",
+      "name": "Clipchamp",
+      "file": "images/clipchamp.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "clipchamp.com"
+      ],
+      "category": "creativity",
+      "popular": true,
+      "tabletPriority": 92,
+      "sha256": "a6d6831c5eb1a7eb2954a41d2d5b632fabc1c08e7256bc29277e5e723242451e"
+    },
+    {
+      "id": "kaggle",
+      "name": "Kaggle",
+      "file": "images/kaggle.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "kaggle.com"
+      ],
+      "category": "creativity",
+      "popular": true,
+      "tabletPriority": 92,
+      "sha256": "2eec2c3077240c2178f4c8a9074f3a20eb21c8c90d26af7565da21a43d2d4389"
+    },
+    {
+      "id": "proton-mail",
+      "name": "Proton Mail",
+      "file": "images/proton-mail.webp",
+      "packages": [
+        "ch.protonmail.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "mail.proton.me"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "85e0b973a434fc76cd43b12f64374f90d6bf6cd3ceb8ee70955bd2b6e6180e2f"
+    },
+    {
+      "id": "proton-drive",
+      "name": "Proton Drive",
+      "file": "images/proton-drive.webp",
+      "packages": [
+        "me.proton.android.drive"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "drive.proton.me"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "04eb85ffef88c01787a0e7ab3af2ee681836353edd5aa30c5e6077f9dd6066c7"
+    },
+    {
+      "id": "mega",
+      "name": "MEGA",
+      "file": "images/mega.webp",
+      "packages": [
+        "mega.privacy.android.app"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "mega.nz"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "93cc8a98c7101c0074a9b662bcae0f54cd72c0858ae390528c5998d6a6a94597"
+    },
+    {
+      "id": "wetransfer",
+      "name": "WeTransfer",
+      "file": "images/wetransfer.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "wetransfer.com"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "9ecd11ed49f6e7a05055e22f183bc8de4b7cac167ec3722d2e2bec88ffaebe2f"
+    },
+    {
+      "id": "asana",
+      "name": "Asana",
+      "file": "images/asana.webp",
+      "packages": [
+        "com.asana.app"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "asana.com"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "d2674286bcc6774e11dcf5061d1e55c404e3de7298ee20ce5df2c19b4812513f"
+    },
+    {
+      "id": "ticktick",
+      "name": "TickTick",
+      "file": "images/ticktick.webp",
+      "packages": [
+        "com.ticktick.task"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "ticktick.com"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "285d70af2ec38c3e414c9283d8381073883b4d845664eadb0e4a667433c3ecff"
+    },
+    {
+      "id": "microsoft-365-copilot",
+      "name": "Microsoft 365 Copilot",
+      "file": "images/microsoft-365-copilot.webp",
+      "packages": [
+        "com.microsoft.office.officehubrow"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "m365.cloud.microsoft"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "5c171643c0bb18a7d9bd34b99191a62dfc3c276ea8099dd4b23c67666e535a75"
+    },
+    {
+      "id": "teamviewer",
+      "name": "TeamViewer",
+      "file": "images/teamviewer.webp",
+      "packages": [
+        "com.teamviewer.teamviewer.market.mobile"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "teamviewer.com"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "32e4bdde6ba0c87f18ffb216e7e8e195582701c30054f2286e796a466b31fddc"
+    },
+    {
+      "id": "anydesk",
+      "name": "AnyDesk",
+      "file": "images/anydesk.webp",
+      "packages": [
+        "com.anydesk.anydeskandroid"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "anydesk.com"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "b2ca980a60b8139c2eefc9ca2a3b59217f03562f84225675f2d2e5f596885dfa"
+    },
+    {
+      "id": "nordvpn",
+      "name": "NordVPN",
+      "file": "images/nordvpn.webp",
+      "packages": [
+        "com.nordvpn.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "nordvpn.com"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "1b1fde49fa1c231396ddf01fa1ab5f8686aa27bc125568e83a65f5553d568775"
+    },
+    {
+      "id": "poe",
+      "name": "Poe",
+      "file": "images/poe.webp",
+      "packages": [
+        "com.poe.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "poe.com"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "fc7963057fdfcaf3077bea6076d8c7afdb24c26f57d16caa4cff2c8587fba15a"
+    },
+    {
+      "id": "openrouter",
+      "name": "OpenRouter",
+      "file": "images/openrouter.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "openrouter.ai"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "14bc91f92f9e1525e2e6f9f41afa87751836bc1a42e8093145d04a246ecd4a39"
+    },
+    {
+      "id": "character-ai",
+      "name": "Character.AI",
+      "file": "images/character-ai.webp",
+      "packages": [
+        "ai.character.app"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "character.ai"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "c5f29b3a5f2314b65b119a706fe9b79e2b5f55830a19685c553d7fa25656f27d"
+    },
+    {
+      "id": "suno",
+      "name": "Suno",
+      "file": "images/suno.webp",
+      "packages": [
+        "com.suno.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "suno.com"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "81bf48dbfb3ab7f5327f72b5f05f107eaec8d2c1db678d079b3d7bb7327708a9"
+    },
+    {
+      "id": "elevenlabs",
+      "name": "ElevenLabs",
+      "file": "images/elevenlabs.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "elevenlabs.io"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "51b53f129acca6dc56aaa5ad85cd94d3b72237164c3cb1c316dbd55b0bb367da"
+    },
+    {
+      "id": "midjourney",
+      "name": "Midjourney",
+      "file": "images/midjourney.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "midjourney.com"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "d18438dfc6f91d92e20b786b7d358dba8c197f119d229343de51d0fe9522a166"
+    },
+    {
+      "id": "runway",
+      "name": "Runway",
+      "file": "images/runway.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "runwayml.com"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "6988084bd0722c7353268b6f0c54241322adafb100adfe158f21827cf8997f9c"
+    },
+    {
+      "id": "v0",
+      "name": "v0",
+      "file": "images/v0.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "v0.app"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "44b077fe749b987a3799521e2a5fa8b747d2c8f26aebb8471a5f8034be6e2df0"
+    },
+    {
+      "id": "lovable",
+      "name": "Lovable",
+      "file": "images/lovable.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "lovable.dev"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "b658da75784608b3aa506cf7b8b273848de80dc560daa1b693afa1ff9e48fb7b"
+    },
+    {
+      "id": "deepai",
+      "name": "DeepAI",
+      "file": "images/deepai.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "deepai.org"
+      ],
+      "category": "productivity",
+      "popular": true,
+      "tabletPriority": 88,
+      "sha256": "439c7f50dfcb8f195f721b829ae8e954fc700b13101586f73f1af39512dfebff"
+    },
+    {
+      "id": "where-is-my-train",
+      "name": "Where is my Train",
+      "file": "images/where-is-my-train.webp",
+      "packages": [
+        "com.whereismytrain.android"
+      ],
+      "aliases": [
+        "Where’s My Train"
+      ],
+      "webHosts": [],
+      "category": "travel",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "ef984162465858f5fee88542ea7ef35758a064d6d9edb4c0ceafd85efe063e65"
+    },
+    {
+      "id": "railone",
+      "name": "RailOne",
+      "file": "images/railone.webp",
+      "packages": [
+        "org.cris.aikyam"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "travel",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "81699354e944cde0b09664f0a0891eef4785a8f49506cb1f0cffb0f802cec00c"
+    },
+    {
+      "id": "confirmtkt",
+      "name": "ConfirmTkt",
+      "file": "images/confirmtkt.webp",
+      "packages": [
+        "com.confirmtkt.lite"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "confirmtkt.com"
+      ],
+      "category": "travel",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "f0c329f28ce0cec5d67819142580dbd295afa01a2f6345532e3c5f5fae16b62d"
+    },
+    {
+      "id": "jeevanpramaan",
+      "name": "JeevanPramaan",
+      "file": "images/jeevanpramaan.webp",
+      "packages": [
+        "com.aadhaar.life"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "jeevanpramaan.gov.in"
+      ],
+      "category": "travel",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "a9d0f3c733af9bbdc227f683c100a9e4858df4a4581cc8943b319c4113bb6e7a"
+    },
+    {
+      "id": "air-india",
+      "name": "Air India",
+      "file": "images/air-india.webp",
+      "packages": [
+        "com.bets.airindia.ui"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "airindia.com"
+      ],
+      "category": "travel",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "77791ca2011879ba3356bbc00489561857f5bb5037daeab5b44ff04c55df887a"
+    },
+    {
+      "id": "booking-com",
+      "name": "Booking.com",
+      "file": "images/booking-com.webp",
+      "packages": [
+        "com.booking"
+      ],
+      "aliases": [
+        "Booking"
+      ],
+      "webHosts": [
+        "booking.com"
+      ],
+      "category": "travel",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "f7747c0d369cb72cb2a714864ee26165ea3d3f5becba67e67fe191ef59afb9f8"
+    },
+    {
+      "id": "airbnb",
+      "name": "Airbnb",
+      "file": "images/airbnb.webp",
+      "packages": [
+        "com.airbnb.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "airbnb.com"
+      ],
+      "category": "travel",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "6d2b831998a6e2538f333b229ab9a27729237e6978d0bd568487506c8739559b"
+    },
+    {
+      "id": "agoda",
+      "name": "Agoda",
+      "file": "images/agoda.webp",
+      "packages": [
+        "com.agoda.mobile.consumer"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "agoda.com"
+      ],
+      "category": "travel",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "a230f1136d431f699a0559182ff5c9260f862b403afca4442a8f9529f4c50992"
+    },
+    {
+      "id": "tripadvisor",
+      "name": "Tripadvisor",
+      "file": "images/tripadvisor.webp",
+      "packages": [
+        "com.tripadvisor.tripadvisor"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "tripadvisor.com"
+      ],
+      "category": "travel",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "25b3eed25fd2036bfeb6d88845c329cc63505bdba51e0f24e5315b89921bc2a1"
+    },
+    {
+      "id": "flightradar24",
+      "name": "Flightradar24",
+      "file": "images/flightradar24.webp",
+      "packages": [
+        "com.flightradar24free"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "flightradar24.com"
+      ],
+      "category": "travel",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "46e474f1572e1d9413f47fbcc1416e6b1a2d4252397b2626137feb679f9b1837"
+    },
+    {
+      "id": "ajio",
+      "name": "AJIO",
+      "file": "images/ajio.webp",
+      "packages": [
+        "com.ril.ajio"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "ajio.com"
+      ],
+      "category": "shopping",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "accabbf8e30bc99c1d593c50d333eb0345bcb07e4222a37ff6861c0201bedd95"
+    },
+    {
+      "id": "firstcry",
+      "name": "FirstCry",
+      "file": "images/firstcry.webp",
+      "packages": [
+        "fc.admin.fcexpressadmin"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "firstcry.com"
+      ],
+      "category": "shopping",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "f7588bd3c0659c9bd0e3c7a9e7de8f9d688edb2e3728dec4fc201d3762761304"
+    },
+    {
+      "id": "tata-cliq-luxury",
+      "name": "Tata CLiQ Luxury",
+      "file": "images/tata-cliq-luxury.webp",
+      "packages": [
+        "com.tataunistore.luxury"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "luxury.tatacliq.com"
+      ],
+      "category": "shopping",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "96e918d8258e93ece256a4ce8e1f19aa9997c622c61b8d9e0745b0f11cd15a52"
+    },
+    {
+      "id": "swiggy-instamart",
+      "name": "Swiggy Instamart",
+      "file": "images/swiggy-instamart.webp",
+      "packages": [
+        "in.swiggy.android.instamart"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "shopping",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "532f6da85e082976ccc10f445cd35e44c4fda6a538065a2726fa9bb83f73b210"
+    },
+    {
+      "id": "ebay",
+      "name": "eBay",
+      "file": "images/ebay.webp",
+      "packages": [
+        "com.ebay.mobile"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "ebay.com"
+      ],
+      "category": "shopping",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "6d95d96d5fd5c77afc41a20d23af210f9340ffce2079cc15cdb2a79cb8b719bc"
+    },
+    {
+      "id": "temu",
+      "name": "Temu",
+      "file": "images/temu.webp",
+      "packages": [
+        "com.einnovation.temu"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "temu.com"
+      ],
+      "category": "shopping",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "8ee38c09520b05d6289a0ed2f56c13aad407c7673931322b0fabbdd6447513ea"
+    },
+    {
+      "id": "aliexpress",
+      "name": "AliExpress",
+      "file": "images/aliexpress.webp",
+      "packages": [
+        "com.alibaba.aliexpresshd"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "aliexpress.com"
+      ],
+      "category": "shopping",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "66ab77e2eb733e8565c07466a9d2561174a597868c55d48b38edff05de5879a9"
+    },
+    {
+      "id": "walmart",
+      "name": "Walmart",
+      "file": "images/walmart.webp",
+      "packages": [
+        "com.walmart.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "walmart.com"
+      ],
+      "category": "shopping",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "6d3fd3cc5d7eafa71650431fbc21cbccabe29b0b4dd6d90b26d985f484b50a59"
+    },
+    {
+      "id": "ikea",
+      "name": "IKEA",
+      "file": "images/ikea.webp",
+      "packages": [
+        "com.ingka.ikea.app"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "ikea.com"
+      ],
+      "category": "shopping",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "4c2371051c1b532ae934c659fba707f2b42b9d841e169a87c9ff771c101deb48"
+    },
+    {
+      "id": "carousell",
+      "name": "Carousell",
+      "file": "images/carousell.webp",
+      "packages": [
+        "com.thecarousell.Carousell"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "carousell.com"
+      ],
+      "category": "shopping",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "9ab13ba1d5e9298c2a121282b1dbca3491c31a93e47f3d90a5ef58da717350ac"
+    },
+    {
+      "id": "navi",
+      "name": "Navi",
+      "file": "images/navi.webp",
+      "packages": [
+        "com.naviapp"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "navi.com"
+      ],
+      "category": "finance",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "d87cfe9e6b1d46d7ad61f3a58b9e2d3ab1c640f6ed1f81eb2301879cc79cb0ef"
+    },
+    {
+      "id": "angel-one",
+      "name": "Angel One",
+      "file": "images/angel-one.webp",
+      "packages": [
+        "com.msf.angelmobile"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "angelone.in"
+      ],
+      "category": "finance",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "0cec680600b43ed85accb0e4c44d122a048e7d5b2beb1487f2f8e7a6994efe34"
+    },
+    {
+      "id": "indmoney",
+      "name": "INDmoney",
+      "file": "images/indmoney.webp",
+      "packages": [
+        "in.indwealth"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "indmoney.com"
+      ],
+      "category": "finance",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "f193c4dd45d6541ce2209aa450092398413f82c5290ab5f169398c57105cd978"
+    },
+    {
+      "id": "imobile-icici",
+      "name": "iMobile by ICICI Bank",
+      "file": "images/imobile-icici.webp",
+      "packages": [
+        "com.csam.icici.bank.imobile"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "finance",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "e69ac8261d332531cbc76de68f8ea344b7457db7c6bc0e1890ccbe73113dcf36"
+    },
+    {
+      "id": "idfc-first-bank",
+      "name": "IDFC FIRST Bank",
+      "file": "images/idfc-first-bank.webp",
+      "packages": [
+        "com.idfcfirstbank.optimus"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "idfcfirstbank.com"
+      ],
+      "category": "finance",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "b1d39ee037dd26c697a9d1ff82047674bea6ecc4f106994e6840db978c261893"
+    },
+    {
+      "id": "bajaj-finance",
+      "name": "Bajaj Finance",
+      "file": "images/bajaj-finance.webp",
+      "packages": [
+        "org.altruist.BajajExperia"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "bajajfinserv.in"
+      ],
+      "category": "finance",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "d5835291838d3212be731b4747e80fa2bd19822e8aaeeb6b9bd718e7024a2607"
+    },
+    {
+      "id": "kotak811",
+      "name": "Kotak811",
+      "file": "images/kotak811.webp",
+      "packages": [],
+      "aliases": [],
+      "webHosts": [
+        "kotak811.com"
+      ],
+      "category": "finance",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "d119ccb3b095a4fe09c0404cc5ea4725989b8f6c1da401f712f869f9592f1817"
+    },
+    {
+      "id": "axis-mobile",
+      "name": "Axis Mobile",
+      "file": "images/axis-mobile.webp",
+      "packages": [
+        "com.axis.mobile"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "finance",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "ffe18eaa258ef9bcd6350be3370c828dd297e025d321cb151472744bcd0ef60a"
+    },
+    {
+      "id": "paypal",
+      "name": "PayPal",
+      "file": "images/paypal.webp",
+      "packages": [
+        "com.paypal.android.p2pmobile"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "paypal.com"
+      ],
+      "category": "finance",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "c749211347915635101f18bdbb0824726d29d1d6c6afe5f4cdc053f30e18055f"
+    },
+    {
+      "id": "wise",
+      "name": "Wise",
+      "file": "images/wise.webp",
+      "packages": [
+        "com.transferwise.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "wise.com"
+      ],
+      "category": "finance",
+      "popular": true,
+      "tabletPriority": 75,
+      "sha256": "70fa8da74ac68f5bdd046ae86495e38eed4a5998e753f3afa748910ec9a79e0b"
+    },
+    {
+      "id": "8-ball-pool",
+      "name": "8 Ball Pool",
+      "file": "images/8-ball-pool.webp",
+      "packages": [
+        "com.miniclip.eightballpool"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "popular": true,
+      "tabletPriority": 96,
+      "sha256": "b5126062a7edd2c4d306abf2e26e3b5714bd8fcfbabf30d36a0cb9bcf164d7ea"
+    },
+    {
+      "id": "efootball",
+      "name": "eFootball",
+      "file": "images/efootball.webp",
+      "packages": [
+        "jp.konami.pesam"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "popular": true,
+      "tabletPriority": 96,
+      "sha256": "4edad8d2aca2bdc273a06ad121704fae58f73c70f26c9ff3085334a7289e1e1d"
+    },
+    {
+      "id": "carrom-pool",
+      "name": "Carrom Pool",
+      "file": "images/carrom-pool.webp",
+      "packages": [
+        "com.miniclip.carrom"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "popular": true,
+      "tabletPriority": 96,
+      "sha256": "3b3fb4c8c4c1368ef47f272850fcc5f33b11805e12b582b735964ba2069196f6"
+    },
+    {
+      "id": "cricket-league",
+      "name": "Cricket League",
+      "file": "images/cricket-league.webp",
+      "packages": [
+        "com.miniclip.cricketleague"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "popular": true,
+      "tabletPriority": 96,
+      "sha256": "aa89f3fc7d30edb0bc6c2a5e4a1bd80c78867430e0bf3ee843e0effb7c30a944"
+    },
+    {
+      "id": "real-cricket",
+      "name": "Real Cricket",
+      "file": "images/real-cricket.webp",
+      "packages": [
+        "com.nautilus.RealCricket3D"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "popular": true,
+      "tabletPriority": 96,
+      "sha256": "0f1b97ea1202f2d482f9ae6a0383654b4a482612a29000ec19c649053513df1e"
+    },
+    {
+      "id": "paper-io-2",
+      "name": "Paper.io 2",
+      "file": "images/paper-io-2.webp",
+      "packages": [
+        "io.voodoo.paper2"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "popular": true,
+      "tabletPriority": 96,
+      "sha256": "6e3dd0e62bd31f532bd57e8db3fa040e1a575e28335fab4b272af67f79c6f6ef"
+    },
+    {
+      "id": "indian-bikes-driving-3d",
+      "name": "Indian Bikes Driving 3D",
+      "file": "images/indian-bikes-driving-3d.webp",
+      "packages": [
+        "com.Rohit.IndianBikes"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "popular": true,
+      "tabletPriority": 96,
+      "sha256": "79a5130140df4ef0acb8cc3c0a3c52f01ca04a084a010a77a952de8d925343b1"
+    },
+    {
+      "id": "stumble-guys",
+      "name": "Stumble Guys",
+      "file": "images/stumble-guys.webp",
+      "packages": [
+        "com.kitkagames.fallbuddies"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "stumbleguys.com"
+      ],
+      "category": "games",
+      "popular": true,
+      "tabletPriority": 96,
+      "sha256": "c9c3dff66682a5c56894fa7ae56dc3451a62064c103a691766b3a04640bd9c19"
+    },
+    {
+      "id": "my-talking-tom-2",
+      "name": "My Talking Tom 2",
+      "file": "images/my-talking-tom-2.webp",
+      "packages": [
+        "com.outfit7.mytalkingtom2"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "popular": true,
+      "tabletPriority": 96,
+      "sha256": "abcf2bf3d2602025f981922976138ddacf2b589a72c54b0065e099892cca0b3e"
+    },
+    {
+      "id": "geometry-dash-lite",
+      "name": "Geometry Dash Lite",
+      "file": "images/geometry-dash-lite.webp",
+      "packages": [
+        "com.robtopx.geometryjumplite"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "category": "games",
+      "popular": true,
+      "tabletPriority": 96,
+      "sha256": "0a6f0b19ce0dd220e4e32bce20ef1293b41c7e8b91c22155f796545866534e51"
     }
   ]
 }

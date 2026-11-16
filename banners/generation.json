@@ -1,5 +1,5 @@
 {
-  "method": "Built-in image generation with verified app-store and upstream icon references; existing artwork retained except documented brand redesigns. The November expansion uses individual ImageGen compositions from genuine brand references and a tile-size visual review.",
+  "method": "Built-in image generation with verified app-store and upstream icon references; existing artwork retained except documented brand redesigns. The November expansion uses individual ImageGen compositions from genuine brand references and a tile-size visual review. This November expansion adds individual ImageGen compositions and direct compositions of published wordmarks.",
   "prompts": [
     {
       "id": "ibis-paint-x",
@@ -1416,6 +1416,370 @@
     {
       "id": "docubay",
       "prompt": "Use case: logo-brand. Create one standalone 1.62:1 AniHome DocuBay launcher banner. The only foreground is the single large exact wordmark ‘DocuBay’, in clear polished typographic lettering without any separate D or DB emblem. Full bleed cinematic marine navy and petrol blue with restrained red light near a lower corner, echoed from the authentic brand reference. Make the type legible at 140px, with 9% safe margins. No standalone initial, play icon, extraneous text, borders, rounded corners, mockup or watermark."
+    },
+    {
+      "id": "fandango-at-home",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Fandango at Home\". Use a polished flat and restrained tonal geometry background based on #101C38. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "xumo-play",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Xumo Play\". The single attached reference is the approved identity reference for this brand. Brand field near #18241C. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "criterion-channel",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"The Criterion Channel\". Use a polished flat and restrained tonal geometry background based on #251D3F. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "shudder",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Shudder\". The single attached reference is the approved identity reference for this brand. Brand field near #1A080B. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "acorn-tv",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Acorn TV\". The single attached reference is the approved identity reference for this brand. Brand field near #152233. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "hoopla",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Hoopla\". The single attached reference is the approved identity reference for this brand. Brand field near #16445E. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "kocowa",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"KOCOWA+\". The single attached reference is the approved identity reference for this brand. Brand field near #212044. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "anidb",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"AniDB\". Use a polished flat and restrained tonal geometry background based on #283052. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "anime-news-network",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Anime News Network\". Use this brand's familiar lettering and palette. Brand field near #175584. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "guardian",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for The Guardian. Use the supplied brand identity, with a large, crisp, single The Guardian wordmark or integrated brand lockup. Brand palette near #052962. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "economic-times",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for The Economic Times. Use the supplied brand identity, with a large, crisp, single The Economic Times wordmark or integrated brand lockup. Brand palette near #891E30. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "mint",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Mint\". The single attached reference is the approved identity reference for this brand. Brand field near #9F3100. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "ipl",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"IPL\". The single attached reference is the approved identity reference for this brand. Brand field near #082761. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "sofascore",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Sofascore\". Use a polished flat and restrained tonal geometry background based on #152B55. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "onefootball",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"OneFootball\". The single attached reference is the approved identity reference for this brand. Brand field near #11251A. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "wechat",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"WeChat\". The single attached reference is the approved identity reference for this brand. Brand field near #078545. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "viber",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Rakuten Viber\". The single attached reference is the approved identity reference for this brand. Brand field near #522BA0. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "tinder",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Tinder\". The single attached reference is the approved identity reference for this brand. Brand field near #D82150. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "bumble",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Bumble\". Use a polished flat and restrained tonal geometry background based on #FFCD24. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "hinge",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Hinge\". The single attached reference is the approved identity reference for this brand. Brand field near #25222B. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "tumblr",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Tumblr\". The single attached reference is the approved identity reference for this brand. Brand field near #152B44. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "bluesky",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Bluesky\". The single attached reference is the approved identity reference for this brand. Brand field near #0066CE. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "mastodon",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Mastodon\". Use a polished flat and restrained tonal geometry background based on #4339A4. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "quora",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Quora\". The single attached reference is the approved identity reference for this brand. Brand field near #A82122. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "nextdoor",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Nextdoor\". The single attached reference is the approved identity reference for this brand. Brand field near #135D36. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "edits",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Edits\". The single attached reference is the approved identity reference for this brand. Brand field near #1D1838. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "coreldraw",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"CorelDRAW\". The single attached reference is the approved identity reference for this brand. Brand field near #20663B. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "figma",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Figma\". The single attached reference is the approved identity reference for this brand. Brand field near #181818. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "pixlr",
+      "prompt": "Create a standalone 1.62:1 full-bleed AniHome tile. The only foreground is a single large wordmark reading Pixlr. Center the wordmark on a #123A6B brand-color field with quiet tonal curves. No characters, objects, icons, letter marks, duplicate text, watermark, or border. Render exact spelling as one clearly readable title."
+    },
+    {
+      "id": "photodirector",
+      "prompt": "Create a standalone 1.62:1 full-bleed AniHome tile. The only foreground is a single large wordmark reading PhotoDirector. Center the wordmark on a #123B70 brand-color field with quiet tonal curves. No characters, objects, icons, letter marks, duplicate text, watermark, or border. Render exact spelling as one clearly readable title."
+    },
+    {
+      "id": "wattpad",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Wattpad\". The single attached reference is the approved identity reference for this brand. Brand field near #D74114. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "descript",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Descript\". Use a polished flat and restrained tonal geometry background based on #253E8A. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "veed",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"VEED\". The single attached reference is the approved identity reference for this brand. Brand field near #46329C. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "clipchamp",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Clipchamp\". The single attached reference is the approved identity reference for this brand. Brand field near #413187. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "kaggle",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Kaggle\". The single attached reference is the approved identity reference for this brand. Brand field near #166C9C. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "proton-mail",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Proton Mail\". Use a polished flat and restrained tonal geometry background based on #482B98. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "proton-drive",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Proton Drive\". The single attached reference is the approved identity reference for this brand. Brand field near #482889. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "mega",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"MEGA\". The single attached reference is the approved identity reference for this brand. Brand field near #BD171D. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "wetransfer",
+      "prompt": "Create a standalone 1.62:1 full-bleed AniHome tile. The only foreground is a single large wordmark reading WeTransfer. Center the wordmark on a #1464AB brand-color field with quiet tonal curves. No characters, objects, icons, letter marks, duplicate text, watermark, or border. Render exact spelling as one clearly readable title."
+    },
+    {
+      "id": "asana",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Asana\". The single attached reference is the approved identity reference for this brand. Brand field near #48263F. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "ticktick",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"TickTick\". The single attached reference is the approved identity reference for this brand. Brand field near #3059B0. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "microsoft-365-copilot",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Microsoft 365 Copilot\". The single attached reference is the approved identity reference for this brand. Brand field near #152D4B. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "teamviewer",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"TeamViewer\". The single attached reference is the approved identity reference for this brand. Brand field near #0865BF. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "anydesk",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"AnyDesk\". The single attached reference is the approved identity reference for this brand. Brand field near #BE152C. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "nordvpn",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"NordVPN\". The single attached reference is the approved identity reference for this brand. Brand field near #2251B8. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "poe",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Poe\". The single attached reference is the approved identity reference for this brand. Brand field near #322067. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "openrouter",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"OpenRouter\". The single attached reference is the approved identity reference for this brand. Brand field near #211C34. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "character-ai",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Character.AI\". The single attached reference is the approved identity reference for this brand. Brand field near #292239. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "suno",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Suno\". The single attached reference is the approved identity reference for this brand. Brand field near #34202F. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "elevenlabs",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"ElevenLabs\". The single attached reference is the approved identity reference for this brand. Brand field near #222222. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "midjourney",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Midjourney\". The single attached reference is the approved identity reference for this brand. Brand field near #182C45. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "runway",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Runway\". Use a polished flat and restrained tonal geometry background based on #1B1B20. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "v0",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"v0\". Use a polished flat and restrained tonal geometry background based on #232323. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "lovable",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Lovable\". Use a polished flat and restrained tonal geometry background based on #4B256D. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "deepai",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"DeepAI\". Use a polished flat and restrained tonal geometry background based on #254072. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "where-is-my-train",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Where is my Train\". The single attached reference is the approved identity reference for this brand. Brand field near #13557E. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "railone",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"RailOne\". The single attached reference is the approved identity reference for this brand. Brand field near #293885. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "confirmtkt",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"ConfirmTkt\". The single attached reference is the approved identity reference for this brand. Brand field near #168451. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "jeevanpramaan",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"JeevanPramaan\". The single attached reference is the approved identity reference for this brand. Brand field near #993814. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "air-india",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Air India\". The single attached reference is the approved identity reference for this brand. Brand field near #A71932. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "booking-com",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Booking.com\". The single attached reference is the approved identity reference for this brand. Brand field near #003B83. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "airbnb",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for Airbnb. Use the supplied brand identity, with a large, crisp, single Airbnb wordmark or integrated brand lockup. Brand palette near #C62954. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "agoda",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Agoda\". The single attached reference is the approved identity reference for this brand. Brand field near #24265A. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "tripadvisor",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for Tripadvisor. Use the supplied brand identity, with a large, crisp, single Tripadvisor wordmark or integrated brand lockup. Brand palette near #1EA970. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "flightradar24",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Flightradar24\". The single attached reference is the approved identity reference for this brand. Brand field near #13314A. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Extract the genuine inner symbol from its square plate if it contains zero name lettering, and compose it with the single name. If it embeds any title word, repeated initial or abbreviation, use the wordmark alone. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "ajio",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"AJIO\". Use a polished flat and restrained tonal geometry background based on #233645. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "tata-cliq-luxury",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for Tata CLiQ Luxury. Use the supplied brand identity, with a large, crisp, single Tata CLiQ Luxury wordmark or integrated brand lockup. Brand palette near #2F253D. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "swiggy-instamart",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for Swiggy Instamart. Use the supplied brand identity, with a large, crisp, single Swiggy Instamart wordmark or integrated brand lockup. Brand palette near #572AA2. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "temu",
+      "prompt": "Use case: logo-brand. Create ONE full-bleed landscape 1.62:1 smart-TV AniHome launcher banner for \"Temu\". The single attached reference is the approved identity reference for this brand. Brand field near #C34B15. Large crisp brand artwork with around 9% safety margins and lettering legible at thumbnail size. Build the tile around one large authentic wordmark or complete primary lockup. Do not add an icon next to it. Use one brand name once total. No separately repeated initial, letters, logos, subtitle or other brand, even if the reference contains them. Break lengthy names at a word boundary onto two lines only when legibility improves. Use subtle design details drawn from the brand itself, such as colored accents, curves or lighting. No square app plate, frame, rounded outside corners, watermark, slogan or mockup."
+    },
+    {
+      "id": "aliexpress",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"AliExpress\". Use a polished flat and restrained tonal geometry background based on #B92132. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "ikea",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for IKEA. Use the supplied brand identity, with a large, crisp, single IKEA wordmark or integrated brand lockup. Brand palette near #0058A3. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "carousell",
+      "prompt": "Create a standalone 1.62:1 full-bleed AniHome tile. The only foreground is a single large wordmark reading Carousell. Center the wordmark on a #A4172F brand-color field with quiet tonal curves. No characters, objects, icons, letter marks, duplicate text, watermark, or border. Render exact spelling as one clearly readable title."
+    },
+    {
+      "id": "navi",
+      "prompt": "Create a standalone 1.62:1 full-bleed AniHome tile. The only foreground is a single large wordmark reading Navi. Center the wordmark on a #4C289E brand-color field with quiet tonal curves. No characters, objects, icons, letter marks, duplicate text, watermark, or border. Render exact spelling as one clearly readable title."
+    },
+    {
+      "id": "angel-one",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Angel One\". Use a polished flat and restrained tonal geometry background based on #225197. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "indmoney",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for INDmoney. Use the supplied brand identity, with a large, crisp, single INDmoney wordmark or integrated brand lockup. Brand palette near #12494F. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "imobile-icici",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"iMobile by ICICI Bank\". Use a polished flat and restrained tonal geometry background based on #9E3520. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "idfc-first-bank",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"IDFC FIRST Bank\". Use a polished flat and restrained tonal geometry background based on #921832. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "bajaj-finance",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Bajaj Finance\". Use a polished flat and restrained tonal geometry background based on #074778. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "kotak811",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Kotak811\". Use a polished flat and restrained tonal geometry background based on #9E2333. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "axis-mobile",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Axis Mobile\". Use a polished flat and restrained tonal geometry background based on #811638. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "paypal",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"PayPal\". Use a polished flat and restrained tonal geometry background based on #144482. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "wise",
+      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Wise\". Use a polished flat and restrained tonal geometry background based on #203F25. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
+    },
+    {
+      "id": "8-ball-pool",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for 8 Ball Pool. Use the supplied brand identity, with a large, crisp, single 8 Ball Pool wordmark or integrated brand lockup. Brand palette near #20543D. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "carrom-pool",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for Carrom Pool. Use the supplied brand identity, with a large, crisp, single Carrom Pool wordmark or integrated brand lockup. Brand palette near #623016. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "cricket-league",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for Cricket League. Use the supplied brand identity, with a large, crisp, single Cricket League wordmark or integrated brand lockup. Brand palette near #154127. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "real-cricket",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for Real Cricket. Use the supplied brand identity, with a large, crisp, single Real Cricket wordmark or integrated brand lockup. Brand palette near #1D384A. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "paper-io-2",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for Paper.io 2. Use the supplied brand identity, with a large, crisp, single Paper.io 2 wordmark or integrated brand lockup. Brand palette near #5626A0. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "indian-bikes-driving-3d",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for Indian Bikes Driving 3D. Use the supplied brand identity, with a large, crisp, single Indian Bikes Driving 3D wordmark or integrated brand lockup. Brand palette near #5C452A. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "stumble-guys",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for Stumble Guys. Use the supplied brand identity, with a large, crisp, single Stumble Guys wordmark or integrated brand lockup. Brand palette near #215894. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "my-talking-tom-2",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for My Talking Tom 2. Use the supplied brand identity, with a large, crisp, single My Talking Tom 2 wordmark or integrated brand lockup. Brand palette near #27813C. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
+    },
+    {
+      "id": "geometry-dash-lite",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for Geometry Dash Lite. Use the supplied brand identity, with a large, crisp, single Geometry Dash Lite wordmark or integrated brand lockup. Brand palette near #22549E. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
     }
   ],
   "artworkTreatments": {
@@ -1666,6 +2030,106 @@
     "chaupal": "Individually generated ImageGen banner with one brand identity.",
     "manoramamax": "Individually generated ImageGen banner with one brand identity.",
     "shemaroome": "Individually generated ImageGen banner with one brand identity.",
-    "docubay": "Individually generated ImageGen banner with one brand identity."
+    "docubay": "Individually generated ImageGen banner with one brand identity.",
+    "bbc-iplayer": "Official wordmark composition",
+    "fandango-at-home": "Individually generated ImageGen banner.",
+    "xumo-play": "Individually generated ImageGen banner.",
+    "criterion-channel": "Individually generated ImageGen banner.",
+    "shudder": "Individually generated ImageGen banner.",
+    "acorn-tv": "Individually generated ImageGen banner.",
+    "hoopla": "Individually generated ImageGen banner.",
+    "kocowa": "Individually generated ImageGen banner.",
+    "anidb": "Individually generated ImageGen banner.",
+    "anime-news-network": "Individually generated ImageGen banner.",
+    "bbc": "Official wordmark composition",
+    "msn": "Official wordmark composition",
+    "ndtv": "Official wordmark composition",
+    "reuters": "Official wordmark composition",
+    "guardian": "Individually generated ImageGen banner.",
+    "economic-times": "Individually generated ImageGen banner.",
+    "mint": "Individually generated ImageGen banner.",
+    "ipl": "Individually generated ImageGen banner.",
+    "sofascore": "Individually generated ImageGen banner.",
+    "onefootball": "Individually generated ImageGen banner.",
+    "wechat": "Individually generated ImageGen banner.",
+    "viber": "Individually generated ImageGen banner.",
+    "tinder": "Individually generated ImageGen banner.",
+    "bumble": "Individually generated ImageGen banner.",
+    "hinge": "Individually generated ImageGen banner.",
+    "tumblr": "Individually generated ImageGen banner.",
+    "bluesky": "Individually generated ImageGen banner.",
+    "mastodon": "Individually generated ImageGen banner.",
+    "quora": "Individually generated ImageGen banner.",
+    "nextdoor": "Individually generated ImageGen banner.",
+    "edits": "Individually generated ImageGen banner.",
+    "coreldraw": "Individually generated ImageGen banner.",
+    "figma": "Individually generated ImageGen banner.",
+    "pixlr": "Individually generated ImageGen banner.",
+    "photodirector": "Individually generated ImageGen banner.",
+    "wattpad": "Individually generated ImageGen banner.",
+    "descript": "Individually generated ImageGen banner.",
+    "veed": "Individually generated ImageGen banner.",
+    "clipchamp": "Individually generated ImageGen banner.",
+    "kaggle": "Individually generated ImageGen banner.",
+    "proton-mail": "Individually generated ImageGen banner.",
+    "proton-drive": "Individually generated ImageGen banner.",
+    "mega": "Individually generated ImageGen banner.",
+    "wetransfer": "Individually generated ImageGen banner.",
+    "asana": "Individually generated ImageGen banner.",
+    "ticktick": "Individually generated ImageGen banner.",
+    "microsoft-365-copilot": "Individually generated ImageGen banner.",
+    "teamviewer": "Individually generated ImageGen banner.",
+    "anydesk": "Individually generated ImageGen banner.",
+    "nordvpn": "Individually generated ImageGen banner.",
+    "poe": "Individually generated ImageGen banner.",
+    "openrouter": "Individually generated ImageGen banner.",
+    "character-ai": "Individually generated ImageGen banner.",
+    "suno": "Individually generated ImageGen banner.",
+    "elevenlabs": "Individually generated ImageGen banner.",
+    "midjourney": "Individually generated ImageGen banner.",
+    "runway": "Individually generated ImageGen banner.",
+    "v0": "Individually generated ImageGen banner.",
+    "lovable": "Individually generated ImageGen banner.",
+    "deepai": "Individually generated ImageGen banner.",
+    "where-is-my-train": "Individually generated ImageGen banner.",
+    "railone": "Individually generated ImageGen banner.",
+    "confirmtkt": "Individually generated ImageGen banner.",
+    "jeevanpramaan": "Individually generated ImageGen banner.",
+    "air-india": "Individually generated ImageGen banner.",
+    "booking-com": "Individually generated ImageGen banner.",
+    "airbnb": "Individually generated ImageGen banner.",
+    "agoda": "Individually generated ImageGen banner.",
+    "tripadvisor": "Individually generated ImageGen banner.",
+    "flightradar24": "Individually generated ImageGen banner.",
+    "ajio": "Individually generated ImageGen banner.",
+    "firstcry": "Official wordmark composition",
+    "tata-cliq-luxury": "Individually generated ImageGen banner.",
+    "swiggy-instamart": "Individually generated ImageGen banner.",
+    "ebay": "Official wordmark composition",
+    "temu": "Individually generated ImageGen banner.",
+    "aliexpress": "Individually generated ImageGen banner.",
+    "walmart": "Official wordmark composition",
+    "ikea": "Individually generated ImageGen banner.",
+    "carousell": "Individually generated ImageGen banner.",
+    "navi": "Individually generated ImageGen banner.",
+    "angel-one": "Individually generated ImageGen banner.",
+    "indmoney": "Individually generated ImageGen banner.",
+    "imobile-icici": "Individually generated ImageGen banner.",
+    "idfc-first-bank": "Individually generated ImageGen banner.",
+    "bajaj-finance": "Individually generated ImageGen banner.",
+    "kotak811": "Individually generated ImageGen banner.",
+    "axis-mobile": "Individually generated ImageGen banner.",
+    "paypal": "Individually generated ImageGen banner.",
+    "wise": "Individually generated ImageGen banner.",
+    "8-ball-pool": "Individually generated ImageGen banner.",
+    "efootball": "Official wordmark composition",
+    "carrom-pool": "Individually generated ImageGen banner.",
+    "cricket-league": "Individually generated ImageGen banner.",
+    "real-cricket": "Individually generated ImageGen banner.",
+    "paper-io-2": "Individually generated ImageGen banner.",
+    "indian-bikes-driving-3d": "Individually generated ImageGen banner.",
+    "stumble-guys": "Individually generated ImageGen banner.",
+    "my-talking-tom-2": "Individually generated ImageGen banner.",
+    "geometry-dash-lite": "Individually generated ImageGen banner."
   }
 }

@@ -1,6 +1,6 @@
 # AniHome Banner Store
 
-402 named landscape banners for Android apps and pinned websites. See the [November 2026 coverage lists](november-2026-coverage.md).
+502 named landscape banners for Android apps and pinned websites. See the [November 2026 coverage lists](november-2026-coverage.md).
 
 Named landscape artwork for AniHome, prioritising entertainment, games and tablet-friendly creativity, learning, reading and productivity. The catalog also includes utilities and India-relevant shopping/payment apps.
 

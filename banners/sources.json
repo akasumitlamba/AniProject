@@ -3149,5 +3149,889 @@
     "brandColor": "#123D58",
     "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
     "verifiedPlayTitle": "DocuBay - Apps on Google Play"
+  },
+  {
+    "id": "bbc-iplayer",
+    "name": "BBC iPlayer",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=bbc.iplayer.android&hl=en&gl=IN",
+    "brandColor": "#231329",
+    "artworkTreatment": "Official wordmark composition",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Y59FPNn1VAviwVbFR4gh8TTAxoCtluxugEToD5HZGmkF-dBSzt63rDFh73Dk5vzqVhRF3ppgdDjvBeY660Zs=s0-br30",
+    "verifiedPlayTitle": "BBC iPlayer - Apps on Google Play",
+    "artworkReferenceUrl": "https://commons.wikimedia.org/wiki/File:BBC_iPlayer_%282021%29.svg"
+  },
+  {
+    "id": "fandango-at-home",
+    "name": "Fandango at Home",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=air.com.vudu.air.DownloaderTablet&hl=en&gl=IN",
+    "brandColor": "#101C38",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/_EPRmQipVVgOF1G00HKLz1HsbZl6IZMGL89SJlpJADC3Psh8p9nXtPkfQHzk247BZ5QsJD_U8-f_NStyIzMsxGo=s0-br30",
+    "verifiedPlayTitle": "Fandango: Movies & Series - Apps on Google Play"
+  },
+  {
+    "id": "xumo-play",
+    "name": "Xumo Play",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.xumo.xumo&hl=en&gl=IN",
+    "brandColor": "#18241C",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/htBRp2sij3QewpwpYLtoBZB41HS3eSVxGtxo14TNX_sXiSaWmLzgig5cuh69vEpL6MScc6BIxMxMCcUuUY5e=s0-br30",
+    "verifiedPlayTitle": "Xumo Play: Stream TV & Movies - Apps on Google Play"
+  },
+  {
+    "id": "criterion-channel",
+    "name": "The Criterion Channel",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.criterionchannel&hl=en&gl=IN",
+    "brandColor": "#251D3F",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/94vZP0bFtjAugs3PQWXuGJvp_Jun1r6FM17iCV22s8bnZ1rV1Bbcd3a-l4M5mijkmyf7xIRFJbHfjr1Qiyxl9Q=s0-br30",
+    "verifiedPlayTitle": "The Criterion Channel - Apps on Google Play"
+  },
+  {
+    "id": "shudder",
+    "name": "Shudder",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.dramafever.shudder&hl=en&gl=IN",
+    "brandColor": "#1A080B",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/5xgUF386cb_1DVaLsUjf8pa0irHKSt_LB9DuH6cMqrFVm1xLbYBRzJj-bnz7RnPlcNdFPTkQ61DeYBGA8hfAxA=s0-br30",
+    "verifiedPlayTitle": "Shudder: Horror & Thrillers - Apps on Google Play"
+  },
+  {
+    "id": "acorn-tv",
+    "name": "Acorn TV",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.acorn.tv&hl=en&gl=IN",
+    "brandColor": "#152233",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/OE17PTqz-PbiNz5bfPGoWoySVGQMShWv_Z0OVl6zbMUCEpc6O-0SNnLooJXXJep4haVRDaG3tHYmGTcS9Y29Nrk=s0-br30",
+    "verifiedPlayTitle": "Acorn TV: Brilliant Mysteries - Apps on Google Play"
+  },
+  {
+    "id": "hoopla",
+    "name": "Hoopla",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.hoopladigital.android&hl=en&gl=IN",
+    "brandColor": "#16445E",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/ARoCsIFYgpQNHa2njJCX_IfLHoOtURpnkS1_HIYxChSXo7wa_-_4kC-VdWjGDyo6IQg_II-2ui2-RkVDEcvx6g=s0-br30",
+    "verifiedPlayTitle": "Hoopla: Your Library, Anywhere - Apps on Google Play"
+  },
+  {
+    "id": "kocowa",
+    "name": "KOCOWA+",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.kocowa.android.mobile",
+    "brandColor": "#212044",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=kocowa.com&sz=128"
+  },
+  {
+    "id": "anidb",
+    "name": "AniDB",
+    "sourceUrl": "https://anidb.net",
+    "brandColor": "#283052",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=anidb.net&sz=128"
+  },
+  {
+    "id": "anime-news-network",
+    "name": "Anime News Network",
+    "sourceUrl": "https://animenewsnetwork.com",
+    "brandColor": "#175584",
+    "artworkTreatment": "Individually generated ImageGen banner."
+  },
+  {
+    "id": "bbc",
+    "name": "BBC",
+    "sourceUrl": "https://bbc.com",
+    "brandColor": "#EDE9E2",
+    "artworkTreatment": "Official wordmark composition",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=bbc.com&sz=128",
+    "artworkReferenceUrl": "https://commons.wikimedia.org/wiki/File:BBC_Logo_2021.svg"
+  },
+  {
+    "id": "msn",
+    "name": "MSN",
+    "sourceUrl": "https://msn.com",
+    "brandColor": "#164476",
+    "artworkTreatment": "Official wordmark composition",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=msn.com&sz=128",
+    "artworkReferenceUrl": "https://commons.wikimedia.org/wiki/File:2024_new_msn_logo.svg"
+  },
+  {
+    "id": "ndtv",
+    "name": "NDTV",
+    "sourceUrl": "https://ndtv.com",
+    "brandColor": "#BB102A",
+    "artworkTreatment": "Official wordmark composition",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=ndtv.com&sz=128",
+    "artworkReferenceUrl": "https://commons.wikimedia.org/wiki/File:NDTV_logo.svg"
+  },
+  {
+    "id": "reuters",
+    "name": "Reuters",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.thomsonreuters.reuters&hl=en&gl=IN",
+    "brandColor": "#151515",
+    "artworkTreatment": "Official wordmark composition",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/g2BiK-pSG3LciadR4o1oPcthnmPhWA-7FS4Zq8FGE5eZ8xYpqZUUeIolwAiTNCXA0eazK9_d8F5IonIvYldjzdE=s0-br30",
+    "verifiedPlayTitle": "Reuters - Breaking World News - Apps on Google Play",
+    "artworkReferenceUrl": "https://commons.wikimedia.org/wiki/File:Reuters_logo_2024.svg"
+  },
+  {
+    "id": "guardian",
+    "name": "The Guardian",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.guardian&hl=en&gl=IN",
+    "brandColor": "#052962",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/68YtE03iyL3FL64usISJ66aDEMzh0zf2cZqrV4t6Dp9wvB4PI05C58A_7mVaqbjB7bU_QnVPOqsFggQYwJN-=s0-br30",
+    "verifiedPlayTitle": "The Guardian - US & World News - Apps on Google Play"
+  },
+  {
+    "id": "economic-times",
+    "name": "The Economic Times",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.et.reader.activities&hl=en&gl=IN",
+    "brandColor": "#891E30",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/oWxmisVdWxuQbQKJoNE5EMxe9xuULREgKaJnlnbXihsN8LaEjj6qJ3e3dM5XY8KMHN91SPL0QHQQEYX9oMIgi8I=s0-br30",
+    "verifiedPlayTitle": "Economic Times : Business News - Apps on Google Play"
+  },
+  {
+    "id": "mint",
+    "name": "Mint",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.htmedia.mint&hl=en&gl=IN",
+    "brandColor": "#9F3100",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/HPKKRh3y2vkTNO84cizyHBTBVI9fDJ0Xf1wP0OA_GXTKUGy6GAtl04A1c8Q1KwlWhkHUoS_9HKhlCOI2jPqEag=s0-br30",
+    "verifiedPlayTitle": "Mint: Stock Market & IPO News - Apps on Google Play"
+  },
+  {
+    "id": "ipl",
+    "name": "IPL",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.pulselive.bcci.android",
+    "brandColor": "#082761",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=iplt20.com&sz=128"
+  },
+  {
+    "id": "sofascore",
+    "name": "Sofascore",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.sofascore.results&hl=en&gl=IN",
+    "brandColor": "#152B55",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/V5evYzdmAVEFl9Gy9fh4-XTIb_mPnMPzNdV8rhDyZ31yftOncktYxWnI5xbX4QlAnoCd1fcBvGTzGJU_MxtY=s0-br30",
+    "verifiedPlayTitle": "Sofascore: Live Sports Scores - Apps on Google Play"
+  },
+  {
+    "id": "onefootball",
+    "name": "OneFootball",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=de.motain.iliga&hl=en&gl=IN",
+    "brandColor": "#11251A",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/YiWhQjmhW6376NzXq_X2I9ORF99n76yFnYZZGDGaqOPMYopp-EGsQYSt8Z6SAd1qqG2NLutE6kniYE5EXoosbxg=s0-br30",
+    "verifiedPlayTitle": "Soccer Scores: OneFootball - Apps on Google Play"
+  },
+  {
+    "id": "wechat",
+    "name": "WeChat",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tencent.mm&hl=en&gl=US",
+    "brandColor": "#078545",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/dsQ_iB6i-B_FSmgaOpLA-FmHC5U7pjqzV7P6FFr0USeKEl2Y7LqsLQIEeqhjweXHMLUKBF_WOf2TmMOxcYcT=s0-br30",
+    "verifiedPlayTitle": "WeChat - Apps on Google Play"
+  },
+  {
+    "id": "viber",
+    "name": "Rakuten Viber",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.viber.voip&hl=en&gl=IN",
+    "brandColor": "#522BA0",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/iGHZEkEJBBcOyMEETvYrwCXk-eYQ_TaEgBHPKVptKSon4QQHqhD3Zs-tdeINPZucc1sokQ5FJ4ig-YOGh1Lm=s0-br30",
+    "verifiedPlayTitle": "Rakuten Viber Messenger - Apps on Google Play"
+  },
+  {
+    "id": "tinder",
+    "name": "Tinder",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tinder&hl=en&gl=IN",
+    "brandColor": "#D82150",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/VaExVMyjnrd9PkIAKchSBK6Eo7zb4A2rriDbD3pUvmveAy46StPS-Hs5mYVIP9upZV4YCJxRoQRnj77FAaQd2A=s0-br30",
+    "verifiedPlayTitle": "Tinder - Match. Chat. Date. - Apps on Google Play"
+  },
+  {
+    "id": "bumble",
+    "name": "Bumble",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.bumble.app&hl=en&gl=IN",
+    "brandColor": "#FFCD24",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/coQRcLEFjLa-hNVgAt43TAKrqx0eQZnaQSwkBycYlO7XF5AL2tHF0uCcT8eBiKT8Pj-lXgOjdstIqIoMR_ob-w=s0-br30",
+    "verifiedPlayTitle": "Bumble: Dating App & Friends - Apps on Google Play"
+  },
+  {
+    "id": "hinge",
+    "name": "Hinge",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=co.hinge.app&hl=en&gl=IN",
+    "brandColor": "#25222B",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/ex9N2rDqY3GljAzBNgpyU5HVH_IerticG-jugwoaSXGtJAeBqLac7pYOXCtb9qYevmcog8uYba6UsjE8sbWc1w=s0-br30",
+    "verifiedPlayTitle": "Hinge Dating App: Date & Chat - Apps on Google Play"
+  },
+  {
+    "id": "tumblr",
+    "name": "Tumblr",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tumblr&hl=en&gl=IN",
+    "brandColor": "#152B44",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/BWSIac9IjPlQwOwxZ3aLzaX_rmP5Dfvkwn1HtSztT16WBOHdJZ6D0JSIz_lo_GatSlql3GlSFZcHuzWqAP5n8g=s0-br30",
+    "verifiedPlayTitle": "Tumblr: Social Media & Art - Apps on Google Play"
+  },
+  {
+    "id": "bluesky",
+    "name": "Bluesky",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=xyz.blueskyweb.app&hl=en&gl=IN",
+    "brandColor": "#0066CE",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/54eUk_UXr65meQqoOIMXAnuNIyLOuznb-Ad19ZytLq7nBqSaeF0fefspnZkDSKbbZASMSpKaAUCSGD_c0eliSRM=s0-br30",
+    "verifiedPlayTitle": "Bluesky - Apps on Google Play"
+  },
+  {
+    "id": "mastodon",
+    "name": "Mastodon",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=org.joinmastodon.android&hl=en&gl=IN",
+    "brandColor": "#4339A4",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/A0wOjGETOFCD_UNoihkOAtEwuxkhlVdhucJuAau8RPody6FTAsVd-aZqDBxa2cSjERDXf1fc3gang8CT77RO_Q=s0-br30",
+    "verifiedPlayTitle": "Mastodon - Apps on Google Play"
+  },
+  {
+    "id": "quora",
+    "name": "Quora",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.quora.android&hl=en&gl=IN",
+    "brandColor": "#A82122",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/jVv22h1YQwYBhbsHJjTW5JCk2jLLhhqotSSKJo60BMvFMjM_LdO4e2_9S-LIe-Ab6v7ENkp4p3OXKlL-y25aRw=s0-br30",
+    "verifiedPlayTitle": "Quora: the knowledge platform - Apps on Google Play"
+  },
+  {
+    "id": "nextdoor",
+    "name": "Nextdoor",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.nextdoor&hl=en&gl=IN",
+    "brandColor": "#135D36",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/mXcr4ofxfLRKTuliUz2oz8eSasl6Jb8iVb4LgAnwpvtmd9KOVFiy09RfJtzHLnBoDc628p7ggYf6GW7udcxhQA=s0-br30",
+    "verifiedPlayTitle": "Nextdoor: Neighborhood Network - Apps on Google Play"
+  },
+  {
+    "id": "edits",
+    "name": "Edits",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.instagram.basel&hl=en&gl=IN",
+    "brandColor": "#1D1838",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/1hWOpYYCBcQweHcKCpSlWIuz8sTh-ZJFiiXPvCyoyVXngRC5LKnsUUep7mUgsjAaxT3zBsUzkRv0SE8mV7KJVg=s0-br30",
+    "verifiedPlayTitle": "Edits: Video Editor - Apps on Google Play"
+  },
+  {
+    "id": "coreldraw",
+    "name": "CorelDRAW",
+    "sourceUrl": "https://coreldraw.com",
+    "brandColor": "#20663B",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=coreldraw.com&sz=128"
+  },
+  {
+    "id": "figma",
+    "name": "Figma",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.figma.mirror&hl=en&gl=IN",
+    "brandColor": "#181818",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/H_ImRi06A7rPfQflyj2H56OG2AEfy2sTHWFFIYzUmY43IZc0vIneRCjUO29D7hP7JyG7YwKQsl5s2-NO1ys_1A=s0-br30",
+    "verifiedPlayTitle": "Figma: view. comment. mirror. - Apps on Google Play"
+  },
+  {
+    "id": "pixlr",
+    "name": "Pixlr",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.pixlr.express&hl=en&gl=IN",
+    "brandColor": "#123A6B",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/ArGJUq0yYaovyTfs_pONB0O8GuPfqvUc94GYCn8-QwXDfyJ9ApesXh2aMXgO-0rdf1veKq8cL15BBbNAvlPY=s0-br30",
+    "verifiedPlayTitle": "Pixlr AI Photo & Video Editor - Apps on Google Play"
+  },
+  {
+    "id": "photodirector",
+    "name": "PhotoDirector",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.cyberlink.photodirector&hl=en&gl=IN",
+    "brandColor": "#123B70",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/pLMqQuBn9vN6D8U4ytQsIGmV3fbqJlzjt_M2OslNPV9fpQ4nB1P6By1wdj-S7H5tH889ULGHsmLeQnB-ukmZ1F0=s0-br30",
+    "verifiedPlayTitle": "PhotoDirector: AI Photo Editor - Apps on Google Play"
+  },
+  {
+    "id": "wattpad",
+    "name": "Wattpad",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=wp.wattpad&hl=en&gl=IN",
+    "brandColor": "#D74114",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/oTgNY0uhLlzHhjLDjfGF-cOQUREyoOuJktjdUPgZgjzdoV1-TkTLFV-yRChWjmpAbZexGTR32YGBxJpj9SfNrQ=s0-br30",
+    "verifiedPlayTitle": "Wattpad - Read & Write Stories - Apps on Google Play"
+  },
+  {
+    "id": "descript",
+    "name": "Descript",
+    "sourceUrl": "https://descript.com",
+    "brandColor": "#253E8A",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=descript.com&sz=128"
+  },
+  {
+    "id": "veed",
+    "name": "VEED",
+    "sourceUrl": "https://veed.io",
+    "brandColor": "#46329C",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=veed.io&sz=128"
+  },
+  {
+    "id": "clipchamp",
+    "name": "Clipchamp",
+    "sourceUrl": "https://clipchamp.com",
+    "brandColor": "#413187",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=clipchamp.com&sz=128"
+  },
+  {
+    "id": "kaggle",
+    "name": "Kaggle",
+    "sourceUrl": "https://kaggle.com",
+    "brandColor": "#166C9C",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=kaggle.com&sz=128"
+  },
+  {
+    "id": "proton-mail",
+    "name": "Proton Mail",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=ch.protonmail.android&hl=en&gl=IN",
+    "brandColor": "#482B98",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/3w_PNTzvsPVG6c0H8C62JgrRDid8fUEnls77E2qhgM_qSPKY3gfxGZH4ZBjM2H0tcPhbBLy-P7fayWDUVeuCjA=s0-br30",
+    "verifiedPlayTitle": "Proton Mail: Encrypted Email - Apps on Google Play"
+  },
+  {
+    "id": "proton-drive",
+    "name": "Proton Drive",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=me.proton.android.drive&hl=en&gl=IN",
+    "brandColor": "#482889",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/6JTFbU73WUQHtk4w032X2CYuKSOT6tXaVzEo3CV1sRjfTyOuVYJgMknovN25-ZdPvFsayIXa0_qrQ2a9ENuj=s0-br30",
+    "verifiedPlayTitle": "Proton Drive: Cloud Storage - Apps on Google Play"
+  },
+  {
+    "id": "mega",
+    "name": "MEGA",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=mega.privacy.android.app&hl=en&gl=IN",
+    "brandColor": "#BD171D",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/4IDzX-5oH2pR3xvhtV7U0q2_3hPFd7KHmcK9Jj5oN0ISJfIBuctADot0Z1kQK1OFLX87nWxmPUzUU6TdymGdIw=s0-br30",
+    "verifiedPlayTitle": "MEGA - Apps on Google Play"
+  },
+  {
+    "id": "wetransfer",
+    "name": "WeTransfer",
+    "sourceUrl": "https://wetransfer.com",
+    "brandColor": "#1464AB",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=wetransfer.com&sz=128"
+  },
+  {
+    "id": "asana",
+    "name": "Asana",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.asana.app&hl=en&gl=IN",
+    "brandColor": "#48263F",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/4qKQZB7bi5nJjI9rBkw31NxdAfnRHERd-qNfOlXlI4W2nQR7jIu5APPa7GnSqZTx3B5FqhfzwpVcwlIDt4VdFQ=s0-br30",
+    "verifiedPlayTitle": "Asana: Work Management - Apps on Google Play"
+  },
+  {
+    "id": "ticktick",
+    "name": "TickTick",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.ticktick.task&hl=en&gl=IN",
+    "brandColor": "#3059B0",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/cStkq8fqyxyFJc2mK1_MT8aNhsaU_Fy5cD5jd6-bsshZf-pC_WAdyR-iw7NIe99W5A2wNEXBGuzOtDorNcSSJIk=s0-br30",
+    "verifiedPlayTitle": "TickTick:To Do List & Calendar - Apps on Google Play"
+  },
+  {
+    "id": "microsoft-365-copilot",
+    "name": "Microsoft 365 Copilot",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.microsoft.office.officehubrow&hl=en&gl=IN",
+    "brandColor": "#152D4B",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/LO0qJeIk4uKo6HJB5fkMpipB9x4BedNr0YegnCJKOxsX8SNZIoY-NC8-KL-cLQyUgmmKFyZRa0cdyaNkDsyBveg=s0-br30",
+    "verifiedPlayTitle": "Microsoft Copilot - Apps on Google Play"
+  },
+  {
+    "id": "teamviewer",
+    "name": "TeamViewer",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.teamviewer.teamviewer.market.mobile&hl=en&gl=IN",
+    "brandColor": "#0865BF",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/ziceP9Ih1fJCDJ7Y4vtsVejEsakMD6i2bxexTl_PFxSDs6M46X02QDGzfPlIJlcDZgahzWycdixXxoIvrIaFiA=s0-br30",
+    "verifiedPlayTitle": "TeamViewer Remote Control - Apps on Google Play"
+  },
+  {
+    "id": "anydesk",
+    "name": "AnyDesk",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.anydesk.anydeskandroid&hl=en&gl=IN",
+    "brandColor": "#BE152C",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/1yOTw4DyEuHxddrrUsXGaRH68JnbkQ1-QJBlK0LwHOFIs0IQHWlcRlwJV6AdFhiRsLyEdv-LqeF5krAPPcZO6_c=s0-br30",
+    "verifiedPlayTitle": "AnyDesk Remote Desktop - Apps on Google Play"
+  },
+  {
+    "id": "nordvpn",
+    "name": "NordVPN",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.nordvpn.android&hl=en&gl=IN",
+    "brandColor": "#2251B8",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/8yhQejdntBkaku4Vt-HD9f8Ujcl1EJeE1WX2ypEMEzPxY-8AG9-rLjm8OVKmIpmmBC2uWhlqCzKI8be3XkFlIDQ=s0-br30",
+    "verifiedPlayTitle": "NordVPN – fast VPN for privacy - Apps on Google Play"
+  },
+  {
+    "id": "poe",
+    "name": "Poe",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.poe.android&hl=en&gl=IN",
+    "brandColor": "#322067",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/f8ZaB_7migIbdt72FvdhI5H91aYf0Gr0-POH4ODt28aZlLB6osoONxJyblf1aBRv9HLnXZVSzB5I3olFXNDFJA=s0-br30",
+    "verifiedPlayTitle": "Poe - Fast AI Chat - Apps on Google Play"
+  },
+  {
+    "id": "openrouter",
+    "name": "OpenRouter",
+    "sourceUrl": "https://openrouter.ai",
+    "brandColor": "#211C34",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=openrouter.ai&sz=128"
+  },
+  {
+    "id": "character-ai",
+    "name": "Character.AI",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=ai.character.app&hl=en&gl=IN",
+    "brandColor": "#292239",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/dAVjIN_4fDErGgl_zMmb81QQSckVOg5LhpMR5liy5QrE8sglxM26MyCgIxsd5qzFyzHfGskqYpjwGD-LXt9Ugw4=s0-br30",
+    "verifiedPlayTitle": "Character AI: Chat, Talk, Text - Apps on Google Play"
+  },
+  {
+    "id": "suno",
+    "name": "Suno",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.suno.android&hl=en&gl=IN",
+    "brandColor": "#34202F",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/lIxYxKnQwksOzWMmNqWK3x3S5W7fDIVW9c5XWG9QF9KPHk5oZbsZcJKzWiKA-YOU7QiENwviQuyqXUkLPBaxNA=s0-br30",
+    "verifiedPlayTitle": "Suno - AI Music & Songs Maker - Apps on Google Play"
+  },
+  {
+    "id": "elevenlabs",
+    "name": "ElevenLabs",
+    "sourceUrl": "https://elevenlabs.io",
+    "brandColor": "#222222",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=elevenlabs.io&sz=128"
+  },
+  {
+    "id": "midjourney",
+    "name": "Midjourney",
+    "sourceUrl": "https://midjourney.com",
+    "brandColor": "#182C45",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=midjourney.com&sz=128"
+  },
+  {
+    "id": "runway",
+    "name": "Runway",
+    "sourceUrl": "https://runwayml.com",
+    "brandColor": "#1B1B20",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=runwayml.com&sz=128"
+  },
+  {
+    "id": "v0",
+    "name": "v0",
+    "sourceUrl": "https://v0.app",
+    "brandColor": "#232323",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=v0.app&sz=128"
+  },
+  {
+    "id": "lovable",
+    "name": "Lovable",
+    "sourceUrl": "https://lovable.dev",
+    "brandColor": "#4B256D",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=lovable.dev&sz=128"
+  },
+  {
+    "id": "deepai",
+    "name": "DeepAI",
+    "sourceUrl": "https://deepai.org",
+    "brandColor": "#254072",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=deepai.org&sz=128"
+  },
+  {
+    "id": "where-is-my-train",
+    "name": "Where is my Train",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.whereismytrain.android&hl=en&gl=IN",
+    "brandColor": "#13557E",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/ONrQkTTvPePeU0T9UMcXm5xUTXMqeBO6GzZ4HRe_Pyd4Asl9MxDanxQsqBMRMn3PH-_OqJnt4JRTQAcQ6njbCw=s0-br30",
+    "verifiedPlayTitle": "Where is my Train - Apps on Google Play"
+  },
+  {
+    "id": "railone",
+    "name": "RailOne",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=org.cris.aikyam&hl=en&gl=IN",
+    "brandColor": "#293885",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/7XxvSU3Kzy0cfDKCPwHi3z6c8MG2HGklycjrfRR8OpujqdlV_5FbymMKSm3QNFvagNtoDcGAViKD-cEoZZPq-Q=s0-br30",
+    "verifiedPlayTitle": "RailOne - Apps on Google Play"
+  },
+  {
+    "id": "confirmtkt",
+    "name": "ConfirmTkt",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.confirmtkt.lite&hl=en&gl=IN",
+    "brandColor": "#168451",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/rJJDnC9FIVJQj3owDOznZWJ40BgCO_PCCjO9FmJGEpg4SAWbLojdj8YOdA2GmFyg-fhJh1UnkY904W-lJdbw=s0-br30",
+    "verifiedPlayTitle": "ConfirmTkt: Train Booking App - Apps on Google Play"
+  },
+  {
+    "id": "jeevanpramaan",
+    "name": "JeevanPramaan",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.aadhaar.life&hl=en&gl=IN",
+    "brandColor": "#993814",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/wIWurMlWgTsXlw49_BJydzpT9rYvdgEAUgNlABAgY7qP3xqHXiaWk6JvAzlwuA5ULZvCuxVPrdtq972k67VcJJY=s0-br30",
+    "verifiedPlayTitle": "JeevanPramaan - Apps on Google Play"
+  },
+  {
+    "id": "air-india",
+    "name": "Air India",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.bets.airindia.ui&hl=en&gl=IN",
+    "brandColor": "#A71932",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/0sWgYJnF1vMlSfP7g2bHe3XAWCUph1XCSgAo-RgURNwCfh4pPNNKN2DqlFwMg3KCKznDDh3RxjdjCUJFGi79=s0-br30",
+    "verifiedPlayTitle": "Air India: Book Flight Tickets - Apps on Google Play"
+  },
+  {
+    "id": "booking-com",
+    "name": "Booking.com",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.booking&hl=en&gl=IN",
+    "brandColor": "#003B83",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/ozdbI6WGLCrPRNmc2TqrxgOx_TBIOB7WSeLE5iPkCuBiLyB0tkBo2o3l-VRdD71aKaY-mTwzLQY8zpeo9rOLkwA=s0-br30",
+    "verifiedPlayTitle": "Booking.com: Hotels and more - Apps on Google Play"
+  },
+  {
+    "id": "airbnb",
+    "name": "Airbnb",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.airbnb.android&hl=en&gl=IN",
+    "brandColor": "#C62954",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/PDPmzZUDSmFa33PmzoZ_OWLeIbj23UtGFE9fXVEVjfuyMGvPygT-v9N7bFsJwc8PojCmw72i8Xn45qHElm8b=s0-br30",
+    "verifiedPlayTitle": "Airbnb - Apps on Google Play"
+  },
+  {
+    "id": "agoda",
+    "name": "Agoda",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.agoda.mobile.consumer&hl=en&gl=IN",
+    "brandColor": "#24265A",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/OnX2KsVpNq1vK-18zV86P8eBxep0IlwvC1SaafZtYcrAb7TbP6F2W87AKzqOAZQku9oBslCxfD8UEVC0abhqrQ=s0-br30",
+    "verifiedPlayTitle": "Agoda: Cheap Flights & Hotels - Apps on Google Play"
+  },
+  {
+    "id": "tripadvisor",
+    "name": "Tripadvisor",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tripadvisor.tripadvisor&hl=en&gl=IN",
+    "brandColor": "#1EA970",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/8psFQsKtf5IIAxasPYJEQViCmW4QrmNx5a2s9ySJgmj70SggZuztoGkLUz-ktVQfMBwqRbWgkGPty1Jwn-KXlg=s0-br30",
+    "verifiedPlayTitle": "Tripadvisor: Plan & Book Trips - Apps on Google Play"
+  },
+  {
+    "id": "flightradar24",
+    "name": "Flightradar24",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.flightradar24free&hl=en&gl=IN",
+    "brandColor": "#13314A",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/8KtIuiRHYtY0XJigXIl-iN6X6-ht85ELWXFiynenpCW40b6zNUnLFGKwIN0iITV_1L3sN3G53PaiNiWsn5RSIv8=s0-br30",
+    "verifiedPlayTitle": "Flightradar24 Flight Tracker - Apps on Google Play"
+  },
+  {
+    "id": "ajio",
+    "name": "AJIO",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.ril.ajio&hl=en&gl=IN",
+    "brandColor": "#233645",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/KQEYL-hgLwgIiFLUBmbibR0SF2dxFYDoN615DUVgnWcOtrM-RYAlv8zS0YS0W_lM1J7eSs0ty7wA2zpJroS2aA=s0-br30",
+    "verifiedPlayTitle": "AJIO Online Shopping App - Apps on Google Play"
+  },
+  {
+    "id": "firstcry",
+    "name": "FirstCry",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=fc.admin.fcexpressadmin&hl=en&gl=IN",
+    "brandColor": "#452C7B",
+    "artworkTreatment": "Official wordmark composition",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/bwy87qOU_E0fKxjpuJxUA229pGubsLn-faNRYWXxQ-Jsy4TJ8Hdx0inggsrDOFVGrlbF3mMpQuUtC_8L5unueQ=s0-br30",
+    "verifiedPlayTitle": "FirstCry India - Baby & Kids - Apps on Google Play",
+    "artworkReferenceUrl": "https://cdn.fcglcdn.com/brainbees/images/n/fc_logo.jpg"
+  },
+  {
+    "id": "tata-cliq-luxury",
+    "name": "Tata CLiQ Luxury",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.tataunistore.luxury",
+    "brandColor": "#2F253D",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=luxury.tatacliq.com&sz=128"
+  },
+  {
+    "id": "swiggy-instamart",
+    "name": "Swiggy Instamart",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=in.swiggy.android.instamart",
+    "brandColor": "#572AA2",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=instamart.com&sz=128"
+  },
+  {
+    "id": "ebay",
+    "name": "eBay",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.ebay.mobile&hl=en&gl=IN",
+    "brandColor": "#17385B",
+    "artworkTreatment": "Official wordmark composition",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/q0_ZVJFuUH3WFZuZrP8JUMC54dwz1q_SZZufBDMqYaE8O2sLPulV1_dF3xGMQ6b102MTBZlluAF8z4AgZ-Isow=s0-br30",
+    "verifiedPlayTitle": "eBay online shopping & selling - Apps on Google Play",
+    "artworkReferenceUrl": "https://commons.wikimedia.org/wiki/File:EBay_logo.svg"
+  },
+  {
+    "id": "temu",
+    "name": "Temu",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.einnovation.temu&hl=en&gl=IN",
+    "brandColor": "#C34B15",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/opNFHpwXUxk8zAVzQbvBgEcBPmgYt0uX-p28VKDZ8nJNFPA7_JHx3PO3ski-GW_FW7gf3jrEP4OCKxTpP7Wv_w=s0-br30",
+    "verifiedPlayTitle": "Temu: Shop Like a Billionaire - Apps on Google Play"
+  },
+  {
+    "id": "aliexpress",
+    "name": "AliExpress",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.alibaba.aliexpresshd&hl=en&gl=US",
+    "brandColor": "#B92132",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/-26EaFSeFE-GPfgjA98H_ukuK2AEN0ZlMNB9lECGJDxUSG7G20emcnXaHrM5fL2d7mCi3O825iShQvn2J0ZY=s0-br30",
+    "verifiedPlayTitle": "AliExpress - Shopping App - Apps on Google Play"
+  },
+  {
+    "id": "walmart",
+    "name": "Walmart",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.walmart.android&hl=en&gl=IN",
+    "brandColor": "#0757AE",
+    "artworkTreatment": "Official wordmark composition",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/1elS7Hmbe7i-1ukmh-MiaHo6U9xrLyxZtUoKNngyv_OrwLmoJCQWKg2_QWgbyEm6xChr_X6PgRBxITIc5kToHkg=s0-br30",
+    "verifiedPlayTitle": "Walmart: Shopping & Savings - Apps on Google Play",
+    "artworkReferenceUrl": "https://commons.wikimedia.org/wiki/File:Walmart_logo_%282025%29.svg"
+  },
+  {
+    "id": "ikea",
+    "name": "IKEA",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.ingka.ikea.app&hl=en&gl=IN",
+    "brandColor": "#0058A3",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/_N3NNenXYjsa8DyXNixRtrCeNmW2p5F5Kk_vSkMUc-TJek2dg9xWGqUwm9OavAqTlAKaY5S2HluK87mKIQL1=s0-br30",
+    "verifiedPlayTitle": "IKEA - Apps on Google Play"
+  },
+  {
+    "id": "carousell",
+    "name": "Carousell",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.thecarousell.Carousell&hl=en&gl=IN",
+    "brandColor": "#A4172F",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/KiDT3IYa32__A8Wakwp-PqRHMcilhLFBjnK776-g4RKzXAZZQ82GcHKDne348APwmERN-rqh0OnmEFxdKFyl6w=s0-br30",
+    "verifiedPlayTitle": "Carousell: Sell and Buy - Apps on Google Play"
+  },
+  {
+    "id": "navi",
+    "name": "Navi",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.naviapp&hl=en&gl=IN",
+    "brandColor": "#4C289E",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/BOdOvn_BkJFkMewwZ9ONF5eMHkUjQdXMUHJDG1ID46jN8pvjVUehEGX4uHxEcT_JiiREQO7SETDWtR0AX7eEMg=s0-br30",
+    "verifiedPlayTitle": "Navi: UPI, Payments, Insurance - Apps on Google Play"
+  },
+  {
+    "id": "angel-one",
+    "name": "Angel One",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.msf.angelmobile&hl=en&gl=IN",
+    "brandColor": "#225197",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/iWsUCDr0qRHrSQr90BTrbMeIP9Y5GNUEaIRNuxdufPXZmKruGScnvs9zcOM8vLhOemaMs7VjenS5T_5OrQ-A=s0-br30",
+    "verifiedPlayTitle": "Angel One: Stocks, Mutual Fund - Apps on Google Play"
+  },
+  {
+    "id": "indmoney",
+    "name": "INDmoney",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=in.indwealth&hl=en&gl=IN",
+    "brandColor": "#12494F",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/GbJSdICmN3ec1y7Y6D3s76lS5GhEjdL3472CKgQgjZ2UdQeM0CZoU2ne3SBfgxHLhLazZmbYeQj8AjcPSCKZEXE=s0-br30",
+    "verifiedPlayTitle": "INDmoney: US Stocks, F&O, IPO - Apps on Google Play"
+  },
+  {
+    "id": "imobile-icici",
+    "name": "iMobile by ICICI Bank",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.csam.icici.bank.imobile&hl=en&gl=IN",
+    "brandColor": "#9E3520",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/dmco3u7SKC9ldQVrGknBkeNeaMUVYAcWzo1hNtb4AbxIcR_EP-0drTWvDhi3C_wC7ul5oynYpKJBVZhKr4GCAA=s0-br30",
+    "verifiedPlayTitle": "iMobile: Loan, Cards & Banking - Apps on Google Play"
+  },
+  {
+    "id": "idfc-first-bank",
+    "name": "IDFC FIRST Bank",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.idfcfirstbank.optimus&hl=en&gl=IN",
+    "brandColor": "#921832",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/WzDtotDEhTRKaEm06LbJuTZ5sm54Bx-qSWYRULxlUboNbFOJGRvrlJ8kFr_Vk7AePA3ATkTk3UmEO3ITQc2_yQ=s0-br30",
+    "verifiedPlayTitle": "IDFC FIRST Bank: MobileBanking - Apps on Google Play"
+  },
+  {
+    "id": "bajaj-finance",
+    "name": "Bajaj Finance",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=org.altruist.BajajExperia&hl=en&gl=IN",
+    "brandColor": "#074778",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/yfo76ZSCEwPH1C_h8-EzFLgrdoKPRN8O3ooRKB05H1Sm5e5WRF3b022dLL0bxfh_ZjfIQdAvE3mU0H2zfmsg9Ys=s0-br30",
+    "verifiedPlayTitle": "Bajaj Finance : UPI & Loan App - Apps on Google Play"
+  },
+  {
+    "id": "kotak811",
+    "name": "Kotak811",
+    "sourceUrl": "https://kotak811.com",
+    "brandColor": "#9E2333",
+    "artworkTreatment": "Individually generated ImageGen banner."
+  },
+  {
+    "id": "axis-mobile",
+    "name": "Axis Mobile",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.axis.mobile&hl=en&gl=IN",
+    "brandColor": "#811638",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/OQSiBrgEsPz11-K5CFO2p4QzDOhKGkUgzso5NCMKlvlgux6Pvt_sFd3OBoIdhMnEXb6IErxGS6DQtz_nS35nVp4=s0-br30",
+    "verifiedPlayTitle": "Axis Mobile: Pay, Invest & UPI - Apps on Google Play"
+  },
+  {
+    "id": "paypal",
+    "name": "PayPal",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.paypal.android.p2pmobile&hl=en&gl=IN",
+    "brandColor": "#144482",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/9SeHb3IaNFm7sXRQmWZaL5MHqVn4qcBGz12sPgjBisZCFMyZPOCXUFOZIttUu-CiTqQz3alXL7jxxGW1Y4fn=s0-br30",
+    "verifiedPlayTitle": "PayPal - Pay, Send, Save - Apps on Google Play"
+  },
+  {
+    "id": "wise",
+    "name": "Wise",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.transferwise.android&hl=en&gl=IN",
+    "brandColor": "#203F25",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/kB33cohi8SVexROzpc3YB9o7fG0prnoG_jkANftvjyMKTZILBA1s1vYfvrEIWLiFDtouQLuyBYqk4VQPrPclGQ=s0-br30",
+    "verifiedPlayTitle": "Wise: International Transfers - Apps on Google Play"
+  },
+  {
+    "id": "8-ball-pool",
+    "name": "8 Ball Pool",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.miniclip.eightballpool&hl=en&gl=IN",
+    "brandColor": "#20543D",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/5hG8agj5a8tQpyc4ZqXWlZgu_1v-q7gTa-mLumbnvZKss1CzeRXojIe6demFv9YoCq5jYUhYN8UPNpT_elMeMA=s0-br30",
+    "verifiedPlayTitle": "8 Ball Pool - Apps on Google Play"
+  },
+  {
+    "id": "efootball",
+    "name": "eFootball",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=jp.konami.pesam&hl=en&gl=IN",
+    "brandColor": "#18269C",
+    "artworkTreatment": "Official wordmark composition",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/jn-jaGEFUPiu0dBP9O6PjiRk-BCwFFLm0RdeOjLH-qLYjhHJlzNBMgl3Sah24htajj67_fdve-DzGsqmMUx1tqQ=s0-br30",
+    "verifiedPlayTitle": "eFootball™ - Apps on Google Play",
+    "artworkReferenceUrl": "https://www.konami.com/efootball/s/css/style-index.css?v=1058"
+  },
+  {
+    "id": "carrom-pool",
+    "name": "Carrom Pool",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.miniclip.carrom&hl=en&gl=IN",
+    "brandColor": "#623016",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/6DjZbXbh4A40BWTM6_NkeFImq6fdLzq3GR5XTz1gRJqSJ6j-kT6osANeGuDQXwn6_zBbb_D8XJlhlHi1pwhGvg=s0-br30",
+    "verifiedPlayTitle": "Carrom Pool: Disc Game - Apps on Google Play"
+  },
+  {
+    "id": "cricket-league",
+    "name": "Cricket League",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.miniclip.cricketleague&hl=en&gl=IN",
+    "brandColor": "#154127",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/4iihkuMjs778kJ95p-cBE8rATGJmgRmigYQMuvbhesaqRLnJFHZ9xkb_YuOPaCGzAOlEi5uGaxvuoQZgG21Rsg=s0-br30",
+    "verifiedPlayTitle": "Cricket League - Apps on Google Play"
+  },
+  {
+    "id": "real-cricket",
+    "name": "Real Cricket",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.nautilus.RealCricket3D&hl=en&gl=IN",
+    "brandColor": "#1D384A",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Qg8lS42nDaRMqmu9jrr2Dtm0mdq_zTXsOsrwqJXhxcwhJfNQdNHCxz4jWGqF4Dxlvt0etRpflSBiSPaFd5iM=s0-br30",
+    "verifiedPlayTitle": "Real Cricket™ 20 - Apps on Google Play"
+  },
+  {
+    "id": "paper-io-2",
+    "name": "Paper.io 2",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=io.voodoo.paper2&hl=en&gl=IN",
+    "brandColor": "#5626A0",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/gVtEUeaxaxBsvbbMXK4QiEldapksGxya07DcI-6w3U7FI3RKNulhbw2Rp3zKee_yIIIu16VEFU4Nzrr-Mlp-=s0-br30",
+    "verifiedPlayTitle": "Paper.io 2 - Apps on Google Play"
+  },
+  {
+    "id": "indian-bikes-driving-3d",
+    "name": "Indian Bikes Driving 3D",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.Rohit.IndianBikes&hl=en&gl=IN",
+    "brandColor": "#5C452A",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/4GNlArCPZa_V_xF_A_LJ_AckFOJheAv-sOonWF3m2YXGcsiAbjnEe8ALX93h9EALRD0aeUknYGCHzqwzZoqhjG0=s0-br30",
+    "verifiedPlayTitle": "Indian Bikes Driving 3D - Apps on Google Play"
+  },
+  {
+    "id": "stumble-guys",
+    "name": "Stumble Guys",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.kitkagames.fallbuddies&hl=en&gl=IN",
+    "brandColor": "#215894",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/NW7_ezBVEWM3ovtvz57SrSNJw-n9C78cV8PSz2sjhp5eCmtBAawQ3CE3VR3Da9hESb8QQ1hhz2wEFg71y1rG=s0-br30",
+    "verifiedPlayTitle": "Stumble Guys - Apps on Google Play"
+  },
+  {
+    "id": "my-talking-tom-2",
+    "name": "My Talking Tom 2",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.outfit7.mytalkingtom2&hl=en&gl=IN",
+    "brandColor": "#27813C",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/1kRkgP2gnUIf43adUC-E-UQSHY1gIbC42DAajJ9MOVx7pu-67opAxIa1uSlzmNVkhaUuOOHuZ-JrkwcJ8qwpkQ=s0-br30",
+    "verifiedPlayTitle": "My Talking Tom 2: Pet Game - Apps on Google Play"
+  },
+  {
+    "id": "geometry-dash-lite",
+    "name": "Geometry Dash Lite",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.robtopx.geometryjumplite&hl=en&gl=IN",
+    "brandColor": "#22549E",
+    "artworkTreatment": "Individually generated ImageGen banner.",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/StEbdIF-rV4EoYfIdaP07zClA50KSs-i9o12kceyecfw8R0nwYfzqV64h3UlEzh_fCqxyNCj7Bb7ro86pfYDsSU=s0-br30",
+    "verifiedPlayTitle": "Geometry Dash Lite - Apps on Google Play"
   }
 ]
