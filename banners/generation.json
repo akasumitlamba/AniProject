@@ -550,10 +550,6 @@
       "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"Google Home\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #F7F9FE, large recognizable art, balanced safe margins near 9%, bold readable lettering. Let the brand's own geometry, color and shapes determine composition. Aim for confident scale like classic TV app tiles.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
     },
     {
-      "id": "amazon-alexa",
-      "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"Amazon Alexa\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #0874AC, large recognizable art, balanced safe margins near 9%, bold readable lettering. Let the brand's own geometry, color and shapes determine composition. Aim for confident scale like classic TV app tiles.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
-    },
-    {
       "id": "fitbit",
       "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"Fitbit\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #F7F9FE, large recognizable art, balanced safe margins near 9%, bold readable lettering. Let the brand's own geometry, color and shapes determine composition. Aim for confident scale like classic TV app tiles.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
     },
@@ -1724,6 +1720,10 @@
     {
       "id": "zerodha-kite",
       "prompt": "Make one minimal full-bleed landscape 1.62:1 AniHome banner for Zerodha Kite. Use the single brand reference as the only visual source. Extract the orange-red folded kite geometry without its white icon container. Use one charcoal title and the mark on a very pale gray field. High contrast. Large artwork, generous even safe margins, crisp geometry, native brand colors, no extra lettering, wavy motifs, texture, outer border, clipping, mockup, or watermark."
+    },
+    {
+      "id": "amazon-alexa",
+      "prompt": "Create one wide 1.62:1 AniHome launcher banner. Use the supplied official Amazon Alexa app icon as the exact source for the white lowercase alexa wordmark and its matching Amazon smile. Center this single official lockup at an expressive, comfortably readable scale. Extend the icon's cyan-to-deep-ocean blue field to the full rectangular artwork with a smooth restrained gradient. Keep blue margins of at least 12% around the group. The logo and smile are the only graphics. No square frame, extra label, variant spelling, title casing, background shapes, UI, watermark, or extra ornament."
     }
   ],
   "artworkTreatments": {
@@ -1774,7 +1774,7 @@
     "galaxy-wearable": "Individual ImageGen composition using the linked brand identity reference.",
     "smartthings": "Individual ImageGen composition using the linked brand identity reference.",
     "google-home": "Individual ImageGen composition using the linked brand identity reference.",
-    "amazon-alexa": "Individual ImageGen composition using the linked brand identity reference.",
+    "amazon-alexa": "Individual ImageGen composition from the official Amazon Alexa Google Play icon.",
     "fitbit": "Individual ImageGen composition using the linked brand identity reference.",
     "strava": "Individual ImageGen composition using the linked brand identity reference.",
     "nike-run-club": "Individual ImageGen composition using the linked brand identity reference.",

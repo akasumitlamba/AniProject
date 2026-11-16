@@ -51,6 +51,6 @@ Customization sources are MPL-2.0. Upstream notices and licenses remain intact. 
 
 ## Launch release
 
-All active products share version **1.0.0**: AniHome, AniBrave Android and the AniBrave desktop extension. [Download the complete release](https://github.com/akasumitlamba/AniProject/releases/tag/v1.0.0). Each release includes both APKs, the unpacked extension ZIP, banners, checksums and an all-products bundle. See [release policy](RELEASING.md) and [consolidated history](CHANGELOG.md).
+All active products share version **1.0.0**: AniHome, AniBrave Android and the AniBrave desktop extension. [Download the complete release](https://github.com/akasumitlamba/AniProject/releases/tag/v1.0.0). New releases attach both APKs and their checksums. Release notes link to the reviewed extension, banners and wallpapers in the source tree. See [release policy](RELEASING.md) and [consolidated history](CHANGELOG.md).
 
 The [1.0.0 launch notes](docs/releases/1.0.0.md) provide the complete feature guide, setup instructions, privacy/permission boundaries, upgrade details and validation limits.
