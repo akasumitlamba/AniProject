@@ -58,7 +58,20 @@ public final class AniRuntime {
     private static final Runnable HIDE=()->{if(tools!=null)tools.dismiss();collapseShortcutTools();if(shortcutTools!=null)shortcutTools.setVisibility(View.GONE);};
 
     private AniRuntime() {}
-    public static String blankNewTab(String url) {return SiteKey.blankNewTab(url);}
+    /** Brave's new-tab page becomes AniBrave's homepage (time, search, weather); about:blank stays blank. */
+    public static String blankNewTab(String url) {
+        String result=SiteKey.blankNewTab(url);
+        if("about:blank".equals(result)&&url!=null&&!"about:blank".equalsIgnoreCase(url)){String home=HomePage.url();if(home!=null)return home;}
+        return result;
+    }
+    /** A homepage search: Brave's own web-search intent (the user's default engine). */
+    static void homeSearch(Context context,Intent intent){
+        UI.post(()->{
+            Activity a=active.get();
+            try{if(alive(a))a.startActivity(intent);else context.startActivity(intent);}
+            catch(Exception e){android.util.Log.w("AniBrave","Homepage search failed",e);}
+        });
+    }
     private static boolean alive(Activity a) {return a!=null&&!a.isFinishing()&&!a.isDestroyed();}
     public static boolean controlsStarted(){return serverPointer!=0;}
     private static void startControls(){
@@ -105,6 +118,7 @@ public final class AniRuntime {
         }
         if(active.get()!=a){dismiss();if(verticalTabsOwner.get()!=a)closeTabLayout();active=new WeakReference<>(a);immersive=a.getClass().getName().endsWith("FullScreenCustomTabActivity")||a.getIntent().getBooleanExtra("app.anibrave.immersive",false);}
         toggleServer(true);
+        IO.execute(HomePage::url); // Homepage server ready before the first new tab.
         if(engine==null) {
             try{engine=new EngineClient(context);Thread thread=new Thread(engine,"AniBrave-page-controls");thread.setDaemon(true);thread.start();}
             catch(Exception e){status="Page controls could not start";}

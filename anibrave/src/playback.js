@@ -122,13 +122,23 @@
     },true);
     for(const v of root.querySelectorAll('video,audio'))track(v,false);
     for(const element of root.querySelectorAll('*'))if(element.shadowRoot)discover(element.shadowRoot);
-    if(typeof MutationObserver!=='undefined')new MutationObserver(records=>{
-      for(const record of records)for(const node of record.addedNodes || []) {
-        if(/^(VIDEO|AUDIO)$/.test(node.tagName))track(node,false);
-        if(node.shadowRoot)discover(node.shadowRoot);
-        if(node.querySelectorAll){for(const v of node.querySelectorAll('video,audio'))track(v,false);for(const e of node.querySelectorAll('*'))if(e.shadowRoot)discover(e.shadowRoot);}
-      }
-    }).observe(root,{childList:true,subtree:true});
+    // Busy sites insert large subtrees constantly. Batch insertions and only look for media
+    // elements; walking every inserted node for shadow roots blocked the page's main thread.
+    // Late shadow roots are still found by the slower periodic sweep below.
+    if(typeof MutationObserver!=='undefined'){
+      let pending=[],flush=0;
+      const process=()=>{flush=0;const nodes=pending;pending=[];
+        for(const node of nodes){
+          if(node.isConnected===false)continue;
+          if(/^(VIDEO|AUDIO)$/.test(node.tagName))track(node,false);
+          if(node.shadowRoot)discover(node.shadowRoot);
+          if(node.getElementsByTagName){for(const v of node.getElementsByTagName('video'))track(v,false);for(const v of node.getElementsByTagName('audio'))track(v,false);}
+        }};
+      new MutationObserver(records=>{
+        for(const record of records)for(const node of record.addedNodes || [])if(node.nodeType===1)pending.push(node);
+        if(pending.length&&!flush){if(typeof setTimeout==='function')flush=setTimeout(process,250);else process();}
+      }).observe(root,{childList:true,subtree:true});
+    }
   }
   for(const name of ['pointerdown','keydown'])document.addEventListener(name,event=>{
     if(!event.isTrusted)return;
@@ -170,7 +180,11 @@
       if(document.visibilityState==='hidden' && video.paused){cancelGuard(video);continue;}
       apply(video);
     }
-    if(document.visibilityState!=='hidden' && ++scans%6===0)for(const element of document.querySelectorAll('*'))if(element.shadowRoot)discover(element.shadowRoot);
+    // Full sweep for late shadow roots: rarely, and only when the page is idle.
+    if(document.visibilityState!=='hidden' && ++scans%6===0){
+      const sweep=()=>{for(const element of document.querySelectorAll('*'))if(element.shadowRoot)discover(element.shadowRoot);};
+      if(typeof requestIdleCallback==='function')requestIdleCallback(sweep,{timeout:3000});else sweep();
+    }
   },1500);
   document.addEventListener('fullscreenchange', () => {
     send({type: 'fullscreen', enabled: !!document.fullscreenElement});

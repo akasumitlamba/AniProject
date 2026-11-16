@@ -138,9 +138,18 @@
     // player insertion is event-driven; a slower sweep catches late attachShadow.
     if ((root === document || root.host) && !observedRoots.has(root) && typeof MutationObserver !== 'undefined') {
       observedRoots.add(root);
+      // Coalesce bursts of insertions: one pass a quarter-second later instead of a full
+      // subtree scan per inserted node (that blocked busy pages' main thread).
+      let pending = [], flush = 0;
+      const process = () => {
+        flush = 0; const nodes = pending; pending = [];
+        if (nodes.length > 40) { scan(root); return; }
+        for (const node of nodes) if (node.isConnected !== false) scan(node);
+      };
       new MutationObserver(records => {
         if (document.visibilityState === 'hidden') return;
-        for (const record of records) for (const node of record.addedNodes || []) scan(node);
+        for (const record of records) for (const node of record.addedNodes || []) pending.push(node);
+        if (pending.length && !flush) { if (typeof setTimeout === 'function') flush = setTimeout(process, 250); else process(); }
       }).observe(root, {childList:true, subtree:true});
     }
     for (const video of root.querySelectorAll('video')) if(video.tagName === 'VIDEO')media.add(video);

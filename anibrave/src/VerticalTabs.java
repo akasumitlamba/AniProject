@@ -106,10 +106,16 @@ final class VerticalTabs {
     }
     private int dp(int value) { return Math.round(value*activity.getResources().getDisplayMetrics().density); }
     private final Map<String,Integer> resourceIds = new HashMap<>();
+    private final Map<String,View> views=new HashMap<>();
     private View find(String name) {
         // Resource identities are fixed for this activity; view instances may be replaced.
+        // This runs on every frame, so reuse the attached view instead of searching the tree.
+        View cached=views.get(name);
+        if(cached!=null&&cached.isAttachedToWindow())return cached;
         int id=resourceIds.computeIfAbsent(name,key->activity.getResources().getIdentifier(key,"id",activity.getPackageName()));
-        return id==0?null:decor.findViewById(id);
+        View view=id==0?null:decor.findViewById(id);
+        if(view!=null)views.put(name,view);else views.remove(name);
+        return view;
     }
     private static Object field(Object owner, String name) throws Exception {
         return owner.getClass().getField(name).get(owner);
@@ -285,9 +291,15 @@ final class VerticalTabs {
         fingerprint="";
         if(adapter!=null&&!adapter.tabs.isEmpty()){adapter.tabs=Collections.emptyList();adapter.selected=-1;adapter.notifyDataSetChanged();}
     }
+    private final View[] blockers=new View[6];
+    private long blockerLookup;
+    /** Called every frame: re-search the tree for absent overlays at most 4× a second. */
     private boolean blocked() {
-        for(int id:blockedIds) {
-            View view=id==0?null:decor.findViewById(id);if(view!=null&&view.isShown()&&view.getWidth()>0&&view.getHeight()>0)return true;
+        long now=SystemClock.uptimeMillis();boolean lookup=now-blockerLookup>=250;if(lookup)blockerLookup=now;
+        for(int i=0;i<blockedIds.length;i++) {
+            View view=blockers[i];
+            if((view==null||!view.isAttachedToWindow())&&lookup)view=blockers[i]=blockedIds[i]==0?null:decor.findViewById(blockedIds[i]);
+            if(view!=null&&view.isAttachedToWindow()&&view.isShown()&&view.getWidth()>0&&view.getHeight()>0)return true;
         }return false;
     }
     private void update() throws Exception {

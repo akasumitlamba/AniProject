@@ -402,8 +402,10 @@ class AppDrawerActivity : AppCompatActivity() {
             adapter = favorites
             layoutManager = GridLayoutManager(this@AppDrawerActivity, 4).also { favoritesGrid = it }
             itemAnimator = null; isNestedScrollingEnabled = false
-        }, android.widget.LinearLayout.LayoutParams(-1, ArtworkUi.dp(this, 112)))
-        appsColumn.addView(fav, android.widget.LinearLayout.LayoutParams(-1, -2))
+            // One row of recent apps: size to the row itself (a fixed 112 dp left a large gap).
+            setPadding(0, ArtworkUi.dp(this@AppDrawerActivity, 4), 0, 0); clipToPadding = false
+        }, android.widget.LinearLayout.LayoutParams(-1, -2))
+        appsColumn.addView(fav, android.widget.LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = ArtworkUi.dp(this@AppDrawerActivity, 6) })
         val apps = section("All applications")
         apps.addView(binding.list, android.widget.LinearLayout.LayoutParams(-1, 0, 1f))
         appsColumn.addView(apps, android.widget.LinearLayout.LayoutParams(-1, 0, 1f))

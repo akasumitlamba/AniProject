@@ -139,7 +139,8 @@ final class NativeTabs {
         try {
             Object selector=selector();
             Class<?> paramsType=Class.forName("org.chromium.content_public.browser.LoadUrlParams");
-            Object params=paramsType.getConstructor(int.class,String.class).newInstance(0,"about:blank");
+            String home=HomePage.url(); // New tabs open AniBrave's homepage.
+            Object params=paramsType.getConstructor(int.class,String.class).newInstance(0,home==null?"about:blank":home);
             Class<?> tabType=Class.forName("org.chromium.chrome.browser.tab.Tab");
             Object created=call(selector,EngineSymbols.SELECTOR_CREATE_TAB,new Class<?>[]{paramsType,int.class,tabType,boolean.class},params,2,null,incognito);
             if(created==null)throw new Failure("A new tab could not be opened");
