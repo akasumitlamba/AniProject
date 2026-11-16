@@ -100,12 +100,14 @@ internal object AutomaticBannerPolicy {
      * in which case only the shortcut's name can identify the site.
      */
     fun match(catalog: List<BannerEntry>, tile: app.anihome.launcher.data.HomeTile, isBrowser: (String) -> Boolean): BannerEntry? {
-        fun byName() = catalog.firstOrNull { BannerRules.matchPriority(it, null, tile.label, null) == 1 }
         // AniHome's own Settings app shares the launcher package; it has its own banner.
         if (tile.activityName?.endsWith(".HomeSettingsActivity") == true) return catalog.firstOrNull { it.id == "anihome-settings" }
         return when {
-            tile.isWeb -> catalog.firstOrNull { BannerRules.matchPriority(it, null, "", tile.url) == 2 } ?: byName()
-            tile.isShortcut -> tile.packageName?.takeIf { !isBrowser(it) }?.let { match(catalog, it) } ?: byName()
+            // Websites and website shortcuts (from browsers) use the same identity rules, so a site
+            // and its app share one banner: the catalog entry holds both the package and the site.
+            tile.isWeb -> SiteMatcher.match(catalog, tile.url, tile.label)
+            tile.isShortcut -> tile.packageName?.takeIf { !isBrowser(it) }?.let { match(catalog, it) }
+                ?: SiteMatcher.match(catalog, tile.url, tile.label)
             else -> match(catalog, tile.packageName)
         }
     }

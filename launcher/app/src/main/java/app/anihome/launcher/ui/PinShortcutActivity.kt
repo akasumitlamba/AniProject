@@ -45,7 +45,8 @@ class PinShortcutActivity : AppCompatActivity() {
                         }
                     }.getOrNull()
                     val store = TileStore(this)
-                    val tile = store.addShortcut(label, info.`package`, info.id, user, iconPath)
+                    val site = runCatching { info.extras?.getString("android.intent.extra.ORIGINATING_URI") ?: info.extras?.getString("site") }.getOrNull()
+                    val tile = store.addShortcut(label, info.`package`, info.id, user, iconPath, site)
                     TileEvents.notifyChanged()
                     if (tile.iconPath != image?.absolutePath) image?.delete()
                     Toast.makeText(this, "Added to Home", Toast.LENGTH_SHORT).show()

@@ -27,9 +27,9 @@ final class VerticalTabs {
     private LinearLayout rail;
     private View scrim;
     private ListView list;
-    private ImageButton toggle, overviewButton, featuresButton, compactMode;
+    private ImageButton toggle, overviewButton, compactMode;
     private TextView heading, count, regularMode, privateMode, add;
-    private LinearLayout mode, segments, footer;
+    private LinearLayout header, mode, segments, footer;
     private final int surface, ink, muted, accent, selectedColor, divider, well;
     private boolean lastExpanded;
     private boolean overlayVisible, nativeOverlay;
@@ -216,12 +216,11 @@ final class VerticalTabs {
             }
         };
         rail.setFocusableInTouchMode(true);rail.setOrientation(LinearLayout.VERTICAL);rail.setBackgroundColor(surface);
-        LinearLayout header=new LinearLayout(activity);header.setGravity(Gravity.CENTER_VERTICAL);header.setPadding(dp(8),0,dp(4),0);
+        header=new LinearLayout(activity);header.setGravity(Gravity.CENTER_VERTICAL);header.setPadding(dp(8),0,dp(8),0);
         heading=new TextView(activity);heading.setText("Tabs");heading.setTextColor(ink);heading.setTextSize(15);heading.setTypeface(null,Typeface.BOLD);
         heading.setGravity(Gravity.CENTER_VERTICAL);heading.setPadding(dp(6),0,dp(6),0);header.addView(heading,new LinearLayout.LayoutParams(0,dp(48),1));
         count=new TextView(activity);count.setTextSize(11);count.setTextColor(muted);count.setGravity(Gravity.CENTER);count.setMinWidth(dp(24));
         header.addView(count,new LinearLayout.LayoutParams(-2,dp(28)));
-        toggle=iconButton(TabIcon.COLLAPSE,"Collapse tabs",()->expand(!expanded));header.addView(toggle,new LinearLayout.LayoutParams(dp(44),dp(48)));
         rail.addView(header,new LinearLayout.LayoutParams(-1,dp(48)));
         mode=new LinearLayout(activity);mode.setGravity(Gravity.CENTER);mode.setPadding(dp(8),dp(2),dp(8),dp(6));
         segments=new LinearLayout(activity);segments.setPadding(dp(2),dp(2),dp(2),dp(2));segments.setBackground(rounded(well,9));
@@ -236,8 +235,10 @@ final class VerticalTabs {
         footer=new LinearLayout(activity);footer.setGravity(Gravity.CENTER);footer.setPadding(dp(4),dp(2),dp(4),dp(2));
         add=textButton("New tab",TabIcon.PLUS,()->perform(()->nativeTabs.newTab(privateModel)));add.setContentDescription("New tab");
         overviewButton=iconButton(TabIcon.OVERVIEW,"Tab overview and groups",()->{View tabs=find("tab_switcher_button");if(tabs!=null)tabs.performClick();});
-        featuresButton=iconButton(TabIcon.SETTINGS,"AniBrave features",()->AniRuntime.showTools(activity,featuresButton));
-        footer.addView(add);footer.addView(overviewButton);footer.addView(featuresButton);
+        // Expand/collapse lives at the bottom with the other rail controls. AniBrave features
+        // stay in the toolbar beside the browser menu (top right), not in the rail.
+        toggle=iconButton(TabIcon.COLLAPSE,"Collapse tabs",()->expand(!expanded));
+        footer.addView(add);footer.addView(overviewButton);footer.addView(toggle);
         rail.addView(footer,new LinearLayout.LayoutParams(-1,dp(52)));
         decor.addView(rail,new FrameLayout.LayoutParams(dp(56),-1));
         lastExpanded=!expanded;styleChrome();
@@ -245,7 +246,7 @@ final class VerticalTabs {
     private void styleChrome(){
         if(rail==null)return;
         if(lastExpanded!=expanded){
-            heading.setVisibility(expanded?View.VISIBLE:View.GONE);count.setVisibility(expanded?View.VISIBLE:View.GONE);
+            header.setVisibility(expanded?View.VISIBLE:View.GONE);
             segments.setVisibility(expanded?View.VISIBLE:View.GONE);compactMode.setVisibility(expanded?View.GONE:View.VISIBLE);
             toggle.setImageDrawable(icon(expanded?TabIcon.COLLAPSE:TabIcon.EXPAND,muted));
             toggle.setContentDescription(expanded?"Collapse tabs":"Expand tabs");toggle.setTooltipText(expanded?"Collapse tabs":"Expand tabs");
@@ -254,7 +255,7 @@ final class VerticalTabs {
             add.setPadding(expanded?dp(12):dp(14),0,expanded?dp(12):dp(14),0);
             add.setLayoutParams(new LinearLayout.LayoutParams(expanded?0:-1,dp(48),expanded?1:0));
             overviewButton.setLayoutParams(new LinearLayout.LayoutParams(expanded?dp(44):-1,dp(48)));
-            featuresButton.setLayoutParams(new LinearLayout.LayoutParams(expanded?dp(44):-1,dp(48)));
+            toggle.setLayoutParams(new LinearLayout.LayoutParams(expanded?dp(44):-1,dp(48)));
             lastExpanded=expanded;
         }
         regularMode.setTextColor(privateModel?muted:accent);privateMode.setTextColor(privateModel?accent:muted);
@@ -275,7 +276,10 @@ final class VerticalTabs {
     private interface Operation { void run() throws Exception; }
     private void perform(Operation operation) {
         try { operation.run(); NativeStrip.showControls(activity);fingerprint="";update(); }
-        catch(Exception e) { Toast.makeText(activity,"Tab action unavailable. Use the browser tab overview.",Toast.LENGTH_LONG).show(); }
+        catch(Exception e) {
+            android.util.Log.w("AniBrave","Tab action failed",e);
+            Toast.makeText(activity,"Tab action unavailable. Use the browser tab overview.",Toast.LENGTH_LONG).show();
+        }
     }
     private void clearRows() {
         fingerprint="";
@@ -306,7 +310,8 @@ final class VerticalTabs {
         geometry();
     }
     private void toolbarControls(){
-        for(String name:new String[]{"anibrave_features","tab_switcher_button"}){
+        // Only the native tab switcher gives way to the rail; AniBrave features stays next to ⋮.
+        for(String name:new String[]{"tab_switcher_button"}){
             View button=find(name);if(button==null)continue;
             if(!toolbarVisibility.containsKey(button)){
                 toolbarVisibility.put(button,button.getVisibility());toolbarWidths.put(button,button.getLayoutParams().width);

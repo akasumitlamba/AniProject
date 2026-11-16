@@ -51,6 +51,8 @@ public final class AniRuntime {
     private static ViewTreeObserver.OnGlobalLayoutListener toolbarListener;
     private static View toolbarDecor;
     private static VerticalTabs verticalTabs;
+    /** The window that owns the rail. The rail lives as long as that window, not just while resumed. */
+    private static WeakReference<Activity> verticalTabsOwner=new WeakReference<>(null);
     private static String status="Connecting to the browser…";
     private static final double[] RATES={0.5,0.75,1,1.25,1.5,1.75,2,2.5,3,4};
     private static final Runnable HIDE=()->{if(tools!=null)tools.dismiss();collapseShortcutTools();if(shortcutTools!=null)shortcutTools.setVisibility(View.GONE);};
@@ -98,10 +100,10 @@ public final class AniRuntime {
                 public void onActivityPaused(Activity a){if(active.get()==a)pause();}
                 public void onActivityStopped(Activity a){}
                 public void onActivitySaveInstanceState(Activity a,Bundle b){}
-                public void onActivityDestroyed(Activity a){if(active.get()==a)pause();}
+                public void onActivityDestroyed(Activity a){if(verticalTabsOwner.get()==a)closeTabLayout();if(active.get()==a)pause();}
             });
         }
-        if(active.get()!=a){dismiss();active=new WeakReference<>(a);immersive=a.getClass().getName().endsWith("FullScreenCustomTabActivity")||a.getIntent().getBooleanExtra("app.anibrave.immersive",false);}
+        if(active.get()!=a){dismiss();if(verticalTabsOwner.get()!=a)closeTabLayout();active=new WeakReference<>(a);immersive=a.getClass().getName().endsWith("FullScreenCustomTabActivity")||a.getIntent().getBooleanExtra("app.anibrave.immersive",false);}
         toggleServer(true);
         if(engine==null) {
             try{engine=new EngineClient(context);Thread thread=new Thread(engine,"AniBrave-page-controls");thread.setDaemon(true);thread.start();}
@@ -118,7 +120,8 @@ public final class AniRuntime {
     private static void dismiss(){
         ContinuationController.pause();
         NativeStrip.settle(active.get());
-        if(verticalTabs!=null){verticalTabs.close();verticalTabs=null;}
+        // The vertical rail is NOT closed here: a pause (a sheet, a dialog, AniHome's panel,
+        // split screen) used to restore the horizontal strip until the browser resumed.
         UI.removeCallbacks(HIDE);
         removeWatchReminder();
         if(tools!=null){tools.dismiss();tools=null;}
@@ -281,11 +284,15 @@ public final class AniRuntime {
         toolbarListener.onGlobalLayout();
     }
     private static void bindTabLayout(Activity a){
-        if(!immersive&&verticalTabs==null&&VerticalTabs.enabled(a))verticalTabs=new VerticalTabs(a);
+        if(!immersive&&verticalTabs==null&&VerticalTabs.enabled(a)){verticalTabs=new VerticalTabs(a);verticalTabsOwner=new WeakReference<>(a);}
+    }
+    private static void closeTabLayout(){
+        if(verticalTabs!=null){verticalTabs.close();verticalTabs=null;}
+        verticalTabsOwner=new WeakReference<>(null);
     }
     static void tabLayoutChanged(Activity a){
         if(active.get()!=a)return;
-        if(verticalTabs!=null){verticalTabs.close();verticalTabs=null;}
+        closeTabLayout();
         if(!VerticalTabs.enabled(a)){
             // Recreate the native window when restoring its horizontal strip.
             // This avoids Chromium retaining an intermediate toolbar snapshot.
@@ -444,7 +451,10 @@ public final class AniRuntime {
                 String label=title.trim().isEmpty()?SiteKey.of(url):title.trim();if(label.length()>45)label=label.substring(0,45);
                 Icon image=artwork==null?Icon.createWithResource(c,c.getApplicationInfo().icon):Icon.createWithBitmap(artwork);
                 String id="site-"+Integer.toHexString(url.hashCode());
-                ShortcutInfo info=new ShortcutInfo.Builder(c,id).setShortLabel(label).setLongLabel(label).setIcon(image).setIntent(launch).build();
+                // Tells launchers which site this is (AniHome uses it to pick the site's store banner).
+                android.os.PersistableBundle extras=new android.os.PersistableBundle();
+                Uri site=Uri.parse(url);if(site.getScheme()!=null&&site.getHost()!=null)extras.putString("site",site.getScheme()+"://"+site.getHost());
+                ShortcutInfo info=new ShortcutInfo.Builder(c,id).setShortLabel(label).setLongLabel(label).setIcon(image).setIntent(launch).setExtras(extras).build();
                 manager.requestPinShortcut(info,null);
             });
         });

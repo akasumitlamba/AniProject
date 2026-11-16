@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/** Version-pinned bridge to Brave 1.98.60's real tab models. UI thread only. */
+/** Version-pinned bridge to Brave's real tab models (see engine-symbols.json). UI thread only. */
 final class NativeTabs {
     static final class Entry {
         final int id;
@@ -88,8 +88,17 @@ final class NativeTabs {
             return new Snapshot(entries,incognito);
         }catch(Exception e){throw e instanceof Failure?(Failure)e:new Failure(e);}
     }
+    /**
+     * Finds a tab by id through the stable getCount/getTabAt/getId API. Brave 1.99 renamed
+     * getTabById during minification, which broke switching and closing from the rail.
+     */
     private Object resolve(Object model,int id) throws Exception {
-        return call(model,"getTabById",new Class<?>[]{int.class},id);
+        int count=((Number)call(model,"getCount")).intValue();
+        for(int i=0;i<count;i++){
+            Object tab=call(model,"getTabAt",new Class<?>[]{int.class},i);
+            if(tab!=null&&((Number)call(tab,"getId")).intValue()==id)return tab;
+        }
+        return null;
     }
     /** Re-resolve IDs after every click; row indexes may change while a menu is open. */
     boolean selectById(int id,boolean incognito) throws Failure {

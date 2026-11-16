@@ -34,6 +34,7 @@ final class EngineClient implements Runnable {
     private volatile boolean running = true;
     private volatile boolean fullscreen;
     private volatile LocalWebSocket socket;
+    private boolean retrying;
     EngineClient(Context c) throws Exception {
         context=c;fullscreen=AniRuntime.videoFullscreen();playerSource=asset(c,"anibrave/player.js");
         try (java.io.InputStream in=c.getAssets().open("anibrave/playback.js");java.io.ByteArrayOutputStream out=new java.io.ByteArrayOutputStream()) {
@@ -161,10 +162,13 @@ final class EngineClient implements Runnable {
                 send("Target.setDiscoverTargets",json("discover",true),null);
                 send("Target.setAutoAttach",json("autoAttach",true,"waitForDebuggerOnStart",false,"flatten",true),null);
                 send("Target.getTargets",json(),null);
+                retrying=false;
                 AniRuntime.engineReady();
                 while(running) receive(new JSONObject(socket.read()));
             } catch(Exception e) {
-                if(running) android.util.Log.w("AniBrave", "Page control connection failed: " + e.getClass().getSimpleName() + ": " + e.getMessage());
+                // Refused until Brave finishes starting its control server; log a streak once.
+                if(running&&!retrying) android.util.Log.w("AniBrave", "Page control connection failed (retrying): " + e.getClass().getSimpleName() + ": " + e.getMessage());
+                retrying=true;
                 if(running) AniRuntime.engineWarning("Connecting to the browser…");
             } finally { LocalWebSocket s=socket; socket=null; if(s!=null) try{s.close();}catch(Exception ignored){} }
             if(running) try{Thread.sleep(1500);}catch(InterruptedException e){break;}

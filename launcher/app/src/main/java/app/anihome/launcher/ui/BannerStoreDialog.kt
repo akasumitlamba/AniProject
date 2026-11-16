@@ -23,6 +23,7 @@ import app.anihome.launcher.banners.BannerApiException
 import app.anihome.launcher.banners.BannerEntry
 import app.anihome.launcher.banners.BannerRepository
 import app.anihome.launcher.banners.BannerRules
+import app.anihome.launcher.banners.SiteMatcher
 import app.anihome.launcher.data.HomeTile
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -40,6 +41,7 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
     private val repository = BannerRepository(activity)
     private val scope = CoroutineScope(activity.lifecycleScope.coroutineContext + SupervisorJob(activity.lifecycleScope.coroutineContext[Job]))
     private var entries = emptyList<BannerEntry>()
+    private var suggestedEntry: BannerEntry? = null
     private var allowNetwork = false
     private var favouritesOnly = true
     private lateinit var status: TextView
@@ -132,13 +134,18 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
         refreshButton.contentDescription = if (retry) "Retry banner updates" else "Refresh banners"
         refreshButton.tooltipText = refreshButton.contentDescription
     }
+    /** The banner the matching rules pick for this tile (same rules as automatic banners). */
+    private fun suggested(): BannerEntry? = if (tile.isApp) null else SiteMatcher.match(entries, tile.url, tile.label)
+    private fun isMatch(entry: BannerEntry, suggestion: BannerEntry?) =
+        entry == suggestion || BannerRules.matches(entry, tile.packageName, tile.label, tile.url)
     private fun filter() {
+        val suggestion = suggested(); suggestedEntry = suggestion
         val text = BannerRules.normalizedName(query.text.toString())
         val visible = entries.filter { entry ->
             if (text.isNotEmpty()) BannerRules.normalizedName(entry.name).contains(text) || entry.aliases.any { name -> BannerRules.normalizedName(name).contains(text) }
-            else !favouritesOnly || entry.tabletPriority >= 60 || BannerRules.matches(entry, tile.packageName, tile.label, tile.url)
+            else !favouritesOnly || entry.tabletPriority >= 60 || isMatch(entry, suggestion)
         }
-        adapter.items = BannerRules.ordered(visible, tile.packageName, tile.label, tile.url)
+        adapter.items = BannerRules.ordered(visible, tile.packageName, tile.label, tile.url).sortedByDescending { it == suggestion }
         adapter.notifyDataSetChanged()
         if (entries.isNotEmpty() && visible.isEmpty()) setStatus("No banners found")
         else if (status.text == "No banners found") setStatus(null)
@@ -195,7 +202,7 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
             val entry = items[position]
             val generation = networkGeneration
             holder.job?.cancel(); holder.id = entry.id; holder.image.setImageDrawable(null)
-            val matched = BannerRules.matches(entry, tile.packageName, tile.label, tile.url)
+            val matched = isMatch(entry, suggestedEntry)
             holder.label.text = entry.name
             holder.label.setCompoundDrawablesWithIntrinsicBounds(0, 0, if (matched) R.drawable.ic_check else 0, 0)
             holder.card.contentDescription = "${entry.name}, preview banner"

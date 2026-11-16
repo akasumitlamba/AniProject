@@ -584,8 +584,10 @@ class HomeActivity : AppCompatActivity() {
             loadedBoard = true
             tiles.submitList(items)
             board.loaded = true
-            if (!homePreferences.getBoolean("banner_backfill_v1", false)) {
-                homePreferences.edit().putBoolean("banner_backfill_v1", true).apply()
+            // v2: website matching now uses address/title identity words, so tiles that kept their
+            // icon under the old exact-name rule (e.g. JioHotstar site shortcuts) are checked once more.
+            if (!homePreferences.getBoolean("banner_backfill_v2", false)) {
+                homePreferences.edit().putBoolean("banner_backfill_v1", true).putBoolean("banner_backfill_v2", true).apply()
                 if (withContext(Dispatchers.IO) { store.queueMissingBanners() } > 0) { TileEvents.notifyChanged(); return@launch }
             }
             if (items.any { it.artworkOrigin == "pending" }) app.anihome.launcher.banners.AutomaticBanners.enqueue(applicationContext)

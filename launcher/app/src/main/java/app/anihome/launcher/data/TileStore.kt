@@ -53,7 +53,7 @@ class TileStore(context: Context, private val databaseOverride: android.database
     }
 
     /** Platform shortcut identity is package + ID + user, independent of the normal app tile. */
-    fun addShortcut(label: String, packageName: String, shortcutId: String, user: Long, iconPath: String?): HomeTile {
+    fun addShortcut(label: String, packageName: String, shortcutId: String, user: Long, iconPath: String?, siteUrl: String? = null): HomeTile {
         require(label.isNotBlank() && packageName.isNotBlank() && shortcutId.isNotBlank() && user >= 0)
         val selection = "package_name=? AND shortcut_id=? AND shortcut_user=?"
         val args = arrayOf(packageName, shortcutId, user.toString())
@@ -65,6 +65,9 @@ class TileStore(context: Context, private val databaseOverride: android.database
             if (existing == null) put("label", label.trim().take(200))
             put("package_name", packageName)
             put("shortcut_id", shortcutId); put("shortcut_user", user)
+            // Website shortcuts (e.g. AniBrave fullscreen sites) may name their site; used only to
+            // pick the matching store banner. Opening still goes through the shortcut itself.
+            siteUrl?.takeIf { it.startsWith("https://") || it.startsWith("http://") }?.let { put("url", it.take(2048)) }
             if (iconPath != null) put("icon_path", iconPath)
         }
         val id = if (existing != null) { db.update(TABLE, values, "id=?", arrayOf(existing.toString())); existing }
