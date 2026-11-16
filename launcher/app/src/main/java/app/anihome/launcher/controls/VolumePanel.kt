@@ -34,6 +34,11 @@ import kotlin.math.roundToInt
 internal class VolumePanel(private val service: AccessibilityService) {
     companion object {
         fun enabled(context: Context) = context.getSharedPreferences("anihome", Context.MODE_PRIVATE).getBoolean("volume_panel", false)
+        /** Narrow pills (like iOS), the same on phones and tablets. */
+        private const val SLIDER_WIDTH = 36
+        private const val LABEL_WIDTH = 54
+        private const val REPEAT_DELAY = 350L
+        private const val REPEAT_INTERVAL = 90L
         fun setEnabled(context: Context, on: Boolean) = context.getSharedPreferences("anihome", Context.MODE_PRIVATE).edit().putBoolean("volume_panel", on).apply()
     }
     private val audio = service.getSystemService(AudioManager::class.java)
@@ -115,12 +120,31 @@ internal class VolumePanel(private val service: AccessibilityService) {
         if (event.keyCode != KeyEvent.KEYCODE_VOLUME_UP && event.keyCode != KeyEvent.KEYCODE_VOLUME_DOWN) return false
         if (audio.mode != AudioManager.MODE_NORMAL) return false // calls: Android's own panel
         if (service.getSystemService(android.app.KeyguardManager::class.java).isKeyguardLocked) return false
-        if (event.action == KeyEvent.ACTION_DOWN) {
-            val stream = activeStream()
-            audio.adjustStreamVolume(stream, if (event.keyCode == KeyEvent.KEYCODE_VOLUME_UP) AudioManager.ADJUST_RAISE else AudioManager.ADJUST_LOWER, 0)
-            show()
+        val direction = if (event.keyCode == KeyEvent.KEYCODE_VOLUME_UP) AudioManager.ADJUST_RAISE else AudioManager.ADJUST_LOWER
+        when (event.action) {
+            KeyEvent.ACTION_DOWN -> if (event.repeatCount == 0) {
+                // Holding the key keeps stepping. Android doesn't generate repeats for keys an
+                // accessibility service consumes, so AniHome repeats them itself.
+                handler.removeCallbacks(repeat)
+                held = direction
+                step(direction)
+                handler.postDelayed(repeat, REPEAT_DELAY)
+            }
+            KeyEvent.ACTION_UP -> { handler.removeCallbacks(repeat); held = 0 }
         }
         return true
+    }
+    private var held = 0
+    private val repeat = object : Runnable {
+        override fun run() {
+            if (held == 0) return
+            step(held)
+            handler.postDelayed(this, REPEAT_INTERVAL)
+        }
+    }
+    private fun step(direction: Int) {
+        audio.adjustStreamVolume(activeStream(), direction, 0)
+        show()
     }
     private fun activeStream() = if (audio.isMusicActive) AudioManager.STREAM_MUSIC else AudioManager.STREAM_MUSIC
 
@@ -135,7 +159,7 @@ internal class VolumePanel(private val service: AccessibilityService) {
      */
     private fun show() {
         keepOpen()
-        if (root != null) { refresh(); return }
+        if (root != null) { updateLevels(); return } // just move the sliders; no rebuild
         connect()
         val panel = LinearLayout(service).apply {
             orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER_HORIZONTAL
@@ -184,7 +208,7 @@ internal class VolumePanel(private val service: AccessibilityService) {
     }
 
     fun dismiss() {
-        handler.removeCallbacks(hide); handler.removeCallbacks(relist)
+        handler.removeCallbacks(hide); handler.removeCallbacks(relist); handler.removeCallbacks(repeat); held = 0
         val window = frame ?: return
         root = null; frame = null; windowParams = null; expanded = false; dragging = false
         window.animate().cancel()
@@ -203,6 +227,7 @@ internal class VolumePanel(private val service: AccessibilityService) {
     private fun refresh() {
         val panel = root ?: return
         panel.removeAllViews()
+        streamUpdaters.clear()
         val metrics = service.resources.displayMetrics
         val sliderHeight = minOf(dp(210), (metrics.heightPixels * .36f).toInt())
         if (expanded) panel.addView(header(), LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(10) })
@@ -285,8 +310,12 @@ internal class VolumePanel(private val service: AccessibilityService) {
         }
     }
 
+    /** Live sliders by stream, so key presses update them in place. */
+    private val streamUpdaters = mutableMapOf<Int, (Int) -> Unit>()
+    private fun updateLevels() { streamUpdaters.forEach { (stream, update) -> update(audio.getStreamVolume(stream)) } }
+
     private fun streamColumn(row: LinearLayout, label: String, icon: Int, stream: Int, height: Int) {
-        column(row, label, service.getDrawable(icon)?.mutate(), audio.getStreamMaxVolume(stream), audio.getStreamVolume(stream), height) { value ->
+        streamUpdaters[stream] = column(row, label, service.getDrawable(icon)?.mutate(), audio.getStreamMaxVolume(stream), audio.getStreamVolume(stream), height) { value ->
             runCatching { audio.setStreamVolume(stream, value, 0) }
         }
     }
@@ -358,27 +387,27 @@ internal class VolumePanel(private val service: AccessibilityService) {
             typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
         }, LinearLayout.LayoutParams(-2, -2).apply { bottomMargin = dp(8) })
         val tile = android.widget.FrameLayout(service).apply {
-            background = GradientDrawable().apply { cornerRadius = dp(20).toFloat(); setColor(if (muted) app.anihome.launcher.ui.ControlCenter.SURFACE_HIGH else 0xF2FFFFFF.toInt()) }
+            background = GradientDrawable().apply { cornerRadius = dp(SLIDER_WIDTH) * .38f; setColor(if (muted) app.anihome.launcher.ui.ControlCenter.SURFACE_HIGH else 0xF2FFFFFF.toInt()) }
             isClickable = true; isFocusable = true
             contentDescription = "$label, ${if (muted) "muted" else "sound on"}. Tap to ${if (muted) "unmute" else "mute"}"
             setOnClickListener { toggle(!muted); keepOpen() }
             addView(ImageView(service).apply { setImageDrawable(icon); alpha = if (muted) .45f else 1f },
-                android.widget.FrameLayout.LayoutParams(dp(28), dp(28), Gravity.CENTER))
+                android.widget.FrameLayout.LayoutParams(dp(24), dp(24), Gravity.CENTER))
             addView(ImageView(service).apply {
                 setImageResource(if (muted) R.drawable.ic_cc_silent else R.drawable.ic_cc_volume)
                 imageTintList = ColorStateList.valueOf(if (muted) -1 else 0xFF15171C.toInt())
             }, android.widget.FrameLayout.LayoutParams(dp(20), dp(20), Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL).apply { bottomMargin = dp(14) })
         }
-        column.addView(tile, LinearLayout.LayoutParams(dp(52), height))
+        column.addView(tile, LinearLayout.LayoutParams(dp(SLIDER_WIDTH), height))
         column.addView(TextView(service).apply {
             text = label; textSize = 11f; setTextColor(0xFFC4C7CE.toInt()); gravity = Gravity.CENTER
             maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END; importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
-        }, LinearLayout.LayoutParams(dp(64), -2).apply { topMargin = dp(8) })
+        }, LinearLayout.LayoutParams(dp(LABEL_WIDTH), -2).apply { topMargin = dp(8) })
         row.addView(column, LinearLayout.LayoutParams(-2, -2).apply { marginStart = dp(2); marginEnd = dp(2) })
     }
 
     /** One column: level on top, a tall pill slider with its icon, and the name underneath. */
-    private fun column(row: LinearLayout, label: String, icon: android.graphics.drawable.Drawable?, max: Int, value: Int, height: Int, tint: Boolean = true, changed: (Int) -> Unit) {
+    private fun column(row: LinearLayout, label: String, icon: android.graphics.drawable.Drawable?, max: Int, value: Int, height: Int, tint: Boolean = true, changed: (Int) -> Unit): (Int) -> Unit {
         val column = LinearLayout(service).apply { orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER_HORIZONTAL }
         val level = TextView(service).apply {
             textSize = 12f; setTextColor(-1); gravity = Gravity.CENTER
@@ -387,17 +416,19 @@ internal class VolumePanel(private val service: AccessibilityService) {
         fun show(v: Int) { level.text = "${(v * 100f / max.coerceAtLeast(1)).roundToInt()}%" }
         show(value)
         column.addView(level, LinearLayout.LayoutParams(-2, -2).apply { bottomMargin = dp(8) })
-        column.addView(app.anihome.launcher.ui.VerticalSlider(service, icon, label, tintIcon = tint).apply {
+        val slider = app.anihome.launcher.ui.VerticalSlider(service, icon, label, tintIcon = tint).apply {
             this.max = max; this.value = value
             onStart = { dragging = true; handler.removeCallbacks(hide) }
             onEnd = { dragging = false; keepOpen() }
             onChange = { v -> show(v); changed(v); keepOpen() }
-        }, LinearLayout.LayoutParams(dp(52), height))
+        }
+        column.addView(slider, LinearLayout.LayoutParams(dp(SLIDER_WIDTH), height))
         column.addView(TextView(service).apply {
             text = label; textSize = 11f; setTextColor(0xFFC4C7CE.toInt()); gravity = Gravity.CENTER
             maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END; importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
-        }, LinearLayout.LayoutParams(dp(64), -2).apply { topMargin = dp(8) })
+        }, LinearLayout.LayoutParams(dp(LABEL_WIDTH), -2).apply { topMargin = dp(8) })
         row.addView(column, LinearLayout.LayoutParams(-2, -2).apply { marginStart = dp(2); marginEnd = dp(2) })
+        return { v -> if (!dragging) { slider.value = v; show(v) } }
     }
 
     @Suppress("unused") private fun percent(v: Int, max: Int) = (v * 100f / max.coerceAtLeast(1)).roundToInt()
