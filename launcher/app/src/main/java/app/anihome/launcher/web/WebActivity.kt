@@ -8,14 +8,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-/** Compatibility entry point for old links. Browser behavior and watch tracking belong to AniBrave. */
+/** Internal hand-off to AniBrave; not exported, so websites and other apps cannot reach it. */
 class WebActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val url = (intent.dataString ?: intent.getStringExtra(EXTRA_URL))?.let { Uri.parse(it).normalizeScheme().toString() }
         if (url == null || Uri.parse(url).scheme !in listOf("https", "http")) { finish(); return }
         try {
-            startActivity(browserIntent(url))
+            // For-result (same task, no NEW_TASK) so AniBrave can verify AniHome's signature.
+            @Suppress("DEPRECATION") startActivityForResult(browserIntent(url), 0)
             finish()
         } catch (_: ActivityNotFoundException) { missingBrowser() }
           catch (_: SecurityException) { missingBrowser() }

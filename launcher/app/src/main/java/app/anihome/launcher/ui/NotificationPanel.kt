@@ -36,6 +36,7 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
     val privilegedReady: Boolean get() = quickSettings.privilegedReady
     fun systemToggle(id: String, enabled: Boolean, done: (String) -> Unit) = quickSettings.systemToggle(id, enabled, done)
     fun connectPrivileged() = quickSettings.connectPrivileged()
+    fun grantSecureSettings(done: () -> Unit) = quickSettings.grantSecureSettings(done)
     /** Connects to Shizuku if needed (retrying briefly), then runs a fixed shell-level toggle. */
     fun privilegedToggle(id: String, enabled: Boolean, done: (String) -> Unit, tries: Int = 6) {
         if (!privilegedReady && tries > 0) {
@@ -140,7 +141,11 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
             // Removed cards have already slid away; the rest glide up into place.
             addDuration = 180; removeDuration = 160; moveDuration = 240; changeDuration = 0; supportsChangeAnimations = false
         } }
-        if (!wide) list.addOnItemTouchListener(object : RecyclerView.SimpleOnItemTouchListener() {
+        // Pulled down from the top (and always on phones, where it fills the screen): swiping up
+        // closes it once the list is at its end, like Android's shade. Mid-list it still scrolls.
+        val swipeUpCloses = direction == "DOWN" || SidePanelLayout.phone(activity)
+        list.addOnItemTouchListener(object : RecyclerView.SimpleOnItemTouchListener() {
+            private var startX = 0f; private var startY = 0f; private var closing = false
             override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
                 // Only touches that start on the Control Center (top of the header) count.
                 val header = center.view
@@ -148,7 +153,17 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
                     val at = IntArray(2).also(header::getLocationOnScreen); val rvAt = IntArray(2).also(rv::getLocationOnScreen)
                     val top = at[1] - rvAt[1]; e.y >= top && e.y <= top + header.height
                 }
-                return center.interceptSwipe(e, overControls)
+                if (!wide && center.interceptSwipe(e, overControls)) { closing = false; return true }
+                when (e.actionMasked) {
+                    MotionEvent.ACTION_DOWN -> { startX = e.x; startY = e.y; closing = swipeUpCloses && !rv.canScrollVertically(1) }
+                    MotionEvent.ACTION_MOVE -> if (closing) {
+                        val dy = e.y - startY; val dx = e.x - startX
+                        if (dy > dp(8) || kotlin.math.abs(dx) > kotlin.math.abs(dy) * 1.2f && kotlin.math.abs(dx) > dp(16)) closing = false
+                        else if (-dy > dp(56)) { closing = false; dismiss(); return true }
+                    }
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> closing = false
+                }
+                return false
             }
         })
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
@@ -181,6 +196,7 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
         val settings = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; setPadding(0, dp(4), 0, 0) }
         root.addView(notifications, LinearLayout.LayoutParams(-1, 0, 1f))
         root.addView(settings)
+        if (swipeUpCloses) root.addView(closeHandle(), LinearLayout.LayoutParams(-1, dp(28)))
         quickSettings.onSectionChanged = { section ->
             val page = section != null
             // QuickSettings animates the page itself; a second, nested transition here left the
@@ -271,6 +287,24 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
         }
     }
     private fun closeSection() { quickSettings.showNotifications() }
+    /** Grab handle at the bottom: tap it or drag it up to put the panel away. */
+    @android.annotation.SuppressLint("ClickableViewAccessibility")
+    private fun closeHandle(): View = FrameLayout(activity).apply {
+        contentDescription = "Close panel"; isClickable = true; isFocusable = true
+        addView(View(activity).apply {
+            background = android.graphics.drawable.GradientDrawable().apply { setColor(0x80FFFFFF.toInt()); cornerRadius = dp(2).toFloat() }
+        }, FrameLayout.LayoutParams(dp(44), dp(4), Gravity.CENTER))
+        var startY = 0f
+        setOnTouchListener { view, e ->
+            when (e.actionMasked) {
+                MotionEvent.ACTION_DOWN -> startY = e.rawY
+                MotionEvent.ACTION_MOVE -> if (startY - e.rawY > dp(24)) { startY = Float.MAX_VALUE; dismiss() }
+                MotionEvent.ACTION_UP -> if (kotlin.math.abs(e.rawY - startY) < dp(8)) view.performClick()
+            }
+            true
+        }
+        setOnClickListener { dismiss() }
+    }
     private var styleCleanup: (() -> Unit)? = null
     private var instantDismiss = false
     private var afterDismiss: (() -> Unit)? = null

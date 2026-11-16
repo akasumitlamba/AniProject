@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
@@ -86,19 +88,12 @@
         <!-- Each website runs as its own document so it shows up in Recents like a native app. -->
         <activity
             android:name=".web.WebActivity"
-            android:exported="true"
+            android:exported="false"
             android:documentLaunchMode="intoExisting"
             android:autoRemoveFromRecents="false"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|uiMode"
             android:theme="@style/Theme.AniHome.Web"
             android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" />
-                <data android:scheme="https" />
-            </intent-filter>
         </activity>
 
         <!-- AniHome Settings: its own entry in the app list. -->
@@ -120,6 +115,7 @@
         <activity android:name=".ui.LibraryActivity" android:exported="false" />
         <activity android:name=".ui.HistoryActivity" android:exported="false" />
         <activity android:name=".ui.TileArtworkActivity" android:exported="false" android:theme="@style/Theme.AniHome" />
+        <activity android:name=".ui.WallpaperActivity" android:exported="false" android:theme="@style/Theme.AniHome" />
 
         <activity
             android:name=".ui.AppDrawerActivity"

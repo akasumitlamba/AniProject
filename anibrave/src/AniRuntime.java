@@ -98,7 +98,7 @@ public final class AniRuntime {
     }
     public static void intent(Activity a,Intent intent) {
         a.setIntent(intent);
-        immersive=intent.getBooleanExtra("app.anibrave.immersive",false);
+        immersive=shortcutWindow(a);
         if(alive(a))UI.post(()->{if(alive(a))applyImmersive(a);});
     }
     public static void resume(Activity a) {
@@ -106,6 +106,7 @@ public final class AniRuntime {
         if(context==null){context=a.getApplicationContext();history=new AnimeHistory(context);}
         if(!registered) {
             registered=true;
+            IO.execute(()->LaunchTrust.migrate(context));
             ((Application)context).registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks(){
                 public void onActivityCreated(Activity a,Bundle b){}
                 public void onActivityStarted(Activity a){}
@@ -116,7 +117,7 @@ public final class AniRuntime {
                 public void onActivityDestroyed(Activity a){if(verticalTabsOwner.get()==a)closeTabLayout();if(active.get()==a)pause();}
             });
         }
-        if(active.get()!=a){dismiss();if(verticalTabsOwner.get()!=a)closeTabLayout();active=new WeakReference<>(a);immersive=a.getClass().getName().endsWith("FullScreenCustomTabActivity")||a.getIntent().getBooleanExtra("app.anibrave.immersive",false);}
+        if(active.get()!=a){dismiss();if(verticalTabsOwner.get()!=a)closeTabLayout();active=new WeakReference<>(a);immersive=shortcutWindow(a);}
         toggleServer(true);
         IO.execute(HomePage::url); // Homepage server ready before the first new tab.
         if(engine==null) {
@@ -151,6 +152,8 @@ public final class AniRuntime {
         toolbarDecor=null;toolbarListener=null;featureButton=null;
     }
     static boolean videoFullscreen(){return Boolean.TRUE.equals(fullscreenActivities.get(active.get()));}
+    /** Only the private shortcut window class hides the address bar; intent extras are caller-controlled. */
+    static boolean shortcutWindow(Activity a){return a.getClass().getName().endsWith("FullScreenCustomTabActivity");}
     private static boolean isFullscreen(Activity a){return immersive||Boolean.TRUE.equals(fullscreenActivities.get(a));}
     private static void bindWindow(Activity a){
         if(windowDecor!=null)return;
@@ -461,7 +464,7 @@ public final class AniRuntime {
             UI.post(()->{
                 Activity a=active.get();if(!alive(a))return;
                 ShortcutManager manager=c.getSystemService(ShortcutManager.class);if(manager==null||!manager.isRequestPinShortcutSupported()){Toast.makeText(a,"Your launcher does not support pinned shortcuts",Toast.LENGTH_LONG).show();return;}
-                Intent launch=new Intent(Intent.ACTION_VIEW,Uri.parse(url));launch.setClass(c,ShortcutLaunchActivity.class);launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Intent launch=LaunchTrust.shortcut(c,url);
                 String label=title.trim().isEmpty()?SiteKey.of(url):title.trim();if(label.length()>45)label=label.substring(0,45);
                 Icon image=artwork==null?Icon.createWithResource(c,c.getApplicationInfo().icon):Icon.createWithBitmap(artwork);
                 String id="site-"+Integer.toHexString(url.hashCode());

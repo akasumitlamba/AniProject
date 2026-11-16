@@ -72,6 +72,28 @@ class TileArtworkActivity : AppCompatActivity() {
             showBannerPrompt(BannerPrompt.forTile(tile.label, tile.packageName ?: tile.url))
         }, LinearLayout.LayoutParams(0, dp(48), 1f).apply { marginStart = dp(8) })
         root.addView(sources)
+        // The banner on Home never changes by itself; this fetches the store's current one on request.
+        lateinit var latest: com.google.android.material.button.MaterialButton
+        latest = ArtworkUi.chip(this, "Get latest banner from store", R.drawable.ic_refresh) {
+            latest.isEnabled = false; latest.text = "Checking the store…"
+            lifecycleScope.launch {
+                val result = withContext(kotlinx.coroutines.Dispatchers.IO) { runCatching {
+                    val repository = app.anihome.launcher.banners.BannerRepository(this@TileArtworkActivity)
+                    val catalog = runCatching { repository.catalog(refresh = true) }.getOrElse { repository.catalog() }
+                    app.anihome.launcher.banners.AutomaticBannerPolicy.match(catalog, tile) { pkg ->
+                        app.anihome.launcher.banners.AutomaticBanners.isBrowser(this@TileArtworkActivity, pkg)
+                    }?.let { repository.image(it, allowNetwork = true) }
+                } }
+                latest.isEnabled = true; latest.text = "Get latest banner from store"
+                val file = result.getOrNull()
+                when {
+                    file != null -> { load(Uri.fromFile(file)); android.widget.Toast.makeText(this@TileArtworkActivity, "Latest banner loaded. Tap Use banner to apply it.", android.widget.Toast.LENGTH_SHORT).show() }
+                    result.isSuccess -> android.widget.Toast.makeText(this@TileArtworkActivity, "The store has no banner for ${tile.label}. Pick one in Store.", android.widget.Toast.LENGTH_LONG).show()
+                    else -> android.widget.Toast.makeText(this@TileArtworkActivity, (result.exceptionOrNull() as? app.anihome.launcher.banners.BannerApiException)?.friendlyReason ?: "Couldn't reach the banner store. Check your connection.", android.widget.Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+        root.addView(latest, LinearLayout.LayoutParams(-1, dp(48)).apply { bottomMargin = dp(4) })
         crop = TileCropView(this)
         root.addView(crop, LinearLayout.LayoutParams(-1, 0, 1f))
         root.addView(TextView(this).apply {

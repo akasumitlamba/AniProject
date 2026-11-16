@@ -82,7 +82,7 @@ object AutomaticBanners {
     }
 
     /** Browsers publish shortcuts for many websites; their own banner must not label them all. */
-    private fun isBrowser(context: Context, packageName: String): Boolean = runCatching {
+    internal fun isBrowser(context: Context, packageName: String): Boolean = runCatching {
         val web = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://example.com"))
             .addCategory(android.content.Intent.CATEGORY_BROWSABLE)
         context.packageManager.queryIntentActivities(web, 0).any { it.activityInfo.packageName == packageName }

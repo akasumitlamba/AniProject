@@ -176,6 +176,12 @@ internal class SettingsPanel(private val activity: AppCompatActivity, private va
         }, LinearLayout.LayoutParams(-1, dp(48)))
         parent.addView(container, LinearLayout.LayoutParams(-1, -2)); return container
     }
+    /** Small group title inside a section. */
+    fun heading(parent: LinearLayout, value: String) {
+        parent.addView(label(value, 12f).apply {
+            setTextColor(ControlCenter.ACCENT); setTypeface(null, android.graphics.Typeface.BOLD); setPadding(0, dp(14), 0, dp(2))
+        })
+    }
     fun text(parent: LinearLayout, value: String) {
         parent.addView(label(value, 12f).apply { setTextColor(0xffbbbbbb.toInt()); setPadding(0, dp(8), 0, dp(8)) })
     }

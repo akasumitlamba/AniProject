@@ -30,23 +30,26 @@ internal object PanelBackdrop {
         // Apple-style material: a light tint over a heavy blur. Where nothing can be blurred
         // (other apps on Android 11 and older) a near-solid tint keeps text readable.
         val blur = PanelStyle.blur(activity)
-        val canBlur = blur && (Build.VERSION.SDK_INT >= 31 || !overApps)
-        val alpha = when { !blur -> 255; canBlur -> 150; else -> 238 }
-        val tint = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
+        // The user's glass opacity applies only where something is actually blurred. Unblurred
+        // (no blur support, blur switched off by Android, or over other apps on Android 11 and
+        // older) the panel stays nearly solid so text is always readable over busy banners.
+        val crossBlur = Build.VERSION.SDK_INT >= 31 && runCatching { activity.windowManager.isCrossWindowBlurEnabled }.getOrDefault(false)
+        val glass = PanelStyle.opacity(activity) * 255 / 100
+        val solid = maxOf(glass, 245)
+        fun tint(alpha: Int) = GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
             intArrayOf(withAlpha(0xFF14161D.toInt(), alpha), withAlpha(0xFF0B0C11.toInt(), alpha)))
         // No outline stroke: under the rounded clip it showed as stray lines along the edges.
         val edge = GradientDrawable().apply { setColor(0) }
-        var layers = listOf<Drawable>(tint, edge)
-        if (blur && Build.VERSION.SDK_INT >= 31 && window != null) {
+        val layers = listOf<Drawable>(tint(if (!blur) 255 else if (crossBlur) glass else solid), edge)
+        if (blur && crossBlur && window != null) {
             window.addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
             window.attributes = window.attributes.apply { blurBehindRadius = ArtworkUi.dp(activity, 30) }
             window.setBackgroundBlurRadius(ArtworkUi.dp(activity, 60))
-        } else if (Build.VERSION.SDK_INT >= 31 && window != null) {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND); window.setBackgroundBlurRadius(0)
-        } else if (blur && !overApps) {
-            root.post { // Needs the laid-out panel size to cut the matching wallpaper region.
+        } else {
+            if (Build.VERSION.SDK_INT >= 31 && window != null) { window.clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND); window.setBackgroundBlurRadius(0) }
+            if (blur && !overApps) root.post { // Needs the laid-out panel size to cut the matching wallpaper region.
                 wallpaperBlur(activity, root, rightSide)?.let { bitmap ->
-                    root.background = LayerDrawable(arrayOf(BitmapDrawable(activity.resources, bitmap), tint, edge))
+                    root.background = LayerDrawable(arrayOf(BitmapDrawable(activity.resources, bitmap), tint(glass), edge))
                 }
             }
         }

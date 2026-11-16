@@ -50,7 +50,7 @@ class BannerRepository(private val context: Context) {
         return parse(context.resources.openRawResource(app.anihome.launcher.R.raw.banner_catalog).use { it.readBytes() })
     }
     /**
-     * The banner's file: cached, bundled, or downloaded. Downloads run outside the repository
+     * The banner's file: already downloaded, or fetched from the store now. Downloads run outside the repository
      * lock (at most [PARALLEL] at once, one per file), so a long store list loads quickly and a
      * slow banner never holds the others back.
      */
@@ -59,9 +59,8 @@ class BannerRepository(private val context: Context) {
         val target = File(cache, "${entry.sha256}.${entry.file.substringAfterLast('.')}")
         synchronized(fileLock(target.name)) {
             if (target.exists() && target.length() <= IMAGE_LIMIT && BannerRules.hash(target.readBytes()) == entry.sha256) return target
-            val bundled = runCatching { context.assets.open(entry.file).use { it.readBytes() } }.getOrNull()
-            val bytes = if (bundled != null && bundled.size <= IMAGE_LIMIT && BannerRules.hash(bundled) == entry.sha256) bundled
-                else if (allowNetwork) {
+            // Banners are not packed into the app; they come from the store and are kept once fetched.
+            val bytes = if (allowNetwork) {
                     failedImages[entry.file]?.let { at ->
                         if (System.currentTimeMillis() - at < FAILURE_MEMORY_MS) throw BannerApiException(null, friendlyReason = "This banner is unavailable right now. Try again in a moment.")
                         failedImages.remove(entry.file)
@@ -88,7 +87,7 @@ class BannerRepository(private val context: Context) {
             android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size, bounds)
             if (bounds.outWidth !in 320..4096 || bounds.outHeight !in 1..4096 ||
                 kotlin.math.abs(bounds.outWidth.toDouble() / bounds.outHeight - 1.62) >= 0.035)
-                throw BannerApiException(null, friendlyReason = "The downloaded banner is invalid. Bundled banners remain available.")
+                throw BannerApiException(null, friendlyReason = "The downloaded banner is invalid.")
             return bytes
         } finally { permits.release() }
     }

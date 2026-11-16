@@ -69,6 +69,16 @@ internal class QuickSettings(private val activity: AppCompatActivity, private va
         }
     }
     fun connectPrivileged() = connectQuietly()
+    /** Through Shizuku: the one-time permission that lets AniHome switch its own services on. */
+    fun grantSecureSettings(done: () -> Unit) = grantSecureSettings(done, 6)
+    private fun grantSecureSettings(done: () -> Unit, tries: Int) {
+        if (!privilegedReady && tries > 0) {
+            connectPrivileged()
+            android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({ grantSecureSettings(done, tries - 1) }, 600)
+            return
+        }
+        systemToggle("grant_secure_settings", true) { done() }
+    }
     private fun authorizeControls() {
         if (app.anihome.launcher.controls.ShizukuGate.require(activity, "Direct Wi-Fi and Bluetooth control")) bridge.authorize()
     }

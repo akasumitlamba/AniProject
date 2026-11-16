@@ -52,6 +52,7 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
     private lateinit var adapter: Banners
     private lateinit var dialog: androidx.appcompat.app.AppCompatDialog
     private lateinit var query: EditText
+    private lateinit var loading: android.widget.ProgressBar
     private fun dp(value: Int) = (value * activity.resources.displayMetrics.density).toInt()
 
     fun show() {
@@ -108,7 +109,16 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
             this.adapter = this@BannerStoreDialog.adapter
             clipToPadding = false; setPadding(0, dp(10), 0, dp(4))
         }
-        root.addView(grid, LinearLayout.LayoutParams(-1, 0, 1f))
+        // The list comes from the online store; a spinner shows until it arrives.
+        loading = android.widget.ProgressBar(activity).apply {
+            isIndeterminate = true; indeterminateTintList = android.content.res.ColorStateList.valueOf(ControlCenter.ACCENT)
+            contentDescription = "Loading banners"; visibility = View.GONE
+        }
+        val listArea = android.widget.FrameLayout(activity).apply {
+            addView(grid, android.widget.FrameLayout.LayoutParams(-1, -1))
+            addView(loading, android.widget.FrameLayout.LayoutParams(dp(48), dp(48), Gravity.CENTER))
+        }
+        root.addView(listArea, LinearLayout.LayoutParams(-1, 0, 1f))
         dialog = androidx.appcompat.app.AppCompatDialog(activity).apply { setContentView(root) }
         dialog.setOnDismissListener { scope.cancel() }
         query.addTextChangedListener(object : TextWatcher {
@@ -123,7 +133,10 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
             setLayout(minOf(metrics.widthPixels - dp(32), dp(1100)), (metrics.heightPixels * 0.9f).toInt())
             setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
-        reload(false)
+        // Opening the store is a request to browse it: fetch the current list and let previews
+        // download. Offline (or paused), it falls back to the saved list and cached banners.
+        // Previously it opened offline-only, so any banner not already on the device stayed blank.
+        reload(true)
     }
     private fun setStatus(message: String?, details: String = "") {
         status.text = message; statusDetails = details
@@ -155,18 +168,20 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
         allowNetwork = false
         retryOffered = true; refreshLabel(true)
         val reason = api?.friendlyReason ?: "The online banner source is unavailable."
-        setStatus("Offline banners · Tap for details", "$reason Bundled/cached banners still work. Online checks are paused; use the refresh icon to retry. No account or access token is needed.")
+        setStatus("Offline banners · Tap for details", "$reason Banners you already downloaded still work. Online checks are paused; use the refresh icon to retry. No account or access token is needed.")
     }
     private fun reload(refresh: Boolean, retry: Boolean = false) {
         if (refresh) { allowNetwork = false; networkGeneration++ }
         val generation = networkGeneration
-        setStatus(if (refresh) "Updating…" else "Loading…")
+        setStatus(null)
+        loading.visibility = View.VISIBLE
         scope.launch {
             val result = withContext(Dispatchers.IO) {
                 if (retry) repository.clearCooldown()
                 runCatching { repository.catalog(refresh) }
             }
             if (generation != networkGeneration) return@launch
+            loading.visibility = View.GONE
             entries = result.getOrNull() ?: withContext(Dispatchers.IO) { runCatching { repository.catalog() }.getOrDefault(emptyList()) }
             if (refresh && result.isSuccess) { allowNetwork = true; retryOffered = false; refreshLabel(false) }
             filter()
@@ -175,7 +190,7 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
             if (result.isFailure && refresh) showFailure(result.exceptionOrNull()!!)
             else if (pausedReason != null) {
                 retryOffered = true; refreshLabel(true)
-                setStatus("Offline banners · Tap for details", "$pausedReason Use the refresh icon to retry. Bundled/cached banners remain available.")
+                setStatus("Offline banners · Tap for details", "$pausedReason Use the refresh icon to retry. Banners you already downloaded still work.")
             }
         }
     }
@@ -195,13 +210,23 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
                 }
             }.apply { scaleType = ImageView.ScaleType.FIT_CENTER; background = ArtworkUi.surface(activity, 0xff0e1628.toInt()); clipToOutline = true }
             val label = TextView(activity).apply { setTextColor(-1); textSize = 12f; maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END; setPadding(dp(4), dp(8), dp(4), dp(6)); compoundDrawablePadding = dp(4) }
-            card.addView(image, LinearLayout.LayoutParams(-1, -2)); card.addView(label)
-            return Holder(card, image, label)
+            val spinner = android.widget.ProgressBar(activity).apply {
+                isIndeterminate = true; indeterminateTintList = android.content.res.ColorStateList.valueOf(0x99FFFFFF.toInt())
+            }
+            val missing = TextView(activity).apply { text = "Preview unavailable"; textSize = 11f; setTextColor(0x99FFFFFF.toInt()); gravity = Gravity.CENTER }
+            val frame = android.widget.FrameLayout(activity).apply {
+                addView(image, android.widget.FrameLayout.LayoutParams(-1, -2))
+                addView(spinner, android.widget.FrameLayout.LayoutParams(dp(28), dp(28), Gravity.CENTER))
+                addView(missing, android.widget.FrameLayout.LayoutParams(-2, -2, Gravity.CENTER))
+            }
+            card.addView(frame, LinearLayout.LayoutParams(-1, -2)); card.addView(label)
+            return Holder(card, image, label, spinner, missing)
         }
         override fun onBindViewHolder(holder: Holder, position: Int) {
             val entry = items[position]
             val generation = networkGeneration
             holder.job?.cancel(); holder.id = entry.id; holder.image.setImageDrawable(null)
+            holder.spinner.visibility = View.VISIBLE; holder.missing.visibility = View.GONE
             val matched = isMatch(entry, suggestedEntry)
             holder.label.text = entry.name
             holder.label.setCompoundDrawablesWithIntrinsicBounds(0, 0, if (matched) R.drawable.ic_check else 0, 0)
@@ -234,12 +259,16 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
                 // Only a paused/limited source takes the store offline; one missing banner just stays blank.
                 val error = result.exceptionOrNull()
                 if (generation == networkGeneration && (error as? BannerApiException)?.paused == true) showFailure(error)
-                if (holder.id == entry.id) holder.image.setImageBitmap(bitmap) else bitmap?.recycle()
+                if (holder.id == entry.id) {
+                    holder.image.setImageBitmap(bitmap)
+                    holder.spinner.visibility = View.GONE
+                    holder.missing.visibility = if (bitmap == null) View.VISIBLE else View.GONE
+                } else bitmap?.recycle()
             }
         }
         override fun onViewRecycled(holder: Holder) { holder.job?.cancel(); holder.id = null; holder.image.setImageDrawable(null) }
     }
-    private class Holder(val card: LinearLayout, val image: ImageView, val label: TextView) : RecyclerView.ViewHolder(card) {
+    private class Holder(val card: LinearLayout, val image: ImageView, val label: TextView, val spinner: View, val missing: View) : RecyclerView.ViewHolder(card) {
         var id: String? = null; var job: Job? = null
     }
 }

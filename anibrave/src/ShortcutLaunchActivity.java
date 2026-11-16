@@ -6,11 +6,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-/** Hidden pin/launcher entry point; web windows live in separate retained documents. */
+/** Hidden pin/launcher entry point; web windows live in separate retained documents. Fullscreen only for {@link LaunchTrust} callers. */
 public final class ShortcutLaunchActivity extends Activity {
     @Override protected void onCreate(Bundle saved) {
         super.onCreate(saved);
         String seed=getIntent().getDataString();
+        if(ResumeLocation.valid(seed)&&!LaunchTrust.trusted(this,seed)){
+            // Unverified apps and web links get a normal tab with the address bar showing.
+            try{startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(seed)).setClassName(getPackageName(),"com.google.android.apps.chrome.IntentDispatcher").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));}
+            catch(RuntimeException ignored){}
+            finish();return;
+        }
         if(ResumeLocation.valid(seed)){
             Uri identity=Uri.parse("anibrave://shortcut/"+Uri.encode(SiteKey.of(seed)));
             ActivityManager manager=getSystemService(ActivityManager.class);

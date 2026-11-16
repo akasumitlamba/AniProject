@@ -56,7 +56,7 @@ class HomeControlsService : AccessibilityService() {
             return runCatching { windows.addView(view, params); awakeView = view }.isSuccess
         }
         fun perform(action: Int): Boolean {
-            if (action !in setOf(GLOBAL_ACTION_RECENTS, GLOBAL_ACTION_LOCK_SCREEN, GLOBAL_ACTION_TAKE_SCREENSHOT)) return false
+            if (action !in setOf(GLOBAL_ACTION_RECENTS, GLOBAL_ACTION_LOCK_SCREEN, GLOBAL_ACTION_TAKE_SCREENSHOT, GLOBAL_ACTION_NOTIFICATIONS)) return false
             if ((action == GLOBAL_ACTION_LOCK_SCREEN || action == GLOBAL_ACTION_TAKE_SCREENSHOT) && Build.VERSION.SDK_INT < 28) return false
             return runCatching { current?.performGlobalAction(action) == true }.getOrDefault(false)
         }

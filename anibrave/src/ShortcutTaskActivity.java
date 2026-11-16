@@ -24,7 +24,6 @@ public final class ShortcutTaskActivity extends Activity {
         if(!ResumeLocation.valid(seed)){finishAndRemoveTask();return;}
         Intent web=new Intent(Intent.ACTION_VIEW,Uri.parse(ResumeStore.resolve(this,seed)));
         web.setClassName(getPackageName(),"org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity");
-        web.putExtra("app.anibrave.immersive",true);
         web.putExtra(Browser.EXTRA_APPLICATION_ID,getPackageName());
         web.putExtra("android.support.customtabs.extra.TITLE_VISIBILITY",0);
         web.putExtra("android.support.customtabs.extra.ENABLE_URLBAR_HIDING",false);

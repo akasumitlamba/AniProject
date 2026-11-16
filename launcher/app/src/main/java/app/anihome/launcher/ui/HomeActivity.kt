@@ -101,24 +101,33 @@ class HomeActivity : AppCompatActivity() {
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
-            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
+            // Top follows what is shown (Home hides the status bar). The other edges use the bars'
+            // stable size: gestures that briefly reveal or hide the system bars used to change them,
+            // which made the dock jump up and down and shortened the banner area.
+            val shown = insets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout())
+            val stable = insets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.navigationBars())
+            val left = maxOf(shown.left, stable.left); val right = maxOf(shown.right, stable.right); val bottom = maxOf(shown.bottom, stable.bottom)
             val margin = resources.getDimensionPixelSize(R.dimen.page_padding)
             val vertical = resources.getBoolean(R.bool.vertical_controls)
             binding.content.updatePadding(
-                left = bars.left + resources.getDimensionPixelSize(R.dimen.page_padding),
-                top = bars.top,
-                right = bars.right + if (vertical) dp(72) else margin,
-                bottom = bars.bottom + if (vertical) 0 else dp(72)
+                left = left + margin,
+                top = shown.top,
+                right = right + if (vertical) dp(72) else margin,
+                bottom = if (vertical) bottom else 0
             )
+            // Bottom dock: the banners scroll all the way down behind it (never clipped above it),
+            // and the last row can still be scrolled clear of the dock.
+            binding.homeScroll.updatePadding(bottom = if (vertical) 0 else bottom + dp(84))
             binding.controlRail.updateLayoutParams<FrameLayout.LayoutParams> {
-                topMargin = if (resources.getBoolean(R.bool.vertical_controls)) bars.top + dp(8) else 0
-                bottomMargin = bars.bottom + dp(8)
-                marginStart = bars.left + dp(8)
-                marginEnd = bars.right + dp(8)
+                topMargin = if (vertical) shown.top + dp(8) else 0
+                bottomMargin = bottom + dp(8)
+                marginStart = left + dp(8)
+                marginEnd = right + dp(8)
             }
             insets
         }
 
+        scrollMotion.attach()
         tiles = TileAdapter(onOpen = ::open, onOptions = { showOptions(it) }, onRemove = ::confirmRemove, onStartDrag = ::startHomeDrag)
         tiles.showLabels = homePreferences.getBoolean("show_tile_labels", true)
         board = HomeBoardAdapter(this, tiles, widgets)
@@ -137,7 +146,7 @@ class HomeActivity : AppCompatActivity() {
         binding.btnEdit.setImageResource(R.drawable.ic_check)
         binding.btnEdit.contentDescription = "Finish editing Home"
         binding.btnEdit.setOnClickListener { setEditMode(false) }
-        binding.btnNotifications.setOnClickListener { notificationPanel.show() }
+        binding.btnNotifications.setOnClickListener { openNotifications() }
         binding.btnMore.setOnClickListener { showMoreMenu(it) }
         binding.btnSearch.imageTintList = null
         binding.btnSearch.setOnClickListener { showSearch() }
@@ -186,7 +195,20 @@ class HomeActivity : AppCompatActivity() {
     private val dockStatus by lazy { DockStatus(this) }
     private val dockClock by lazy { DockClock(this) }
     private val dockAppearance by lazy { DockAppearance(this, binding.controlRail) }
-    private fun hideStatusBar() = HomeFullscreen.apply(window)
+    /** AniHome's panel replaces the status bar on Home; with Android's panel, Android's bar stays. */
+    private fun hideStatusBar() {
+        if (PanelStyle.custom(this)) HomeFullscreen.apply(window)
+        else {
+            window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            androidx.core.view.WindowInsetsControllerCompat(window, window.decorView).show(WindowInsetsCompat.Type.statusBars())
+        }
+    }
+    /** AniHome's panel, or Android's own shade when the user switched AniHome's off. */
+    private fun openNotifications(direction: String = "RIGHT") {
+        if (PanelStyle.custom(this)) { notificationPanel.show(direction); return }
+        if (!app.anihome.launcher.controls.SystemShade.expand(this))
+            Toast.makeText(this, "Swipe down from the top of the screen for notifications", Toast.LENGTH_SHORT).show()
+    }
     override fun onWindowFocusChanged(hasFocus: Boolean) { super.onWindowFocusChanged(hasFocus); if (hasFocus) hideStatusBar() }
     /** "pinned" shows chosen apps; "recent" shows apps last opened from AniHome (no usage access needed). */
     private val recentDock get() = homePreferences.getString("dock_mode", "pinned") == "recent"
@@ -265,7 +287,7 @@ class HomeActivity : AppCompatActivity() {
         notificationBadge.setPadding(dp(if (vertical) 1 else 4), 0, dp(if (vertical) 1 else 4), 0)
         (dockClock.parent as? ViewGroup)?.removeView(dockClock)
         dockClock.vertical = vertical
-        dockClock.setOnClickListener { notificationPanel.show() }
+        dockClock.setOnClickListener { openNotifications() }
         rail.addView(dockClock, LinearLayout.LayoutParams(if (vertical) -1 else -2, if (vertical) -2 else -1).apply {
             if (vertical) { topMargin = dp(6); bottomMargin = dp(10) } else { marginStart = dp(4); marginEnd = dp(8) }
         })
@@ -292,7 +314,8 @@ class HomeActivity : AppCompatActivity() {
         if (showSearch) add(rail, binding.btnSearch)
         val group = LinearLayout(this).apply {
             orientation = if (vertical) LinearLayout.VERTICAL else LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER
+            // Placed by DockCentering (on the dock's centre), so it lines up from the start edge.
+            gravity = if (vertical) Gravity.CENTER_HORIZONTAL or Gravity.TOP else Gravity.CENTER_VERTICAL or Gravity.LEFT
             contentDescription = if (recentDock) "Recently used apps. Hold for dock options" else "Pinned apps. Hold for dock options"
             setOnLongClickListener { showDockMenu(this); true }
         }
@@ -337,11 +360,13 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
-        if (vertical) rail.addView(NestedScrollView(this).apply { isFillViewport = true; isVerticalScrollBarEnabled = false; addView(group, ViewGroup.LayoutParams(-1, -2)) }, LinearLayout.LayoutParams(-1, 0, 1f))
-        else rail.addView(android.widget.HorizontalScrollView(this).apply {
+        val area: View = if (vertical) NestedScrollView(this).apply { isFillViewport = true; isVerticalScrollBarEnabled = false; addView(group, ViewGroup.LayoutParams(-1, -2)) }
+        else android.widget.HorizontalScrollView(this).apply {
             isFillViewport = true; isHorizontalScrollBarEnabled = false
             addView(group, ViewGroup.LayoutParams(-2, -1))
-        }, LinearLayout.LayoutParams(0, -1, 1f))
+        }
+        rail.addView(area, if (vertical) LinearLayout.LayoutParams(-1, 0, 1f) else LinearLayout.LayoutParams(0, -1, 1f))
+        DockCentering.attach(rail, area, group, vertical)
         if (showRecents) add(rail, recents)
         if (vertical) add(rail, notificationControl)
         add(rail, binding.btnApps)
@@ -375,6 +400,7 @@ class HomeActivity : AppCompatActivity() {
     private var pointerX = 0f
     private var pointerY = 0f
     private var dragging = false
+    private val scrollMotion by lazy { HomeScrollMotion(binding.homeScroll, binding.grid) { dragging || tiles.editMode } }
     private var dragCancelled = false
     private var tileOrderEpoch = 0L
     private var tileOrderWrites = 0
@@ -411,7 +437,7 @@ class HomeActivity : AppCompatActivity() {
                 when (action) {
                     HomeInteractionPolicy.Action.APPS -> startActivity(Intent(this@HomeActivity, AppDrawerActivity::class.java).putExtra("motion_direction", swipe.name))
                     HomeInteractionPolicy.Action.RECENTS -> systemAction(AccessibilityService.GLOBAL_ACTION_RECENTS)
-                    HomeInteractionPolicy.Action.NOTIFICATIONS -> notificationPanel.show(swipe.name)
+                    HomeInteractionPolicy.Action.NOTIFICATIONS -> openNotifications(swipe.name)
                     HomeInteractionPolicy.Action.SEARCH -> showSearch()
                     HomeInteractionPolicy.Action.LOCK -> systemAction(AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN)
                     HomeInteractionPolicy.Action.NONE -> Unit
@@ -486,13 +512,13 @@ class HomeActivity : AppCompatActivity() {
     }
     private fun setDragScrolling(active: Boolean) {
         if (!active) { stopDragScroll(); return }
-        dragging = true
+        dragging = true; scrollMotion.reset()
         binding.homeScroll.requestDisallowInterceptTouchEvent(true)
         binding.homeScroll.removeCallbacks(dragScroll)
         ViewCompat.postOnAnimation(binding.homeScroll, dragScroll)
     }
     private fun stopDragScroll() {
-        dragging = false
+        dragging = false; scrollMotion.update()
         binding.homeScroll.removeCallbacks(dragScroll)
         binding.homeScroll.requestDisallowInterceptTouchEvent(false)
     }
@@ -554,12 +580,13 @@ class HomeActivity : AppCompatActivity() {
         if (appliedIconShape != shape) { appliedIconShape = shape; tiles.notifyDataSetChanged() }
         hideStatusBar()
         RotationControl.applyHome(this)
+        binding.root.post { if (!isFinishing) FirstRunSetup.maybeShow(this, ::isDefaultHome, ::openHomeSettings) }
         // Recent-apps dock follows what was opened while Home was away.
         if (recentDock && !tiles.editMode && dockApps().joinToString() != dockSignature) configureRail()
         if (restoreNotificationPanel) {
             restoreNotificationPanel = false
             binding.root.doOnLayout {
-                if (!isFinishing && !isDestroyed) notificationPanel.show(restoreSection = true)
+                if (!isFinishing && !isDestroyed && PanelStyle.custom(this)) notificationPanel.show(restoreSection = true)
             }
         }
         else notificationPanel.resume()
@@ -625,13 +652,8 @@ class HomeActivity : AppCompatActivity() {
             return
         }
         if (HomeControlsService.perform(action)) return
-        MaterialAlertDialogBuilder(this).setTitle("Enable AniHome controls")
-            .setMessage("Enable AniHome controls in Android Accessibility settings to use screen off and recent apps. Screen content is not read.")
-            .setNegativeButton("Cancel", null)
-            .setPositiveButton("Open settings") { _, _ ->
-                runCatching { startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) }
-                    .onFailure { Toast.makeText(this, "Accessibility settings are unavailable on this device.", Toast.LENGTH_LONG).show() }
-            }.show()
+        app.anihome.launcher.controls.ControlsAccess.ensure(this,
+            if (action == AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN) "Screen off" else "Recent apps") { done -> notificationPanel.grantSecureSettings(done) }
     }
 
     /**
@@ -657,6 +679,7 @@ class HomeActivity : AppCompatActivity() {
             return
         }
         tiles.editMode = enabled
+        scrollMotion.update()
         board.editing = enabled
         widgets.setEditMode(enabled)
         binding.grid.requestLayout()
@@ -738,10 +761,10 @@ class HomeActivity : AppCompatActivity() {
                 runCatching { startActivity(Intent(Intent.ACTION_DELETE, Uri.parse("package:" + tile.packageName))) }
             }
         }
-        actions += HomeMenu.Item(4, "Choose tile image", R.drawable.ic_gallery, inline = true, short = "Image") {
+        actions += HomeMenu.Item(4, "Choose banner", R.drawable.ic_gallery, inline = true, short = "Banner") {
             startActivity(TileArtworkActivity.intent(this, tile.id))
         }
-        if (tile.artworkPath != null) actions += HomeMenu.Item(5, "Reset tile image", R.drawable.ic_refresh, inline = true, short = "Reset") {
+        if (tile.artworkPath != null) actions += HomeMenu.Item(5, "Reset banner", R.drawable.ic_refresh, inline = true, short = "Reset") {
             lifecycleScope.launch(Dispatchers.IO) { store.setArtwork(tile.id, null); TileEvents.notifyChanged() }
         }
         actions += HomeMenu.Item(6, getString(R.string.action_remove), R.drawable.ic_close, inline = true, short = "Remove") { confirmRemove(tile) }
@@ -808,9 +831,8 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(Intent(this, AppDrawerActivity::class.java).putExtra(AppDrawerActivity.EXTRA_PICK, true))
             },
             HomeMenu.Item(3, getString(R.string.action_add_site), R.drawable.ic_add, "Add one or more websites") { Dialogs.addSites(this, ::addSites).show() },
-            HomeMenu.Item(4, "Wallpaper", R.drawable.ic_gallery, "Change the home and lock screen picture") {
-                runCatching { startActivity(Intent.createChooser(Intent(Intent.ACTION_SET_WALLPAPER), "Choose wallpaper")) }
-                    .onFailure { Toast.makeText(this, "No wallpaper picker is installed", Toast.LENGTH_SHORT).show() }
+            HomeMenu.Item(4, "Wallpaper", R.drawable.ic_gallery, "AniHome wallpapers, gallery or other apps") {
+                startActivity(Intent(this, WallpaperActivity::class.java))
             },
             HomeMenu.Item(5, "AniHome Settings", R.drawable.ic_settings, "Layout, dock, panel and gestures") { showSettingsMenu(binding.root) },
             HomeMenu.Item(6, if (locked) "Unlock layout" else "Lock layout", R.drawable.ic_lock, "Prevent accidental changes", checked = locked) {
@@ -864,18 +886,62 @@ class HomeActivity : AppCompatActivity() {
     internal fun populateHomeSettings(parent: LinearLayout, ui: AppCompatActivity = this) {
         // Tablet full-screen panel: two-pane settings; phones and the side panel: section cards.
         val panel = SettingsPanel(ui, twoPane = if (ui is HomeSettingsActivity) ui.resources.configuration.screenWidthDp >= 840 else SettingsPanel.twoPane(this))
-        panel.section("Rotation", R.drawable.ic_rotation, summary = { if (RotationControl.mode(this) == "Auto") "Auto-rotate" else "Locked at current orientation" }) {
-            panel.toggle(this, "Auto-rotate", RotationControl.mode(ui) == "Auto") {
-                notificationPanel.setAutomaticRotation(it)
+        val controlsGrant: (() -> Unit) -> Unit = { done -> notificationPanel.grantSecureSettings(done) }
+        fun needsControls(feature: String) = app.anihome.launcher.controls.ControlsAccess.ensure(ui, feature, controlsGrant)
+        // 1. The home screen itself: grid, names, lock and the gestures made on it.
+        panel.section("Home screen", R.drawable.ic_settings_layout, summary = {
+            val columns = HomeLayout.selection(this); (if (columns == 0) "Automatic columns" else "$columns per row") +
+                if (homePreferences.getBoolean("layout_locked", false)) " · Locked" else ""
+        }) {
+            val columns = listOf(0) + (2..6)
+            panel.choice(this, "Columns", columns.map { if (it == 0) "Automatic" else "$it per row" }, columns.indexOf(HomeLayout.selection(ui)).coerceAtLeast(0)) {
+                homePreferences.edit().putInt("home_columns", columns[it]).apply()
+                binding.grid.requestLayout(); widgets.updateLayout()
             }
-            panel.text(this, "Turn off to lock the current orientation. Rotation follows Android system settings.")
-            if (!Settings.System.canWrite(ui)) panel.action(this, "System rotation access") {
-                runCatching { ui.startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:$packageName"))) }
+            val asIcon = homePreferences.getString(app.anihome.launcher.data.TileStore.NEW_APP_STYLE, "banner") == "icon"
+            panel.choice(this, "Add apps as", listOf("Banner", "Icon"), if (asIcon) 1 else 0) {
+                homePreferences.edit().putString(app.anihome.launcher.data.TileStore.NEW_APP_STYLE, if (it == 1) "icon" else "banner").apply()
             }
+            panel.text(this, "For apps you add from now on. Any app already on Home can switch between banner and icon from its menu.")
+            panel.toggle(this, "Show app and website names", tiles.showLabels) {
+                tiles.showLabels = it; homePreferences.edit().putBoolean("show_tile_labels", it).apply()
+            }
+            panel.toggle(this, "Lock layout", homePreferences.getBoolean("layout_locked", false)) {
+                homePreferences.edit().putBoolean("layout_locked", it).apply()
+                if (it && tiles.editMode) setEditMode(false)
+            }
+            panel.action(this, "Choose wallpaper") { ui.startActivity(Intent(ui, WallpaperActivity::class.java)) }
+            panel.heading(this, "Gestures on Home")
+            panel.toggle(this, "Double tap to lock", homePreferences.getBoolean("double_tap_lock", HomeControlsService.connected())) {
+                homePreferences.edit().putBoolean("double_tap_lock", it).apply()
+                if (it) needsControls("Double tap to lock")
+            }
+            HomeInteractionPolicy.Swipe.entries.forEach { direction ->
+                val actions = HomeInteractionPolicy.Action.entries
+                val current = HomeInteractionPolicy.action(homePreferences.getString("gesture_action_${direction.name}", null), direction, AdaptiveLayout.tablet(ui))
+                panel.choice(this, direction.label, actions.map { it.label }, actions.indexOf(current)) {
+                    homePreferences.edit().putString("gesture_action_${direction.name}", actions[it].name).apply()
+                }
+            }
+            panel.text(this, "Screen off and Recent apps use AniHome controls (Settings → Permissions).")
         }
-        panel.section("Dock", R.drawable.ic_settings_dock) {
+        // 2. Dock.
+        panel.section("Dock", R.drawable.ic_settings_dock, summary = { if (recentDock) "Recently used apps" else "Pinned apps" }) {
+            panel.choice(this, "Dock shows", listOf("Pinned apps", "Recently used apps"), if (recentDock) 1 else 0) { setDockMode(it == 1) }
+            panel.action(this, "Choose pinned apps") { notificationPanel.dismiss(); showDockPicker() }
+            panel.toggle(this, "Show recent apps button", homePreferences.getBoolean("show_recents_button", AdaptiveLayout.tablet(ui))) {
+                homePreferences.edit().putBoolean("show_recents_button", it).apply(); configureRail()
+            }
+            panel.toggle(this, "Show search button", homePreferences.getBoolean("show_dock_search", true)) {
+                homePreferences.edit().putBoolean("show_dock_search", it).apply(); configureRail()
+            }
+            val browsers = DockBrowser.choices(ui)
+            panel.choice(this, "Web browser", browsers.map { it.label }, browsers.indexOfFirst { it.packageName == DockBrowser.selected(ui) }.coerceAtLeast(0)) {
+                DockBrowser.select(ui, browsers[it].packageName); configureRail()
+            }
+            panel.heading(this, "Look")
             lateinit var opacity: View
-            panel.toggle(this, "Dynamic opacity", homePreferences.getBoolean("dock_dynamic_opacity", true)) {
+            panel.toggle(this, "Match the wallpaper automatically", homePreferences.getBoolean("dock_dynamic_opacity", true)) {
                 homePreferences.edit().putBoolean("dock_dynamic_opacity", it).apply()
                 opacity.visibility = if (it) View.GONE else View.VISIBLE
                 dockAppearance.apply()
@@ -884,24 +950,10 @@ class HomeActivity : AppCompatActivity() {
                 homePreferences.edit().putInt("dock_opacity", it).apply(); dockAppearance.apply()
             }
             opacity.visibility = if (homePreferences.getBoolean("dock_dynamic_opacity", true)) View.GONE else View.VISIBLE
-            panel.toggle(this, "Show search icon", homePreferences.getBoolean("show_dock_search", true)) {
-                homePreferences.edit().putBoolean("show_dock_search", it).apply(); configureRail()
-            }
-            val browsers = DockBrowser.choices(ui)
-            panel.choice(this, "Web browser", browsers.map { it.label }, browsers.indexOfFirst { it.packageName == DockBrowser.selected(ui) }.coerceAtLeast(0)) {
-                DockBrowser.select(ui, browsers[it].packageName); configureRail()
-            }
-            panel.choice(this, "Dock shows", listOf("Pinned apps", "Recently used apps"), if (recentDock) 1 else 0) { setDockMode(it == 1) }
-            panel.action(this, "Choose pinned apps") { notificationPanel.dismiss(); showDockPicker() }
-            panel.toggle(this, "Show recent apps", homePreferences.getBoolean("show_recents_button", AdaptiveLayout.tablet(ui))) {
-                homePreferences.edit().putBoolean("show_recents_button", it).apply(); configureRail()
-            }
         }
-        panel.section("Application menu", R.drawable.ic_settings_apps) {
+        // 3. App menu.
+        panel.section("App menu", R.drawable.ic_settings_apps) {
             ShapePicker.row(ui, this) { tiles.notifyDataSetChanged(); configureRail() }
-            panel.slider(this, "Background opacity", app.anihome.launcher.data.DrawerPreferences(ui).opacity()) {
-                app.anihome.launcher.data.DrawerPreferences(ui).setOpacity(it)
-            }
             panel.toggle(this, "Show recent apps", app.anihome.launcher.data.DrawerPreferences(ui).showRecentApps()) {
                 app.anihome.launcher.data.DrawerPreferences(ui).setShowRecentApps(it)
             }
@@ -909,41 +961,52 @@ class HomeActivity : AppCompatActivity() {
                 app.anihome.launcher.data.DrawerPreferences(ui).setShowRecentFiles(it)
                 DrawerWarmup.prepare(applicationContext)
             }
-        }
-        panel.section("Banner store", R.drawable.ic_settings_store) {
-            panel.text(this, "Downloaded banners stay on this device for offline use.")
-            panel.action(this, "Store repository") { chooseBannerStore(ui) }
-        }
-        panel.section("Notification panel", R.drawable.ic_settings_layout,
-            summary = { if (PanelStyle.wide(this)) "Full screen" else "Side panel" }) {
-            panel.choice(this, "Layout", listOf("Side panel", "Full screen"), if (PanelStyle.wide(ui)) 1 else 0) {
-                PanelStyle.setWide(ui, it == 1)
+            panel.slider(this, "Background opacity", app.anihome.launcher.data.DrawerPreferences(ui).opacity()) {
+                app.anihome.launcher.data.DrawerPreferences(ui).setOpacity(it)
             }
-            panel.text(this, "Full screen puts the controls and tall brightness and volume sliders across the top, with notifications in two columns below. Settings open side by side.")
+        }
+        // 4. Notification panel: how it looks, what it shows, and where it opens.
+        panel.section("Notification panel", R.drawable.ic_notifications,
+            summary = { if (!PanelStyle.custom(this)) "Android's panel" else (if (PanelStyle.wide(this)) "Full screen" else if (PanelStyle.phone(this)) "Full width" else "Side panel") +
+                if (app.anihome.launcher.controls.SystemBar.edgePanel(this)) " · Opens in every app" else "" }) {
+            panel.toggle(this, "Use AniHome's notification panel", PanelStyle.custom(ui)) { on ->
+                PanelStyle.setCustom(ui, on); app.anihome.launcher.controls.SystemBar.sync(); hideStatusBar()
+            }
+            panel.text(this, "Off: Android's own notification shade and status bar are used everywhere, including on Home. The options below apply only to AniHome's panel.")
+            if (!PanelStyle.phone(ui)) {
+                panel.choice(this, "Layout", listOf("Side panel", "Full screen"), if (PanelStyle.wide(ui)) 1 else 0) {
+                    PanelStyle.setWide(ui, it == 1)
+                }
+                panel.text(this, "Full screen puts the controls and tall brightness and volume sliders across the top, with notifications in two columns below.")
+            }
+            lateinit var glass: View
             panel.choice(this, "Background", listOf("Blurred glass", "Solid"), if (PanelStyle.blur(ui)) 0 else 1) {
-                PanelStyle.set(ui, "panel_blur", it == 0)
+                PanelStyle.set(ui, "panel_blur", it == 0); glass.visibility = if (it == 0) View.VISIBLE else View.GONE
             }
-            if (android.os.Build.VERSION.SDK_INT < 31) panel.text(this, "This Android version can't blur other apps, so over apps the glass is nearly solid.")
+            glass = panel.slider(this, "Glass opacity", PanelStyle.opacity(ui)) { PanelStyle.setOpacity(ui, it.coerceAtLeast(60)) }
+            glass.visibility = if (PanelStyle.blur(ui)) View.VISIBLE else View.GONE
+            panel.text(this, "Where Android can't blur what's behind, the panel stays nearly solid so it is always readable.")
+            panel.heading(this, "Controls")
             panel.toggle(this, "Brightness slider", PanelStyle.brightness(ui)) { PanelStyle.set(ui, "cc_show_brightness", it) }
             panel.toggle(this, "Volume slider", PanelStyle.volume(ui)) { PanelStyle.set(ui, "cc_show_volume", it) }
             panel.toggle(this, "Now playing card", PanelStyle.media(ui)) { PanelStyle.set(ui, "cc_show_media", it) }
             panel.text(this, "Choose and order the round controls with the pencil at the top of the panel.")
-        }
-        panel.section("Swipe-down panel", R.drawable.ic_notifications,
-            summary = { if (app.anihome.launcher.controls.SystemBar.edgePanel(this)) "On in every app" else "Off" }) {
+            panel.heading(this, "Open from any app")
             val bar = app.anihome.launcher.controls.SystemBar
             panel.toggle(this, "Swipe down from the top opens AniHome's panel", bar.edgePanel(ui)) {
                 bar.setEdgePanel(ui, it)
-                if (it && !HomeControlsService.connected()) {
-                    Toast.makeText(ui, "Turn on AniHome controls in Accessibility, then come back", Toast.LENGTH_LONG).show()
-                    runCatching { ui.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) }
-                }
+                if (it) needsControls("The swipe-down panel")
             }
-            panel.text(this, "Android's own status bar stays as it is. Swiping down from the top edge opens AniHome's notifications and controls instead of Android's shade, in any app. The lock screen is left alone.")
+            panel.text(this, "Replaces Android's shade in every app. Android's status bar and the lock screen stay as they are. Swipe up or tap the handle at the bottom to close it.")
         }
-        if (app.anihome.launcher.nav.NavigationMode.available()) panel.section("Navigation", R.drawable.ic_settings_navigation,
-            summary = { if (app.anihome.launcher.nav.NavigationMode.gesturesOn(this)) "AniHome gestures" else "Android buttons" }) {
+        // 5. System navigation.
+        panel.section("Navigation", R.drawable.ic_settings_navigation,
+            summary = { if (!app.anihome.launcher.nav.NavigationMode.available()) "Android navigation" else if (app.anihome.launcher.nav.NavigationMode.gesturesOn(this)) "AniHome gestures" else "Android buttons" }) {
             val nav = app.anihome.launcher.nav.NavigationMode
+            if (!nav.available()) {
+                panel.text(this, "AniHome's navigation gestures are made for the AniHome tablet (Android 10). On this device Android's own navigation stays on, and the Home screen gestures above still work.")
+                return@section
+            }
             panel.radios(this, listOf("AniHome gestures", "Android buttons"), if (nav.gesturesOn(ui)) 0 else 1) { choice ->
                 val gestures = choice == 0
                 fun apply() {
@@ -953,27 +1016,26 @@ class HomeActivity : AppCompatActivity() {
                 val gate = app.anihome.launcher.controls.ShizukuGate
                 when {
                     nav.canSwitch(ui) -> apply()
+                    // Shizuku comes first: it grants the one-time permission the switch needs.
                     !gate.require(ui, "Switching navigation") -> Unit
                     else -> {
                         Toast.makeText(ui, "Setting up…", Toast.LENGTH_SHORT).show()
-                        notificationPanel.privilegedToggle("grant_secure_settings", true, { result ->
+                        notificationPanel.grantSecureSettings {
                             if (nav.canSwitch(ui)) apply()
-                            else Toast.makeText(ui, "Couldn't set up navigation: ${result.ifEmpty { "permission not granted" }}", Toast.LENGTH_LONG).show()
-                        })
+                            else Toast.makeText(ui, "Couldn't set up navigation: permission not granted", Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
             }
-            panel.text(this, "AniHome gestures use a thin handle on the bottom edge, with no bar taking up space. Swipe up for Home, swipe up and hold for recent apps, drag sideways to switch apps, double-tap for Back. Shizuku makes apps shrink into Home and slide while you swipe; without it the gestures still work. Android buttons bring back the standard navigation bar. Setting this up the first time needs Shizuku.")
+            panel.text(this, "AniHome gestures use a thin handle on the bottom edge, with no bar taking up space. Swipe up for Home, swipe up and hold for recent apps, drag sideways to switch apps, double-tap for Back. The first switch needs Shizuku; after that it works without it.")
         }
+        // 6. Sound.
         panel.section("Sound & Bluetooth", R.drawable.ic_cc_volume,
             summary = { if (app.anihome.launcher.controls.VolumePanel.enabled(this)) "AniHome volume panel" else "Android volume panel" }) {
             panel.toggle(this, "AniHome volume panel", app.anihome.launcher.controls.VolumePanel.enabled(ui)) {
                 app.anihome.launcher.controls.VolumePanel.setEnabled(ui, it)
-                if (it && !HomeControlsService.connected()) {
-                    Toast.makeText(ui, "Turn on AniHome controls in Accessibility, then come back", Toast.LENGTH_LONG).show()
-                    runCatching { ui.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) }
-                } else if (it && !app.anihome.launcher.controls.ShizukuGate.ready(ui))
-                    Toast.makeText(ui, "On. Per-app volume sliders appear once Shizuku is set up (AniHome Settings → Shizuku).", Toast.LENGTH_LONG).show()
+                if (it && needsControls("The AniHome volume panel") && !app.anihome.launcher.controls.ShizukuGate.ready(ui))
+                    Toast.makeText(ui, "On. Per-app volume sliders appear once Shizuku is set up (Settings → Permissions).", Toast.LENGTH_LONG).show()
             }
             panel.text(this, "Volume buttons open AniHome's panel: media, ring, notifications, alarm, and a slider for each app playing sound (with Shizuku). Calls and the lock screen keep Android's panel.")
             panel.toggle(this, "Keep two Bluetooth audio devices connected", getSharedPreferences("anihome", MODE_PRIVATE).getBoolean("bt_two_devices", false)) { on ->
@@ -990,54 +1052,54 @@ class HomeActivity : AppCompatActivity() {
             }
             panel.text(this, "Lets two headphones or speakers stay connected so you can switch between them in the Bluetooth list instantly. Android plays sound on one at a time, unless your phone has its own dual-audio feature.")
         }
-        panel.section("Shizuku", R.drawable.ic_cc_shizuku, summary = { app.anihome.launcher.controls.ShizukuGate.summary(this) }) {
-            panel.text(this, "Optional. Shizuku is a free helper that lets AniHome switch system settings in one tap, without root: night light, invert colours, mobile data, battery saver, location and airplane mode, per-app volume, two Bluetooth audio devices, and per-network Wi-Fi auto-connect. Without it those controls open Android's own settings instead.")
+        // 7. Display.
+        panel.section("Display", R.drawable.ic_rotation, summary = { if (RotationControl.mode(this) == "Auto") "Auto-rotate" else "Rotation locked" }) {
+            panel.toggle(this, "Auto-rotate", RotationControl.mode(ui) == "Auto") {
+                notificationPanel.setAutomaticRotation(it)
+            }
+            panel.text(this, "Turn off to lock the current orientation. Rotation follows Android's own setting.")
+            if (!Settings.System.canWrite(ui)) panel.action(this, "Allow rotation control") {
+                runCatching { ui.startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse("package:$packageName"))) }
+            }
+        }
+        // 8. Banners.
+        panel.section("Banners", R.drawable.ic_settings_store) {
+            panel.text(this, "Banners come from the AniProject banner store and stay on this device for offline use. Hold any app or website on Home to pick a different one.")
+            panel.action(this, "Banner store source") { chooseBannerStore(ui) }
+        }
+        // 9. Everything AniHome asks Android for, in one place.
+        panel.section("Permissions", R.drawable.ic_cc_shizuku, summary = {
+            listOf(if (HomeControlsService.connected()) "Controls on" else "Controls off", "Shizuku: " + app.anihome.launcher.controls.ShizukuGate.summary(this)).joinToString(" · ")
+        }) {
+            panel.heading(this, "AniHome controls")
+            panel.text(this, "An accessibility service for screen off, recent apps, stay awake, the swipe-down panel and the volume panel. It never reads what's on your screen.")
+            panel.action(this, if (HomeControlsService.connected()) "AniHome controls are on" else "Turn on AniHome controls") {
+                if (needsControls("AniHome")) Toast.makeText(ui, "AniHome controls are already on", Toast.LENGTH_SHORT).show()
+            }
+            panel.heading(this, "Notifications")
+            panel.text(this, "Lets the panel show your notifications. Everything stays on this device.")
+            panel.action(this, if (app.anihome.launcher.notifications.HomeNotifications.enabled(ui)) "Notification access is on" else "Allow notification access") {
+                runCatching { ui.startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)) }
+            }
+            panel.heading(this, "Shizuku (optional)")
+            panel.text(this, "A free helper that lets AniHome switch system settings in one tap, without root: night light, invert colours, mobile data, battery saver, location and airplane mode, per-app volume, two Bluetooth audio devices, per-network Wi-Fi auto-connect, and turning on AniHome controls for you. Without it those controls open Android's own settings instead.")
             panel.action(this, if (app.anihome.launcher.controls.ShizukuGate.ready(ui)) "Shizuku is connected" else "Set up Shizuku, step by step") {
                 app.anihome.launcher.controls.ShizukuGate.showSetup(ui)
             }
-        }
-        panel.section("Gestures", R.drawable.ic_gestures) {
-            if (!HomeControlsService.connected()) panel.text(this, "Lock and Recent apps need AniHome controls in Android accessibility settings.")
-            panel.toggle(this, "Double tap to lock", homePreferences.getBoolean("double_tap_lock", HomeControlsService.connected())) {
-                homePreferences.edit().putBoolean("double_tap_lock", it).apply()
-                if (it && !HomeControlsService.connected()) runCatching { ui.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) }
-            }
-            HomeInteractionPolicy.Swipe.entries.forEach { direction ->
-                val actions = HomeInteractionPolicy.Action.entries
-                val current = HomeInteractionPolicy.action(homePreferences.getString("gesture_action_${direction.name}", null), direction, AdaptiveLayout.tablet(ui))
-                panel.choice(this, direction.label, actions.map { it.label }, actions.indexOf(current)) {
-                    homePreferences.edit().putString("gesture_action_${direction.name}", actions[it].name).apply()
-                }
+            if (!isDefaultHome()) {
+                panel.heading(this, getString(R.string.action_default_home))
+                panel.action(this, "Set AniHome as home") { notificationPanel.dismiss(); openHomeSettings() }
             }
         }
-        panel.section("Home layout", R.drawable.ic_settings_layout) {
-            val columns = listOf(0) + (2..6)
-            panel.choice(this, "Columns", columns.map { if (it == 0) "Automatic" else "$it per row" }, columns.indexOf(HomeLayout.selection(ui)).coerceAtLeast(0)) {
-                homePreferences.edit().putInt("home_columns", columns[it]).apply()
-                binding.grid.requestLayout(); widgets.updateLayout()
-            }
-            panel.toggle(this, "Lock layout", homePreferences.getBoolean("layout_locked", false)) {
-                homePreferences.edit().putBoolean("layout_locked", it).apply()
-                if (it && tiles.editMode) setEditMode(false)
-            }
-        }
-        panel.section("App and website names", R.drawable.ic_settings_labels) {
-            panel.toggle(this, "Show names", tiles.showLabels) {
-                tiles.showLabels = it; homePreferences.edit().putBoolean("show_tile_labels", it).apply()
-            }
-        }
+        // 10. About.
         panel.section(getString(R.string.action_about), R.drawable.ic_info) {
             panel.text(this, getString(R.string.about_body))
-            panel.action(this, "Update app") { (if (ui is HomeSettingsActivity) ui.updater else updater).check(this) }
+            panel.action(this, "Check for updates") { (if (ui is HomeSettingsActivity) ui.updater else updater).check(this) }
             panel.action(this, "AniProject on GitHub") {
                 runCatching { ui.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/akasumitlamba/AniProject"))) }
             }
-        }
-        if (!isDefaultHome()) panel.section(getString(R.string.action_default_home), R.drawable.ic_home) {
-            panel.action(this, "Set as home") { notificationPanel.dismiss(); openHomeSettings() }
-        }
-        if (legacyHistoryAvailable && !homePreferences.getBoolean("history_imported", false)) panel.section("Transfer watch history", R.drawable.ic_settings_history) {
-            panel.action(this, "Transfer to AniBrave") { notificationPanel.dismiss(); if (ui === this) transferHistory() else { startActivity(Intent(this@HomeActivity, HomeActivity::class.java).putExtra(EXTRA_TRANSFER, true)); ui.finish() } }
+            if (legacyHistoryAvailable && !homePreferences.getBoolean("history_imported", false))
+                panel.action(this, "Transfer watch history to AniBrave") { notificationPanel.dismiss(); if (ui === this@HomeActivity) transferHistory() else { startActivity(Intent(this@HomeActivity, HomeActivity::class.java).putExtra(EXTRA_TRANSFER, true)); ui.finish() } }
         }
         panel.attach(parent)
     }
@@ -1075,7 +1137,7 @@ class HomeActivity : AppCompatActivity() {
         HomeMenu.show(anchor, "Home controls", listOf(
             HomeMenu.Item(2, "Settings", R.drawable.ic_settings, "Layout and app names") { showSettingsMenu(anchor) },
             HomeMenu.Item(3, "Screen off", R.drawable.ic_screen_off, "Lock the screen") { systemAction(AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN) },
-            HomeMenu.Item(4, "Notifications", R.drawable.ic_notifications, "View alerts in AniHome") { notificationPanel.show() },
+            HomeMenu.Item(4, "Notifications", R.drawable.ic_notifications, "View alerts in AniHome") { openNotifications() },
             HomeMenu.Item(5, "Recent apps", R.drawable.ic_recents, "Switch between open apps") { systemAction(AccessibilityService.GLOBAL_ACTION_RECENTS) },
         ))
     }

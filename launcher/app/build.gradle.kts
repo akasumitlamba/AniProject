@@ -5,12 +5,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-// Only runtime image assets are copied. Keep the required offline catalog as an explicit raw
-// resource, rather than exposing repository documentation or provenance/build files as assets.
-val bannerAssets by tasks.registering(Sync::class) {
-    from(rootProject.file("../banners")) { include("**/*.webp") }
-    into(layout.buildDirectory.dir("generated/bannerAssets"))
-}
+// Banner images are not packed into the app: they change often and come from the online banner
+// store. Only the small catalog ships, as an offline fallback for matching apps and websites.
 val bannerMetadata by tasks.registering(Sync::class) {
     from(rootProject.file("../banners/catalog.json")) { into("raw"); rename { "banner_catalog.json" } }
     into(layout.buildDirectory.dir("generated/bannerResources"))
@@ -27,7 +23,7 @@ android {
         testInstrumentationRunner = "app.anihome.launcher.RegressionInstrumentation"
         minSdk = 26
         targetSdk = 35
-        versionCode = 54
+        versionCode = 57
         versionName = "1.1.0"
         vectorDrawables.useSupportLibrary = true
     }
@@ -73,7 +69,6 @@ android {
 
     buildFeatures { viewBinding = true; aidl = true }
 
-    sourceSets.getByName("main").assets.srcDir(bannerAssets.map { it.destinationDir })
     sourceSets.getByName("main").res.srcDir(bannerMetadata.map { it.destinationDir })
 
     splits {
@@ -83,7 +78,7 @@ android {
     }
 }
 
-tasks.named("preBuild") { dependsOn(bannerAssets, bannerMetadata) }
+tasks.named("preBuild") { dependsOn(bannerMetadata) }
 
 dependencies {
     implementation("org.lsposed.hiddenapibypass:hiddenapibypass:6.1")

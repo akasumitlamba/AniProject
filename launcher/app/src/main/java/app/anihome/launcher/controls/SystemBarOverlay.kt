@@ -59,7 +59,7 @@ internal class SystemBarOverlay(private val service: AccessibilityService) {
         watchLock()
         // The invisible top catch-zone stays even while AniHome's bar steps aside (Home,
         // fullscreen apps), so a swipe down always opens AniHome's panel, not Android's shade.
-        if (SystemBar.edgePanel(service)) addEdge(SystemBar.Edge.TOP)
+        if (SystemBar.edgePanel(service) && app.anihome.launcher.ui.PanelStyle.custom(service)) addEdge(SystemBar.Edge.TOP)
     }
 
     private fun locked() = service.getSystemService(android.app.KeyguardManager::class.java)?.isKeyguardLocked == true
@@ -114,6 +114,8 @@ internal class SystemBarOverlay(private val service: AccessibilityService) {
     }
 
     private fun openPanel(edge: SystemBar.Edge) = runCatching {
+        // One panel at a time: a second swipe while one is open used to stack a duplicate on top.
+        if (SystemBar.panelOpen) return@runCatching
         service.startActivity(Intent(service, PanelActivity::class.java)
             .putExtra(PanelActivity.EXTRA_EDGE, edge.name)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_ANIMATION or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS))

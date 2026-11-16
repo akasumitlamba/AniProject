@@ -38,7 +38,7 @@ final class NativeTabs {
         if(Looper.myLooper()!=Looper.getMainLooper())throw new Failure("Tabs must be accessed on the UI thread");
         if(activity.isFinishing()||activity.isDestroyed())throw new Failure("Browser window has closed");
         String name=activity.getClass().getName();
-        if(name.endsWith("FullScreenCustomTabActivity")||activity.getIntent().getBooleanExtra("app.anibrave.immersive",false))
+        if(name.endsWith("FullScreenCustomTabActivity"))
             throw new Failure("Tab controls are unavailable in shortcut windows");
     }
     private static Object call(Object target,String name,Class<?>[] types,Object...args) throws Exception {

@@ -37,13 +37,17 @@ class TileStore(context: Context, private val databaseOverride: android.database
         }
     }
 
+    private fun newAppsAsIcons() = app.getSharedPreferences("anihome", Context.MODE_PRIVATE).getString(NEW_APP_STYLE, "banner") == "icon"
+
     fun addApp(label: String, packageName: String, activityName: String, color: Int?): HomeTile {
         val values = ContentValues().apply {
             put("kind", HomeTile.Kind.APP.name)
             put("label", label)
             put("package_name", packageName)
             put("activity_name", activityName)
-            put("artwork_origin", "pending")
+            // AniHome Settings → Home screen → "Add apps as": banner (default) or icon.
+            if (newAppsAsIcons()) { put("tile_style", "icon"); put("artwork_origin", "manual") }
+            else put("artwork_origin", "pending")
             put("color", color)
             put("position", nextPosition())
             put("created_at", System.currentTimeMillis())
@@ -245,6 +249,8 @@ class TileStore(context: Context, private val databaseOverride: android.database
         getColumnIndexOrThrow(column).let { if (isNull(it)) null else getString(it) }
 
     companion object {
+        /** Preference: how newly added apps appear on Home ("banner" or "icon"). */
+        const val NEW_APP_STYLE = "new_app_style"
         private const val TABLE = "tiles"
     }
 }

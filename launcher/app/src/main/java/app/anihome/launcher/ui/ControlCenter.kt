@@ -204,7 +204,7 @@ internal class ControlCenter(
         Tile("sound_mode", "Sound", { when (audio?.ringerMode) { AudioManager.RINGER_MODE_VIBRATE -> R.drawable.ic_cc_vibrate; AudioManager.RINGER_MODE_SILENT -> R.drawable.ic_cc_silent; else -> R.drawable.ic_cc_ring } },
             { audio?.ringerMode != AudioManager.RINGER_MODE_NORMAL }, ::cycleRinger, Intent(Settings.ACTION_SOUND_SETTINGS)),
         Tile("caffeine", "Stay awake", { R.drawable.ic_cc_coffee }, { HomeControlsService.awake }, {
-            if (!HomeControlsService.connected()) { Toast.makeText(activity, "Turn on AniHome controls in Accessibility to keep the screen awake", Toast.LENGTH_LONG).show(); launch(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) }
+            if (!app.anihome.launcher.controls.ControlsAccess.ensure(activity, "Stay awake", quick::grantSecureSettings)) Unit
             else HomeControlsService.setKeepAwake(!HomeControlsService.awake)
         }, null),
         Tile("hotspot", "Hotspot", { R.drawable.ic_cc_hotspot }, ::isHotspot,
@@ -571,10 +571,7 @@ internal class ControlCenter(
     private fun isCharging(): Boolean = activity.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
         ?.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0)?.let { it != 0 } == true
     private fun globalAction(action: Int, delay: Long) {
-        if (!HomeControlsService.connected()) {
-            Toast.makeText(activity, "Turn on AniHome controls in Accessibility to use this", Toast.LENGTH_LONG).show()
-            launch(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)); return
-        }
+        if (!app.anihome.launcher.controls.ControlsAccess.ensure(activity, "This control", quick::grantSecureSettings)) return
         closePanel()
         // Let the sheet leave the screen first so it is not part of the screenshot.
         handler.postDelayed({ HomeControlsService.perform(action) }, delay)
