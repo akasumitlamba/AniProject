@@ -1,6 +1,6 @@
 # November 2026 banner coverage
 
-The 178-entry baseline had 173 entries with Android packages and 108 with website hosts. These counts overlap. This update adds 100 previously unlisted Android app packages and 97 previously unlisted website entries for pinned shortcuts. Some of the new Android banners also cover their web counterparts. The catalog now contains 375 banners.
+The 178-entry baseline had 173 entries with Android packages and 108 with website hosts. These counts overlap. This update adds 100 previously unlisted Android app packages and 97 previously unlisted website entries for pinned shortcuts. Some of the new Android banners also cover their web counterparts. The catalog now contains 402 banners; later additions are listed in `catalog.json`.
 
 Selection balances India and global popularity with services people can use from a tablet or pin in a browser. The lists are alphabetical and do not claim to be exact download or traffic rankings. Android identities were checked against Google Play. Website rows use the host shown in the table. Where an existing or new app banner covers the same service, its additional verified hosts share that banner.
 
