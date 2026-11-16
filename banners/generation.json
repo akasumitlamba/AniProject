@@ -1308,6 +1308,114 @@
     {
       "id": "alibaba-com",
       "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"Alibaba.com\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #C44209, large recognizable art, balanced safe margins near 9%, bold readable lettering. Let the brand's own geometry, color and shapes determine composition. Aim for confident scale like classic TV app tiles.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
+    },
+    {
+      "id": "jiotv",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"JioTV\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #D71928; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "airtel-xstream-play",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"Airtel Xstream Play\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #AD101C; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "sun-nxt",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"Sun NXT\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #EF4E13; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "aha",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"aha\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #E84514; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "hoichoi",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"hoichoi\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #A70A22; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "lionsgate-play",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"Lionsgate Play\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #181514; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "fancode",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"FanCode\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #D95213; make the main artwork large and crisp with around 9% safe margins. Extract the genuine inner non-letter symbol, integrate it with the background and one bold readable name; do not retain the square app-icon plate.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "dazn",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"DAZN\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #101415; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels. Use the official DAZN squared lettering alone as the single centered lockup. Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "amazon-music",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"Amazon Music\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #12385D; make the main artwork large and crisp with around 9% safe margins. Extract the genuine inner non-letter symbol, integrate it with the background and one bold readable name; do not retain the square app-icon plate.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "gaana",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"Gaana\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #B6001B; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "deezer",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"Deezer\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #441280; make the main artwork large and crisp with around 9% safe margins. Extract the genuine inner non-letter symbol, integrate it with the background and one bold readable name; do not retain the square app-icon plate. Use the purple equalizer-heart emblem with no lettering inside it. Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "stremio",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"Stremio\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #4D2C8A; make the main artwork large and crisp with around 9% safe margins. Extract the genuine inner non-letter symbol, integrate it with the background and one bold readable name; do not retain the square app-icon plate. Use the official purple diamond and inner play symbol. Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "jellyfin",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"Jellyfin\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #162039; make the main artwork large and crisp with around 9% safe margins. Extract the genuine inner non-letter symbol, integrate it with the background and one bold readable name; do not retain the square app-icon plate. Use the genuine nested triangular jellyfin mark. Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "kodi",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"Kodi\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #0C4D65; make the main artwork large and crisp with around 9% safe margins. Extract the genuine inner non-letter symbol, integrate it with the background and one bold readable name; do not retain the square app-icon plate. Use only the inner angular Kodi diamond as the symbol. Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "emby",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"Emby\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #173826; make the main artwork large and crisp with around 9% safe margins. Extract the genuine inner non-letter symbol, integrate it with the background and one bold readable name; do not retain the square app-icon plate. Use its green play emblem. Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "peacock",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"Peacock\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #111115; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels. Use the genuine lowercase peacock wordmark with its six colored dots, once. Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "pluto-tv",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"Pluto TV\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #161611; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "the-roku-channel",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"The Roku Channel\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #472078; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels. Spell The Roku Channel exactly; use its purple brand field, with the title in a unified lockup. Leave off the generic Roku player icon. Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "discovery-plus",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"discovery+\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #13182F; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "rakuten-viki",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"Rakuten Viki\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #113E90; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "mubi",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"MUBI\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #101B37; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels. Use the exact MUBI wordmark and its dot motif as one lockup. Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "starz",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"STARZ\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #101319; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "britbox",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"BritBox\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #09202C; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "chaupal",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"Chaupal\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #322021; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "manoramamax",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"ManoramaMAX\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #183F77; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "shemaroome",
+      "prompt": "Use case: logo-brand. Create one 1.62:1 landscape AniHome smart-TV launcher tile for \"ShemarooMe\". The sole image reference is this brand’s authentic identity. Full-bleed brand colors near #3E2067; make the main artwork large and crisp with around 9% safe margins. Use a single upscale, centered brand wordmark or authentic complete lockup as the dominant artwork; no additional icons or smaller labels.  Use subtly layered light, bands, or geometry derived from this brand’s colors and shape language when helpful. The name is visible exactly once. Any lettering inside an emblem counts as text; do not use a monogram or icon that repeats the title or first letter. Multiword names may use two lines at a word boundary if it improves readability. No extra brand, invented mascot, subhead, outline, outside border, watermark or rounded outer corners."
+    },
+    {
+      "id": "docubay",
+      "prompt": "Use case: logo-brand. Create one standalone 1.62:1 AniHome DocuBay launcher banner. The only foreground is the single large exact wordmark ‘DocuBay’, in clear polished typographic lettering without any separate D or DB emblem. Full bleed cinematic marine navy and petrol blue with restrained red light near a lower corner, echoed from the authentic brand reference. Make the type legible at 140px, with 9% safe margins. No standalone initial, play icon, extraneous text, borders, rounded corners, mockup or watermark."
     }
   ],
   "artworkTreatments": {
@@ -1531,6 +1639,33 @@
     "indiamart": "Individual ImageGen composition using the linked brand identity reference.",
     "justdial": "Individual ImageGen composition using the linked brand identity reference.",
     "best-buy": "Individual ImageGen composition using the linked brand identity reference.",
-    "alibaba-com": "Individual ImageGen composition using the linked brand identity reference."
+    "alibaba-com": "Individual ImageGen composition using the linked brand identity reference.",
+    "jiotv": "Individually generated ImageGen banner with one brand identity.",
+    "airtel-xstream-play": "Individually generated ImageGen banner with one brand identity.",
+    "sun-nxt": "Individually generated ImageGen banner with one brand identity.",
+    "aha": "Individually generated ImageGen banner with one brand identity.",
+    "hoichoi": "Individually generated ImageGen banner with one brand identity.",
+    "lionsgate-play": "Individually generated ImageGen banner with one brand identity.",
+    "fancode": "Individually generated ImageGen banner with one brand identity.",
+    "dazn": "Individually generated ImageGen banner with one brand identity.",
+    "amazon-music": "Individually generated ImageGen banner with one brand identity.",
+    "gaana": "Individually generated ImageGen banner with one brand identity.",
+    "deezer": "Individually generated ImageGen banner with one brand identity.",
+    "stremio": "Individually generated ImageGen banner with one brand identity.",
+    "jellyfin": "Individually generated ImageGen banner with one brand identity.",
+    "kodi": "Individually generated ImageGen banner with one brand identity.",
+    "emby": "Individually generated ImageGen banner with one brand identity.",
+    "peacock": "Individually generated ImageGen banner with one brand identity.",
+    "pluto-tv": "Individually generated ImageGen banner with one brand identity.",
+    "the-roku-channel": "Individually generated ImageGen banner with one brand identity.",
+    "discovery-plus": "Individually generated ImageGen banner with one brand identity.",
+    "rakuten-viki": "Individually generated ImageGen banner with one brand identity.",
+    "mubi": "Individually generated ImageGen banner with one brand identity.",
+    "starz": "Individually generated ImageGen banner with one brand identity.",
+    "britbox": "Individually generated ImageGen banner with one brand identity.",
+    "chaupal": "Individually generated ImageGen banner with one brand identity.",
+    "manoramamax": "Individually generated ImageGen banner with one brand identity.",
+    "shemaroome": "Individually generated ImageGen banner with one brand identity.",
+    "docubay": "Individually generated ImageGen banner with one brand identity."
   }
 }

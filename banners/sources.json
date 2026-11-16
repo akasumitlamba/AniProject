@@ -2905,5 +2905,249 @@
     "sourceUrl": "https://alibaba.com/",
     "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=alibaba.com&sz=128",
     "artworkTreatment": "Individual ImageGen composition using the linked brand identity reference."
+  },
+  {
+    "id": "jiotv",
+    "name": "JioTV",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.jio.jioplay.tv&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/RGAfYA3KWBShF44we_4wUAkHNiYpQUGg9oWxJuXPIwOqWysztLKLXbJtLWg-v_gs9VKhGeopYeKfJcs-Gb7xYA=s0-br30",
+    "brandColor": "#D71928",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "JioTV: Live TV, OTT & Catch-up - Apps on Google Play"
+  },
+  {
+    "id": "airtel-xstream-play",
+    "name": "Airtel Xstream Play",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=tv.accedo.airtel.wynk&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/IvmV8qkI-9C9aYrur3xXKDGg80DoAxa9YDmQerh3U1S4NVE9F_OmhTXO6oI6n9xIABIT8RK7ysqllYJc2s-qQHA=s0-br30",
+    "brandColor": "#AD101C",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "Airtel Xstream Play: 25 OTTs - Apps on Google Play"
+  },
+  {
+    "id": "sun-nxt",
+    "name": "Sun NXT",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.suntv.sunnxt&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/x4kBOcfV6zyByJJdlDQENUO8iIre45oCpA0vPr4t5t3cohnXDHnIf1qGZYwEvFYWxlGJ2YiDXmrLLOu8nN2YHQ=s0-br30",
+    "brandColor": "#EF4E13",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "Sun NXT - Apps on Google Play"
+  },
+  {
+    "id": "aha",
+    "name": "aha",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=ahaflix.tv&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/IkWgTZbx1Bmj1DN8YyWeF5GMMh7Uvx3YGf4I_7XCJBG5qgu1wcEGWSIhwp8JJ_qW5qOlURtzcy0KsVM5DklKtg=s0-br30",
+    "brandColor": "#E84514",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "aha - 100% Local Entertainment - Apps on Google Play"
+  },
+  {
+    "id": "hoichoi",
+    "name": "hoichoi",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.viewlift.hoichoi&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/OPVp6CeTbocyOCXcDbNK0Tvyxdd0xBvqQgLE4S4QuTbFKLxyu08_IR3wU4_VYIL31RQ51HZL6K2L3bgSA62iXg=s0-br30",
+    "brandColor": "#A70A22",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "hoichoi - Movies & Web Series - Apps on Google Play"
+  },
+  {
+    "id": "lionsgate-play",
+    "name": "Lionsgate Play",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.lionsgateplay.videoapp&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/HUUqoy5jkRXJ8W2ou86s66WAL0wfETUbpqTQNs1cz0kTQzhg34ZdOOsBHq6bLZihsLFdpm6OjA_gtqdl3dTsBQ=s0-br30",
+    "brandColor": "#181514",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "Lionsgate Play: Movies & Shows - Apps on Google Play"
+  },
+  {
+    "id": "fancode",
+    "name": "FanCode",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.dream11sportsguru&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/KrJHcp5KirPlC2hswm_9-ARuXGjRuvoaTAWgOROKypiiS36ntWzvW0r3uCAXMF0kalHXcBEBsjMAKmSul15mUMY=s0-br30",
+    "brandColor": "#D95213",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "FanCode - Watch Live Sports - Apps on Google Play"
+  },
+  {
+    "id": "dazn",
+    "name": "DAZN",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.dazn&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/2m6bTc0_zIgzimPNQo_ZfZkhGHEjBXJIPbIs3_wliCXm4VTNkLW31yMMUqmB7Vpn51Fed62sUv91YtC1kRcZAQ=s0-br30",
+    "brandColor": "#101415",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "DAZN - Watch Live Sports - Apps on Google Play"
+  },
+  {
+    "id": "amazon-music",
+    "name": "Amazon Music",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.amazon.mp3&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/9v2z1-7g8pWbxek8IW3Q9gGsAqD-YkTvy_rmyd4Cfb-OkpVR2T6jt-Ev2eKDcvx72njhCQ_4fEd9qg8-T9AaDA=s0-br30",
+    "brandColor": "#12385D",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "Amazon Music: Songs & Podcasts - Apps on Google Play"
+  },
+  {
+    "id": "gaana",
+    "name": "Gaana",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.gaana&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Bq007X0n-nx6Wbowl_0bpG16rhPhcF-TLeQTXPO5HPC7z78LNRmsvdr1yNKLwBDoMCK1paI8ty2Zv3M1_w3Q3Q=s0-br30",
+    "brandColor": "#B6001B",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "Gaana: MP3 Songs, Music App - Apps on Google Play"
+  },
+  {
+    "id": "deezer",
+    "name": "Deezer",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=deezer.android.app&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/RFBXn4V0H8Zmi3_jViu73GTpQOmGmrvG7mdM1ynStAAYEd2aOLo5G0v9AHSUMwia1lQGI-c5oXMzZJCq0RMlJA=s0-br30",
+    "brandColor": "#441280",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "Deezer: Music & Podcast Player - Apps on Google Play"
+  },
+  {
+    "id": "stremio",
+    "name": "Stremio",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.stremio.one&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/OvTwEXzvUbeyfqdXd1vZiTfbBOTdMAA6EWw5TV00PiSirn7C1iz__HVD6PfXCHkN9quH_XdoPwCIT3GhB1Ukmw=s0-br30",
+    "brandColor": "#4D2C8A",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "Stremio - Apps on Google Play"
+  },
+  {
+    "id": "jellyfin",
+    "name": "Jellyfin",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=org.jellyfin.mobile&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/vlp53cLaoFS90PD0IwmdksDVosTb7vOVl6pkD0eVXsygj07k4uCDK1Yy7eng3Na7nGBLuhh7LdMmpsGVQwwmgw=s0-br30",
+    "brandColor": "#162039",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "Jellyfin - Apps on Google Play"
+  },
+  {
+    "id": "kodi",
+    "name": "Kodi",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=org.xbmc.kodi&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/-6H51wRiflGv_2wk-YIDtdzTV6t7ZqD9D4xLy7c3EDeaWWYoezZvPMkYNfCUuGU5Ae8XDOKQNfVkq-4t6tY0UA=s0-br30",
+    "brandColor": "#0C4D65",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "Kodi - Apps on Google Play"
+  },
+  {
+    "id": "emby",
+    "name": "Emby",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.mb.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Bk51lWrmrTuY0_5B3bmyZX9W8AYMUnYLP83gtlKTSZpuylZuWC9-M7qCiVQBa8DYa9Hhw1mZNl-O06Wep2box7Y=s0-br30",
+    "brandColor": "#173826",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "Emby for Android - Apps on Google Play"
+  },
+  {
+    "id": "peacock",
+    "name": "Peacock",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.peacocktv.peacockandroid&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/FdlQY6tEE0p3FsJT9EbxB0BzKdXB1U84nNzAUl_YCC9HxRO1J82i8-XWuN_BD1zReblXht3-cvUreuogHrPk-A=s0-br30",
+    "brandColor": "#111115",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "Peacock TV: Stream TV & Movies - Apps on Google Play"
+  },
+  {
+    "id": "pluto-tv",
+    "name": "Pluto TV",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=tv.pluto.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/O6MtMEvYNmr-I_cntqWT2Lq8L5Y5bG01V5udGLT8-8LcpNzeeOCDjgaX-mQEushfwrLjT74nVJMlmSgeIxtP=s0-br30",
+    "brandColor": "#161611",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "Pluto TV: Watch Free Movies/TV - Apps on Google Play"
+  },
+  {
+    "id": "the-roku-channel",
+    "name": "The Roku Channel",
+    "sourceUrl": "https://therokuchannel.roku.com/",
+    "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=therokuchannel.roku.com&sz=128",
+    "brandColor": "#472078",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "The Roku Channel - Apps on Google Play",
+    "packageSourceUrl": "https://play.google.com/store/apps/details?hl=en-US&id=com.roku.web.trc"
+  },
+  {
+    "id": "discovery-plus",
+    "name": "discovery+",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.discovery.discoveryplus.mobile&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/t_Lanic5BWmy8cg0z4lQW0t2LZAHl8v69DIdYR48hzI4p6YwvLn6Z_rHt02tCPccyFc-GGniuGIWiwWzDdwG=s0-br30",
+    "brandColor": "#13182F",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "discovery+ | Stream TV Shows - Apps on Google Play"
+  },
+  {
+    "id": "rakuten-viki",
+    "name": "Rakuten Viki",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.viki.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/UEsYcM2VWWJOW1GfrzMPVVReav7gf2TKQVYPr_H-rAKc8FPv0DrxVYGAk-4M3aQ_BXrwg0gRaoFK6dT_BOU_tQ=s0-br30",
+    "brandColor": "#113E90",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "Viki: Asian Dramas & Movies - Apps on Google Play"
+  },
+  {
+    "id": "mubi",
+    "name": "MUBI",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.mubi&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/f7UN9R1kr-o-rTI1-TQqTGfRTho4L0vpzchlCNtx6czDYF6xfD7GeYR0hU5eh-Kt56prlw6tHOKQUcb9-FPC21I=s0-br30",
+    "brandColor": "#101B37",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "MUBI: Curated Cinema - Apps on Google Play"
+  },
+  {
+    "id": "starz",
+    "name": "STARZ",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.bydeluxe.d3.android.program.starz&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/TQRIRBXk3GFDHxa8FTNKbxFT_Qn7Xa89HkeJRCQugyuoBJLKyP4e_3UUl9SbLnJicB69Jpxaj_n286GMp7Vu=s0-br30",
+    "brandColor": "#101319",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "STARZ - Apps on Google Play"
+  },
+  {
+    "id": "britbox",
+    "name": "BritBox",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.britbox.us&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/S4T4cMVDDFZZMRbpJWgXYlP2mP4fUQ3ruLwS3_U7nafFToh4n3Di7iQSLTyQRqe_zBmAExy-nU3SIOFsGPyQsYY=s0-br30",
+    "brandColor": "#09202C",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "BritBox: Home of British TV - Apps on Google Play"
+  },
+  {
+    "id": "chaupal",
+    "name": "Chaupal",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=tv.chaupal.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/xPzE9hpzsrSQaD-1z6_g54UGhgya0yVvLSyiOkJ9Jw0VdCwTYW34IETaSwRufssrMZQyG4aqfgc9H6nlqI_W=s0-br30",
+    "brandColor": "#322021",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "Chaupal - Movies & Web Series - Apps on Google Play"
+  },
+  {
+    "id": "manoramamax",
+    "name": "ManoramaMAX",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.mmtv.manoramamax.android&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/TqWOfDjT-LwEskdVhs2IicWjTd6y0uXBSfljsexA79T14M_YlOU_E3-550lHfCqmxa9tmSS6nyCIG0l21Kfu=s0-br30",
+    "brandColor": "#183F77",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "manoramaMAX - Malayalam Movies - Apps on Google Play"
+  },
+  {
+    "id": "shemaroome",
+    "name": "ShemarooMe",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.saranyu.shemarooworld&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/ZU0JRSqptOmGA-NQiVvlx0EXZJZ00R-YUXDpMaQkyQHCq78JIvktaGsdtFi-TDm7LxRoR8twlwZWYIlFjzIb=s0-br30",
+    "brandColor": "#3E2067",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "ShemarooMe: OTT, Shows, LiveTv - Apps on Google Play"
+  },
+  {
+    "id": "docubay",
+    "name": "DocuBay",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.epic.docubay&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/4BA3xPdFj4e6KIuAxHPh25xIihegEql1jCrm2fwa0kMNmJhBciAZ-BtUlnZPPIXuLNtNYA6nRu7AcZEkpQ4_gA=s0-br30",
+    "brandColor": "#123D58",
+    "artworkTreatment": "Individually generated ImageGen banner with one brand identity.",
+    "verifiedPlayTitle": "DocuBay - Apps on Google Play"
   }
 ]

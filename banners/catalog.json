@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updated": "2026-11-15",
+  "updated": "2026-11-16",
   "curation": "Mainstream Android apps, tablet utilities, and popular global and India-relevant sites for pinned shortcuts",
   "entries": [
     {
@@ -5980,6 +5980,458 @@
       "tabletPriority": 49,
       "popular": true,
       "sha256": "ed00750a16d3f223b825c0006f770f5862e37b2737209cacfd8819ee5aa198f2"
+    },
+    {
+      "id": "jiotv",
+      "name": "JioTV",
+      "file": "images/jiotv.webp",
+      "packages": [
+        "com.jio.jioplay.tv"
+      ],
+      "aliases": [
+        "Jio TV"
+      ],
+      "webHosts": [
+        "jiotv.com"
+      ],
+      "sha256": "1820aecf82940b5d833c9cc6ab7d0a55c6c7f1820961c0e05c6c001d8f6f703c",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "airtel-xstream-play",
+      "name": "Airtel Xstream Play",
+      "file": "images/airtel-xstream-play.webp",
+      "packages": [
+        "tv.accedo.airtel.wynk"
+      ],
+      "aliases": [
+        "Airtel Xstream"
+      ],
+      "webHosts": [
+        "airtelxstream.in"
+      ],
+      "sha256": "191b48788bb3c4d3231d3dee0f3d74804fbacd4a2a22a8ddaf043bd72e578b3f",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "sun-nxt",
+      "name": "Sun NXT",
+      "file": "images/sun-nxt.webp",
+      "packages": [
+        "com.suntv.sunnxt"
+      ],
+      "aliases": [
+        "SunNXT"
+      ],
+      "webHosts": [
+        "sunnxt.com"
+      ],
+      "sha256": "705cc3732434418f97166274d285c9aa99e38a06ebd6b7a6ad219518fde41f3c",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "aha",
+      "name": "aha",
+      "file": "images/aha.webp",
+      "packages": [
+        "ahaflix.tv"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "aha.video"
+      ],
+      "sha256": "76ce0da03b1ad173564fdfabbb2c0b1c28ada03e74645e7a01f5e01523ede948",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "hoichoi",
+      "name": "hoichoi",
+      "file": "images/hoichoi.webp",
+      "packages": [
+        "com.viewlift.hoichoi"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "hoichoi.tv"
+      ],
+      "sha256": "d67c62c89f1e5fa15d6c8a48e5825355beb443a6a01615a3bba8f01668089d26",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "lionsgate-play",
+      "name": "Lionsgate Play",
+      "file": "images/lionsgate-play.webp",
+      "packages": [
+        "com.lionsgateplay.videoapp"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "lionsgateplay.com"
+      ],
+      "sha256": "40a3cccf836a24d7127f98a70562717d62d05bfd80768a292e522250fadf3f03",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "fancode",
+      "name": "FanCode",
+      "file": "images/fancode.webp",
+      "packages": [
+        "com.dream11sportsguru"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "fancode.com"
+      ],
+      "sha256": "e0742f30ddeadc7d6c73a309785fec7d244a8879d69b1b5c33dbc9cde2f42c2d",
+      "popular": true,
+      "category": "sports",
+      "tabletPriority": 96
+    },
+    {
+      "id": "dazn",
+      "name": "DAZN",
+      "file": "images/dazn.webp",
+      "packages": [
+        "com.dazn"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "dazn.com"
+      ],
+      "sha256": "3a47ea463c0947ab5dd3ca00e63526cc9fce5cc88b518cdcffed4812dd309f20",
+      "popular": true,
+      "category": "sports",
+      "tabletPriority": 96
+    },
+    {
+      "id": "amazon-music",
+      "name": "Amazon Music",
+      "file": "images/amazon-music.webp",
+      "packages": [
+        "com.amazon.mp3"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "music.amazon.com",
+        "music.amazon.in"
+      ],
+      "sha256": "2d489078c3dedfd5718203f921c101f82a2b3f7fb9cfbc4bea06e3e86fa54a6e",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "gaana",
+      "name": "Gaana",
+      "file": "images/gaana.webp",
+      "packages": [
+        "com.gaana"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "gaana.com"
+      ],
+      "sha256": "c24f2e64f43299faf0032283e01d839fb111eb6391addc447bcb58af03503aa7",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "deezer",
+      "name": "Deezer",
+      "file": "images/deezer.webp",
+      "packages": [
+        "deezer.android.app"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "deezer.com"
+      ],
+      "sha256": "7cc3c43cf0dc63725e41d9cb093b873035087bd0ffdbb17483cdc3a89035bb53",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "stremio",
+      "name": "Stremio",
+      "file": "images/stremio.webp",
+      "packages": [
+        "com.stremio.one"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "stremio.com",
+        "web.stremio.com"
+      ],
+      "sha256": "73db130d093ad6318efea221bf9fafe786cd92f6509835dab80a3f46d7ec3be5",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "jellyfin",
+      "name": "Jellyfin",
+      "file": "images/jellyfin.webp",
+      "packages": [
+        "org.jellyfin.mobile"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "jellyfin.org"
+      ],
+      "sha256": "660eba90b18a9f1acafead357cbbc7c52627df541943bd7c565220426bda9788",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "kodi",
+      "name": "Kodi",
+      "file": "images/kodi.webp",
+      "packages": [
+        "org.xbmc.kodi"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "kodi.tv"
+      ],
+      "sha256": "39317a452267bf3d9b3b691667af2f023a6dcb0366830befddcc6eb5a3827537",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "emby",
+      "name": "Emby",
+      "file": "images/emby.webp",
+      "packages": [
+        "com.mb.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "emby.media",
+        "app.emby.media"
+      ],
+      "sha256": "b9ceff61a9050e7dd906e2838c7031d6e3057723646c1532dcbf37da66f4449a",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "peacock",
+      "name": "Peacock",
+      "file": "images/peacock.webp",
+      "packages": [
+        "com.peacocktv.peacockandroid"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "peacocktv.com"
+      ],
+      "sha256": "458a1e2e3bbf1775d4a3c7bfe220b0d3167ffa0a58e280fa4d38759589282d04",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "pluto-tv",
+      "name": "Pluto TV",
+      "file": "images/pluto-tv.webp",
+      "packages": [
+        "tv.pluto.android"
+      ],
+      "aliases": [
+        "PlutoTV"
+      ],
+      "webHosts": [
+        "pluto.tv"
+      ],
+      "sha256": "ffc26968dc876bf69bf13b0c65cebd78a443c434d7a6b18c67e0d186817b2168",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "the-roku-channel",
+      "name": "The Roku Channel",
+      "file": "images/the-roku-channel.webp",
+      "packages": [
+        "com.roku.web.trc"
+      ],
+      "aliases": [
+        "Roku Channel"
+      ],
+      "webHosts": [
+        "therokuchannel.roku.com"
+      ],
+      "sha256": "a090b87a0a624600b0df9fea7f33c1452a4d07e91dff0bd3609a08afa0f6f830",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "discovery-plus",
+      "name": "discovery+",
+      "file": "images/discovery-plus.webp",
+      "packages": [
+        "com.discovery.discoveryplus.mobile"
+      ],
+      "aliases": [
+        "Discovery Plus"
+      ],
+      "webHosts": [
+        "discoveryplus.com",
+        "discoveryplus.in"
+      ],
+      "sha256": "39ef5bc85e31577e8358efc1e3b486643773c342bcd0cc43c1eab9108e83afcf",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "rakuten-viki",
+      "name": "Rakuten Viki",
+      "file": "images/rakuten-viki.webp",
+      "packages": [
+        "com.viki.android"
+      ],
+      "aliases": [
+        "Viki"
+      ],
+      "webHosts": [
+        "viki.com"
+      ],
+      "sha256": "703b584c6fe7f1415afe353b23f35ca24c1786eaf8c5a698ba46bbffda6d2fd2",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "mubi",
+      "name": "MUBI",
+      "file": "images/mubi.webp",
+      "packages": [
+        "com.mubi"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "mubi.com"
+      ],
+      "sha256": "c7ea39c3281fb7f7d92dad28b1a9e283a088f48460c528adcc61283882f6f01f",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "starz",
+      "name": "STARZ",
+      "file": "images/starz.webp",
+      "packages": [
+        "com.bydeluxe.d3.android.program.starz"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "starz.com"
+      ],
+      "sha256": "027689f5a0dc5014220b48e619095dac01ddf3581275bb2fe450c84eeaf18e53",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "britbox",
+      "name": "BritBox",
+      "file": "images/britbox.webp",
+      "packages": [
+        "com.britbox.us"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "britbox.com"
+      ],
+      "sha256": "9a3b81fb274b9d9ab3dc3fbb84391628c47a62c8aca5b84bf9027e3ce4735fe9",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "chaupal",
+      "name": "Chaupal",
+      "file": "images/chaupal.webp",
+      "packages": [
+        "tv.chaupal.android",
+        "video.laminar.tv.chaupal.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "chaupal.tv"
+      ],
+      "sha256": "f84eff2f0a5e63b460adc5c95ae9aec612b1111093bc39ab4ae10bcc1e1397a6",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "manoramamax",
+      "name": "ManoramaMAX",
+      "file": "images/manoramamax.webp",
+      "packages": [
+        "com.mmtv.manoramamax.android"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "manoramamax.com"
+      ],
+      "sha256": "54a3ca5b172d5f6ae8e2dcaf9cdc0944fe5490ac0c5b4e7f16f3ecd130fbd2ed",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "shemaroome",
+      "name": "ShemarooMe",
+      "file": "images/shemaroome.webp",
+      "packages": [
+        "com.saranyu.shemarooworld",
+        "com.shemaroo.shemarootv"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "shemaroome.com"
+      ],
+      "sha256": "43af31483b629fe8a4c1fde1361a4547fa3cfa492df7838915976d0290200bfa",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
+    },
+    {
+      "id": "docubay",
+      "name": "DocuBay",
+      "file": "images/docubay.webp",
+      "packages": [
+        "com.epic.docubay"
+      ],
+      "aliases": [],
+      "webHosts": [
+        "docubay.com"
+      ],
+      "sha256": "891620fe463e6ef332393e40f3208642ec4e1b3cd5894426ad19e5afde704c0d",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 98
     }
   ]
 }
