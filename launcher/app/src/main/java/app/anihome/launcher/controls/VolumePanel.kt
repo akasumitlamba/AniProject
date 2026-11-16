@@ -34,9 +34,8 @@ import kotlin.math.roundToInt
 internal class VolumePanel(private val service: AccessibilityService) {
     companion object {
         fun enabled(context: Context) = context.getSharedPreferences("anihome", Context.MODE_PRIVATE).getBoolean("volume_panel", false)
-        /** Narrow pills (like iOS), the same on phones and tablets. */
-        private const val SLIDER_WIDTH = 36
-        private const val LABEL_WIDTH = 54
+        /** Width of one thin volume line and its icon (phones and tablets alike). */
+        private const val COLUMN_WIDTH = 40
         private const val REPEAT_DELAY = 350L
         private const val REPEAT_INTERVAL = 90L
         fun setEnabled(context: Context, on: Boolean) = context.getSharedPreferences("anihome", Context.MODE_PRIVATE).edit().putBoolean("volume_panel", on).apply()
@@ -163,8 +162,8 @@ internal class VolumePanel(private val service: AccessibilityService) {
         connect()
         val panel = LinearLayout(service).apply {
             orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER_HORIZONTAL
-            setPadding(dp(12), dp(14), dp(12), dp(10))
-            background = GradientDrawable().apply { setColor(0xFC141519.toInt()); cornerRadius = dp(34).toFloat(); setStroke(dp(1), 0x1FFFFFFF) }
+            setPadding(dp(6), dp(10), dp(6), dp(2))
+            background = GradientDrawable().apply { setColor(0xF51A1C22.toInt()); cornerRadius = dp(22).toFloat() }
             elevation = dp(10).toFloat()
         }
         root = panel
@@ -229,85 +228,30 @@ internal class VolumePanel(private val service: AccessibilityService) {
         panel.removeAllViews()
         streamUpdaters.clear()
         val metrics = service.resources.displayMetrics
-        val sliderHeight = minOf(dp(210), (metrics.heightPixels * .36f).toInt())
-        if (expanded) panel.addView(header(), LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(10) })
+        val lineHeight = minOf(dp(150), (metrics.heightPixels * .28f).toInt())
         val columns = LinearLayout(service).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.BOTTOM }
-        streamColumn(columns, "Media", R.drawable.ic_cc_volume, AudioManager.STREAM_MUSIC, sliderHeight)
-        var note: String? = null
+        streamColumn(columns, "Media", R.drawable.ic_cc_volume, AudioManager.STREAM_MUSIC, lineHeight)
         if (expanded) {
-            streamColumn(columns, "Ring", R.drawable.ic_cc_ring, AudioManager.STREAM_RING, sliderHeight)
-            streamColumn(columns, "Alerts", R.drawable.ic_notifications, AudioManager.STREAM_NOTIFICATION, sliderHeight)
-            streamColumn(columns, "Alarm", R.drawable.ic_alarm, AudioManager.STREAM_ALARM, sliderHeight)
-            note = appColumns(columns, sliderHeight)
+            streamColumn(columns, "Ring", R.drawable.ic_cc_ring, AudioManager.STREAM_RING, lineHeight)
+            streamColumn(columns, "Alerts", R.drawable.ic_notifications, AudioManager.STREAM_NOTIFICATION, lineHeight)
+            streamColumn(columns, "Alarm", R.drawable.ic_alarm, AudioManager.STREAM_ALARM, lineHeight)
+            appColumns(columns, lineHeight)
         }
-        // All columns side by side. Only when they can't fit on screen does the row scroll, and
-        // then at an explicit width, so no column is ever cut off at the panel's edges.
+        // Only scroll sideways when the columns truly can't fit on screen.
         columns.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
-        val available = metrics.widthPixels - dp(72)
-        val scroller: View = if (columns.measuredWidth <= available) columns
+        val available = metrics.widthPixels - dp(48)
+        val row: View = if (columns.measuredWidth <= available) columns
             else android.widget.HorizontalScrollView(service).apply {
                 isHorizontalScrollBarEnabled = false; overScrollMode = View.OVER_SCROLL_NEVER; addView(columns)
                 layoutParams = LinearLayout.LayoutParams(available, -2)
             }
-        panel.addView(scroller, scroller.layoutParams ?: LinearLayout.LayoutParams(-2, -2))
-        note?.let {
-            panel.addView(TextView(service).apply {
-                text = it; textSize = 11.5f; setTextColor(0xFFB3B6BE.toInt()); gravity = Gravity.CENTER; maxWidth = maxOf(dp(200), minOf(columns.measuredWidth, dp(300)))
-                setLineSpacing(0f, 1.1f)
-            }, LinearLayout.LayoutParams(-2, -2).apply { topMargin = dp(10); gravity = Gravity.CENTER_HORIZONTAL })
-        }
-        if (expanded) panel.addView(ringerChips(), LinearLayout.LayoutParams(-2, -2).apply { topMargin = dp(12); gravity = Gravity.CENTER_HORIZONTAL })
+        panel.addView(row, row.layoutParams ?: LinearLayout.LayoutParams(-2, -2))
         panel.addView(ImageButton(service).apply {
-            setImageResource(R.drawable.ic_expand_more); rotation = if (expanded) -90f else 90f
-            background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(0x24FFFFFF) }
-            imageTintList = ColorStateList.valueOf(-1); contentDescription = if (expanded) "Fewer volumes" else "All volumes and apps"
+            setImageResource(R.drawable.ic_expand_more); rotation = if (expanded) -90f else 90f; background = null
+            imageTintList = ColorStateList.valueOf(0xB3FFFFFF.toInt()); contentDescription = if (expanded) "Fewer volumes" else "More volumes"
             setOnClickListener { expanded = !expanded; if (expanded) fetchPlayers(); refresh(); keepOpen() }
-        }, LinearLayout.LayoutParams(dp(36), dp(36)).apply { topMargin = dp(12); gravity = Gravity.CENTER_HORIZONTAL })
+        }, LinearLayout.LayoutParams(dp(32), dp(28)).apply { topMargin = dp(2); gravity = Gravity.CENTER_HORIZONTAL })
         fitWindow()
-    }
-
-    /** "Sound" title with a shortcut to Android's sound settings (expanded only). */
-    private fun header() = LinearLayout(service).apply {
-        gravity = Gravity.CENTER_VERTICAL; setPadding(dp(6), 0, 0, 0)
-        addView(TextView(service).apply {
-            text = "Sound"; textSize = 16f; setTextColor(-1)
-            typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
-        }, LinearLayout.LayoutParams(0, -2, 1f))
-        addView(ImageButton(service).apply {
-            setImageResource(R.drawable.ic_settings); background = null; imageTintList = ColorStateList.valueOf(0xFFDADCE2.toInt())
-            contentDescription = "Sound settings"; setPadding(dp(8), dp(8), dp(8), dp(8))
-            setOnClickListener {
-                dismiss()
-                runCatching { service.startActivity(android.content.Intent(android.provider.Settings.ACTION_SOUND_SETTINGS).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)) }
-            }
-        }, LinearLayout.LayoutParams(dp(40), dp(40)))
-    }
-
-    /** Ring · Vibrate · Silent in one tap (silent may need Do-not-disturb access). */
-    private fun ringerChips() = LinearLayout(service).apply {
-        background = GradientDrawable().apply { setColor(0x14FFFFFF); cornerRadius = dp(20).toFloat() }
-        setPadding(dp(4), dp(4), dp(4), dp(4))
-        val modes = listOf(Triple(AudioManager.RINGER_MODE_NORMAL, R.drawable.ic_cc_ring, "Ring"),
-            Triple(AudioManager.RINGER_MODE_VIBRATE, R.drawable.ic_cc_vibrate, "Vibrate"),
-            Triple(AudioManager.RINGER_MODE_SILENT, R.drawable.ic_cc_silent, "Silent"))
-        modes.forEach { (mode, icon, label) ->
-            val on = audio.ringerMode == mode
-            addView(ImageButton(service).apply {
-                setImageResource(icon); contentDescription = label
-                imageTintList = ColorStateList.valueOf(if (on) 0xFF0B1220.toInt() else -1)
-                background = GradientDrawable().apply { cornerRadius = dp(16).toFloat(); setColor(if (on) 0xFF8AB4FF.toInt() else 0) }
-                setPadding(dp(8), dp(6), dp(8), dp(6))
-                setOnClickListener {
-                    val applied = runCatching { audio.ringerMode = mode }.isSuccess
-                    if (!applied && mode == AudioManager.RINGER_MODE_SILENT) {
-                        dismiss()
-                        runCatching { service.startActivity(android.content.Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)) }
-                        return@setOnClickListener
-                    }
-                    refresh(); keepOpen()
-                }
-            }, LinearLayout.LayoutParams(dp(52), dp(34)))
-        }
     }
 
     /** Live sliders by stream, so key presses update them in place. */
@@ -315,62 +259,56 @@ internal class VolumePanel(private val service: AccessibilityService) {
     private fun updateLevels() { streamUpdaters.forEach { (stream, update) -> update(audio.getStreamVolume(stream)) } }
 
     private fun streamColumn(row: LinearLayout, label: String, icon: Int, stream: Int, height: Int) {
-        streamUpdaters[stream] = column(row, label, service.getDrawable(icon)?.mutate(), audio.getStreamMaxVolume(stream), audio.getStreamVolume(stream), height) { value ->
-            runCatching { audio.setStreamVolume(stream, value, 0) }
-        }
+        streamUpdaters[stream] = column(row, label, service.getDrawable(icon)?.mutate(), tint = true,
+            max = audio.getStreamMaxVolume(stream), value = audio.getStreamVolume(stream), height = height,
+            changed = { value -> runCatching { audio.setStreamVolume(stream, value, 0) } },
+            // Tapping the icon mutes/unmutes, like Android's own panel.
+            iconTap = { runCatching { audio.adjustStreamVolume(stream, AudioManager.ADJUST_TOGGLE_MUTE, 0) }; updateLevels() })
     }
 
-    /** Adds a control per app playing sound; returns a short note when that isn't possible. */
-    private fun appColumns(row: LinearLayout, height: Int): String? {
-        val rpc = radio
-        if (rpc == null) {
-            connect()
-            return when (ShizukuGate.state(service)) {
-                ShizukuGate.State.READY -> "Finding apps playing sound…"
-                ShizukuGate.State.NOT_RUNNING -> "Per-app volume: start Shizuku to adjust apps one by one"
-                else -> "Per-app volume needs Shizuku (AniHome Settings → Shizuku)"
-            }
-        }
-        val playing = players ?: run { fetchPlayers(); return "Finding apps playing sound…" }
-        // Apps muted here stay listed (a muted app may stop "playing"), so they can be unmuted.
-        val muted = mutedApps()
+    /** One line per app playing sound (needs Shizuku); muted apps stay listed until unmuted. */
+    private fun appColumns(row: LinearLayout, height: Int) {
+        val rpc = radio ?: run { connect(); return }
+        val playing = players ?: run { fetchPlayers(); return }
         val list = org.json.JSONArray(playing.toString())
         val listed = (0 until list.length()).map { list.getJSONObject(it).getString("package") }.toSet()
-        muted.filter { it !in listed }.forEach { pkg ->
+        mutedApps().filter { it !in listed }.forEach { pkg ->
             val uid = runCatching { service.packageManager.getApplicationInfo(pkg, 0).uid }.getOrNull() ?: return@forEach
             list.put(org.json.JSONObject().put("uid", uid).put("package", pkg).put("volume", false).put("muted", true))
         }
-        if (list.length() == 0) return "Play something to adjust apps one by one"
-        row.addView(View(service).apply { setBackgroundColor(0x22FFFFFF) }, LinearLayout.LayoutParams(dp(1), height).apply { marginStart = dp(8); marginEnd = dp(8); bottomMargin = dp(24) })
+        if (list.length() == 0) return
+        row.addView(View(service).apply { setBackgroundColor(0x26FFFFFF) }, LinearLayout.LayoutParams(dp(1), height - dp(16)).apply { marginStart = dp(4); marginEnd = dp(4); bottomMargin = dp(38) })
         val pm = service.packageManager
         val seen = HashSet<String>()
-        var muteOnly = false
         for (i in 0 until list.length()) {
             val p = list.getJSONObject(i); val pkg = p.getString("package"); val uid = p.getInt("uid")
             if (!seen.add(pkg)) continue
             val name = runCatching { pm.getApplicationLabel(pm.getApplicationInfo(pkg, 0)).toString() }.getOrDefault(pkg)
             val icon = runCatching { pm.getApplicationIcon(pkg) }.getOrNull()
             if (p.optBoolean("volume", true)) {
-                column(row, name, icon, 100, levels.getInt(pkg, 100), height, tint = false) { value ->
-                    levels.edit().putInt(pkg, value).apply()
-                    Thread { runCatching { rpc.setAppVolume(uid, value / 100f) } }.start()
-                }
+                column(row, name, icon, tint = false, max = 100, value = levels.getInt(pkg, 100), height = height,
+                    changed = { value ->
+                        levels.edit().putInt(pkg, value).apply()
+                        Thread { runCatching { rpc.setAppVolume(uid, value / 100f) } }.start()
+                    })
             } else {
-                muteOnly = true
-                muteColumn(row, name, icon, p.optBoolean("muted"), height) { muted ->
-                    Thread {
-                        val ok = runCatching { rpc.setAppMuted(pkg, muted) }.getOrDefault(false)
-                        if (ok) rememberMuted(pkg, muted)
-                        handler.post {
-                            if (!ok) android.widget.Toast.makeText(service, "Android didn't allow muting $name", android.widget.Toast.LENGTH_SHORT).show()
-                            if (root != null && expanded && !dragging) refresh() // show the new state at once
-                            fetchPlayers()
-                        }
-                    }.start()
-                }
+                // Android 10 only lets AniHome mute apps: the line shows on/off, the icon toggles it.
+                val muted = p.optBoolean("muted")
+                column(row, if (muted) "$name, muted" else name, icon, tint = false, max = 1, value = if (muted) 0 else 1, height = height,
+                    interactive = false, dimmed = muted,
+                    iconTap = {
+                        Thread {
+                            val ok = runCatching { rpc.setAppMuted(pkg, !muted) }.getOrDefault(false)
+                            if (ok) rememberMuted(pkg, !muted)
+                            handler.post {
+                                if (!ok) android.widget.Toast.makeText(service, "Android didn't allow muting $name", android.widget.Toast.LENGTH_SHORT).show()
+                                if (root != null && expanded && !dragging) refresh()
+                                fetchPlayers()
+                            }
+                        }.start()
+                    })
             }
         }
-        return if (muteOnly) "Tap an app to mute or unmute it. This Android version only lets AniHome mute apps, not set their level." else null
     }
 
     private fun mutedApps(): Set<String> = levels.getStringSet("muted", emptySet()).orEmpty()
@@ -379,56 +317,32 @@ internal class VolumePanel(private val service: AccessibilityService) {
         levels.edit().putStringSet("muted", next).apply()
     }
 
-    /** An app that can only be muted here: a tall tile with its icon; tap to toggle. */
-    private fun muteColumn(row: LinearLayout, label: String, icon: android.graphics.drawable.Drawable?, muted: Boolean, height: Int, toggle: (Boolean) -> Unit) {
+    /** One column: a thin volume line with the sound's icon under it. Returns a level updater. */
+    private fun column(row: LinearLayout, label: String, icon: android.graphics.drawable.Drawable?, tint: Boolean,
+                       max: Int, value: Int, height: Int, interactive: Boolean = true, dimmed: Boolean = false,
+                       changed: (Int) -> Unit = {}, iconTap: (() -> Unit)? = null): (Int) -> Unit {
         val column = LinearLayout(service).apply { orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER_HORIZONTAL }
-        column.addView(TextView(service).apply {
-            text = if (muted) "Muted" else "On"; textSize = 12f; setTextColor(if (muted) 0xFFFF8A80.toInt() else -1); gravity = Gravity.CENTER
-            typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
-        }, LinearLayout.LayoutParams(-2, -2).apply { bottomMargin = dp(8) })
-        val tile = android.widget.FrameLayout(service).apply {
-            background = GradientDrawable().apply { cornerRadius = dp(SLIDER_WIDTH) * .38f; setColor(if (muted) app.anihome.launcher.ui.ControlCenter.SURFACE_HIGH else 0xF2FFFFFF.toInt()) }
-            isClickable = true; isFocusable = true
-            contentDescription = "$label, ${if (muted) "muted" else "sound on"}. Tap to ${if (muted) "unmute" else "mute"}"
-            setOnClickListener { toggle(!muted); keepOpen() }
-            addView(ImageView(service).apply { setImageDrawable(icon); alpha = if (muted) .45f else 1f },
-                android.widget.FrameLayout.LayoutParams(dp(24), dp(24), Gravity.CENTER))
-            addView(ImageView(service).apply {
-                setImageResource(if (muted) R.drawable.ic_cc_silent else R.drawable.ic_cc_volume)
-                imageTintList = ColorStateList.valueOf(if (muted) -1 else 0xFF15171C.toInt())
-            }, android.widget.FrameLayout.LayoutParams(dp(20), dp(20), Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL).apply { bottomMargin = dp(14) })
+        val line = LineSlider(service, label).apply {
+            this.max = max; this.value = value; enabledLook = !dimmed
+            if (interactive) {
+                onStart = { dragging = true; handler.removeCallbacks(hide) }
+                onEnd = { dragging = false; keepOpen() }
+                onChange = { v -> changed(v); keepOpen() }
+            } else setOnTouchListener { _, _ -> true }
         }
-        column.addView(tile, LinearLayout.LayoutParams(dp(SLIDER_WIDTH), height))
-        column.addView(TextView(service).apply {
-            text = label; textSize = 11f; setTextColor(0xFFC4C7CE.toInt()); gravity = Gravity.CENTER
-            maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END; importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
-        }, LinearLayout.LayoutParams(dp(LABEL_WIDTH), -2).apply { topMargin = dp(8) })
-        row.addView(column, LinearLayout.LayoutParams(-2, -2).apply { marginStart = dp(2); marginEnd = dp(2) })
-    }
-
-    /** One column: level on top, a tall pill slider with its icon, and the name underneath. */
-    private fun column(row: LinearLayout, label: String, icon: android.graphics.drawable.Drawable?, max: Int, value: Int, height: Int, tint: Boolean = true, changed: (Int) -> Unit): (Int) -> Unit {
-        val column = LinearLayout(service).apply { orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER_HORIZONTAL }
-        val level = TextView(service).apply {
-            textSize = 12f; setTextColor(-1); gravity = Gravity.CENTER
-            typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
-        }
-        fun show(v: Int) { level.text = "${(v * 100f / max.coerceAtLeast(1)).roundToInt()}%" }
-        show(value)
-        column.addView(level, LinearLayout.LayoutParams(-2, -2).apply { bottomMargin = dp(8) })
-        val slider = app.anihome.launcher.ui.VerticalSlider(service, icon, label, tintIcon = tint).apply {
-            this.max = max; this.value = value
-            onStart = { dragging = true; handler.removeCallbacks(hide) }
-            onEnd = { dragging = false; keepOpen() }
-            onChange = { v -> show(v); changed(v); keepOpen() }
-        }
-        column.addView(slider, LinearLayout.LayoutParams(dp(SLIDER_WIDTH), height))
-        column.addView(TextView(service).apply {
-            text = label; textSize = 11f; setTextColor(0xFFC4C7CE.toInt()); gravity = Gravity.CENTER
-            maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END; importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
-        }, LinearLayout.LayoutParams(dp(LABEL_WIDTH), -2).apply { topMargin = dp(8) })
-        row.addView(column, LinearLayout.LayoutParams(-2, -2).apply { marginStart = dp(2); marginEnd = dp(2) })
-        return { v -> if (!dragging) { slider.value = v; show(v) } }
+        column.addView(line, LinearLayout.LayoutParams(dp(COLUMN_WIDTH), height))
+        column.addView(ImageView(service).apply {
+            setImageDrawable(icon); alpha = if (dimmed) .4f else 1f
+            if (tint) imageTintList = ColorStateList.valueOf(0xFFE8EAED.toInt())
+            setPadding(dp(5), dp(5), dp(5), dp(5)); contentDescription = label
+            if (iconTap != null) {
+                isClickable = true; isFocusable = true
+                background = android.graphics.drawable.RippleDrawable(ColorStateList.valueOf(0x33FFFFFF), null, GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(-1) })
+                setOnClickListener { iconTap(); keepOpen() }
+            } else importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        }, LinearLayout.LayoutParams(dp(32), dp(32)).apply { topMargin = dp(4) })
+        row.addView(column, LinearLayout.LayoutParams(-2, -2))
+        return { v -> if (!dragging) line.value = v }
     }
 
     @Suppress("unused") private fun percent(v: Int, max: Int) = (v * 100f / max.coerceAtLeast(1)).roundToInt()

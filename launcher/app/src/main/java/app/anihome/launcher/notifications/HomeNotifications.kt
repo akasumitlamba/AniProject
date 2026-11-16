@@ -15,6 +15,12 @@ import kotlinx.coroutines.flow.asStateFlow
 class HomeNotifications : NotificationListenerService() {
     private val handler = Handler(Looper.getMainLooper())
     private val current = linkedMapOf<String, StatusBarNotification>()
+    /**
+     * Notifications only their app can remove (USB, charging…) that the user cleared anyway.
+     * They stay listed, quietly at the bottom, and no longer count toward badges. Only keys are
+     * kept, and a key is forgotten as soon as its notification goes away.
+     */
+    private val quieted by lazy { getSharedPreferences("quiet_notifications", MODE_PRIVATE) }
     override fun onListenerConnected() {
         connected = this
         current.clear()
@@ -32,13 +38,25 @@ class HomeNotifications : NotificationListenerService() {
         if (connected === this) { connected = null; state.value = emptyList(); badgeState.value = emptyList(); connectionState.value = false }
     }
     private fun publish() {
-        val items = current.values.sortedByDescending { it.postTime }
+        val quiet = quieted.getStringSet("keys", emptySet()).orEmpty()
+        val stale = quiet.filter { it !in current }
+        if (stale.isNotEmpty()) quieted.edit().putStringSet("keys", quiet - stale.toSet()).apply()
+        val live = quiet - stale.toSet()
+        quietState.value = live
+        // Quieted ones sink to the bottom; everything else newest first.
+        val items = current.values.sortedWith(compareBy<StatusBarNotification> { it.key in live }.thenByDescending { it.postTime })
         state.value = items
         val ranks = currentRanking
         badgeState.value = items.filter { item ->
             val ranking = Ranking()
-            !ranks.getRanking(item.key, ranking) || ranking.canShowBadge()
+            item.key !in live && (!ranks.getRanking(item.key, ranking) || ranking.canShowBadge())
         }
+    }
+    private fun quiet(keys: Set<String>) {
+        val targets = keys.filter { key -> current[key]?.isClearable == false }.toSet()
+        if (targets.isEmpty()) return
+        quieted.edit().putStringSet("keys", quieted.getStringSet("keys", emptySet()).orEmpty() + targets).apply()
+        publish()
     }
     companion object {
         @Volatile private var connected: HomeNotifications? = null
@@ -48,6 +66,10 @@ class HomeNotifications : NotificationListenerService() {
         val notifications = state.asStateFlow()
         private val badgeState = MutableStateFlow<List<StatusBarNotification>>(emptyList())
         val badges = badgeState.asStateFlow()
+        private val quietState = MutableStateFlow<Set<String>>(emptySet())
+        fun isQuiet(key: String) = key in quietState.value
+        /** Marks notifications Android won't dismiss as seen: kept, but quiet and unbadged. */
+        fun quiet(keys: Set<String>) { connected?.quiet(keys) }
         fun enabled(context: Context) = context.packageName in NotificationManagerCompat.getEnabledListenerPackages(context)
         fun isConnected() = connected != null
         fun reconnect(context: Context) { requestRebind(ComponentName(context, HomeNotifications::class.java)) }

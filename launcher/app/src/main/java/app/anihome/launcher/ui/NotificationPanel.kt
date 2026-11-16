@@ -118,27 +118,19 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
         lateinit var list: RecyclerView
         clear.setOnClickListener {
             expandedKeys.clear()
-            // Cards slide away one after another, then the list closes up.
             val clearable = adapter.items.filter { it.isClearable }.map { it.key }.toSet()
-            if (clearable.isEmpty()) { Toast.makeText(activity, "These notifications can only be removed by their apps", Toast.LENGTH_SHORT).show(); return@setOnClickListener }
-            // One smooth cascade, top card first; each runs on its own GPU layer.
-            val leaving = (0 until list.childCount).map { list.getChildAt(it) }
-                .filter { (list.getChildViewHolder(it) as? Card)?.key in clearable }.sortedBy { it.top * 10 + it.left / 100 }
-            var delay = 0L
-            leaving.forEach { child ->
-                child.animate().cancel()
-                child.animate().translationX(child.width * 1.1f).alpha(0f).setStartDelay(delay)
-                    .setDuration(MotionUi.duration(child, 240)).setInterpolator(MotionUi.EMPHASIZED_ACCELERATE).withLayer().start()
-                delay += 35
-            }
+            if (clearable.isEmpty()) { HomeNotifications.quiet(adapter.items.map { it.key }.toSet()); return@setOnClickListener }
+            // The list animates the removal itself. Animating the cards separately here (view.animate)
+            // fought RecyclerView's own item animator on the same views, left a removed card
+            // half-attached, and crashed AniHome on the next layout.
             clear.isEnabled = false
-            list.postDelayed({
+            // The ones Android won't dismiss stay, quietly at the bottom and without a badge.
+            HomeNotifications.quiet(adapter.items.filter { !it.isClearable }.map { it.key }.toSet())
+            adapter.remove(clearable)
+            HomeNotifications.clearAll { success ->
                 clear.isEnabled = true
-                adapter.remove(clearable)
-                HomeNotifications.clearAll { success ->
-                    if (!success && isShowing) Toast.makeText(activity, "Some notifications could not be dismissed", Toast.LENGTH_SHORT).show()
-                }
-            }, MotionUi.duration(list, delay + 240))
+                if (!success && isShowing) Toast.makeText(activity, "Some notifications could not be dismissed", Toast.LENGTH_SHORT).show()
+            }
         }
         // Full screen: notifications flow in two columns under the controls.
         list = RecyclerView(activity).apply { layoutManager = if (wide) androidx.recyclerview.widget.GridLayoutManager(activity, 2).apply {
@@ -146,7 +138,7 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
             spanSizeLookup = object : androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup() { override fun getSpanSize(position: Int) = if (position == 0) 2 else 1 }
         } else LinearLayoutManager(activity); this.adapter = androidx.recyclerview.widget.ConcatAdapter(Header(headerContent), adapter); itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator().apply {
             // Removed cards have already slid away; the rest glide up into place.
-            addDuration = 180; removeDuration = 90; moveDuration = 260; changeDuration = 0; supportsChangeAnimations = false
+            addDuration = 180; removeDuration = 160; moveDuration = 240; changeDuration = 0; supportsChangeAnimations = false
         } }
         if (!wide) list.addOnItemTouchListener(object : RecyclerView.SimpleOnItemTouchListener() {
             override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
@@ -174,8 +166,9 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
                 super.onChildDraw(c, recycler, holder, resisted, dY, state, active)
             }
             override fun clearView(recycler: RecyclerView, holder: RecyclerView.ViewHolder) {
+                // A notification Android keeps springs back and goes quiet instead of vanishing.
                 if (!clearable(holder) && kotlin.math.abs(holder.itemView.translationX) > holder.itemView.width * .15f)
-                    Toast.makeText(activity, "Android keeps this notification until its app removes it", Toast.LENGTH_SHORT).show()
+                    (holder as? Card)?.key?.let { HomeNotifications.quiet(setOf(it)) }
                 super.clearView(recycler, holder); holder.itemView.alpha = 1f
             }
             override fun onSwiped(holder: RecyclerView.ViewHolder, direction: Int) {
@@ -269,7 +262,8 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
                 }
                 emptyScroll.visibility = if (state.text.isEmpty() && enabled) View.GONE else View.VISIBLE
                 state.visibility = if (state.text.isEmpty()) View.GONE else View.VISIBLE
-                sectionTitle.text = if (adapter.items.isEmpty()) "Notifications" else "Notifications · ${adapter.items.size}"
+                val unseen = adapter.items.count { !HomeNotifications.isQuiet(it.key) } // quieted ones aren't counted
+                sectionTitle.text = if (unseen == 0) "Notifications" else "Notifications · $unseen"
                 access.visibility = if (enabled) View.GONE else View.VISIBLE
                 clear.isEnabled = enabled && notifications.any { it.isClearable }
                 clear.alpha = if (clear.isEnabled) 1f else 0.4f
@@ -293,6 +287,8 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
     }
     private fun dismissNotification(key: String, adapter: Cards) {
         expandedKeys.remove(key)
+        // Android won't remove these; don't pretend to. Keep it, quietly, with no badge.
+        if (adapter.items.firstOrNull { it.key == key }?.isClearable == false) { HomeNotifications.quiet(setOf(key)); return }
         // Remove at once so the swiped card's exit animation completes; a refused dismissal
         // reappears with the next update from Android.
         adapter.remove(setOf(key))
@@ -348,7 +344,9 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
         override fun onViewRecycled(holder: Card) { holder.job?.cancel(); holder.key = null }
         override fun onBindViewHolder(holder: Card, position: Int) {
             // Recycled cards may carry an exit animation's offset or fade.
-            holder.itemView.animate().cancel(); holder.itemView.translationX = 0f; holder.itemView.alpha = 1f
+            // Never cancel the item animator here (it owns the view while animating); just undo a swipe.
+            val quiet = HomeNotifications.isQuiet(items[position].key)
+            if (!holder.itemView.isAnimating()) { holder.itemView.translationX = 0f; holder.itemView.alpha = if (quiet) .55f else 1f }
             holder.job?.cancel()
             val sbn = items[position]; val n = sbn.notification; val extras = n.extras
             holder.key = sbn.key; holder.icon.setImageDrawable(null)
@@ -439,6 +437,7 @@ internal class NotificationPanel(private val activity: AppCompatActivity, settin
             wrapper.addView(content, FrameLayout.LayoutParams(-1, -2))
         }
     }
+    private fun View.isAnimating() = (parent as? RecyclerView)?.itemAnimator?.isRunning == true
     private class Card(root: View, val label: TextView, val title: TextView, val body: TextView, val close: ImageButton, val icon: ImageView, val actions: LinearLayout, val actionScroll: View, val expand: ImageButton) : RecyclerView.ViewHolder(root) {
         var job: Job? = null; var key: String? = null
     }
