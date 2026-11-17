@@ -171,7 +171,7 @@ class BannerRepository(private val context: Context) {
     private companion object {
         const val IMAGE_LIMIT = 4 * 1024 * 1024
         const val FAILURE_MEMORY_MS = 60_000L
-        const val PARALLEL = 4
+        const val PARALLEL = 6
         /** Shared by every repository instance: the store, automatic banners and prefetch. */
         val permits = java.util.concurrent.Semaphore(PARALLEL)
     }

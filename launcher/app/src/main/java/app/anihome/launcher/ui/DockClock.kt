@@ -43,11 +43,30 @@ internal class DockClock(context: Context) : LinearLayout(context) {
             bar.charging = status == BatteryManager.BATTERY_STATUS_CHARGING || status == BatteryManager.BATTERY_STATUS_FULL
             bar.invalidateSelf()
             percent.text = if (bar.percentLevel >= 0) "${bar.percentLevel}%" else "—"
-            contentDescription = "Battery ${percent.text}${if (bar.charging) ", charging" else ""}. Opens notifications"
+            describe()
         }
     }
 
-    init { isClickable = true; isFocusable = true; layout() }
+    init {
+        isClickable = true; isFocusable = true; layout()
+        // Same borderless ripple and press motion as the dock's app icons.
+        background = android.graphics.drawable.RippleDrawable(android.content.res.ColorStateList.valueOf(0x33FFFFFF), null,
+            android.graphics.drawable.GradientDrawable().apply { setColor(-1); cornerRadius = 14f * context.resources.displayMetrics.density })
+        setOnTouchListener { v, e ->
+            if (e.actionMasked == android.view.MotionEvent.ACTION_DOWN) MotionUi.press(v, true)
+            else if (e.actionMasked == android.view.MotionEvent.ACTION_UP || e.actionMasked == android.view.MotionEvent.ACTION_CANCEL) MotionUi.press(v, false)
+            false
+        }
+        describe()
+    }
+    /** What a screen reader hears: time, date, battery, and what a tap does. */
+    private fun describe() {
+        val now = java.util.Date()
+        val time = android.text.format.DateFormat.getTimeFormat(context).format(now)
+        val day = java.text.SimpleDateFormat("EEEE d MMMM", java.util.Locale.getDefault()).format(now)
+        val battery = if (bar.percentLevel >= 0) ", battery ${bar.percentLevel}%${if (bar.charging) ", charging" else ""}" else ""
+        contentDescription = "$time, $day$battery. Opens notifications"
+    }
     private fun dp(v: Int) = ArtworkUi.dp(context, v)
 
     // A getter, not a stored property: layout() already runs from init, above this line.

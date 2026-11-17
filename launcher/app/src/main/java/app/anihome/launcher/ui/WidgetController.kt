@@ -204,6 +204,7 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
         })
         MaterialAlertDialogBuilder(activity).setTitle(builtIns.title(kind)).setView(content)
             .setNegativeButton("Back") { _, _ -> pick() }.setPositiveButton("Add widget") { _, _ ->
+                glideNext()
                 entries += Entry(BuiltInWidgetPolicy.nextId(entries.map { it.id }), 2.coerceAtMost(columns), 2, kind)
                 save(); refresh()
             }.show()
@@ -319,7 +320,7 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
         val cellHeight = cellHeightDp()
         val initialColumns = WidgetSizing.cellsFromPixels(info.minWidth, activity.resources.displayMetrics.density, cellWidth, columns)
         val initialRows = WidgetSizing.cellsFromPixels(info.minHeight, activity.resources.displayMetrics.density, cellHeight, 100)
-        if (entries.none { it.id == pendingId }) entries += Entry(pendingId, initialColumns, initialRows)
+        if (entries.none { it.id == pendingId }) { glideNext(); entries += Entry(pendingId, initialColumns, initialRows) }
         pendingId = -1
         prefs.edit().remove("pending").apply()
         save(); refresh()
@@ -330,6 +331,9 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
         pendingId = -1
         prefs.edit().remove("pending").apply()
     }
+
+    /** The next board layout animates: the widget grows in (or leaves) and neighbours slide. */
+    private fun glideNext() { (grid.layoutManager as? HomeBoardLayoutManager)?.animateNextLayout = true }
 
     private fun cellWidthDp(): Float {
         val density = activity.resources.displayMetrics.density
@@ -385,7 +389,7 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
                 if (BuiltInWidgetPolicy.usesProviderHost(entry.kind, entry.id)) runCatching { host.deleteAppWidgetId(entry.id) }
                 providerViews.remove(entry.id)
                 prefs.edit().remove("draft:${entry.id}").apply()
-                entries.remove(entry); save(); refresh()
+                glideNext(); entries.remove(entry); save(); refresh()
             }.show()
     }
     private fun unavailable() = Toast.makeText(activity, "Widget service unavailable. Try again.", Toast.LENGTH_SHORT).show()
@@ -448,7 +452,8 @@ class WidgetController(private val activity: AppCompatActivity, private val grid
                     providerViews[entry.id]?.takeIf { it.appWidgetInfo?.provider == info!!.provider }
                         ?: host.createView(activity, entry.id, info!!).also { providerViews[entry.id] = it }
                 }.getOrElse {
-                    holder.container.addView(TextView(activity).apply { text = "Widget unavailable" }); return
+                    // Same way out as a missing provider: never leave a stuck tile with no Remove.
+                    holder.container.addView(Button(activity).apply { text = "Widget unavailable · Remove"; setOnClickListener { remove(entry) } }); return
                 }
             (live.parent as? ViewGroup)?.removeView(live)
             if (live is android.appwidget.AppWidgetHostView) live.setPadding(0, 0, 0, 0)

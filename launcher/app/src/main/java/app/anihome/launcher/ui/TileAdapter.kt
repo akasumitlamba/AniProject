@@ -116,6 +116,9 @@ class TileAdapter(
                 true
             }
             binding.root.setOnTouchListener { _, event ->
+                // Only the card and its name are the tile. A touch in the padding around them is Home's
+                // (wallpaper tap, double-tap lock, long-press menu), so it must not also open the app.
+                if (event.actionMasked == MotionEvent.ACTION_DOWN && !editMode && !hits(binding.cardFrame, event) && !(binding.label.isShown && hits(binding.label, event))) return@setOnTouchListener true
                 if (!editMode && ValueAnimator.areAnimatorsEnabled()) {
                     when (event.actionMasked) {
                         MotionEvent.ACTION_DOWN -> binding.root.animate().scaleX(.97f).scaleY(.97f).setDuration(80).start()
@@ -125,6 +128,14 @@ class TileAdapter(
                 false
             }
             binding.remove.setOnClickListener { tile?.let(onRemove) }
+        }
+
+        private fun hits(view: View, event: MotionEvent): Boolean {
+            val x = event.x.toInt(); val y = event.y.toInt()
+            val r = android.graphics.Rect(); view.getHitRect(r)
+            var parent = view.parent as? View
+            while (parent != null && parent !== binding.root) { r.offset(parent.left, parent.top); parent = parent.parent as? View }
+            return r.contains(x, y)
         }
 
         fun bind(tile: HomeTile) {
@@ -146,10 +157,15 @@ class TileAdapter(
             binding.cardSurface.clipToOutline = !tile.iconOnly
             binding.card.background = if (tile.iconOnly) android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT) else ContextCompat.getDrawable(context, R.drawable.bg_card_fill)
             binding.notificationBadge.setBackgroundResource(if (tile.iconOnly) R.drawable.bg_notification_badge else R.drawable.bg_banner_notification_tag)
-            binding.notificationBadge.layoutParams = (binding.notificationBadge.layoutParams as android.widget.FrameLayout.LayoutParams).apply { height = ArtworkUi.dp(context, if (tile.iconOnly) 18 else 28) }
-            binding.notificationBadge.minWidth = ArtworkUi.dp(context, if (tile.iconOnly) 18 else 44)
-            binding.notificationBadge.setPadding(ArtworkUi.dp(context, if (tile.iconOnly) 4 else 12), 0, ArtworkUi.dp(context, 4), ArtworkUi.dp(context, if (tile.iconOnly) 0 else 7))
-            binding.notificationBadge.textSize = if (tile.iconOnly) 9f else 11f
+            // Icons get a small Android-style dot; banners keep their count tag.
+            binding.notificationBadge.layoutParams = (binding.notificationBadge.layoutParams as android.widget.FrameLayout.LayoutParams).apply {
+                height = ArtworkUi.dp(context, if (tile.iconOnly) 10 else 28); width = if (tile.iconOnly) ArtworkUi.dp(context, 10) else ViewGroup.LayoutParams.WRAP_CONTENT
+                setMargins(0, if (tile.iconOnly) ArtworkUi.dp(context, 2) else 0, if (tile.iconOnly) ArtworkUi.dp(context, 2) else 0, 0)
+            }
+            binding.notificationBadge.minWidth = ArtworkUi.dp(context, if (tile.iconOnly) 10 else 44)
+            binding.notificationBadge.minimumWidth = binding.notificationBadge.minWidth
+            binding.notificationBadge.setPadding(if (tile.iconOnly) 0 else ArtworkUi.dp(context, 12), 0, if (tile.iconOnly) 0 else ArtworkUi.dp(context, 4), if (tile.iconOnly) 0 else ArtworkUi.dp(context, 7))
+            binding.notificationBadge.textSize = if (tile.iconOnly) 0f else 11f
             binding.bannerLoading.visibility = if (tile.artworkOrigin == "pending" && !tile.iconOnly && tile.artworkPath == null) View.VISIBLE else View.GONE
             artworkJob?.cancel()
             // Clear recycled artwork immediately; disk decode and package artwork stay off the UI thread.
@@ -220,6 +236,7 @@ class TileAdapter(
         fun applyBadge() {
             val count = tile?.takeIf { it.isApp }?.packageName?.let { notificationCounts[it] } ?: 0
             BadgeUi.bind(binding.notificationBadge, if (editMode) 0 else count)
+            if (tile?.iconOnly == true) binding.notificationBadge.text = "" // A dot, no number.
             binding.root.contentDescription = tile?.label.orEmpty() + if (count > 0) ", $count unread notifications" else ""
         }
         fun applyEditMode(animate: Boolean = false) {

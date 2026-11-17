@@ -15,15 +15,20 @@ import java.util.UUID
 
 /** Only Android's valid, one-use pin token can authorize a shortcut; arbitrary intents cannot. */
 class PinShortcutActivity : AppCompatActivity() {
+    /** The app's request expired or was malformed: say so rather than flashing and closing. */
+    private fun expired() {
+        android.widget.Toast.makeText(this, "This shortcut request expired. Add it again from the app.", android.widget.Toast.LENGTH_LONG).show()
+        finish()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val launcher = getSystemService(LauncherApps::class.java)
         val request = runCatching { launcher.getPinItemRequest(intent) }.getOrNull()
         val info = request?.takeIf { it.requestType == LauncherApps.PinItemRequest.REQUEST_TYPE_SHORTCUT && it.isValid }?.shortcutInfo
-        if (info == null) { finish(); return }
+        if (info == null) { expired(); return }
         val label = info.shortLabel?.toString()?.take(200)?.takeIf { it.isNotBlank() }
         val user = getSystemService(UserManager::class.java).getSerialNumberForUser(info.userHandle)
-        if (label == null || user < 0) { finish(); return }
+        if (label == null || user < 0) { expired(); return }
         val icon = runCatching { launcher.getShortcutBadgedIconDrawable(info, resources.displayMetrics.densityDpi) }.getOrNull()
         val publisher = runCatching { packageManager.getApplicationLabel(packageManager.getApplicationInfo(info.`package`, 0)).toString() }.getOrDefault(info.`package`)
         MaterialAlertDialogBuilder(this).setTitle("Add to Home").setMessage("$label\n$publisher").setIcon(icon)

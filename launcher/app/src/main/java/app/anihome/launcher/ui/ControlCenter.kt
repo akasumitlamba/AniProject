@@ -85,10 +85,16 @@ internal class ControlCenter(
     private class Tile(val id: String, val label: String, val icon: () -> Int, val state: () -> Boolean,
                        val tap: () -> Unit, val settings: Intent?, val momentary: Boolean = false,
                        /** App actions carry the app's own artwork instead of a tinted glyph. */
-                       val artwork: (() -> android.graphics.drawable.Drawable?)? = null)
+                       val artwork: (() -> android.graphics.drawable.Drawable?)? = null,
+                       /** Second line on a wide tile (the connected network, "Locked"…); default On/Off. */
+                       val detail: (() -> String?)? = null,
+                       /** Long press; defaults to opening [settings]. */
+                       val longPress: (() -> Unit)? = null)
+    /** A drawn tile: its round button, and on wide tiles the whole pill and its second line. */
+    private class TileView(val tile: Tile, val button: ImageButton, val pill: View?, val detail: TextView?)
 
     private val allTiles: List<Tile> by lazy { buildTiles() }
-    private val tileViews = mutableListOf<Pair<Tile, ImageButton>>()
+    private val tileViews = mutableListOf<TileView>()
 
     val view: LinearLayout = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; setPadding(0, 0, 0, dp(4)) }
 
@@ -147,7 +153,7 @@ internal class ControlCenter(
     }
     private val volumePill = VerticalSlider(activity, ContextCompat.getDrawable(activity, R.drawable.ic_cc_volume)?.mutate(), "Media volume").apply {
         max = audio?.getStreamMaxVolume(AudioManager.STREAM_MUSIC) ?: 15
-        onChange = { runCatching { audio?.setStreamVolume(AudioManager.STREAM_MUSIC, it, 0) } }
+        onChange = { volumeTo(it) }
     }
     private fun arrangeSliders() {
         if (!::brightnessRow.isInitialized) return
@@ -177,12 +183,19 @@ internal class ControlCenter(
     // --- tiles ---------------------------------------------------------------------------
     private fun buildTiles(): List<Tile> = listOfNotNull(
         Tile("wifi", "Wi-Fi", { R.drawable.ic_wifi }, { runCatching { wifi?.isWifiEnabled == true }.getOrDefault(false) },
-            { quick.openSection("Wi-Fi"); refresh() }, Intent(Settings.ACTION_WIFI_SETTINGS)),
+            { quick.openSection("Wi-Fi"); refresh() }, Intent(Settings.ACTION_WIFI_SETTINGS), detail = ::wifiDetail),
         Tile("bluetooth", "Bluetooth", { R.drawable.ic_bluetooth }, { runCatching { bluetooth?.isEnabled == true }.getOrDefault(false) },
-            { quick.openSection("Bluetooth"); refresh() }, Intent(Settings.ACTION_BLUETOOTH_SETTINGS)),
+            { quick.openSection("Bluetooth"); refresh() }, Intent(Settings.ACTION_BLUETOOTH_SETTINGS), detail = ::bluetoothDetail),
         Tile("rotation", "Auto-rotate", { if (quick.rotationAutomatic) R.drawable.ic_rotation else R.drawable.ic_rotation_locked },
-            { quick.rotationAutomatic }, { quick.toggleRotation(); handler.postDelayed(::refresh, 250) }, Intent(Settings.ACTION_DISPLAY_SETTINGS)),
-        torchId?.let { Tile("flashlight", "Flashlight", { R.drawable.ic_cc_flashlight }, { torchOn }, { setTorch(!torchOn) }, null) },
+            { quick.rotationAutomatic }, { quick.toggleRotation(); handler.postDelayed(::refresh, 250) }, Intent(Settings.ACTION_DISPLAY_SETTINGS),
+            detail = { if (quick.rotationAutomatic) "Auto" else "Locked" }),
+        torchId?.let { Tile("flashlight", "Flashlight", { R.drawable.ic_cc_flashlight }, { torchOn || TorchTools.sosRunning },
+            { if (TorchTools.sosRunning) TorchTools.stopSos(camera, torchId) else setTorch(!torchOn) }, null,
+            detail = { when { TorchTools.sosRunning -> "SOS"; torchOn -> "On · hold for more"; else -> "Off · hold for more" } },
+            longPress = { TorchTools.show(activity, camera, torchId) { refresh() } }) },
+        Tile("screen_record", "Screen record", { R.drawable.ic_cc_record }, { ScreenRecorder.recording },
+            { if (ScreenRecorder.recording) ScreenRecorder.stop(activity) else { closePanel(); ScreenRecorder.start(activity) } }, null,
+            detail = { if (ScreenRecorder.recording) "Recording · tap to stop" else "Off" }),
         Tile("dnd", "Do not disturb", { R.drawable.ic_cc_dnd },
             { notifications?.currentInterruptionFilter.let { it != null && it != NotificationManager.INTERRUPTION_FILTER_ALL && it != NotificationManager.INTERRUPTION_FILTER_UNKNOWN } },
             { setDoNotDisturb(!isDnd()) }, Intent(Settings.ACTION_ZEN_MODE_PRIORITY_SETTINGS)),
@@ -213,7 +226,9 @@ internal class ControlCenter(
         }, null),
         Tile("hotspot", "Hotspot", { R.drawable.ic_cc_hotspot }, ::isHotspot,
             { launch(Intent().setClassName("com.android.settings", "com.android.settings.TetherSettings").takeIf { it.resolveActivity(activity.packageManager) != null } ?: Intent(Settings.ACTION_WIRELESS_SETTINGS)) },
-            Intent(Settings.ACTION_WIRELESS_SETTINGS)),
+            Intent(Settings.ACTION_WIRELESS_SETTINGS),
+            // Android only lets apps open the hotspot screen, so the tile says so instead of posing as a switch.
+            detail = { (if (isHotspot()) "On" else "Off") + " · opens settings" }),
         Tile("mobile_data", "Mobile data", { R.drawable.ic_cc_mobile_data }, { Settings.Global.getInt(activity.contentResolver, "mobile_data", 0) == 1 },
             { val on = Settings.Global.getInt(activity.contentResolver, "mobile_data", 0) != 1
               privileged("mobile_data", on, Intent(Settings.ACTION_DATA_ROAMING_SETTINGS)) { Settings.Global.getInt(activity.contentResolver, "mobile_data", 0) == 1 } },
@@ -228,7 +243,9 @@ internal class ControlCenter(
             { globalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_TAKE_SCREENSHOT, 450) }, null, momentary = true),
         Tile("lock", "Lock", { R.drawable.ic_cc_lock }, { false },
             { globalAction(android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_LOCK_SCREEN, 250) }, null, momentary = true),
-        Tile("settings", "Settings", { R.drawable.ic_settings }, { false }, openHomeSettings, null, momentary = true),
+        // AniHome's own settings, with AniHome's settings mark, so it isn't mistaken for Android's Settings.
+        Tile("settings", "AniHome settings", { R.drawable.ic_anihome_settings }, { false }, openHomeSettings, Intent(Settings.ACTION_SETTINGS), momentary = true,
+            detail = { "Hold for Android settings" }),
     )
     /** Quick actions apps publish (the long-press shortcuts), pinned as Control Center tiles. */
     private fun actionTile(id: String): Tile? {
@@ -253,6 +270,11 @@ internal class ControlCenter(
             saved = saved.take(at) + added + saved.drop(at)
             prefs.edit().putString("cc_tiles", saved.joinToString(",")).putBoolean("cc_new_controls_1_1", true).apply()
         }
+        // Screen record arrives once for saved layouts, right after Screenshot.
+        if (prefs.contains("cc_tiles") && !prefs.getBoolean("cc_new_controls_1_1_r10", false)) {
+            if ("screen_record" !in saved) { val at = saved.indexOf("screenshot").takeIf { it >= 0 }?.plus(1) ?: saved.size; saved = saved.take(at) + "screen_record" + saved.drop(at) }
+            prefs.edit().putString("cc_tiles", saved.joinToString(",")).putBoolean("cc_new_controls_1_1_r10", true).apply()
+        }
         val byId = allTiles.associateBy { it.id } + saved.filter { it.startsWith("action:") }.mapNotNull { id -> actionTile(id)?.let { id to it } }
         // Some manufacturers lock dark theme to their own Settings; hide the control there.
         val darkLocked = prefs.getBoolean("dark_locked", false)
@@ -261,11 +283,23 @@ internal class ControlCenter(
     private fun isAutoBrightness() = runCatching { Settings.System.getInt(activity.contentResolver, Settings.System.SCREEN_BRIGHTNESS_MODE) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC }.getOrDefault(false)
     @Suppress("DiscouragedPrivateApi") private fun isHotspot() = runCatching { wifi!!.javaClass.getMethod("isWifiApEnabled").invoke(wifi) as Boolean }.getOrDefault(false)
     /** Ring → vibrate → silent (silent needs Do-not-disturb access on newer Android). */
+    private var volumeWarned = false
+    /** Media volume; Android can refuse it (Do not disturb, fixed-volume devices). Explain once. */
+    private fun volumeTo(level: Int) {
+        runCatching { audio?.setStreamVolume(AudioManager.STREAM_MUSIC, level, 0) }.onFailure {
+            if (!volumeWarned) { volumeWarned = true; Toast.makeText(activity, "Android didn't allow changing the volume right now", Toast.LENGTH_SHORT).show() }
+        }
+    }
     private fun cycleRinger() {
         val audio = audio ?: return
         val next = when (audio.ringerMode) { AudioManager.RINGER_MODE_NORMAL -> AudioManager.RINGER_MODE_VIBRATE; AudioManager.RINGER_MODE_VIBRATE -> AudioManager.RINGER_MODE_SILENT; else -> AudioManager.RINGER_MODE_NORMAL }
         runCatching { audio.ringerMode = next }.onFailure {
-            if (next == AudioManager.RINGER_MODE_SILENT) runCatching { audio.ringerMode = AudioManager.RINGER_MODE_NORMAL }
+            if (next == AudioManager.RINGER_MODE_SILENT) {
+                // Silent needs Do not disturb access on this Android version; say so instead of quietly going back to ring.
+                runCatching { audio.ringerMode = AudioManager.RINGER_MODE_NORMAL }
+                Toast.makeText(activity, "Silent mode needs Do not disturb access. Allow AniHome, then try again.", Toast.LENGTH_LONG).show()
+                launch(Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS))
+            }
         }
     }
     private fun isDark() = activity.applicationContext.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
@@ -318,7 +352,7 @@ internal class ControlCenter(
         volume.max = audio?.getStreamMaxVolume(AudioManager.STREAM_MUSIC) ?: 15
         volume.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(bar: SeekBar, progress: Int, fromUser: Boolean) {
-                if (fromUser) runCatching { audio?.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0) }
+                if (fromUser) volumeTo(progress)
             }
             override fun onStartTrackingTouch(bar: SeekBar) = Unit
             override fun onStopTrackingTouch(bar: SeekBar) = Unit
@@ -343,9 +377,12 @@ internal class ControlCenter(
         val tiles = chosen()
         val open = expanded
         // Full screen: two rows beside the slider pills.
-        val columns = when { wideLayout -> ((tiles.size + 1) / 2).coerceIn(1, 8); open -> 4; else -> COLLAPSED }
+        // Expanded on the side/phone panel: wide 2x1 tiles with a second line (network, device, state).
+        val wide = open && !wideLayout && PanelStyle.wideTiles(activity)
+        val columns = when { wideLayout -> ((tiles.size + 1) / 2).coerceIn(1, 8); wide -> 2; open -> 4; else -> COLLAPSED }
         grid.columnCount = columns
         val shown = if (open) tiles else tiles.take(COLLAPSED)
+        if (wide) { shown.forEach(::addWideTile); expandButton.rotation = 180f; expandButton.contentDescription = "Show fewer controls"; if (attached) refresh(); return }
         shown.forEach { tile ->
             val cell = LinearLayout(activity).apply {
                 orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER_HORIZONTAL
@@ -355,7 +392,7 @@ internal class ControlCenter(
                 scaleType = ImageView.ScaleType.CENTER
                 contentDescription = tile.label; tooltipText = tile.label
                 setOnClickListener { tile.tap(); handler.postDelayed(::refresh, 350) }
-                setOnLongClickListener { tile.settings?.let(::launch); tile.settings != null }
+                setOnLongClickListener { longPress(tile) }
                 @Suppress("ClickableViewAccessibility")
                 setOnTouchListener { v, e ->
                     if (e.actionMasked == MotionEvent.ACTION_DOWN) MotionUi.press(v, true)
@@ -369,11 +406,65 @@ internal class ControlCenter(
                 maxLines = 1; ellipsize = TextUtils.TruncateAt.END
             }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(4) })
             grid.addView(cell, GridLayout.LayoutParams(GridLayout.spec(GridLayout.UNDEFINED), GridLayout.spec(GridLayout.UNDEFINED, 1f)).apply { width = 0 })
-            tileViews += tile to button
+            tileViews += TileView(tile, button, null, null)
         }
         expandButton.rotation = if (open) 180f else 0f
         expandButton.contentDescription = if (open) "Show fewer controls" else "Show all controls"
         if (attached) refresh()
+    }
+
+    private fun longPress(tile: Tile): Boolean {
+        tile.longPress?.let { it(); return true }
+        tile.settings?.let(::launch); return tile.settings != null
+    }
+    /** Android 12-style tile: round icon, name and a live second line in one pill, two per row. */
+    private fun addWideTile(tile: Tile) {
+        val button = ImageButton(activity).apply { scaleType = ImageView.ScaleType.CENTER; isClickable = false; isFocusable = false; importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO }
+        val name = TextView(activity).apply { text = tile.label; textSize = 13.5f; setTextColor(-1); maxLines = 1; ellipsize = TextUtils.TruncateAt.END
+            typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL) }
+        val detail = TextView(activity).apply { textSize = 12f; setTextColor(0xffc4c6d0.toInt()); maxLines = 1; ellipsize = TextUtils.TruncateAt.END }
+        val pill = LinearLayout(activity).apply {
+            gravity = Gravity.CENTER_VERTICAL; setPadding(dp(8), dp(8), dp(12), dp(8)); minimumHeight = dp(64)
+            isClickable = true; isFocusable = true
+            foreground = android.graphics.drawable.RippleDrawable(ColorStateList.valueOf(0x33FFFFFF), null, GradientDrawable().apply { setColor(-1); cornerRadius = dp(24).toFloat() })
+            addView(button, LinearLayout.LayoutParams(dp(40), dp(40)))
+            addView(LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; addView(name); addView(detail) }, LinearLayout.LayoutParams(0, -2, 1f).apply { marginStart = dp(10) })
+            setOnClickListener { tile.tap(); handler.postDelayed(::refresh, 350) }
+            setOnLongClickListener { longPress(tile) }
+            @Suppress("ClickableViewAccessibility")
+            setOnTouchListener { v, e ->
+                if (e.actionMasked == MotionEvent.ACTION_DOWN) MotionUi.press(v, true)
+                else if (e.actionMasked == MotionEvent.ACTION_UP || e.actionMasked == MotionEvent.ACTION_CANCEL) MotionUi.press(v, false)
+                false
+            }
+        }
+        grid.addView(pill, GridLayout.LayoutParams(GridLayout.spec(GridLayout.UNDEFINED), GridLayout.spec(GridLayout.UNDEFINED, 1f)).apply {
+            width = 0; setMargins(dp(4), dp(4), dp(4), dp(4))
+        })
+        tileViews += TileView(tile, button, pill, detail)
+    }
+
+    /** The connected network's name (Android hides it without location access), or the radio's state. */
+    @Suppress("DEPRECATION")
+    private fun wifiDetail(): String {
+        val w = wifi ?: return "Off"
+        if (!w.isWifiEnabled) return "Off"
+        val connectivity = activity.getSystemService(android.net.ConnectivityManager::class.java)
+        val connected = runCatching { connectivity?.allNetworks?.any { connectivity.getNetworkCapabilities(it)?.hasTransport(android.net.NetworkCapabilities.TRANSPORT_WIFI) == true } == true }.getOrDefault(false)
+        if (!connected) return "Not connected"
+        val ssid = runCatching { w.connectionInfo?.ssid }.getOrNull()?.trim('"')
+        return ssid?.takeIf { it.isNotBlank() && it != "<unknown ssid>" } ?: "Connected"
+    }
+    /** Connected device names (needs the nearby devices permission on Android 12+), or On/Off. */
+    @android.annotation.SuppressLint("MissingPermission")
+    private fun bluetoothDetail(): String {
+        val adapter = bluetooth ?: return "Off"
+        if (!runCatching { adapter.isEnabled }.getOrDefault(false)) return "Off"
+        if (Build.VERSION.SDK_INT >= 31 && activity.checkSelfPermission(android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) return "On"
+        val names = runCatching {
+            adapter.bondedDevices.filter { d -> runCatching { d.javaClass.getMethod("isConnected").invoke(d) as Boolean }.getOrDefault(false) }.map { it.name ?: it.address }
+        }.getOrDefault(emptyList())
+        return when (names.size) { 0 -> "Not connected"; 1 -> names[0]; else -> "${names[0]} +${names.size - 1}" }
     }
 
     private fun applyExpanded(open: Boolean) {
@@ -598,7 +689,8 @@ internal class ControlCenter(
         volumeRow.visibility = if (PanelStyle.volume(activity)) View.VISIBLE else View.GONE
         brightnessPill.visibility = brightnessRow.visibility; volumePill.visibility = volumeRow.visibility
         val section = quick.section
-        tileViews.forEach { (tile, button) ->
+        tileViews.forEach { tv ->
+            val tile = tv.tile; val button = tv.button
             val on = !tile.momentary && runCatching { tile.state() }.getOrDefault(false)
             val open = (tile.id == "wifi" && section == "Wi-Fi") || (tile.id == "bluetooth" && section == "Bluetooth")
             val art = tile.artwork?.invoke()
@@ -610,6 +702,17 @@ internal class ControlCenter(
             button.imageTintList = if (tile.artwork != null) null else ColorStateList.valueOf(if (on) ON_ACCENT else -1)
             if (tile.artwork != null) { button.scaleType = ImageView.ScaleType.FIT_CENTER; button.setPadding(dp(11), dp(11), dp(11), dp(11)) }
             button.contentDescription = if (tile.momentary) tile.label else "${tile.label}, ${if (on) "on" else "off"}"
+            if (tv.pill != null) {
+                // Wide tile: the whole pill lights up when on; the icon sits in a darker circle on it.
+                tv.pill.background = GradientDrawable().apply { setColor(if (on) ACCENT else SURFACE_HIGH); cornerRadius = dp(24).toFloat(); if (open) setStroke(dp(2), -1) }
+                button.background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(if (on) 0x26000000 else 0x1AFFFFFF) }
+                button.imageTintList = if (tile.artwork != null) null else ColorStateList.valueOf(if (on) ON_ACCENT else -1)
+                ((tv.pill as android.view.ViewGroup).getChildAt(1) as android.view.ViewGroup).getChildAt(0).let { (it as TextView).setTextColor(if (on) ON_ACCENT else -1) }
+                val second = runCatching { tile.detail?.invoke() }.getOrNull() ?: if (tile.momentary) null else if (on) "On" else "Off"
+                tv.detail?.text = second.orEmpty(); tv.detail?.visibility = if (second.isNullOrEmpty()) View.GONE else View.VISIBLE
+                tv.detail?.setTextColor(if (on) (ON_ACCENT and 0x00FFFFFF) or 0xCC000000.toInt() else 0xffc4c6d0.toInt())
+                tv.pill.contentDescription = listOfNotNull(tile.label, second).joinToString(", ")
+            }
         }
         val level = runCatching { Settings.System.getInt(activity.contentResolver, Settings.System.SCREEN_BRIGHTNESS) }.getOrDefault(128)
         if (!brightness.isPressed) brightness.progress = (sqrt(((level - 1).coerceAtLeast(0)) / 254f) * 100).roundToInt()
@@ -708,6 +811,6 @@ internal class ControlCenter(
         const val TILE = 48
         const val COLLAPSED = 5
         // Must be static: build() runs from init, before later instance properties exist.
-        private val defaultOrder = listOf("wifi", "bluetooth", "rotation", "flashlight", "dnd", "location", "dark", "night_light", "sound_mode", "battery_saver", "airplane", "mobile_data", "hotspot", "caffeine", "screenshot", "lock", "settings")
+        private val defaultOrder = listOf("wifi", "bluetooth", "rotation", "flashlight", "dnd", "location", "dark", "night_light", "sound_mode", "battery_saver", "airplane", "mobile_data", "hotspot", "caffeine", "screenshot", "screen_record", "lock", "settings")
     }
 }

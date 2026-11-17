@@ -73,6 +73,27 @@ class HomeActivity : AppCompatActivity() {
         } else if (result.resultCode != Activity.RESULT_CANCELED) Toast.makeText(this, "History was not transferred. Original history is preserved.", Toast.LENGTH_LONG).show()
         HistoryMigration.removeTemporaryCopy(this)
     }
+    /** Website export / import as a JSON file (Websites dialog). */
+    private var pendingExport: String? = null
+    private val exportSites = registerForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
+        val json = pendingExport ?: return@registerForActivityResult
+        pendingExport = null
+        if (uri == null) return@registerForActivityResult
+        lifecycleScope.launch {
+            val ok = withContext(Dispatchers.IO) { runCatching { contentResolver.openOutputStream(uri)!!.use { it.write(json.toByteArray()) } }.isSuccess }
+            Toast.makeText(this@HomeActivity, if (ok) "Websites exported" else "Couldn't save the file", Toast.LENGTH_SHORT).show()
+        }
+    }
+    private val importSites = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri == null) return@registerForActivityResult
+        lifecycleScope.launch {
+            val sites = withContext(Dispatchers.IO) { runCatching {
+                val text = contentResolver.openInputStream(uri)!!.use { it.readBytes().take(2_000_000).toByteArray().toString(Charsets.UTF_8) }
+                SiteTransfer.parse(text, SiteIcons::normalizeUrl)
+            }.getOrDefault(emptyList()) }
+            if (sites.isEmpty()) Toast.makeText(this@HomeActivity, "No websites found in that file", Toast.LENGTH_LONG).show() else addSites(sites)
+        }
+    }
     private val homeRoleRequest = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         updateDefaultPrompt()
     }
@@ -89,6 +110,7 @@ class HomeActivity : AppCompatActivity() {
         notificationPanel = NotificationPanel(this, ::populateHomeSettings)
         restoreNotificationPanel = savedInstanceState?.getBoolean("notification_panel_open") == true
         WallpaperSupport.apply(this)
+        OrientationWallpaper.apply(this)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -393,6 +415,11 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
+        // Own portrait/landscape wallpaper: switch instantly here, then let the system wallpaper follow.
+        if (OrientationWallpaper.apply(this)) {
+            val landscape = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE
+            lifecycleScope.launch(Dispatchers.IO) { OrientationWallpaper.syncSystem(applicationContext, landscape) }
+        }
         stopDragScroll()
         touchHelper.attachToRecyclerView(null)
         configureRail()
@@ -591,6 +618,7 @@ class HomeActivity : AppCompatActivity() {
     private var appliedIconShape: String? = null
     override fun onResume() {
         super.onResume()
+        OrientationWallpaper.apply(this) // Steps aside if the wallpaper was changed in another app.
         val shape = app.anihome.launcher.data.IconShape.selected(this).name
         if (appliedIconShape != shape) { appliedIconShape = shape; tiles.notifyDataSetChanged() }
         // Grid/list may have been switched from the app menu itself.
@@ -750,13 +778,17 @@ class HomeActivity : AppCompatActivity() {
     private fun showOptions(tile: HomeTile, keepGesture: Boolean = false) {
         val component = if (tile.isApp && tile.activityName != null) android.content.ComponentName(tile.packageName!!, tile.activityName) else null
         val actions = (if (tile.isApp) AppShortcuts.menuItems(this, tile.packageName, component) else emptyList()).toMutableList()
-        if (tile.isApp) actions += HomeMenu.Item(7, if (tile.iconOnly) "Use banner tile" else "Use app icon", R.drawable.ic_apps, inline = true, short = if (tile.iconOnly) "Banner" else "Icon") {
+        // Clear, distinct wording: one action switches the tile's shape, another (banners only) picks artwork.
+        if (tile.isApp && tile.shortcutId == null) actions += HomeMenu.Item(7, if (tile.iconOnly) "Show as banner" else "Show as icon",
+            if (tile.iconOnly) R.drawable.ic_tile_banner else R.drawable.ic_tile_icon, inline = true, short = if (tile.iconOnly) "As banner" else "As icon") {
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
                     store.setTileStyle(tile.id, !tile.iconOnly)
                     if (!tile.iconOnly) IconCache.dockIcon(applicationContext, tile.packageName!!, tile.activityName)
                 }
-                board.priority = "tile:${tile.id}"
+                // Close the gap it leaves (or make room), and glide: the tile grows or shrinks in place.
+                board.reflow()
+                (binding.grid.layoutManager as? HomeBoardLayoutManager)?.animateNextLayout = true
                 TileEvents.notifyChanged()
                 // Became a banner without one: fetch the store's banner now (shows a spinner meanwhile).
                 if (tile.iconOnly) app.anihome.launcher.banners.AutomaticBanners.enqueue(applicationContext)
@@ -774,16 +806,19 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
             actions += HomeMenu.Item(3, getString(R.string.action_app_info), R.drawable.ic_info, inline = true, short = "Info") {
-                startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + tile.packageName)))
+                runCatching { startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + tile.packageName))) }
+                    .onFailure { Toast.makeText(this, "App settings unavailable", Toast.LENGTH_SHORT).show() }
             }
             actions += HomeMenu.Item(9, "Uninstall", R.drawable.ic_delete, inline = true, short = "Uninstall") {
                 runCatching { startActivity(Intent(Intent.ACTION_DELETE, Uri.parse("package:" + tile.packageName))) }
+                    .onFailure { Toast.makeText(this, "This app can't be uninstalled from here", Toast.LENGTH_SHORT).show() }
             }
         }
-        actions += HomeMenu.Item(4, "Choose banner", R.drawable.ic_gallery, inline = true, short = "Banner") {
+        // Artwork only matters for banners: an icon tile has nothing to choose.
+        if (!tile.iconOnly) actions += HomeMenu.Item(4, "Change banner", R.drawable.ic_gallery, inline = true, short = "Change art") {
             startActivity(TileArtworkActivity.intent(this, tile.id))
         }
-        if (tile.artworkPath != null) actions += HomeMenu.Item(5, "Reset banner", R.drawable.ic_refresh, inline = true, short = "Reset") {
+        if (!tile.iconOnly && tile.artworkPath != null) actions += HomeMenu.Item(5, "Reset banner", R.drawable.ic_refresh, inline = true, short = "Reset art") {
             lifecycleScope.launch(Dispatchers.IO) { store.setArtwork(tile.id, null); TileEvents.notifyChanged() }
         }
         actions += HomeMenu.Item(6, getString(R.string.action_remove), R.drawable.ic_close, inline = true, short = "Remove") { confirmRemove(tile) }
@@ -800,11 +835,13 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun refreshIcon(tile: HomeTile) {
-        val url = tile.url ?: return
-        lifecycleScope.launch(Dispatchers.IO) {
-            val path = SiteIcons.fetch(this@HomeActivity, tile.id, url)
-            if (path != null) store.setIcon(tile.id, path, TileColors.fromIcon(IconCache.fileIcon(path)))
+        val url = tile.url ?: run { Toast.makeText(this, "This tile has no website to refresh from", Toast.LENGTH_SHORT).show(); return }
+        lifecycleScope.launch {
+            val path = withContext(Dispatchers.IO) {
+                SiteIcons.fetch(this@HomeActivity, tile.id, url)?.also { store.setIcon(tile.id, it, TileColors.fromIcon(IconCache.fileIcon(it))) }
+            }
             TileEvents.notifyChanged()
+            Toast.makeText(this@HomeActivity, if (path != null) "Icon refreshed" else "Couldn't refresh the icon. Check your connection.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -849,7 +886,7 @@ class HomeActivity : AppCompatActivity() {
             HomeMenu.Item(2, getString(R.string.action_add_app), R.drawable.ic_apps, "Choose one or more apps") {
                 startActivity(Intent(this, AppDrawerActivity::class.java).putExtra(AppDrawerActivity.EXTRA_PICK, true))
             },
-            HomeMenu.Item(3, getString(R.string.action_add_site), R.drawable.ic_add, "Add one or more websites") { Dialogs.addSites(this, ::addSites).show() },
+            HomeMenu.Item(3, getString(R.string.action_add_site), R.drawable.ic_add, "Add one or more websites") { manageSites() },
             HomeMenu.Item(4, "Wallpaper", R.drawable.ic_gallery, "AniHome wallpapers, gallery or other apps") {
                 startActivity(Intent(this, WallpaperActivity::class.java))
             },
@@ -866,9 +903,70 @@ class HomeActivity : AppCompatActivity() {
             HomeMenu.Item(1, getString(R.string.action_add_app), R.drawable.ic_apps, "Choose one or more apps") {
                 startActivity(Intent(this, AppDrawerActivity::class.java).putExtra(AppDrawerActivity.EXTRA_PICK, true))
             },
-            HomeMenu.Item(2, getString(R.string.action_add_site), R.drawable.ic_add, "Add one or more websites") { Dialogs.addSites(this, ::addSites).show() },
+            HomeMenu.Item(2, getString(R.string.action_add_site), R.drawable.ic_add, "Add one or more websites") { manageSites() },
             HomeMenu.Item(3, "Add widget", R.drawable.ic_desktop, "AniHome widgets and installed providers") { widgets.pick() },
         ))
+    }
+
+    /**
+     * Websites on Home in one place: untick to remove, paste several to add, and export, share or
+     * import them as a file to set up another device the same way.
+     */
+    private fun manageSites() {
+        lifecycleScope.launch {
+            val current = withContext(Dispatchers.IO) { store.all().filter { it.isWeb && it.url != null } }
+            val ui = this@HomeActivity
+            val keep = current.map { it.id }.toMutableSet()
+            val body = LinearLayout(ui).apply { orientation = LinearLayout.VERTICAL; setPadding(dp(20), dp(4), dp(20), 0) }
+            fun caption(text: String) = android.widget.TextView(ui).apply { this.text = text; textSize = 13f; setTextColor(MaterialUi.PRIMARY); setPadding(0, dp(12), 0, dp(4)) }
+            if (current.isNotEmpty()) {
+                body.addView(caption("On Home · untick to remove"))
+                current.forEach { tile ->
+                    body.addView(com.google.android.material.checkbox.MaterialCheckBox(MaterialUi.themed(ui)).apply {
+                        text = "${tile.label}\n${Uri.parse(tile.url).host.orEmpty().removePrefix("www.")}"; isChecked = true; textSize = 14f
+                        setTextColor(MaterialUi.ON_SURFACE)
+                        setOnCheckedChangeListener { _, on -> if (on) keep += tile.id else keep -= tile.id }
+                    })
+                }
+            }
+            body.addView(caption("Add websites · one per line, optionally Name | address"))
+            val input = android.widget.EditText(ui).apply {
+                hint = "youtube.com\nAniKoto | https://anikototv.to/"; minLines = 3; maxLines = 8; gravity = Gravity.TOP
+                inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE or android.text.InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS
+                setTextColor(-1); setHintTextColor(0xffaab4c5.toInt()); textSize = 14f
+            }
+            body.addView(input)
+            val tools = LinearLayout(ui).apply { setPadding(0, dp(8), 0, dp(8)) }
+            fun json() = SiteTransfer.export(current.filter { it.id in keep }.map { it.label to it.url!! })
+            lateinit var dialog: androidx.appcompat.app.AlertDialog
+            tools.addView(MaterialUi.tonal(ui, "Export") { pendingExport = json(); exportSites.launch("anihome-websites.json") }, LinearLayout.LayoutParams(0, -2, 1f))
+            tools.addView(MaterialUi.tonal(ui, "Share") {
+                runCatching { startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("application/json").putExtra(Intent.EXTRA_TEXT, json()), "Share websites")) }
+            }, LinearLayout.LayoutParams(0, -2, 1f).apply { marginStart = dp(8) })
+            tools.addView(MaterialUi.tonal(ui, "Import") { dialog.dismiss(); importSites.launch(arrayOf("application/json", "text/plain", "*/*")) }, LinearLayout.LayoutParams(0, -2, 1f).apply { marginStart = dp(8) })
+            body.addView(tools)
+            dialog = MaterialAlertDialogBuilder(ui).setTitle("Websites")
+                .setView(android.widget.ScrollView(ui).apply { addView(body) })
+                .setNegativeButton(R.string.action_cancel, null).setPositiveButton("Save", null).create()
+            dialog.setOnShowListener {
+                dialog.getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                    val draft = BatchSites.parse(input.text.toString(), SiteIcons::normalizeUrl)
+                    if (draft.invalidLines.isNotEmpty()) { input.error = "Check line(s): ${draft.invalidLines.joinToString()}"; return@setOnClickListener }
+                    val removed = current.filter { it.id !in keep }
+                    dialog.dismiss()
+                    lifecycleScope.launch {
+                        if (removed.isNotEmpty()) {
+                            withContext(Dispatchers.IO) { removed.forEach { store.remove(it.id) } }
+                            (binding.grid.layoutManager as? HomeBoardLayoutManager)?.animateNextLayout = true
+                            TileEvents.notifyChanged()
+                            if (draft.sites.isEmpty()) Toast.makeText(ui, "${removed.size} removed from Home", Toast.LENGTH_SHORT).show()
+                        }
+                        if (draft.sites.isNotEmpty()) addSites(draft.sites)
+                    }
+                }
+            }
+            dialog.show()
+        }
     }
 
     private fun addSites(sites: List<BatchSites.Site>) {
@@ -879,7 +977,12 @@ class HomeActivity : AppCompatActivity() {
             result.onFailure { Toast.makeText(this@HomeActivity, "Couldn’t add websites. Try again.", Toast.LENGTH_LONG).show() }
             val added = result.getOrNull() ?: return@launch
             TileEvents.notifyChanged()
-            Toast.makeText(this@HomeActivity, "${added.size} websites added", Toast.LENGTH_SHORT).show()
+            val skipped = sites.size - added.size
+            Toast.makeText(this@HomeActivity, when {
+                added.isEmpty() -> if (sites.size == 1) "That website is already on Home" else "Those websites are already on Home"
+                skipped > 0 -> "${added.size} added · $skipped already on Home"
+                else -> if (added.size == 1) "Website added" else "${added.size} websites added"
+            }, Toast.LENGTH_SHORT).show()
             // Artwork can arrive later; the complete batch is already committed and visible.
             added.forEach { tile ->
                 val path = SiteIcons.fetch(this@HomeActivity, tile.id, tile.url!!)
@@ -909,19 +1012,33 @@ class HomeActivity : AppCompatActivity() {
         fun needsControls(feature: String) = app.anihome.launcher.controls.ControlsAccess.ensure(ui, feature, controlsGrant)
         // 1. The home screen itself: grid, names, lock and the gestures made on it.
         panel.section("Home screen", R.drawable.ic_settings_layout, summary = {
-            val columns = HomeLayout.selection(this); (if (columns == 0) "Automatic columns" else "$columns per row") +
+            val columns = HomeLayout.selection(this); (if (columns == 0) "Automatic layout" else "$columns banners per row") +
                 if (homePreferences.getBoolean("layout_locked", false)) " · Locked" else ""
         }) {
             val columns = listOf(0) + (2..6)
-            panel.choice(this, "Columns", columns.map { if (it == 0) "Automatic" else "$it per row" }, columns.indexOf(HomeLayout.selection(ui)).coerceAtLeast(0)) {
+            panel.choice(this, "Banners per row", columns.map { if (it == 0) "Automatic" else "$it per row" }, columns.indexOf(HomeLayout.selection(ui)).coerceAtLeast(0)) {
                 homePreferences.edit().putInt("home_columns", columns[it]).apply()
+                (binding.grid.layoutManager as? HomeBoardLayoutManager)?.animateNextLayout = true
                 binding.grid.requestLayout(); widgets.updateLayout()
             }
+            // Icons have their own count, so a row can hold 2 banners or 5 icons.
+            val icons = listOf(0) + (3..10)
+            panel.choice(this, "Icons per row", icons.map { if (it == 0) "Automatic" else "$it per row" }, icons.indexOf(HomeLayout.iconSelection(ui)).coerceAtLeast(0)) {
+                homePreferences.edit().putInt("home_icon_columns", icons[it]).apply()
+                (binding.grid.layoutManager as? HomeBoardLayoutManager)?.animateNextLayout = true
+                binding.grid.requestLayout()
+            }
+            panel.text(this, "Automatic fits as many as the screen comfortably allows. There are always more icons than banners in a row.")
             val asIcon = homePreferences.getString(app.anihome.launcher.data.TileStore.NEW_APP_STYLE, "banner") == "icon"
             panel.choice(this, "Add apps as", listOf("Banner", "Icon"), if (asIcon) 1 else 0) {
                 homePreferences.edit().putString(app.anihome.launcher.data.TileStore.NEW_APP_STYLE, if (it == 1) "icon" else "banner").apply()
             }
             panel.text(this, "For apps you add from now on. Any app already on Home can switch between banner and icon from its menu.")
+            panel.choice(this, "Arrangement", listOf("Automatic · fill gaps", "Free · keep where I put things"), if (homePreferences.getBoolean("home_auto_arrange", true)) 0 else 1) {
+                homePreferences.edit().putBoolean("home_auto_arrange", it == 0).apply()
+                (binding.grid.layoutManager as? HomeBoardLayoutManager)?.animateNextLayout = true
+                board.reflow(); binding.grid.requestLayout()
+            }
             panel.toggle(this, "Show app and website names", tiles.showLabels) {
                 tiles.showLabels = it; homePreferences.edit().putBoolean("show_tile_labels", it).apply()
             }
@@ -1018,6 +1135,8 @@ class HomeActivity : AppCompatActivity() {
             glass.visibility = if (PanelStyle.blur(ui)) View.VISIBLE else View.GONE
             panel.text(this, "Where Android can't blur what's behind, the panel stays nearly solid so it is always readable.")
             panel.heading(this, "Controls")
+            panel.toggle(this, "Wide controls with details", PanelStyle.wideTiles(ui)) { PanelStyle.set(ui, "cc_wide_tiles", it) }
+            panel.text(this, "Expanded controls show two per row with the connected Wi-Fi, Bluetooth device and other details. Hold the flashlight for brightness, SOS and the screen light.")
             panel.toggle(this, "Brightness slider", PanelStyle.brightness(ui)) { PanelStyle.set(ui, "cc_show_brightness", it) }
             panel.toggle(this, "Volume slider", PanelStyle.volume(ui)) { PanelStyle.set(ui, "cc_show_volume", it) }
             panel.toggle(this, "Now playing card", PanelStyle.media(ui)) { PanelStyle.set(ui, "cc_show_media", it) }

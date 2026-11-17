@@ -30,6 +30,8 @@ import app.anihome.launcher.R
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -200,14 +202,40 @@ class WallpaperActivity : AppCompatActivity() {
             val chip = categories.getChildAt(i) as com.google.android.material.chip.Chip
             if ((chip.tag as String) == (category ?: "")) categories.check(chip.id)
         }
-        rows.clear()
-        items.filter { category == null || it.group == category }.groupBy { it.group }.forEach { (g, list) ->
-            if (category == null) rows.add(label(g)) // Headers only when showing every category.
-            rows.addAll(list)
+        val shown = items.filter { category == null || it.group == category }
+        // One loading indicator for the whole category; the pictures appear together once every
+        // preview (and so every picture's shape) is ready, so the grid never opens with gaps.
+        loadJob?.cancel()
+        val missing = shown.filter { it.url !in previews }
+        rows.clear(); grid.adapter?.notifyDataSetChanged()
+        loading.visibility = if (missing.isEmpty()) View.GONE else View.VISIBLE
+        message.visibility = View.GONE
+        loadJob = lifecycleScope.launch {
+            if (missing.isNotEmpty()) {
+                var done = 0
+                message.visibility = View.VISIBLE
+                missing.chunked(4).forEach { batch ->
+                    batch.map { item -> async(thumbs) { item to runCatching { store.thumbnail(item) }.getOrNull() } }.awaitAll().forEach { (item, bitmap) ->
+                        if (bitmap != null) { previews[item.url] = bitmap; aspects[item.url] = bitmap.width.toFloat() / bitmap.height }
+                    }
+                    done += batch.size
+                    message.text = "Loading wallpapers · $done of ${missing.size}"
+                }
+                message.visibility = View.GONE
+            }
+            loading.visibility = View.GONE
+            shown.groupBy { it.group }.forEach { (g, list) ->
+                if (category == null) rows.add(label(g)) // Headers only when showing every category.
+                rows.addAll(list.filter { it.url in previews })
+            }
+            grid.adapter?.notifyDataSetChanged()
+            grid.scrollToPosition(0)
+            if (shown.isNotEmpty() && rows.none { it is WallpaperStore.Item }) { message.visibility = View.VISIBLE; message.text = "Couldn't load these wallpapers. Check your connection." }
         }
-        grid.adapter?.notifyDataSetChanged()
-        grid.scrollToPosition(0)
     }
+    private var loadJob: Job? = null
+    /** Ready previews by URL, kept while the screen is open. */
+    private val previews = mutableMapOf<String, Bitmap>()
 
     /** Opens the editor with an image, sized to stay sharp on this screen without using too much memory. */
     private fun edit(uri: Uri) {
@@ -260,11 +288,16 @@ class WallpaperActivity : AppCompatActivity() {
         }.getOrDefault(false)
         if (perOrientation) return true
         val landscapeNow = resources.configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
-        val chosen = if (landscapeNow) landscape else portrait
-        val framed = Bitmap.createBitmap(bitmap, chosen.left, chosen.top, chosen.width(), chosen.height())
-        manager.setBitmap(framed, null, true, target)
-        if (framed !== bitmap) framed.recycle()
-        return false
+        // One framing only here: save both at the screen's exact size; Home shows the right one on
+        // every rotation and keeps the system wallpaper (lock screen, other apps) in step.
+        fun scaled(r: Rect, w: Int, h: Int) = Bitmap.createScaledBitmap(Bitmap.createBitmap(bitmap, r.left, r.top, r.width(), r.height()), w, h, true)
+        val portraitShot = scaled(portrait, short, long); val landscapeShot = scaled(landscape, long, short)
+        OrientationWallpaper.save(this, portraitShot, landscapeShot, target)
+        val chosen = if (landscapeNow) landscapeShot else portraitShot
+        manager.setBitmap(chosen, null, true, target)
+        OrientationWallpaper.remember(this)
+        portraitShot.recycle(); landscapeShot.recycle()
+        return true
     }
 
     /** Shows the whole picture: its height follows the picture's own shape (square, 16:9…). */
@@ -310,31 +343,16 @@ class WallpaperActivity : AppCompatActivity() {
             if (viewHolder is Header) { viewHolder.text.text = rows[position] as String; return }
             val holder = viewHolder as Holder
             val item = rows[position] as WallpaperStore.Item
-            holder.job?.cancel(); holder.image.setImageDrawable(null); holder.spinner.visibility = View.VISIBLE
-            holder.image.aspect = aspects[item.url] ?: items.filter { it.group == item.group }.firstNotNullOfOrNull { aspects[it.url] } ?: 1f
+            holder.job?.cancel()
+            holder.spinner.visibility = View.GONE
+            holder.image.aspect = aspects[item.url] ?: 1f
+            holder.image.setImageBitmap(previews[item.url])
             holder.label.text = item.name; holder.card.contentDescription = "${item.name} wallpaper"
             holder.card.setOnClickListener {
                 lifecycleScope.launch {
                     val file = withContext(Dispatchers.IO) { runCatching { store.image(item) }.getOrNull() }
                     if (file == null) Toast.makeText(this@WallpaperActivity, "Couldn't download ${item.name}", Toast.LENGTH_SHORT).show()
                     else edit(Uri.fromFile(file))
-                }
-            }
-            holder.job = lifecycleScope.launch {
-                val bitmap = withContext(thumbs) { runCatching {
-                    val file = store.image(item)
-                    val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }; BitmapFactory.decodeFile(file.path, bounds)
-                    var sample = 1; while (maxOf(bounds.outWidth, bounds.outHeight) / (sample * 2) >= 480) sample *= 2
-                    BitmapFactory.decodeFile(file.path, BitmapFactory.Options().apply { inSampleSize = sample })
-                }.getOrNull() }
-                holder.spinner.visibility = View.GONE
-                holder.image.setImageBitmap(bitmap)
-                if (bitmap != null) {
-                    val shape = bitmap.width.toFloat() / bitmap.height
-                    val known = aspects.put(item.url, shape)
-                    holder.image.aspect = shape
-                    // First time this picture's shape is known: re-measure its row so no gap is left.
-                    if (known == null) grid.post { holder.bindingAdapterPosition.takeIf { it >= 0 }?.let { grid.adapter?.notifyItemChanged(it, "aspect") } }
                 }
             }
         }

@@ -16,6 +16,8 @@ internal object PanelStyle {
     /** Off: Android's own notification shade and status bar everywhere, including on Home. */
     fun custom(context: Context) = prefs(context).getBoolean("panel_custom", true)
     fun setCustom(context: Context, on: Boolean) { prefs(context).edit().putBoolean("panel_custom", on).apply(); changed("panel_custom") }
+    /** Expanded controls as wide 2x1 tiles with a second line (default), or the compact round grid. */
+    fun wideTiles(context: Context) = prefs(context).getBoolean("cc_wide_tiles", true)
     fun brightness(context: Context) = prefs(context).getBoolean("cc_show_brightness", true)
     fun volume(context: Context) = prefs(context).getBoolean("cc_show_volume", true)
     fun media(context: Context) = prefs(context).getBoolean("cc_show_media", true)

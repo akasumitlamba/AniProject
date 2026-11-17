@@ -45,6 +45,27 @@ internal class WallpaperStore(context: Context) {
         return target
     }
 
+    /**
+     * A small preview (about 480 px), kept on the device: decoding a 4K original for every
+     * thumbnail made each visit slow. Built once from the downloaded picture.
+     */
+    fun thumbnail(item: Item): android.graphics.Bitmap? {
+        val folder = File(this.folder, "thumbs").apply { mkdirs() }
+        val cached = File(folder, "${item.sha.take(12).ifEmpty { "x" }}-${item.group}-${item.file.substringBeforeLast('.')}.webp")
+        if (cached.isFile) android.graphics.BitmapFactory.decodeFile(cached.path)?.let { return it }
+        val source = image(item)
+        val bounds = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
+        android.graphics.BitmapFactory.decodeFile(source.path, bounds)
+        var sample = 1; while (maxOf(bounds.outWidth, bounds.outHeight) / (sample * 2) >= 480) sample *= 2
+        val bitmap = android.graphics.BitmapFactory.decodeFile(source.path, android.graphics.BitmapFactory.Options().apply { inSampleSize = sample }) ?: return null
+        runCatching {
+            @Suppress("DEPRECATION")
+            val format = if (android.os.Build.VERSION.SDK_INT >= 30) android.graphics.Bitmap.CompressFormat.WEBP_LOSSY else android.graphics.Bitmap.CompressFormat.WEBP
+            cached.outputStream().use { bitmap.compress(format, 80, it) }
+        }
+        return bitmap
+    }
+
     private fun request(address: String, limit: Int): ByteArray {
         val url = URL(address)
         require(url.protocol == "https" && (address.startsWith(TREE_URL) || address.startsWith(RAW_BASE + PREFIX)))

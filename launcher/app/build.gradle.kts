@@ -23,7 +23,7 @@ android {
         testInstrumentationRunner = "app.anihome.launcher.RegressionInstrumentation"
         minSdk = 26
         targetSdk = 35
-        versionCode = 58
+        versionCode = 59
         versionName = "1.1.0"
         vectorDrawables.useSupportLibrary = true
     }

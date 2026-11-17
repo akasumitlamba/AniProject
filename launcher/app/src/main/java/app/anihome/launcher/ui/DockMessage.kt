@@ -48,9 +48,12 @@ internal class DockMessage(context: Context) : View(context) {
         if (vertical) { canvas.rotate(-90f); canvas.translate(-height.toFloat(), 0f) } // Reads bottom to top.
         canvas.clipRect(0f, 0f, length, (if (vertical) width else height).toFloat())
         val fits = textWidth <= length - 8 * density
-        if (fits) {
+        // Animations off: never move. Long text then simply ends at the edge.
+        if (fits || !android.animation.ValueAnimator.areAnimatorsEnabled()) {
             running = false
-            canvas.drawText(text, (length - textWidth) / 2f, baseline, paint)
+            // Starts where its space starts (right after the clock, or at the dock's edge), like
+            // any other line of text; centring it left it floating oddly in an empty dock.
+            canvas.drawText(text, 4 * density, baseline, paint)
         } else {
             // Enters from the far end, leaves past the near end, then repeats.
             val cycle = length + textWidth

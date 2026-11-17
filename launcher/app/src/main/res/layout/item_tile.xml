@@ -15,6 +15,7 @@
         android:id="@+id/card_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:duplicateParentState="true"
         android:clipChildren="false" android:clipToPadding="false">
 
         <FrameLayout android:id="@+id/card_surface"

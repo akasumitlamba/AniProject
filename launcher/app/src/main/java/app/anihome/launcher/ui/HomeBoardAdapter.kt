@@ -12,8 +12,13 @@ import org.json.JSONObject
  */
 internal class HomeBoardAdapter(context: Context, private val tiles: TileAdapter, private val widgets: WidgetController) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val prefs = context.getSharedPreferences("home_board", 0)
+    private val homePrefs = context.getSharedPreferences("anihome", 0)
+    /** Automatic arrangement closes every gap; free arrangement keeps items where they were put. */
+    private val autoArrange get() = homePrefs.getBoolean("home_auto_arrange", true)
     private val desired = linkedMapOf<String, HomeBoardPacking.Cell>()
     var priority: String? = null
+    /** Fine-grid geometry, set by the layout manager before each pack. */
+    var grid = HomeGrid(2, 5)
     var editing = false
     var loaded = false
     var placements = emptyList<HomeBoardPacking.Placement>()
@@ -39,9 +44,20 @@ internal class HomeBoardAdapter(context: Context, private val tiles: TileAdapter
         adoptedLegacy = legacy != null
         if (saved != null) desired.putAll(saved) else if (legacy != null) desired.putAll(legacy)
         else if (previous.isNotEmpty()) reflowFrom = previous
+        else olderLayout()?.let { reflowFrom = it } // A new grid: keep the reading order of the last saved one.
         activeColumns = columns
         placements = emptyList()
     }
+    /** The most recently written layout for another grid, as placements, to reflow in its reading order. */
+    private fun olderLayout(): List<HomeBoardPacking.Placement>? {
+        val key = prefs.getString("last_layout_key", null)?.takeIf { prefs.contains(it) }
+            ?: prefs.all.keys.filter { it.startsWith("layout_") }.maxByOrNull { it.removePrefix("layout_").toIntOrNull() ?: 0 } ?: return null
+        val cells = decode(prefs.getString(key, null)) ?: return null
+        return cells.map { (k, c) -> HomeBoardPacking.Placement(k, c.x, c.y, 1, 1) }.takeIf { it.isNotEmpty() }
+    }
+    /** Close every gap in reading order (after a tile changes between banner and icon). */
+    fun reflow() { reflowFrom = placements.takeIf { it.isNotEmpty() } }
+
     init {
         fun observer(widget: Boolean) = object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() { notifyDataSetChanged() }
@@ -60,8 +76,12 @@ internal class HomeBoardAdapter(context: Context, private val tiles: TileAdapter
     fun pack(columns: Int): List<HomeBoardPacking.Placement> {
         if (dragOrigin != null && columns == activeColumns) return placements
         if (columns != activeColumns) { dragOrigin = null; previewCell = null; switchColumns(columns) }
-        val items = tiles.currentList.map { HomeBoardPacking.Item("tile:${it.id}", if (it.iconOnly) 1 else 2, if (it.iconOnly) 1 else 2, if (it.iconOnly) 1 else 2) } +
-            (0 until widgetAdapter.itemCount).map { HomeBoardPacking.Item("widget:${widgets.idAt(it)}", widgets.columnsAt(it), widgets.rowsAt(it)) }
+        val g = grid
+        // Icons snap to icon columns, banners to banner slots (two rows tall), widgets to widget cells.
+        val items = tiles.currentList.map {
+            if (it.iconOnly) HomeBoardPacking.Item("tile:${it.id}", g.iconSpan, 1, g.iconSpan, 1)
+            else HomeBoardPacking.Item("tile:${it.id}", g.bannerSpan, 2, g.bannerSpan, 2)
+        } + (0 until widgetAdapter.itemCount).map { HomeBoardPacking.Item("widget:${widgets.idAt(it)}", widgets.columnsAt(it) * g.widgetUnit, widgets.rowsAt(it), g.widgetUnit, 1) }
         // Reserve every existing item before placing newly added apps or widgets.
         placements.forEach { desired.putIfAbsent(it.key, HomeBoardPacking.Cell(it.x, it.y)) }
         val active = items.map { it.key }.toSet()
@@ -72,8 +92,10 @@ internal class HomeBoardAdapter(context: Context, private val tiles: TileAdapter
             removed -> HomeBoardPacking.compact(items, columns, placements)
             else -> HomeBoardPacking.pack(items, columns, desired, priority)
         }
+        // Automatic arrangement: always pack in reading order, so no gap survives a move, removal or resize.
+        if (autoArrange && dragOrigin == null && placements.isNotEmpty()) placements = HomeBoardPacking.compact(items, columns, placements)
         // A legacy layout saved on a narrower board leaves a whole tile column empty; reflow it once.
-        if (adoptedLegacy && placements.isNotEmpty() && placements.maxOf { it.x + it.columns } <= columns - 2) {
+        if (adoptedLegacy && placements.isNotEmpty() && placements.maxOf { it.x + it.columns } <= columns - grid.bannerSpan) {
             placements = HomeBoardPacking.compact(items, columns, placements)
             desired.clear()
         }
@@ -93,7 +115,12 @@ internal class HomeBoardAdapter(context: Context, private val tiles: TileAdapter
     fun previewMove(key: String, x: Int, y: Int, columns: Int): Boolean {
         val origin = dragOrigin ?: return false
         val item = origin.firstOrNull { it.key == key } ?: return false
-        fun HomeBoardPacking.Placement.packingItem() = HomeBoardPacking.Item(this.key, this.columns, this.rows, if (this.key.startsWith("tile:") && this.columns > 1) 2 else 1)
+        val g = grid
+        fun HomeBoardPacking.Placement.packingItem() = when {
+            !this.key.startsWith("tile:") -> HomeBoardPacking.Item(this.key, this.columns, this.rows, g.widgetUnit, 1)
+            this.columns == g.iconSpan && this.rows == 1 -> HomeBoardPacking.Item(this.key, this.columns, 1, g.iconSpan, 1)
+            else -> HomeBoardPacking.Item(this.key, this.columns, this.rows, g.bannerSpan, 2)
+        }
         val cell = HomeBoardPacking.snap(item.packingItem(), columns, x, y)
         if (cell == previewCell) return false
         previewCell = cell
@@ -136,7 +163,7 @@ internal class HomeBoardAdapter(context: Context, private val tiles: TileAdapter
         desired.forEach { (key, cell) -> saved.put(key, JSONObject().put("x", cell.x).put("y", cell.y)) }
         val encoded = saved.toString()
         if (activeColumns <= 0) return
-        if (prefs.getString("layout_$activeColumns", null) != encoded) prefs.edit().putString("layout_$activeColumns", encoded)
+        if (prefs.getString("layout_$activeColumns", null) != encoded) prefs.edit().putString("layout_$activeColumns", encoded).putString("last_layout_key", "layout_$activeColumns")
             // Interim per-width keys from a pre-release build may hold an unreflowed layout.
             .apply { prefs.all.keys.filter { it.startsWith("cells_") }.forEach(::remove) }.apply()
     }

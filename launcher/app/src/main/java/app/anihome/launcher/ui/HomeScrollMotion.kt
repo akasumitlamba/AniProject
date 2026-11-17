@@ -39,12 +39,21 @@ internal class HomeScrollMotion(private val scroll: NestedScrollView, private va
             child.pivotY = if (fromBottom < fromTop) 0f else h // Grow up from the dock, shrink toward the top.
             child.scaleX = scale; child.scaleY = scale
             child.alpha = MIN_ALPHA + (1f - MIN_ALPHA) * f
+            // A fading tile is drawn as one piece; its drop shadow would be clipped at the tile's
+            // edge into a visible frame, so the shadow steps aside while it fades.
+            shadow(child, f >= .99f)
         }
     }
 
     fun reset() {
         active = false
-        for (i in 0 until grid.childCount) grid.getChildAt(i).apply { scaleX = 1f; scaleY = 1f; alpha = 1f }
+        for (i in 0 until grid.childCount) grid.getChildAt(i).apply { scaleX = 1f; scaleY = 1f; alpha = 1f; shadow(this, true) }
+    }
+
+    private fun shadow(tile: View, on: Boolean) {
+        val surface = tile.findViewById<View>(app.anihome.launcher.R.id.card_surface) ?: return
+        val wanted = if (on && surface.background !is android.graphics.drawable.ColorDrawable) 6f * tile.resources.displayMetrics.density else 0f
+        if (surface.elevation != wanted) surface.elevation = wanted
     }
 
     private fun ease(x: Float) = 1f - (1f - x) * (1f - x) // Gentle settle, no snap.

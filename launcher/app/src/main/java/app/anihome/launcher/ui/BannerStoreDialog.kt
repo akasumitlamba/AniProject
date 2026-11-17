@@ -130,7 +130,37 @@ class BannerStoreDialog(private val activity: AppCompatActivity, private val til
         // Opening the store is a request to browse it: fetch the current list and let previews
         // download. Offline (or paused), it falls back to the saved list and cached banners.
         // Previously it opened offline-only, so any banner not already on the device stayed blank.
-        reload(true)
+        openFast()
+    }
+    /**
+     * Opens straight away from the list already on the device (saved from the last visit, or the
+     * one that ships with the app), with previews downloading as they scroll into view; the store's
+     * current list is fetched in the background and swapped in when it arrives. Only a first visit
+     * with nothing saved waits, and it says what it is doing.
+     */
+    private fun openFast() {
+        networkGeneration++
+        val generation = networkGeneration
+        loading.visibility = View.VISIBLE
+        setStatus("Connecting to the banner store…")
+        scope.launch {
+            val saved = withContext(Dispatchers.IO) { runCatching { repository.catalog() }.getOrDefault(emptyList()) }
+            val paused = withContext(Dispatchers.IO) { repository.cooldownReason() }
+            if (generation != networkGeneration) return@launch
+            if (saved.isNotEmpty()) {
+                entries = saved; allowNetwork = paused == null
+                loading.visibility = View.GONE; setStatus(null); filter()
+            }
+            if (paused != null) { loading.visibility = View.GONE; setStatus("Offline banners · Tap for details", "$paused Use the refresh icon to retry. Banners you already downloaded still work."); return@launch }
+            val fresh = withContext(Dispatchers.IO) { runCatching { repository.catalog(refresh = true) } }
+            if (generation != networkGeneration) return@launch
+            loading.visibility = View.GONE
+            fresh.onSuccess { latest ->
+                allowNetwork = true; retryOffered = false; refreshLabel(false)
+                if (latest != entries) { entries = latest; filter() } else setStatus(null)
+                if (status.text == "Connecting to the banner store…") setStatus(null)
+            }.onFailure { error -> if (entries.isEmpty()) showFailure(error) else setStatus(null) }
+        }
     }
     private fun setStatus(message: String?, details: String = "") {
         status.text = message; statusDetails = details

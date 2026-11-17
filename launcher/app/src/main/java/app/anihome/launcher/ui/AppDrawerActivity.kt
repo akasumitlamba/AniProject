@@ -41,6 +41,8 @@ class AppDrawerActivity : AppCompatActivity() {
     private var searchResults: android.widget.LinearLayout? = null
     private var webResults: android.widget.LinearLayout? = null
     private val selected = linkedSetOf<String>()
+    /** Apps already on Home that the user unticked: removed from Home when they save. */
+    private val removing = linkedSetOf<String>()
     private var showHidden = false
     private var adding = false
     private val adapter = Adapter()
@@ -132,7 +134,7 @@ class AppDrawerActivity : AppCompatActivity() {
         binding.btnAddSelected.visibility = if (pickMode) View.VISIBLE else View.GONE
         binding.btnAddSelected.setOnClickListener {
             if (dockPickMode) { DockApps.set(this, selected.mapNotNull { key -> all.firstOrNull { it.key() == key }?.component }); finish() }
-            else addApps(all.filter { it.key() in selected }, true)
+            else applyHome(all.filter { it.key() in selected }, removing.toSet())
         }
         val warm = DrawerWarmup.current()
         val cached = warm?.apps ?: InstalledApps.cached()
@@ -210,12 +212,17 @@ class AppDrawerActivity : AppCompatActivity() {
             all.isEmpty() -> "No apps available"
             adapter.items.isEmpty() -> "No matching apps"
             dockPickMode -> "Choose up to five apps; swipe the dock if needed to reach every pin."
-            pickMode -> "Choose apps, then add them together"
+            pickMode -> "Tick apps to add them, untick apps to take them off Home"
             else -> ""
         }
         binding.hint.visibility = if (binding.hint.text.isEmpty()) View.GONE else View.VISIBLE
-        binding.btnAddSelected.text = if (dockPickMode) "Save dock (${selected.size}/5)" else "Add selected (${selected.size})"
-        binding.btnAddSelected.isEnabled = (dockPickMode || selected.isNotEmpty()) && !adding
+        binding.btnAddSelected.text = when {
+            dockPickMode -> "Save dock (${selected.size}/5)"
+            removing.isEmpty() -> "Add selected (${selected.size})"
+            selected.isEmpty() -> "Remove from Home (${removing.size})"
+            else -> "Save · add ${selected.size}, remove ${removing.size}"
+        }
+        binding.btnAddSelected.isEnabled = (dockPickMode || selected.isNotEmpty() || removing.isNotEmpty()) && !adding
     }
     private val favorites = Adapter()
     private val frequent = Adapter()
@@ -590,13 +597,34 @@ class AppDrawerActivity : AppCompatActivity() {
         tile.url?.let { startActivity(app.anihome.launcher.web.WebActivity.intent(this, it)); finish() }
     }
     private fun searchWeb(query: String) {
-        val url = if (looksLikeAddress(query)) SiteIcons.normalizeUrl(query) ?: return else "https://www.google.com/search?q=" + Uri.encode(query)
+        val url = if (looksLikeAddress(query)) SiteIcons.normalizeUrl(query) ?: run {
+            Toast.makeText(this, "\"${query.take(60)}\" isn't a valid web address", Toast.LENGTH_SHORT).show(); return
+        } else "https://www.google.com/search?q=" + Uri.encode(query)
         val target = DockBrowser.intent(this, query, url, looksLikeAddress(query)) ?: app.anihome.launcher.web.WebActivity.intent(this, url)
         runCatching { startActivity(target); finish() }.onFailure { Toast.makeText(this, "Browser unavailable. Choose another in Dock settings.", Toast.LENGTH_LONG).show() }
     }
     private fun appInfo(app: InstalledApp) {
         runCatching { startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${app.packageName}"))) }
             .onFailure { Toast.makeText(this, "App settings unavailable", Toast.LENGTH_SHORT).show() }
+    }
+    /** One step: add the ticked apps and take the unticked ones off Home. */
+    private fun applyHome(add: List<InstalledApp>, remove: Set<String>) {
+        if (adding || (add.isEmpty() && remove.isEmpty())) return
+        adding = true; filter()
+        lifecycleScope.launch {
+            val result = withContext(Dispatchers.IO) { runCatching {
+                val removed = store.all().filter { it.isApp && it.shortcutId == null && "${it.packageName}/${it.activityName}" in remove }
+                removed.forEach { store.remove(it.id) }
+                (if (add.isEmpty()) 0 else store.addApps(add)) to removed.size
+            } }
+            adding = false
+            result.onSuccess { (added, removed) ->
+                TileEvents.notifyChanged()
+                Toast.makeText(this@AppDrawerActivity, listOfNotNull(
+                    "$added added".takeIf { added > 0 }, "$removed removed".takeIf { removed > 0 }).joinToString(" · ").ifEmpty { "No changes" }, Toast.LENGTH_SHORT).show()
+                finish()
+            }.onFailure { filter(); Toast.makeText(this@AppDrawerActivity, "Couldn’t update Home. Try again.", Toast.LENGTH_LONG).show() }
+        }
     }
     private fun addApps(apps: List<InstalledApp>, finishAfter: Boolean) {
         if (adding || apps.isEmpty()) return
@@ -649,13 +677,23 @@ class AppDrawerActivity : AppCompatActivity() {
                 val icon = withContext(Dispatchers.IO) { iconWorkers.withPermit { IconCache.dockIcon(applicationContext, app.packageName, app.activityName) } }
                 if (key == app.key()) binding.icon.setImageBitmap(icon)
             }
-            val checked = app.key() in onHome || app.key() in selected
+            val checked = (app.key() in onHome && app.key() !in removing) || app.key() in selected
             binding.onHome.visibility = if (pickMode && checked) View.VISIBLE else View.GONE
-            binding.root.alpha = if (pickMode && app.key() in onHome) 0.55f else 1f
-            binding.root.contentDescription = app.label + if (pickMode && checked) ", selected or already on Home" else ""
+            // Unticked apps that are on Home fade: they'll be taken off when you save.
+            binding.root.alpha = if (pickMode && app.key() in removing) 0.55f else 1f
+            binding.root.contentDescription = app.label + when {
+                !pickMode -> ""
+                app.key() in removing -> ", will be removed from Home"
+                app.key() in onHome -> ", on Home"
+                checked -> ", selected"
+                else -> ""
+            }
             binding.root.setOnClickListener {
                 if (!pickMode) launch(app)
-                else if (app.key() !in onHome && !adding) {
+                else if (app.key() in onHome && !dockPickMode && !adding) {
+                    if (!removing.add(app.key())) removing.remove(app.key())
+                    filter()
+                } else if (app.key() !in onHome && !adding) {
                     if (app.key() in selected) selected.remove(app.key())
                     else if (!dockPickMode || selected.size < 5) selected.add(app.key())
                     else Toast.makeText(this@AppDrawerActivity, "Choose up to five dock apps", Toast.LENGTH_SHORT).show()

@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
@@ -116,6 +119,11 @@
         <activity android:name=".ui.HistoryActivity" android:exported="false" />
         <activity android:name=".ui.TileArtworkActivity" android:exported="false" android:theme="@style/Theme.AniHome" />
         <activity android:name=".ui.WallpaperActivity" android:exported="false" android:theme="@style/Theme.AniHome" />
+        <activity android:name=".ui.ScreenLightActivity" android:exported="false" android:theme="@style/Theme.AniHome"
+            android:excludeFromRecents="true" android:configChanges="orientation|screenSize|screenLayout" />
+        <activity android:name=".ui.ScreenRecordActivity" android:exported="false" android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:excludeFromRecents="true" android:noHistory="true" />
+        <service android:name=".ui.ScreenRecordService" android:exported="false" android:foregroundServiceType="mediaProjection" />
 
         <activity
             android:name=".ui.AppDrawerActivity"

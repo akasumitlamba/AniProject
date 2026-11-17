@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- AniHome: warm coral, slightly lighter at the top left. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
-    <path android:fillColor="#0E1628" android:pathData="M0,0h108v108H0z" />
-    <path android:fillColor="#3B82F6" android:fillAlpha="0.55" android:pathData="M20,24m-40,0a40,40 0,1 1,80 0a40,40 0,1 1,-80 0" />
-    <path android:fillColor="#D946EF" android:fillAlpha="0.45" android:pathData="M96,84m-44,0a44,44 0,1 1,88 0a44,44 0,1 1,-88 0" />
+    <path android:pathData="M0,0h108v108h-108z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="0" android:startY="0" android:endX="108" android:endY="108"
+                android:startColor="#FFEA6A53" android:endColor="#FFD9503D" />
+        </aapt:attr>
+    </path>
 </vector>
