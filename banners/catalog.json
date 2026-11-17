@@ -13,7 +13,7 @@
         "Launcher settings"
       ],
       "webHosts": [],
-      "sha256": "33e5c07170525936b4a6820d92326caf40fc754fb0ddcc820f3af19a5e1389db",
+      "sha256": "3b6cb10d5acd440ee389191b2b63920cf179621cea6c7c8eb243036b1334183c",
       "popular": false,
       "category": "utilities",
       "tabletPriority": 60
@@ -279,7 +279,7 @@
         "maps.google.com",
         "maps.google.co.in"
       ],
-      "sha256": "06a033eaa917622c1d766630a0308aa8e60663bb78395189fc17335f1355f11b",
+      "sha256": "5e5b5bddddf742bbc2fd39fa9868ffa96a4b9f26312f8f260813899348eb747e",
       "popular": true,
       "category": "productivity",
       "tabletPriority": 82
@@ -1407,7 +1407,7 @@
       "webHosts": [
         "notion.so"
       ],
-      "sha256": "5dd8f2bae0e3b37737481dca81f243504e4af90aa667df7a2e1d0c1ee383615c",
+      "sha256": "b1ad03c1fa9d1b15a04749db3b43dc528104e181e94c3065a1b85e678ad93f55",
       "popular": true,
       "category": "productivity",
       "tabletPriority": 82
@@ -1604,7 +1604,7 @@
       "webHosts": [
         "opera.com"
       ],
-      "sha256": "177828e108b1a34481e66f4f2dd2af30683ad7c844cb925acd0849866770aea0",
+      "sha256": "f4dfd46cb0574ead9362b92677bb9e23808ca613d8ecbcba67b23cd3bcbdbf82",
       "popular": true,
       "category": "productivity",
       "tabletPriority": 82
@@ -1622,7 +1622,7 @@
       "webHosts": [
         "photos.google.com"
       ],
-      "sha256": "184e812050197f8774ef4941871080fb897bef73bcb23f3a71db8d694fd310be",
+      "sha256": "1eae3a75e18c450651eeabcb0472ad85805fb5edb2c950134f98bfaa0a2c2bb4",
       "popular": true,
       "category": "creativity",
       "tabletPriority": 92
@@ -1640,7 +1640,7 @@
       "webHosts": [
         "keep.google.com"
       ],
-      "sha256": "5b900b57ed0d7718c692227990cc5d94fb996d6340c7b911df79c14710a737cb",
+      "sha256": "09948188b58a6c9ce5440884ba8d8c8a140e9bc4efdb38b09031987f0a5cd2a5",
       "popular": true,
       "category": "productivity",
       "tabletPriority": 82
@@ -1658,7 +1658,7 @@
       "webHosts": [
         "meet.google.com"
       ],
-      "sha256": "509b70a53a68ef10c37a2813a293fac44dee9fca148e52acf3c3035a9f5c24cb",
+      "sha256": "08664afc9cba2c6dd6ee110a81e707681a59d05c5ae6dbc0b63eab73ff2d4ea4",
       "popular": true,
       "category": "productivity",
       "tabletPriority": 82
@@ -1913,7 +1913,7 @@
         "Calendar"
       ],
       "webHosts": [],
-      "sha256": "f3dd348d59ee5562f871c359e141b87a64489cb81df2ea4789e7eaae20150f60",
+      "sha256": "9751ce79231be243d60c59ee8ba8024233ae28b73fc8f274480012bf64591b2b",
       "popular": true,
       "category": "productivity",
       "tabletPriority": 82
@@ -1982,7 +1982,7 @@
         "Clock"
       ],
       "webHosts": [],
-      "sha256": "620f71eddf8f4be32fcaf207e39b52af5033d6b55f489f7e329c3c2ecf23c45c",
+      "sha256": "5024c6ebeab8005b01e96beaacb2d50d48ac4be8e8b300cdac668dd8cdbc9344",
       "popular": false,
       "category": "utilities",
       "tabletPriority": 35
@@ -2015,7 +2015,7 @@
         "Contacts"
       ],
       "webHosts": [],
-      "sha256": "956e584287fc0ef2fb08dd2243513d87b83679f781c610e744e49c9f0583c504",
+      "sha256": "759b360650beba527edf41613244811431b719c0a1fa064563ad5a46d0a29f5d",
       "popular": true,
       "category": "communication",
       "tabletPriority": 75
@@ -2068,7 +2068,7 @@
       "webHosts": [
         "drive.google.com"
       ],
-      "sha256": "4c5abcd2815b06d1aa4b3707351760b6ce7bc091eb27bf3ac3dfd4126a1737e2",
+      "sha256": "9721a95202a8a39ffe7b5612167a5bf5b48819ebb4c98238bae694064f98a31f",
       "popular": true,
       "category": "productivity",
       "tabletPriority": 82
@@ -2133,7 +2133,7 @@
         "Find Hub"
       ],
       "webHosts": [],
-      "sha256": "afa0205a597389bb9f211afc6c163ddbe82faca73990ce40afbdb8577568380b",
+      "sha256": "60d37e6651ba7d8c87b719446ede9656d8335512934e8ff4292d10aef9dd2bda",
       "popular": true,
       "category": "utilities",
       "tabletPriority": 35
@@ -2168,7 +2168,7 @@
         "mail.google.com",
         "gmail.com"
       ],
-      "sha256": "ccf6438e19b1dde8374c72f71589d0c785732f306a6d3436ffcdd183499a99dc",
+      "sha256": "84e26f29bbc3a77e999f44ecac46903f32ab46f693451d8d859f18053095cd57",
       "popular": true,
       "category": "productivity",
       "tabletPriority": 82
@@ -2319,7 +2319,7 @@
         "Messages"
       ],
       "webHosts": [],
-      "sha256": "7dd0f09da31a9baeaddcd19fa38fec10f2d2ade7056bb82fdf511a92fe859b46",
+      "sha256": "6d912c5d8933c06a991c2fc16acd064b783680e904f816dd06bfabc0703f2e7d",
       "popular": true,
       "category": "communication",
       "tabletPriority": 75
@@ -2368,7 +2368,7 @@
         "Phone"
       ],
       "webHosts": [],
-      "sha256": "606d2f4f5c1838ecf7b72acc6c2a716728e1901a9f74d56898601a3558fe2e4f",
+      "sha256": "e118178b1c610a16ffa9f84ea36baf157103da9a1748f59b66765886d6f7741c",
       "popular": true,
       "category": "communication",
       "tabletPriority": 75
@@ -3203,7 +3203,7 @@
       "category": "creativity",
       "tabletPriority": 93,
       "popular": true,
-      "sha256": "bd6dc818ee536b31d31e5f0de5a76a85f73bdeb6bfa27fbf411838b86abc4689"
+      "sha256": "79364d596a37aa9656bd510b172748e1491c725df45a88cd079adca63a3f72b9"
     },
     {
       "id": "filmora",
@@ -3652,7 +3652,7 @@
       "category": "productivity",
       "tabletPriority": 84,
       "popular": true,
-      "sha256": "e0e07b85e435a92c7bed783b541f66248cadaee3f4d86013821055e857800545"
+      "sha256": "41ae17b72df8a9a3db20697a4145ce4313f82c465beea6a4e7c63ace72474f99"
     },
     {
       "id": "google-sheets",
@@ -3666,7 +3666,7 @@
       "category": "productivity",
       "tabletPriority": 84,
       "popular": true,
-      "sha256": "fd24317066fd03a6c12ed12ee0ecbb0e14071043ab745275f3bce8236455f15c"
+      "sha256": "edcc6d2a9ba3561dd445ee0dc3dc570c630f4102d438156730281576bf03a1ce"
     },
     {
       "id": "google-slides",
@@ -3680,7 +3680,7 @@
       "category": "productivity",
       "tabletPriority": 84,
       "popular": true,
-      "sha256": "e83812a7f989e82dd15c6c4b116c5346c0f149500d088ec691b69f8916561613"
+      "sha256": "9fe3b460fa5f9b7206ee9c77a5ee6d22e40922c82375b117f3eca95a7508a7b8"
     },
     {
       "id": "google-classroom",
@@ -5249,7 +5249,7 @@
       "category": "productivity",
       "tabletPriority": 84,
       "popular": true,
-      "sha256": "9e0cf8db814973ade414420477d14ac6912de4f2ea79e831fb55643a4686373b"
+      "sha256": "e66d88c8e04ff38501e208f00ba624a0e5bbd22fdcde6659902f3cc66e959a95"
     },
     {
       "id": "google-scholar",
@@ -7647,7 +7647,7 @@
       "category": "shopping",
       "popular": true,
       "tabletPriority": 75,
-      "sha256": "4c2371051c1b532ae934c659fba707f2b42b9d841e169a87c9ff771c101deb48"
+      "sha256": "420b8d049f8ad47c6246624d8a48595528bddf82f5eb2645aa9cb1bb040e2364"
     },
     {
       "id": "carousell",
@@ -7663,7 +7663,7 @@
       "category": "shopping",
       "popular": true,
       "tabletPriority": 75,
-      "sha256": "9ab13ba1d5e9298c2a121282b1dbca3491c31a93e47f3d90a5ef58da717350ac"
+      "sha256": "cbd9d60e154b0c4c654ecd6fa8efbdcf914ee27524ace2c9df4d221c71932cbe"
     },
     {
       "id": "navi",
@@ -7725,7 +7725,7 @@
       "category": "finance",
       "popular": true,
       "tabletPriority": 75,
-      "sha256": "e69ac8261d332531cbc76de68f8ea344b7457db7c6bc0e1890ccbe73113dcf36"
+      "sha256": "138862ce96e750be4d3f6c3c6cd834f30da49ce8bb62ca77dcf9958d5c48c4f3"
     },
     {
       "id": "idfc-first-bank",
@@ -7966,14 +7966,15 @@
       "name": "Weave",
       "file": "images/weave.webp",
       "packages": [
-        "com.weave.notebook"
+        "com.weave.notebook",
+        "com.weave.notebook.debug"
       ],
       "webHosts": [],
       "aliases": [],
       "category": "productivity",
       "tabletPriority": 66,
       "popular": false,
-      "sha256": "3da3022ca15b1c3f2febf212c314485213f438205e7e601e0b73edba517c25b7"
+      "sha256": "0f9520e05c370ff5951dc40a0237a5a6f5cfcf7e50c4534a831cd172a6f709e0"
     },
     {
       "id": "wwrecorder",
@@ -7987,7 +7988,7 @@
       "category": "utilities",
       "tabletPriority": 66,
       "popular": false,
-      "sha256": "e8691e7e4d2bbd4c03ca257e57fea4dd6c621d5d2cb4b37be68bfd7db4aa7b49"
+      "sha256": "70e09da11f92cbf9e60638a0d2a1ea503f1787eef66cb5e5cbc40906a11df2c3"
     }
   ]
 }

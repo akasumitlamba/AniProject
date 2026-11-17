@@ -58,10 +58,6 @@
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Google Translate\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #4285F4, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Google Translate\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
-      "id": "google-meet",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Google Meet\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #FFFFFF, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Google Meet\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
       "id": "brawl-stars",
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Brawl Stars\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #F9CC27, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Brawl Stars\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
@@ -106,10 +102,6 @@
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"GitHub\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #181717, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"GitHub\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
-      "id": "opera",
-      "prompt": "Create one full-bleed 1.62:1 landscape AniHome launcher banner for Opera, using the linked brand artwork as identity reference. Use the complete recognizable app emblem on the left and one readable app name on the right. Preserve recognizable geometry and colors, strong foreground contrast and safe margins. No outer frame, watermark or rounded outer corners."
-    },
-    {
       "id": "microsoft-teams",
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Microsoft Teams\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #6264A7, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Microsoft Teams\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
@@ -136,10 +128,6 @@
     {
       "id": "microsoft-excel",
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Microsoft Excel\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #217346, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Microsoft Excel\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
-      "id": "google-maps",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Google Maps\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #FFFFFF, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Google Maps\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
       "id": "threads",
@@ -202,10 +190,6 @@
       "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 AniHome tablet launcher banner for \"Goodnotes\". Attached image is its genuine official app icon, reproduce the recognizable mark faithfully without invented symbols. Premium clean flat full-bleed brand-color background #FFFFFF, authentic large emblem on left, exact text \"Goodnotes\" in bold highly readable contrasting sans serif on right, balanced layout with 9% safe margins; long names may wrap into two lines. This is a single app banner, no outer border/rounded outer corners/device frame/slogan/watermark/collage or other apps. Preserve official logo identity and color."
     },
     {
-      "id": "google-photos",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Google Photos\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #FFFFFF, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Google Photos\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
       "id": "subway-surfers",
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Subway Surfers\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #F9D034, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Subway Surfers\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
@@ -264,10 +248,6 @@
     {
       "id": "adobe-lightroom",
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Adobe Lightroom\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #001E36, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Adobe Lightroom\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
-      "id": "notion",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Notion\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #FFFFFF, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Notion\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
       "id": "prime-video",
@@ -336,10 +316,6 @@
     {
       "id": "jiomart",
       "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"JioMart\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #008ECC, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"JioMart\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
-    },
-    {
-      "id": "google-keep",
-      "prompt": "Use case: logo-brand. Asset type: AniHome smart-TV launcher app banner. Generate ONE standalone landscape rectangle, aspect ratio 1.62:1. App: \"Google Keep\". Attached image is the genuine current app icon from its official Google Play listing: use it as the identity reference and reproduce its recognizable logo faithfully, do not substitute a guessed logo. Create a polished clean flat banner, full-bleed brand background #FBBC04, generous 9% safe margins. Large crisp authentic emblem on the left and exact text \"Google Keep\" in a bold highly legible sans serif on the right, balanced composition, adapt long names to two lines. Match the app's official colors, use contrasting readable text. No invented symbols, slogans, 3D bevels, outer border, rounded outer corners, device frame, watermark, screenshot, collage, or other apps. This single banner must fit a wide launcher tile."
     },
     {
       "id": "sonyliv",
@@ -592,18 +568,6 @@
     {
       "id": "slack",
       "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"Slack\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #48154B, large recognizable art, balanced safe margins near 9%, bold readable lettering. Let the brand's own geometry, color and shapes determine composition. Aim for confident scale like classic TV app tiles.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
-    },
-    {
-      "id": "google-docs",
-      "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"Google Docs\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #EBF3FF, large recognizable art, balanced safe margins near 9%, bold readable lettering. A large clear emblem or wordmark on a lively but disciplined brand color treatment.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
-    },
-    {
-      "id": "google-sheets",
-      "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"Google Sheets\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #E7F7EC, large recognizable art, balanced safe margins near 9%, bold readable lettering. A large clear emblem or wordmark on a lively but disciplined brand color treatment.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
-    },
-    {
-      "id": "google-slides",
-      "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"Google Slides\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #FFF4D5, large recognizable art, balanced safe margins near 9%, bold readable lettering. A large clear emblem or wordmark on a lively but disciplined brand color treatment.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
     },
     {
       "id": "google-classroom",
@@ -1020,10 +984,6 @@
     {
       "id": "google-fonts",
       "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"Google Fonts\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #F6F7FF, large recognizable art, balanced safe margins near 9%, bold readable lettering. Let the brand's own geometry, color and shapes determine composition. Aim for confident scale like classic TV app tiles.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
-    },
-    {
-      "id": "google-calendar",
-      "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"Google Calendar\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #EFF5FF, large recognizable art, balanced safe margins near 9%, bold readable lettering. A large clear emblem or wordmark on a lively but disciplined brand color treatment.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
     },
     {
       "id": "google-scholar",
@@ -1590,24 +1550,12 @@
       "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"AliExpress\". Use a polished flat and restrained tonal geometry background based on #B92132. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
     },
     {
-      "id": "ikea",
-      "prompt": "Use case: logo-brand. Create one 1.62:1 full-bleed AniHome launcher banner for IKEA. Use the supplied brand identity, with a large, crisp, single IKEA wordmark or integrated brand lockup. Brand palette near #0058A3. Keep an exact, clearly legible name only once. No extra icon repeating a letter or word. Break a long name across two lines at word boundaries only when needed. For illustrated game references, include only genuine game art. Give the tile the graphic scale and bold contrast of streaming home screens. A little brand-specific background depth. No border, square app-icon plate, unrelated logos, slogans or watermark."
-    },
-    {
-      "id": "carousell",
-      "prompt": "Create a standalone 1.62:1 full-bleed AniHome tile. The only foreground is a single large wordmark reading Carousell. Center the wordmark on a #A4172F brand-color field with quiet tonal curves. No characters, objects, icons, letter marks, duplicate text, watermark, or border. Render exact spelling as one clearly readable title."
-    },
-    {
       "id": "navi",
       "prompt": "Create a standalone 1.62:1 full-bleed AniHome tile. The only foreground is a single large wordmark reading Navi. Center the wordmark on a #4C289E brand-color field with quiet tonal curves. No characters, objects, icons, letter marks, duplicate text, watermark, or border. Render exact spelling as one clearly readable title."
     },
     {
       "id": "angel-one",
       "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"Angel One\". Use a polished flat and restrained tonal geometry background based on #225197. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
-    },
-    {
-      "id": "imobile-icici",
-      "prompt": "Render a standalone horizontal 1.62:1 typographic AniHome tile. It features ONLY one line or two centered lines of large custom type reading exactly \"iMobile by ICICI Bank\". Use a polished flat and restrained tonal geometry background based on #9E3520. Graphic, confident spacing. The entire composition is abstract and typographic only. Zero foreground symbols, initials, icons, illustrations, humans, characters, objects, video game art, logos besides the exact name, additional text, mockups, or margins around the tile."
     },
     {
       "id": "idfc-first-bank",
@@ -1726,18 +1674,6 @@
       "prompt": "Create one wide 1.62:1 AniHome launcher banner. Use the supplied official Amazon Alexa app icon as the exact source for the white lowercase alexa wordmark and its matching Amazon smile. Center this single official lockup at an expressive, comfortably readable scale. Extend the icon's cyan-to-deep-ocean blue field to the full rectangular artwork with a smooth restrained gradient. Keep blue margins of at least 12% around the group. The logo and smile are the only graphics. No square frame, extra label, variant spelling, title casing, background shapes, UI, watermark, or extra ornament."
     },
     {
-      "id": "clock",
-      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Clock. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: deep plum fading to muted violet #512967, white dial. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
-    },
-    {
-      "id": "contacts",
-      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Contacts. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: deep teal #126B62, white profile silhouette. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
-    },
-    {
-      "id": "drive",
-      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Drive. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: warm ivory #F6F1E5, original multicolor triangle with graphite label. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
-    },
-    {
       "id": "files",
       "prompt": "Recolor this 1.62:1 AniHome launcher banner for Files. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: deep indigo #30325E, multicolor folder and white name. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
     },
@@ -1758,14 +1694,6 @@
       "prompt": "Recolor this 1.62:1 AniHome launcher banner for Camera. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: dark burgundy #592D42, silver camera and glass lens. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
     },
     {
-      "id": "calendar",
-      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Calendar. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: muted coral #A83C43, white label and original Google calendar symbol. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
-    },
-    {
-      "id": "phone",
-      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Phone. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: emerald green #116A43, clean white handset and wording. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
-    },
-    {
       "id": "settings",
       "prompt": "Recolor this 1.62:1 AniHome launcher banner for Settings. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: graphite #343C47, silver-white gear with a matching dark center. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
     },
@@ -1774,16 +1702,8 @@
       "prompt": "Recolor this 1.62:1 AniHome launcher banner for Support Centre. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: warm deep terracotta #9A482F, white headset and name. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
     },
     {
-      "id": "find-hub",
-      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Find Hub. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: light stone-gray #EAE9E4, original four-color locator symbol with near-black label. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
-    },
-    {
       "id": "smart-manager",
       "prompt": "Recolor this 1.62:1 AniHome launcher banner for Smart Manager. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: muted dark aubergine #4A3452, silver shield and name. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
-    },
-    {
-      "id": "wwrecorder",
-      "prompt": "Create this 1.62:1 AniHome launcher banner for WWRecorder. Use the supplied official app icon as the identity reference. Palette: near-black to dark oxblood, use the reference red globe and video camera emblem as a single emblem without its square frame, set the exact word WWRecorder in one line. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
     }
   ],
   "artworkTreatments": {
@@ -1802,12 +1722,12 @@
     "mobikwik": "Composition using the published brand artwork.",
     "yono-sbi": "lockup",
     "zoom": "lockup",
-    "notion": "text",
+    "notion": "Banner composition using the published brand artwork.",
     "canva": "lockup",
     "indeed": "Composition using the published brand artwork.",
     "apna": "lockup",
     "coursera": "Composition using the published brand artwork.",
-    "opera": "lockup",
+    "opera": "Banner composition using the published brand artwork.",
     "ludo-king": "lockup",
     "concepts": "Individually generated artwork using the app identity reference.",
     "wipro-smart": "Individually generated artwork using the app identity reference.",
@@ -1815,7 +1735,7 @@
     "capcut": "Individual ImageGen composition using the linked brand identity reference.",
     "vn-video-editor": "Individual ImageGen composition using the linked brand identity reference.",
     "inshot": "Individual ImageGen composition using the linked brand identity reference.",
-    "kinemaster": "Composition using the reel emblem from the official app icon.",
+    "kinemaster": "Banner composition using the published brand artwork.",
     "filmora": "Individual ImageGen composition using the linked brand identity reference.",
     "alight-motion": "Individual ImageGen composition using the linked brand identity reference.",
     "picsart": "Individual ImageGen composition using the linked brand identity reference.",
@@ -1846,9 +1766,9 @@
     "todoist": "Individual ImageGen composition using the linked brand identity reference.",
     "trello": "Individual ImageGen composition using the linked brand identity reference.",
     "slack": "Individual ImageGen composition using the linked brand identity reference.",
-    "google-docs": "Individual ImageGen composition using the linked brand identity reference.",
-    "google-sheets": "Individual ImageGen composition using the linked brand identity reference.",
-    "google-slides": "Individual ImageGen composition using the linked brand identity reference.",
+    "google-docs": "Banner composition using the published brand artwork.",
+    "google-sheets": "Banner composition using the published brand artwork.",
+    "google-slides": "Banner composition using the published brand artwork.",
     "google-classroom": "Individual ImageGen composition using the linked brand identity reference.",
     "microsoft-to-do": "Individual ImageGen composition using the linked brand identity reference.",
     "obsidian": "Individual ImageGen composition using the linked brand identity reference.",
@@ -1955,7 +1875,7 @@
     "deviantart": "Individual ImageGen composition using the linked brand identity reference.",
     "artstation": "Individual ImageGen composition using the linked brand identity reference.",
     "google-fonts": "Individual ImageGen composition using the linked brand identity reference.",
-    "google-calendar": "Individual ImageGen composition using the linked brand identity reference.",
+    "google-calendar": "Banner composition using the published brand artwork.",
     "google-scholar": "Individual ImageGen composition using the linked brand identity reference.",
     "google-trends": "Individual ImageGen composition using the linked brand identity reference.",
     "google-arts-culture": "Individual ImageGen composition using the linked brand identity reference.",
@@ -2112,12 +2032,12 @@
     "temu": "Individually generated ImageGen banner.",
     "aliexpress": "Individually generated ImageGen banner.",
     "walmart": "Official wordmark composition",
-    "ikea": "Individually generated ImageGen banner.",
-    "carousell": "Individually generated ImageGen banner.",
+    "ikea": "Banner composition using the published brand artwork.",
+    "carousell": "Banner composition using the published brand artwork.",
     "navi": "Individually generated ImageGen banner.",
     "angel-one": "Individually generated ImageGen banner.",
     "indmoney": "Individually generated artwork using the app identity reference.",
-    "imobile-icici": "Individually generated ImageGen banner.",
+    "imobile-icici": "Banner composition using the published brand artwork.",
     "idfc-first-bank": "Individually generated ImageGen banner.",
     "bajaj-finance": "Individually generated ImageGen banner.",
     "kotak811": "Individually generated ImageGen banner.",
@@ -2137,21 +2057,28 @@
     "bhim": "Composition using the published brand artwork.",
     "zerodha-kite": "Individually generated artwork using the app identity reference.",
     "zepto": "Individually generated artwork using the app identity reference.",
-    "clock": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
-    "contacts": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
-    "drive": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "clock": "Clean system artwork with a restrained palette.",
+    "contacts": "Banner composition using the published brand artwork.",
+    "drive": "Banner composition using the published brand artwork.",
     "files": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
     "files-by-google": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
     "file-manager": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
     "calculator": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
     "camera": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
-    "calendar": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
-    "phone": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "calendar": "Banner composition using the published brand artwork.",
+    "phone": "Banner composition using the published brand artwork.",
     "settings": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
     "support-centre": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
-    "find-hub": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "find-hub": "Banner composition using the published brand artwork.",
     "smart-manager": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
-    "weave": "ImageGen from the project icon.",
-    "wwrecorder": "ImageGen from the project icon."
+    "weave": "Banner composition using the published brand artwork.",
+    "wwrecorder": "Banner composition using the published brand artwork.",
+    "anihome-settings": "Clean system artwork with a restrained palette.",
+    "messages": "Banner composition using the published brand artwork.",
+    "google-maps": "Banner composition using the published brand artwork.",
+    "google-photos": "Banner composition using the published brand artwork.",
+    "google-keep": "Banner composition using the published brand artwork.",
+    "google-meet": "Banner composition using the published brand artwork.",
+    "gmail": "Banner composition using the published brand artwork."
   }
 }

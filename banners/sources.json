@@ -113,7 +113,9 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.maps&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/B8pdO_2K5nBsF0g1h6dKwV_jQFLP-XombGDEQGtJT-mw1EUKCKJpa9lBGCF4rP_MwCsozSXyvI3z19g9R3J4=s0-br30",
     "verifiedPlayTitle": "Google Maps - Apps on Google Play",
-    "brandColor": "#FFFFFF"
+    "brandColor": "#F1F5ED",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/B8pdO_2K5nBsF0g1h6dKwV_jQFLP-XombGDEQGtJT-mw1EUKCKJpa9lBGCF4rP_MwCsozSXyvI3z19g9R3J4=s0-br30",
+    "artworkTreatment": "Banner composition using the published brand artwork."
   },
   {
     "id": "bing",
@@ -641,9 +643,9 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=notion.id&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/-GY1Xv9hhhK_RFJCCb-rvDX8OMR8Fj68AgcRIFcD8zIXlOA8pG-L-cuOJbgSs_U6GGGyGs8qiiQsjIfEBazE8g=s0-br30",
     "verifiedPlayTitle": "Notion: AI Workspace - Apps on Google Play",
-    "brandColor": "#FFFFFF",
-    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/-GY1Xv9hhhK_RFJCCb-rvDX8OMR8Fj68AgcRIFcD8zIXlOA8pG-L-cuOJbgSs_U6GGGyGs8qiiQsjIfEBazE8g=s0-br30",
-    "artworkTreatment": "text"
+    "brandColor": "#F8F7F4",
+    "artworkReferenceUrl": "https://www.notion.com/product/calendar",
+    "artworkTreatment": "Banner composition using the published brand artwork."
   },
   {
     "id": "canva",
@@ -736,12 +738,12 @@
   {
     "id": "opera",
     "name": "Opera",
-    "sourceUrl": "https://play.google.com/store/apps/details?id=com.opera.browser&hl=en",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.opera.browser&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/-Bm0-kPKh4ehWGmA8lndXL-JeYCVOcG2-vxaekD0yyz7gR3f9GxQU4psTQFnM8MgR0g2KfFF1c5k0ysI7B-2Aw=s0-br30",
     "verifiedPlayTitle": "Opera: AI browser with VPN - Apps on Google Play",
-    "brandColor": "#FF1B2D",
+    "brandColor": "#F9F8F4",
     "artworkReferenceUrl": "https://cdn-production-opera-website.operacdn.com/staticfiles/assets/images/ds-icons/logo/opera-logo-text-flat-2026.module.c7a56b93b7e7.svg",
-    "artworkTreatment": "lockup"
+    "artworkTreatment": "Banner composition using the published brand artwork."
   },
   {
     "id": "google-photos",
@@ -749,7 +751,9 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.photos&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/kErBTF4VcGwhtKbCr80Bs2R1lNZiYkHbKcf1i3ZF6dg_5LqDAlCI4wU-nzwvo7PAbxeBXM_tv1hc11gr4aIIW-Q=s0-br30",
     "verifiedPlayTitle": "Google Photos - Apps on Google Play",
-    "brandColor": "#FFFFFF"
+    "brandColor": "#FFF4E8",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/kErBTF4VcGwhtKbCr80Bs2R1lNZiYkHbKcf1i3ZF6dg_5LqDAlCI4wU-nzwvo7PAbxeBXM_tv1hc11gr4aIIW-Q=s0-br30",
+    "artworkTreatment": "Banner composition using the published brand artwork."
   },
   {
     "id": "google-keep",
@@ -757,7 +761,9 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.keep&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/0AM0MfDO-MWUAKwg8vpbftm7GqvEW1JfLGHCgwsgIemF6hMW61XOVnnNDHCGeRMiYZtVaxV2M-AYoP_zMoJt6w=s0-br30",
     "verifiedPlayTitle": "Google Keep - Notes and lists - Apps on Google Play",
-    "brandColor": "#FBBC04"
+    "brandColor": "#FFF4D4",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/0AM0MfDO-MWUAKwg8vpbftm7GqvEW1JfLGHCgwsgIemF6hMW61XOVnnNDHCGeRMiYZtVaxV2M-AYoP_zMoJt6w=s0-br30",
+    "artworkTreatment": "Banner composition using the published brand artwork."
   },
   {
     "id": "google-meet",
@@ -765,7 +771,9 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.tachyon&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/G7KKIhzS9ZKa5iCVAkt1P8vXvVWPbaV9JjkMsgb4BcEjqov0TysngtuJ4jE17DYhi4wblu4UXJDWjr7SYgnZ6A=s0-br30",
     "verifiedPlayTitle": "Google Meet - Apps on Google Play",
-    "brandColor": "#FFFFFF"
+    "brandColor": "#FBF7EC",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/G7KKIhzS9ZKa5iCVAkt1P8vXvVWPbaV9JjkMsgb4BcEjqov0TysngtuJ4jE17DYhi4wblu4UXJDWjr7SYgnZ6A=s0-br30",
+    "artworkTreatment": "Banner composition using the published brand artwork."
   },
   {
     "id": "google-translate",
@@ -883,8 +891,9 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.calendar&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/vEoqLbT_QkYcEaawWBRc22N6i98OUtOUpM1LmKdVs_xx7lCsUyFfV0ZiqoUXjMijUteiBhhN4K5MpoF96FRNOg=s0-br30",
     "verifiedPlayTitle": "Google Calendar - Apps on Google Play",
-    "brandColor": "#18202D",
-    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
+    "brandColor": "#E7F0FF",
+    "artworkTreatment": "Banner composition using the published brand artwork.",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/vEoqLbT_QkYcEaawWBRc22N6i98OUtOUpM1LmKdVs_xx7lCsUyFfV0ZiqoUXjMijUteiBhhN4K5MpoF96FRNOg=s0-br30"
   },
   {
     "id": "camera",
@@ -912,12 +921,12 @@
   {
     "id": "clock",
     "name": "Clock",
-    "sourceUrl": "https://play.google.com/store/apps/details?id=com.android.deskclock&hl=en&gl=IN",
-    "brandColor": "#18202D",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.deskclock&hl=en&gl=IN",
+    "brandColor": "#284744",
     "packageSources": [
       "https://raw.githubusercontent.com/LineageOS/android_packages_apps_DeskClock/lineage-24.0/AndroidManifest.xml"
     ],
-    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
+    "artworkTreatment": "Clean system artwork with a restrained palette."
   },
   {
     "id": "cometin",
@@ -933,11 +942,12 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.contacts&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/pQFpAZw7ZrQiRrG9wX3_PkyNgvlmeSUes4-XIGPN6z81IBxfcLJ6X0-u-j3ILwW995heg3L2qHZazJA94r-ONQ=s0-br30",
     "verifiedPlayTitle": "Contacts - Apps on Google Play",
-    "brandColor": "#18202D",
+    "brandColor": "#DCEBFF",
     "packageSources": [
       "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Contacts/lineage-24.0/AndroidManifest.xml"
     ],
-    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
+    "artworkTreatment": "Banner composition using the published brand artwork.",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/Ojx9mA-MvK6RMsiLR9RqNuXldBBlFLGCBakylruyouG9L4GDadjgO4-T9CpbHpo4N7Y7YshMkcgdtPH48YFgSw=s0-br30"
   },
   {
     "id": "crunchyroll",
@@ -960,8 +970,9 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.docs&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/chc-Fx3Qi3BisTZw1aOteYK_XkMHUiXKRbX2Hc8shyFI8pYt7DcyUPzVwLGJKIeKCKDD6nFVhEtUrIaEyzcnmA=s0-br30",
     "verifiedPlayTitle": "Google Drive - Apps on Google Play",
-    "brandColor": "#18202D",
-    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
+    "brandColor": "#F6F1E5",
+    "artworkTreatment": "Banner composition using the published brand artwork.",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/chc-Fx3Qi3BisTZw1aOteYK_XkMHUiXKRbX2Hc8shyFI8pYt7DcyUPzVwLGJKIeKCKDD6nFVhEtUrIaEyzcnmA=s0-br30"
   },
   {
     "id": "file-manager",
@@ -995,8 +1006,9 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.adm&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/i0_6dO_MWC1nkjIMdh3uPXrhbkxfAr5H5Nb7YIynV0W8kGhX2BWb0hH2gm-2Fp21CeEx6ZonAnwlkPDYOIyEAVs=s0-br30",
     "verifiedPlayTitle": "Google’s Find Hub - Apps on Google Play",
-    "brandColor": "#18202D",
-    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
+    "brandColor": "#F1F4F1",
+    "artworkTreatment": "Banner composition using the published brand artwork.",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/i0_6dO_MWC1nkjIMdh3uPXrhbkxfAr5H5Nb7YIynV0W8kGhX2BWb0hH2gm-2Fp21CeEx6ZonAnwlkPDYOIyEAVs=s0-br30"
   },
   {
     "id": "gallery",
@@ -1010,7 +1022,9 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.gm&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/c6KD_8-GvnGRJA4lRQ4y5YnUa3-LOeYAS7ubw1jWyB9bmr6Kj6zzRvh2A5WBB-Vd3e6zhElmhDv07fCJx2Fc=s0-br30",
     "verifiedPlayTitle": "Gmail - Apps on Google Play",
-    "brandColor": "#18202D"
+    "brandColor": "#FFF3F1",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/c6KD_8-GvnGRJA4lRQ4y5YnUa3-LOeYAS7ubw1jWyB9bmr6Kj6zzRvh2A5WBB-Vd3e6zhElmhDv07fCJx2Fc=s0-br30",
+    "artworkTreatment": "Banner composition using the published brand artwork."
   },
   {
     "id": "google-play-store",
@@ -1075,10 +1089,12 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.messaging&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/Mgukz1fq2stUYX_lQf79gmMeDzNvRCu5eobmiJwNkXl4riNY6HZ3VB-HRW5QciwEuLnFyk_ZmHumvn8RJ5Um=s0-br30",
     "verifiedPlayTitle": "Google Messages - Apps on Google Play",
-    "brandColor": "#18202D",
+    "brandColor": "#E7F0FF",
     "packageSources": [
       "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Messaging/lineage-24.0/AndroidManifest.xml"
-    ]
+    ],
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/Ndfiaudmk4fiveYNm5Gsnso8gFcvLeskQUdwgh9yNnOghIH0LN-Hth_yAMsY2TxN1u9jleiOX6Y81Wh5Vy5M=s0-br30",
+    "artworkTreatment": "Banner composition using the published brand artwork."
   },
   {
     "id": "music",
@@ -1098,11 +1114,12 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.dialer&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/b0ipxfvtgDE5kT8PscD8hggLVWrP5Zodu2EwIPN0ub-3UBJ7CosIHCP0V9pSjV-hPdXQjd7u7JP2gGMrfSMZmA=s0-br30",
     "verifiedPlayTitle": "Phone by Google - Apps on Google Play",
-    "brandColor": "#18202D",
+    "brandColor": "#E3F2EB",
     "packageSources": [
       "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Dialer/lineage-24.0/AndroidManifest.xml"
     ],
-    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
+    "artworkTreatment": "Banner composition using the published brand artwork.",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/Q8H3qzqdVjWtyUGYAK6DoDJBYbtSmfmnIPfB5mRKRq01aWiIVRIxvlgDx6mbvkzanEczMTWL_7Ak0sLwe5GCEA=s0-br30"
   },
   {
     "id": "proton-pass",
@@ -1484,10 +1501,10 @@
     "name": "KineMaster",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.nexstreaming.app.kinemasterfree&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/Jc_gKnGxM5p4_FuWQ_v2k6HlMaCcExeIDt--PkcWrLj_VQ2OyMPhDaycC1s9wG3yOwjviVA4M1go0O-foAx0=s0-br30",
-    "artworkTreatment": "Composition using the reel emblem from the official app icon.",
+    "artworkTreatment": "Banner composition using the published brand artwork.",
     "verifiedPlayTitle": "KineMaster - AI Video Editor - Apps on Google Play",
-    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/Jc_gKnGxM5p4_FuWQ_v2k6HlMaCcExeIDt--PkcWrLj_VQ2OyMPhDaycC1s9wG3yOwjviVA4M1go0O-foAx0=s0-br30",
-    "brandColor": "#F92D45"
+    "artworkReferenceUrl": "https://www-resource.kinemaster.com/images/logo-v3.png",
+    "brandColor": "#27292F"
   },
   {
     "id": "filmora",
@@ -1734,24 +1751,30 @@
     "name": "Google Docs",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.docs.editors.docs&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/fzQ8TFqWZQ34NVL5veaXOFtymoGSVqI5YisBw3sgl6mc0AMKAGgKw5st2YMiSzTanSWbCDrmLipI7bD_epry=s0-br30",
-    "artworkTreatment": "Individual ImageGen composition using the linked brand identity reference.",
-    "verifiedPlayTitle": "Google Docs - Apps on Google Play"
+    "artworkTreatment": "Banner composition using the published brand artwork.",
+    "verifiedPlayTitle": "Google Docs - Apps on Google Play",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/fzQ8TFqWZQ34NVL5veaXOFtymoGSVqI5YisBw3sgl6mc0AMKAGgKw5st2YMiSzTanSWbCDrmLipI7bD_epry=s0-br30",
+    "brandColor": "#EAF2FF"
   },
   {
     "id": "google-sheets",
     "name": "Google Sheets",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.docs.editors.sheets&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/NjfIWrzr4KXjVVUpihoWNJ1ZFfDBqjr3l4lsrbXG9fcYNJlpiH4wCxFXrQsgqMt7fXgKCmk33mvI2arRyzo5hGY=s0-br30",
-    "artworkTreatment": "Individual ImageGen composition using the linked brand identity reference.",
-    "verifiedPlayTitle": "Google Sheets - Apps on Google Play"
+    "artworkTreatment": "Banner composition using the published brand artwork.",
+    "verifiedPlayTitle": "Google Sheets - Apps on Google Play",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/NjfIWrzr4KXjVVUpihoWNJ1ZFfDBqjr3l4lsrbXG9fcYNJlpiH4wCxFXrQsgqMt7fXgKCmk33mvI2arRyzo5hGY=s0-br30",
+    "brandColor": "#E7F3E8"
   },
   {
     "id": "google-slides",
     "name": "Google Slides",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.docs.editors.slides&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/xqxFEBjrkpXc_RtE9sPfOEftQmPS0KhFg3IHWyaYVS243dIEbQArz1xOhPgfF_s1NCHpVNBPeb5ykWU_LqyUDw=s0-br30",
-    "artworkTreatment": "Individual ImageGen composition using the linked brand identity reference.",
-    "verifiedPlayTitle": "Google Slides - Apps on Google Play"
+    "artworkTreatment": "Banner composition using the published brand artwork.",
+    "verifiedPlayTitle": "Google Slides - Apps on Google Play",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/xqxFEBjrkpXc_RtE9sPfOEftQmPS0KhFg3IHWyaYVS243dIEbQArz1xOhPgfF_s1NCHpVNBPeb5ykWU_LqyUDw=s0-br30",
+    "brandColor": "#FFF0C8"
   },
   {
     "id": "google-classroom",
@@ -2562,9 +2585,11 @@
   {
     "id": "google-calendar",
     "name": "Google Calendar",
-    "sourceUrl": "https://calendar.google.com/",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.calendar&hl=en&gl=IN",
     "referenceSourceUrl": "https://www.google.com/s2/favicons?domain=calendar.google.com&sz=128",
-    "artworkTreatment": "Individual ImageGen composition using the linked brand identity reference."
+    "artworkTreatment": "Banner composition using the published brand artwork.",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/vEoqLbT_QkYcEaawWBRc22N6i98OUtOUpM1LmKdVs_xx7lCsUyFfV0ZiqoUXjMijUteiBhhN4K5MpoF96FRNOg=s0-br30",
+    "brandColor": "#E7F0FF"
   },
   {
     "id": "google-scholar",
@@ -3866,19 +3891,21 @@
     "id": "ikea",
     "name": "IKEA",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.ingka.ikea.app&hl=en&gl=IN",
-    "brandColor": "#0058A3",
-    "artworkTreatment": "Individually generated ImageGen banner.",
+    "brandColor": "#0058a3",
+    "artworkTreatment": "Banner composition using the published brand artwork.",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/_N3NNenXYjsa8DyXNixRtrCeNmW2p5F5Kk_vSkMUc-TJek2dg9xWGqUwm9OavAqTlAKaY5S2HluK87mKIQL1=s0-br30",
-    "verifiedPlayTitle": "IKEA - Apps on Google Play"
+    "verifiedPlayTitle": "IKEA - Apps on Google Play",
+    "artworkReferenceUrl": "https://www.ikea.com/global/assets/logos/brand/ikea.svg"
   },
   {
     "id": "carousell",
     "name": "Carousell",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.thecarousell.Carousell&hl=en&gl=IN",
-    "brandColor": "#A4172F",
-    "artworkTreatment": "Individually generated ImageGen banner.",
+    "brandColor": "#FFF0EF",
+    "artworkTreatment": "Banner composition using the published brand artwork.",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/KiDT3IYa32__A8Wakwp-PqRHMcilhLFBjnK776-g4RKzXAZZQ82GcHKDne348APwmERN-rqh0OnmEFxdKFyl6w=s0-br30",
-    "verifiedPlayTitle": "Carousell: Sell and Buy - Apps on Google Play"
+    "verifiedPlayTitle": "Carousell: Sell and Buy - Apps on Google Play",
+    "artworkReferenceUrl": "https://play-lh.googleusercontent.com/KiDT3IYa32__A8Wakwp-PqRHMcilhLFBjnK776-g4RKzXAZZQ82GcHKDne348APwmERN-rqh0OnmEFxdKFyl6w=s0-br30"
   },
   {
     "id": "navi",
@@ -3912,10 +3939,11 @@
     "id": "imobile-icici",
     "name": "iMobile by ICICI Bank",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.csam.icici.bank.imobile&hl=en&gl=IN",
-    "brandColor": "#9E3520",
-    "artworkTreatment": "Individually generated ImageGen banner.",
+    "brandColor": "#9E371B",
+    "artworkTreatment": "Banner composition using the published brand artwork.",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/dmco3u7SKC9ldQVrGknBkeNeaMUVYAcWzo1hNtb4AbxIcR_EP-0drTWvDhi3C_wC7ul5oynYpKJBVZhKr4GCAA=s0-br30",
-    "verifiedPlayTitle": "iMobile: Loan, Cards & Banking - Apps on Google Play"
+    "verifiedPlayTitle": "iMobile: Loan, Cards & Banking - Apps on Google Play",
+    "artworkReferenceUrl": "https://www.icicibank.com/content/dam/icicibank-revamp/images/icici-logo/icici-header-logo.png"
   },
   {
     "id": "idfc-first-bank",
@@ -4065,13 +4093,24 @@
     "name": "Weave",
     "sourceUrl": "https://github.com/akasumitlamba/Weave",
     "referenceSourceUrl": "https://github.com/akasumitlamba/Weave/blob/main/app/src/main/res/drawable/ic_launcher_foreground.xml",
-    "artworkTreatment": "ImageGen from the project icon."
+    "artworkTreatment": "Banner composition using the published brand artwork.",
+    "artworkReferenceUrl": "https://github.com/akasumitlamba/Weave/blob/1a9c53ac42f765d0d98a9b413ccd82401ce2b167/assets/branding/weave-owl.svg",
+    "brandColor": "#1D302A"
   },
   {
     "id": "wwrecorder",
     "name": "WWRecorder",
     "sourceUrl": "https://akasumitlamba.github.io/WWRecorder/",
-    "referenceSourceUrl": "https://github.com/akasumitlamba/WWRecorder/blob/main/app/icon.ico",
-    "artworkTreatment": "ImageGen from the project icon."
+    "referenceSourceUrl": "https://akasumitlamba.github.io/WWRecorder/icons/icon.png",
+    "artworkTreatment": "Banner composition using the published brand artwork.",
+    "artworkReferenceUrl": "https://akasumitlamba.github.io/WWRecorder/",
+    "wordmarkSourceUrl": "https://akasumitlamba.github.io/WWRecorder/icons/wwrecorder.png",
+    "brandColor": "#130F14"
+  },
+  {
+    "id": "anihome-settings",
+    "name": "AniHome Settings",
+    "brandColor": "#263B42",
+    "artworkTreatment": "Clean system artwork with a restrained palette."
   }
 ]
