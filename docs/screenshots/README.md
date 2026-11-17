@@ -1,12 +1,16 @@
 # Product screenshots
 
-These PNGs are embedded using relative links in the repository README so GitHub can display them for repository members.
+Images embedded in the repository README. WebP files are resized for the page; keep them small.
 
-| File | Product and source |
-| --- | --- |
-| `anihome-tablet.png` | AniHome 0.8.0 Android 11 emulator capture: sample default tiles, system wallpaper and landscape control rail. |
-| `anibrave-vertical-tabs.png` | AniBrave vertical-tabs repair (code612 source) Android 11 emulator capture: matching Brave 1.97.56 x86 review engine, normal browser and local fixture pages. The released APK is ARM64. |
+| File | What it shows | Source |
+| --- | --- | --- |
+| `anihome-tablet-home.webp` | AniHome 1.1.0 Home screen with banners and the side dock | Android 10 tablet |
+| `anihome-tablet-panel.webp` | AniHome 1.1.0 notification panel and Control Center | Android 10 tablet |
+| `anihome-phone-home.webp` | AniHome 1.1.0 Home screen with the bottom dock | Android phone |
+| `anihome-phone-banner-store.webp` | AniHome 1.1.0 banner store | Android 11 phone emulator |
+| `anihome-wallpaper-editor.webp` | AniHome 1.1.0 wallpaper editor with portrait and landscape frames | Android 11 phone emulator |
+| `anihome-settings.webp` | AniHome 1.1.0 Settings | Android 11 phone emulator |
+| `anihome-tablet.png` | AniHome 0.8.0 with sample tiles (earlier capture) | Android 11 emulator |
+| `anibrave-vertical-tabs.png` | AniBrave vertical tabs with local fixture pages | Android 11 emulator |
 
-Added 17 October 2026. These are actual emulator captures, not mockups or physical-tablet acceptance evidence. They contain no personal browsing history, account details or personal notifications.
-
-When updating a screenshot, use a clean fixture profile, check its content, preserve the filename (or update its README link), and record the app version and capture environment here. Keep private diagnostics and personal-device captures out of this folder.
+Device captures were checked before publishing: they show installed apps and system notifications only, with no personal accounts, messages, browsing or location. When adding a screenshot, use the same check, keep personal data and third-party video artwork out, and record it here.
