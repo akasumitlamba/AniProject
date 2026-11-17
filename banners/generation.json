@@ -1724,6 +1724,66 @@
     {
       "id": "amazon-alexa",
       "prompt": "Create one wide 1.62:1 AniHome launcher banner. Use the supplied official Amazon Alexa app icon as the exact source for the white lowercase alexa wordmark and its matching Amazon smile. Center this single official lockup at an expressive, comfortably readable scale. Extend the icon's cyan-to-deep-ocean blue field to the full rectangular artwork with a smooth restrained gradient. Keep blue margins of at least 12% around the group. The logo and smile are the only graphics. No square frame, extra label, variant spelling, title casing, background shapes, UI, watermark, or extra ornament."
+    },
+    {
+      "id": "clock",
+      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Clock. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: deep plum fading to muted violet #512967, white dial. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
+    },
+    {
+      "id": "contacts",
+      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Contacts. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: deep teal #126B62, white profile silhouette. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
+    },
+    {
+      "id": "drive",
+      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Drive. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: warm ivory #F6F1E5, original multicolor triangle with graphite label. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
+    },
+    {
+      "id": "files",
+      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Files. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: deep indigo #30325E, multicolor folder and white name. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
+    },
+    {
+      "id": "files-by-google",
+      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Files by Google. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: soft pale mint #E8F2E3, original multicolor file mark with dark slate text. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
+    },
+    {
+      "id": "file-manager",
+      "prompt": "Recolor this 1.62:1 AniHome launcher banner for File Manager. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: muted saddle brown #69432D, golden folder and white name. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
+    },
+    {
+      "id": "calculator",
+      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Calculator. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: charcoal slate #35363C, pale calculator face and warm orange key. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
+    },
+    {
+      "id": "camera",
+      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Camera. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: dark burgundy #592D42, silver camera and glass lens. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
+    },
+    {
+      "id": "calendar",
+      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Calendar. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: muted coral #A83C43, white label and original Google calendar symbol. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
+    },
+    {
+      "id": "phone",
+      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Phone. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: emerald green #116A43, clean white handset and wording. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
+    },
+    {
+      "id": "settings",
+      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Settings. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: graphite #343C47, silver-white gear with a matching dark center. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
+    },
+    {
+      "id": "support-centre",
+      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Support Centre. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: warm deep terracotta #9A482F, white headset and name. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
+    },
+    {
+      "id": "find-hub",
+      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Find Hub. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: light stone-gray #EAE9E4, original four-color locator symbol with near-black label. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
+    },
+    {
+      "id": "smart-manager",
+      "prompt": "Recolor this 1.62:1 AniHome launcher banner for Smart Manager. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: muted dark aubergine #4A3452, silver shield and name. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
+    },
+    {
+      "id": "wwrecorder",
+      "prompt": "Create this 1.62:1 AniHome launcher banner for WWRecorder. Use the supplied official app icon as the identity reference. Palette: near-black to dark oxblood, use the reference red globe and video camera emblem as a single emblem without its square frame, set the exact word WWRecorder in one line. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
     }
   ],
   "artworkTreatments": {
@@ -2076,6 +2136,22 @@
     "geometry-dash-lite": "Individually generated ImageGen banner.",
     "bhim": "Composition using the published brand artwork.",
     "zerodha-kite": "Individually generated artwork using the app identity reference.",
-    "zepto": "Individually generated artwork using the app identity reference."
+    "zepto": "Individually generated artwork using the app identity reference.",
+    "clock": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "contacts": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "drive": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "files": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "files-by-google": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "file-manager": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "calculator": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "camera": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "calendar": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "phone": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "settings": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "support-centre": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "find-hub": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "smart-manager": "ImageGen from the original system banner, preserving the icon and label with a new palette.",
+    "weave": "ImageGen from the project icon.",
+    "wwrecorder": "ImageGen from the project icon."
   }
 }

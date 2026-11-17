@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updated": "2026-11-16",
+  "updated": "2026-11-17",
   "curation": "Mainstream Android apps, tablet utilities, and popular global and India-relevant sites for pinned shortcuts",
   "entries": [
     {
@@ -1897,7 +1897,7 @@
         "Calculator"
       ],
       "webHosts": [],
-      "sha256": "6921d1f5fe1915ea7677be6a0269771569584914fdbe3224c05ea83079c73b46",
+      "sha256": "3aaad0716a8e5545ed124881b52afa3fbffdad68cccf040e4046002b010b037e",
       "popular": false,
       "category": "utilities",
       "tabletPriority": 35
@@ -1913,7 +1913,7 @@
         "Calendar"
       ],
       "webHosts": [],
-      "sha256": "7dfc9e564f7228c9bbc831ba283751a46fa38f1bd24f08619903feac361ccc25",
+      "sha256": "f3dd348d59ee5562f871c359e141b87a64489cb81df2ea4789e7eaae20150f60",
       "popular": true,
       "category": "productivity",
       "tabletPriority": 82
@@ -1929,7 +1929,7 @@
         "Camera"
       ],
       "webHosts": [],
-      "sha256": "cedd65e68c9c1f6a63311a4c7ec9d865f5b70679f167f3bf0eb9e9a0541c5f2f",
+      "sha256": "78a18a7c030fdcab3e2adc2791c8ed93bdbe01fd441e74820e081d2610a74a5f",
       "popular": false,
       "category": "creativity",
       "tabletPriority": 92
@@ -1982,7 +1982,7 @@
         "Clock"
       ],
       "webHosts": [],
-      "sha256": "bb4dbd54cc1a8f3261166fa7af42755c6bc9cc26421a4a641b1191ae862538c2",
+      "sha256": "620f71eddf8f4be32fcaf207e39b52af5033d6b55f489f7e329c3c2ecf23c45c",
       "popular": false,
       "category": "utilities",
       "tabletPriority": 35
@@ -2015,7 +2015,7 @@
         "Contacts"
       ],
       "webHosts": [],
-      "sha256": "83213eb846b976a3f30cff51a6ac737d4615bd2f81615b5b8ab5ca2c48ae61cf",
+      "sha256": "956e584287fc0ef2fb08dd2243513d87b83679f781c610e744e49c9f0583c504",
       "popular": true,
       "category": "communication",
       "tabletPriority": 75
@@ -2068,7 +2068,7 @@
       "webHosts": [
         "drive.google.com"
       ],
-      "sha256": "aa3f3030276e56cb3fc84f64b06d5de9197331395a4730a282be522863cb7cbe",
+      "sha256": "4c5abcd2815b06d1aa4b3707351760b6ce7bc091eb27bf3ac3dfd4126a1737e2",
       "popular": true,
       "category": "productivity",
       "tabletPriority": 82
@@ -2084,7 +2084,7 @@
         "File Manager"
       ],
       "webHosts": [],
-      "sha256": "004891a88398631dede74fea79a8e66678ee942f05305116dc94f69ba411288a",
+      "sha256": "ebdeb6c4fe01da4ce677b687d1f5b8dedba8453d843c6d4be8294910afe579e6",
       "popular": false,
       "category": "utilities",
       "tabletPriority": 35
@@ -2100,7 +2100,7 @@
         "Files by Google"
       ],
       "webHosts": [],
-      "sha256": "33f8a59f0fc8bcb4532cb6eab860f5025caeb6d271632442aae30bc951517e78",
+      "sha256": "1221e66ad71b0792d23d35ce5758bdabf6bca9235d77f71a518dfb976382adf9",
       "popular": true,
       "category": "utilities",
       "tabletPriority": 35
@@ -2117,7 +2117,7 @@
         "Files"
       ],
       "webHosts": [],
-      "sha256": "378abb79ce773b9d5b18c4a04ae7b2e36dda5ed8cf7459734789c69524d11a17",
+      "sha256": "0111137bf395e7267fac7bf00c8b13191cffed4c792a3154ab5c155e653df9ae",
       "popular": false,
       "category": "utilities",
       "tabletPriority": 35
@@ -2133,7 +2133,7 @@
         "Find Hub"
       ],
       "webHosts": [],
-      "sha256": "51dfebba30330e2a006ee6b0e24af490643d981a076cf294ad698d2bdba6e536",
+      "sha256": "afa0205a597389bb9f211afc6c163ddbe82faca73990ce40afbdb8577568380b",
       "popular": true,
       "category": "utilities",
       "tabletPriority": 35
@@ -2368,7 +2368,7 @@
         "Phone"
       ],
       "webHosts": [],
-      "sha256": "2cf6c69adf5e8acc47fb8c01095b4bf3f2d2fd77b0b17d6ffdad89c4e83d1eb3",
+      "sha256": "606d2f4f5c1838ecf7b72acc6c2a716728e1901a9f74d56898601a3558fe2e4f",
       "popular": true,
       "category": "communication",
       "tabletPriority": 75
@@ -2417,7 +2417,7 @@
         "Settings"
       ],
       "webHosts": [],
-      "sha256": "3fa4659d68a334f95308ec437b4619a0f5504c56327dd1337f61e66c45d16f70",
+      "sha256": "b227928283827146d32bac5fa9c547532031087f4b87a88aedd6d73a0189a6e3",
       "popular": false,
       "category": "utilities",
       "tabletPriority": 35
@@ -2433,7 +2433,7 @@
         "Smart Manager"
       ],
       "webHosts": [],
-      "sha256": "96a6d18b85c2a4eccc2c4e1b57e3d0f13c810ed04b52deabc0763f96ed07283f",
+      "sha256": "565b4e8ebbb3a475a6f1e0ca5cdd049eb9e37897e922ef054c2766fb3aa06d14",
       "popular": false,
       "category": "utilities",
       "tabletPriority": 35
@@ -2497,7 +2497,7 @@
         "Support Centre"
       ],
       "webHosts": [],
-      "sha256": "a451983ad46a0d7407bac828f3dd5060e4c6ae3aaf4f58b48fd8a806ff9d29d5",
+      "sha256": "f6088d6fdb67ca3eb92b52e11598831a85e0cc20d302ceb52f54f788ce84ec2e",
       "popular": false,
       "category": "utilities",
       "tabletPriority": 35
@@ -7960,6 +7960,34 @@
       "popular": true,
       "tabletPriority": 96,
       "sha256": "0a6f0b19ce0dd220e4e32bce20ef1293b41c7e8b91c22155f796545866534e51"
+    },
+    {
+      "id": "weave",
+      "name": "Weave",
+      "file": "images/weave.webp",
+      "packages": [
+        "com.weave.notebook"
+      ],
+      "webHosts": [],
+      "aliases": [],
+      "category": "productivity",
+      "tabletPriority": 66,
+      "popular": false,
+      "sha256": "3da3022ca15b1c3f2febf212c314485213f438205e7e601e0b73edba517c25b7"
+    },
+    {
+      "id": "wwrecorder",
+      "name": "WWRecorder",
+      "file": "images/wwrecorder.webp",
+      "packages": [],
+      "webHosts": [],
+      "aliases": [
+        "WW Recorder"
+      ],
+      "category": "utilities",
+      "tabletPriority": 66,
+      "popular": false,
+      "sha256": "e8691e7e4d2bbd4c03ca257e57fea4dd6c621d5d2cb4b37be68bfd7db4aa7b49"
     }
   ]
 }

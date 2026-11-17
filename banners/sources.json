@@ -874,7 +874,8 @@
     "brandColor": "#18202D",
     "packageSources": [
       "https://raw.githubusercontent.com/LineageOS/android_packages_apps_ExactCalculator/lineage-24.0/AndroidManifest.xml"
-    ]
+    ],
+    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
   },
   {
     "id": "calendar",
@@ -882,13 +883,15 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.calendar&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/vEoqLbT_QkYcEaawWBRc22N6i98OUtOUpM1LmKdVs_xx7lCsUyFfV0ZiqoUXjMijUteiBhhN4K5MpoF96FRNOg=s0-br30",
     "verifiedPlayTitle": "Google Calendar - Apps on Google Play",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
   },
   {
     "id": "camera",
     "name": "Camera",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.tcl.camera&hl=en&gl=IN",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
   },
   {
     "id": "chatgpt",
@@ -913,7 +916,8 @@
     "brandColor": "#18202D",
     "packageSources": [
       "https://raw.githubusercontent.com/LineageOS/android_packages_apps_DeskClock/lineage-24.0/AndroidManifest.xml"
-    ]
+    ],
+    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
   },
   {
     "id": "cometin",
@@ -932,7 +936,8 @@
     "brandColor": "#18202D",
     "packageSources": [
       "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Contacts/lineage-24.0/AndroidManifest.xml"
-    ]
+    ],
+    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
   },
   {
     "id": "crunchyroll",
@@ -955,13 +960,15 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.docs&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/chc-Fx3Qi3BisTZw1aOteYK_XkMHUiXKRbX2Hc8shyFI8pYt7DcyUPzVwLGJKIeKCKDD6nFVhEtUrIaEyzcnmA=s0-br30",
     "verifiedPlayTitle": "Google Drive - Apps on Google Play",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
   },
   {
     "id": "file-manager",
     "name": "File Manager",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.tcl.tct.filemanager&hl=en&gl=IN",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
   },
   {
     "id": "files-by-google",
@@ -969,7 +976,8 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.files&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/cjyFg0ABFwOFdLf1GsCGRvOoAANqCnIsFCgwGe8g-FPVaQ5STxoqZAKQOph44Hlx-gO0GMx8AZC9AY1VUBiO=s0-br30",
     "verifiedPlayTitle": "Files by Google - Apps on Google Play",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
   },
   {
     "id": "files",
@@ -978,7 +986,8 @@
     "brandColor": "#18202D",
     "packageSources": [
       "https://raw.githubusercontent.com/LineageOS/android_packages_apps_DocumentsUI/lineage-24.0/AndroidManifest.xml"
-    ]
+    ],
+    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
   },
   {
     "id": "find-hub",
@@ -986,7 +995,8 @@
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.google.android.apps.adm&hl=en&gl=IN",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/i0_6dO_MWC1nkjIMdh3uPXrhbkxfAr5H5Nb7YIynV0W8kGhX2BWb0hH2gm-2Fp21CeEx6ZonAnwlkPDYOIyEAVs=s0-br30",
     "verifiedPlayTitle": "Google’s Find Hub - Apps on Google Play",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
   },
   {
     "id": "gallery",
@@ -1091,7 +1101,8 @@
     "brandColor": "#18202D",
     "packageSources": [
       "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Dialer/lineage-24.0/AndroidManifest.xml"
-    ]
+    ],
+    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
   },
   {
     "id": "proton-pass",
@@ -1117,13 +1128,15 @@
     "brandColor": "#18202D",
     "packageSources": [
       "https://raw.githubusercontent.com/LineageOS/android_packages_apps_Settings/lineage-24.0/AndroidManifest.xml"
-    ]
+    ],
+    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
   },
   {
     "id": "smart-manager",
     "name": "Smart Manager",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.tct.onetouchbooster&hl=en&gl=IN",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
   },
   {
     "id": "sololearn",
@@ -1151,7 +1164,8 @@
     "id": "support-centre",
     "name": "Support Centre",
     "sourceUrl": "https://play.google.com/store/apps/details?id=com.tcl.usercare&hl=en&gl=IN",
-    "brandColor": "#18202D"
+    "brandColor": "#18202D",
+    "artworkTreatment": "ImageGen from the original system banner, preserving the icon and label with a new palette."
   },
   {
     "id": "telegram",
@@ -4045,5 +4059,19 @@
     "artworkTreatment": "Individually generated ImageGen banner.",
     "referenceSourceUrl": "https://play-lh.googleusercontent.com/StEbdIF-rV4EoYfIdaP07zClA50KSs-i9o12kceyecfw8R0nwYfzqV64h3UlEzh_fCqxyNCj7Bb7ro86pfYDsSU=s0-br30",
     "verifiedPlayTitle": "Geometry Dash Lite - Apps on Google Play"
+  },
+  {
+    "id": "weave",
+    "name": "Weave",
+    "sourceUrl": "https://github.com/akasumitlamba/Weave",
+    "referenceSourceUrl": "https://github.com/akasumitlamba/Weave/blob/main/app/src/main/res/drawable/ic_launcher_foreground.xml",
+    "artworkTreatment": "ImageGen from the project icon."
+  },
+  {
+    "id": "wwrecorder",
+    "name": "WWRecorder",
+    "sourceUrl": "https://akasumitlamba.github.io/WWRecorder/",
+    "referenceSourceUrl": "https://github.com/akasumitlamba/WWRecorder/blob/main/app/icon.ico",
+    "artworkTreatment": "ImageGen from the project icon."
   }
 ]
