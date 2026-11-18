@@ -21,6 +21,10 @@ internal class HomeBoardLayoutManager(private val context: Context, private val 
     val widgetCellWidth get() = cellWidth * grid.widgetUnit
     var cellHeight = 1f
         private set
+    /** Height Home has for the grid (between the top and the dock); zero until known. */
+    var viewportHeight: () -> Int = { 0 }
+    /** Left margin that centres a grid shrunk to fit the screen. */
+    private var offsetX = 0
     /** Set before a change that should glide (a tile becoming an icon or banner, a widget added). */
     var animateNextLayout = false
 
@@ -33,7 +37,19 @@ internal class HomeBoardLayoutManager(private val context: Context, private val 
         cellWidth = (available / columns).coerceAtLeast(1f)
         val bannerWidth = cellWidth * grid.bannerSpan
         cellHeight = (((bannerWidth - 16 * density) / CropGeometry.ASPECT + 16 * density + if (labels()) 36 * density else 0f) / 2).coerceAtLeast(32 * density)
-        return board.pack(columns)
+        val placements = board.pack(columns)
+        // Almost fits (say four rows when Android's navigation bar is showing): shrink everything a
+        // little and centre it, instead of making Home scroll for the last few pixels.
+        offsetX = 0
+        val rows = placements.maxOfOrNull { it.y + it.rows } ?: 0
+        val room = viewportHeight() - paddingTop - paddingBottom
+        val needed = rows * cellHeight
+        if (!board.editing && room > 0 && needed > room && needed * .8f <= room && HomeLayout.selection(context) == 0) {
+            val k = room / needed
+            cellWidth *= k; cellHeight *= k
+            offsetX = ((available - cellWidth * columns) / 2).toInt()
+        }
+        return placements
     }
     override fun generateDefaultLayoutParams() = RecyclerView.LayoutParams(-1, -2)
     override fun onMeasure(recycler: RecyclerView.Recycler, state: RecyclerView.State, widthSpec: Int, heightSpec: Int) {
@@ -46,8 +62,9 @@ internal class HomeBoardLayoutManager(private val context: Context, private val 
     private fun gapFor(p: HomeBoardPacking.Placement) = ArtworkUi.dp(context, if (p.key.startsWith("tile:") && p.columns == grid.iconSpan) 4 else 8)
     private fun bounds(p: HomeBoardPacking.Placement): Rect {
         val gap = gapFor(p)
-        return Rect(paddingLeft + (p.x * cellWidth).toInt() + gap, paddingTop + (p.y * cellHeight).toInt() + gap,
-            paddingLeft + ((p.x + p.columns) * cellWidth).toInt() - gap, paddingTop + ((p.y + p.rows) * cellHeight).toInt() - gap)
+        val left = paddingLeft + offsetX
+        return Rect(left + (p.x * cellWidth).toInt() + gap, paddingTop + (p.y * cellHeight).toInt() + gap,
+            left + ((p.x + p.columns) * cellWidth).toInt() - gap, paddingTop + ((p.y + p.rows) * cellHeight).toInt() - gap)
     }
     override fun onLayoutChildren(recycler: RecyclerView.Recycler, state: RecyclerView.State) {
         // Where each item was, so a requested change can glide from there instead of jumping.

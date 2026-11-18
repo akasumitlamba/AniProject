@@ -140,6 +140,7 @@ class HomeActivity : AppCompatActivity() {
             // Bottom dock: the banners scroll all the way down behind it (never clipped above it),
             // and the last row can still be scrolled clear of the dock.
             binding.homeScroll.updatePadding(bottom = if (vertical) 0 else bottom + dp(84))
+            binding.grid.post { binding.grid.requestLayout() } // Fit the grid to the new room (navigation bar shown or hidden).
             binding.controlRail.updateLayoutParams<FrameLayout.LayoutParams> {
                 topMargin = if (vertical) shown.top + dp(8) else 0
                 bottomMargin = bottom + dp(8)
@@ -153,7 +154,13 @@ class HomeActivity : AppCompatActivity() {
         tiles = TileAdapter(onOpen = ::open, onOptions = { showOptions(it) }, onRemove = ::confirmRemove, onStartDrag = ::startHomeDrag)
         tiles.showLabels = homePreferences.getBoolean("show_tile_labels", true)
         board = HomeBoardAdapter(this, tiles, widgets)
-        binding.grid.layoutManager = HomeBoardLayoutManager(this, board) { tiles.showLabels }
+        binding.grid.layoutManager = HomeBoardLayoutManager(this, board) { tiles.showLabels }.apply {
+            viewportHeight = { binding.homeScroll.height - binding.homeScroll.paddingTop - binding.homeScroll.paddingBottom - binding.grid.paddingTop }
+        }
+        // Refit when Home's own height changes (first layout, rotation, navigation bar).
+        binding.homeScroll.addOnLayoutChangeListener { _, _, top, _, bottom, _, oldTop, _, oldBottom ->
+            if (bottom - top != oldBottom - oldTop) binding.grid.post { binding.grid.requestLayout() }
+        }
         binding.grid.adapter = board
         binding.grid.itemAnimator = null
         widgets.onEditRequested = { setEditMode(true) }
@@ -1016,25 +1023,29 @@ class HomeActivity : AppCompatActivity() {
                 if (homePreferences.getBoolean("layout_locked", false)) " · Locked" else ""
         }) {
             val columns = listOf(0) + (2..6)
-            panel.choice(this, "Banners per row", columns.map { if (it == 0) "Automatic" else "$it per row" }, columns.indexOf(HomeLayout.selection(ui)).coerceAtLeast(0)) {
+            val autoBanners = resources.getInteger(R.integer.home_columns)
+            panel.visualChoice(this, "Banners per row", columns.map { (if (it == 0) "Automatic" else "$it") to PreviewArt.home(if (it == 0) autoBanners else it, if (it == 0) autoBanners * 2 + 1 else it * 2 + 1) },
+                columns.indexOf(HomeLayout.selection(ui)).coerceAtLeast(0)) {
                 homePreferences.edit().putInt("home_columns", columns[it]).apply()
                 (binding.grid.layoutManager as? HomeBoardLayoutManager)?.animateNextLayout = true
                 binding.grid.requestLayout(); widgets.updateLayout()
             }
             // Icons have their own count, so a row can hold 2 banners or 5 icons.
             val icons = listOf(0) + (3..10)
-            panel.choice(this, "Icons per row", icons.map { if (it == 0) "Automatic" else "$it per row" }, icons.indexOf(HomeLayout.iconSelection(ui)).coerceAtLeast(0)) {
+            val banners = HomeLayout.columns(ui)
+            panel.visualChoice(this, "Icons per row", icons.map { (if (it == 0) "Automatic" else "$it") to PreviewArt.home(banners, if (it == 0) banners * 2 + 1 else it) },
+                icons.indexOf(HomeLayout.iconSelection(ui)).coerceAtLeast(0)) {
                 homePreferences.edit().putInt("home_icon_columns", icons[it]).apply()
                 (binding.grid.layoutManager as? HomeBoardLayoutManager)?.animateNextLayout = true
                 binding.grid.requestLayout()
             }
             panel.text(this, "Automatic fits as many as the screen comfortably allows. There are always more icons than banners in a row.")
             val asIcon = homePreferences.getString(app.anihome.launcher.data.TileStore.NEW_APP_STYLE, "banner") == "icon"
-            panel.choice(this, "Add apps as", listOf("Banner", "Icon"), if (asIcon) 1 else 0) {
+            panel.visualChoice(this, "Add apps as", listOf("Banner" to PreviewArt.tile(true), "Icon" to PreviewArt.tile(false)), if (asIcon) 1 else 0) {
                 homePreferences.edit().putString(app.anihome.launcher.data.TileStore.NEW_APP_STYLE, if (it == 1) "icon" else "banner").apply()
             }
             panel.text(this, "For apps you add from now on. Any app already on Home can switch between banner and icon from its menu.")
-            panel.choice(this, "Arrangement", listOf("Automatic · fill gaps", "Free · keep where I put things"), if (homePreferences.getBoolean("home_auto_arrange", true)) 0 else 1) {
+            panel.visualChoice(this, "Arrangement", listOf("Automatic" to PreviewArt.home(2, 5), "Free" to PreviewArt.home(2, 5, gaps = true)), if (homePreferences.getBoolean("home_auto_arrange", true)) 0 else 1) {
                 homePreferences.edit().putBoolean("home_auto_arrange", it == 0).apply()
                 (binding.grid.layoutManager as? HomeBoardLayoutManager)?.animateNextLayout = true
                 board.reflow(); binding.grid.requestLayout()
@@ -1099,7 +1110,7 @@ class HomeActivity : AppCompatActivity() {
         // 3. App menu.
         panel.section("App menu", R.drawable.ic_settings_apps) {
             ShapePicker.row(ui, this) { tiles.notifyDataSetChanged(); configureRail() }
-            panel.choice(this, "Show apps as", listOf("Grid", "List"), if (app.anihome.launcher.data.DrawerPreferences(ui).listView()) 1 else 0) {
+            panel.visualChoice(this, "Show apps as", listOf("Grid" to PreviewArt.appMenu(false), "List" to PreviewArt.appMenu(true)), if (app.anihome.launcher.data.DrawerPreferences(ui).listView()) 1 else 0) {
                 app.anihome.launcher.data.DrawerPreferences(ui).setListView(it == 1); configureRail()
             }
             panel.toggle(this, "Show recent apps", app.anihome.launcher.data.DrawerPreferences(ui).showRecentApps()) {
@@ -1122,13 +1133,13 @@ class HomeActivity : AppCompatActivity() {
             }
             panel.text(this, "Off: Android's own notification shade and status bar are used everywhere, including on Home. The options below apply only to AniHome's panel.")
             if (!PanelStyle.phone(ui)) {
-                panel.choice(this, "Layout", listOf("Side panel", "Full screen"), if (PanelStyle.wide(ui)) 1 else 0) {
+                panel.visualChoice(this, "Layout", listOf("Side panel" to PreviewArt.panel(false), "Full screen" to PreviewArt.panel(true)), if (PanelStyle.wide(ui)) 1 else 0) {
                     PanelStyle.setWide(ui, it == 1)
                 }
                 panel.text(this, "Full screen puts the controls and tall brightness and volume sliders across the top, with notifications in two columns below.")
             }
             lateinit var glass: View
-            panel.choice(this, "Background", listOf("Blurred glass", "Solid"), if (PanelStyle.blur(ui)) 0 else 1) {
+            panel.visualChoice(this, "Background", listOf("Glass" to PreviewArt.panel(true, glass = true), "Solid" to PreviewArt.panel(true, glass = false)), if (PanelStyle.blur(ui)) 0 else 1) {
                 PanelStyle.set(ui, "panel_blur", it == 0); glass.visibility = if (it == 0) View.VISIBLE else View.GONE
             }
             glass = panel.slider(this, "Glass opacity", PanelStyle.opacity(ui)) { PanelStyle.setOpacity(ui, it.coerceAtLeast(60)) }
@@ -1175,6 +1186,14 @@ class HomeActivity : AppCompatActivity() {
                             else Toast.makeText(ui, "Couldn't set up navigation: permission not granted", Toast.LENGTH_LONG).show()
                         }
                     }
+                }
+            }
+            panel.toggle(this, "Swap Back and Recent apps buttons", nav.buttonsReversed(ui)) { reversed ->
+                fun apply() { if (!nav.setButtonsReversed(ui, reversed)) Toast.makeText(ui, "Android didn't allow the change", Toast.LENGTH_LONG).show() }
+                when {
+                    nav.canSwitch(ui) -> apply()
+                    !app.anihome.launcher.controls.ShizukuGate.require(ui, "Swapping the navigation buttons") -> Unit
+                    else -> notificationPanel.grantSecureSettings { if (nav.canSwitch(ui)) apply() else Toast.makeText(ui, "Permission not granted", Toast.LENGTH_LONG).show() }
                 }
             }
             panel.text(this, "AniHome gestures use a thin handle on the bottom edge, with no bar taking up space. Swipe up for Home, swipe up and hold for recent apps, drag sideways to switch apps, double-tap for Back. The first switch needs Shizuku; after that it works without it.")

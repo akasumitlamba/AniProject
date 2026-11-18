@@ -54,6 +54,22 @@ class ScreenLightActivity : AppCompatActivity() {
             presets.addView(MaterialUi.tonal(this, name, 0) { setColor(value) }, LinearLayout.LayoutParams(0, -2, 1f).apply { marginStart = dp(4); marginEnd = dp(4) })
         }
         sosButton = MaterialUi.tonal(this, "SOS", 0) { toggleSos() }
+        val message = android.widget.EditText(this).apply {
+            hint = "Message in Morse code"; isSingleLine = true; textSize = 15f; setTextColor(-1); setHintTextColor(0x99FFFFFF.toInt())
+            setText(intent.getStringExtra(EXTRA_MORSE) ?: getSharedPreferences("anihome", Context.MODE_PRIVATE).getString("morse_text", ""))
+            filters = arrayOf(android.text.InputFilter.LengthFilter(80))
+            setOnFocusChangeListener { _, focused -> if (focused) controls.removeCallbacks(hide) }
+        }
+        val morseRow = LinearLayout(this).apply {
+            gravity = Gravity.CENTER_VERTICAL
+            addView(message, LinearLayout.LayoutParams(0, -2, 1f))
+            addView(MaterialUi.tonal(this@ScreenLightActivity, "Flash", 0) {
+                val text = message.text.toString().trim()
+                if (TorchTools.morse(text).isEmpty()) { message.error = "Use letters, numbers or . , ? ! / @"; return@tonal }
+                getSharedPreferences("anihome", Context.MODE_PRIVATE).edit().putString("morse_text", text).apply()
+                startSignal(TorchTools.morse(text))
+            }, LinearLayout.LayoutParams(-2, -2).apply { marginStart = dp(8) })
+        }
         val bottom = LinearLayout(this).apply {
             gravity = Gravity.CENTER
             addView(sosButton, LinearLayout.LayoutParams(0, -2, 1f).apply { marginEnd = dp(4) })
@@ -65,6 +81,7 @@ class ScreenLightActivity : AppCompatActivity() {
             addView(TextView(this@ScreenLightActivity).apply { text = "Screen light"; textSize = 18f; setTextColor(MaterialUi.ON_SURFACE) })
             addView(wheel, LinearLayout.LayoutParams(dp(220), dp(220)).apply { topMargin = dp(12); bottomMargin = dp(12) })
             addView(presets, LinearLayout.LayoutParams(-1, -2))
+            addView(morseRow, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(8) })
             addView(bottom, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(8) })
         }
         setContentView(FrameLayout(this).apply {
@@ -72,6 +89,7 @@ class ScreenLightActivity : AppCompatActivity() {
             addView(controls, FrameLayout.LayoutParams(dp(320), -2, Gravity.CENTER))
         })
         showControls()
+        intent.getStringExtra(EXTRA_MORSE)?.let { TorchTools.morse(it).takeIf { p -> p.isNotEmpty() }?.let(::startSignal) }
     }
 
     private fun setColor(value: Int) {
@@ -80,16 +98,20 @@ class ScreenLightActivity : AppCompatActivity() {
         getSharedPreferences("anihome", Context.MODE_PRIVATE).edit().putInt("screen_light_color", value).apply()
         showControls()
     }
-    private fun toggleSos() {
-        if (sos != null) { TorchTools.stopPattern(sos); sos = null; light.setBackgroundColor(color); sosButton.text = "SOS" }
-        else { sos = TorchTools.runPattern { on -> light.setBackgroundColor(if (on) color else Color.BLACK) }; sosButton.text = "Stop SOS" }
-        showControls()
+    private fun toggleSos() { if (sos != null) stopSignal() else startSignal(TorchTools.SOS) }
+    /** Flashes [pattern] (SOS or a Morse message) on the screen until Stop. */
+    private fun startSignal(pattern: IntArray) {
+        TorchTools.stopPattern(sos)
+        sos = TorchTools.runPattern(pattern) { on -> light.setBackgroundColor(if (on) color else Color.BLACK) }
+        sosButton.text = "Stop"; showControls()
     }
+    private fun stopSignal() { TorchTools.stopPattern(sos); sos = null; light.setBackgroundColor(color); sosButton.text = "SOS"; showControls() }
     private fun showControls() {
         controls.removeCallbacks(hide)
         controls.visibility = View.VISIBLE; controls.animate().alpha(1f).setDuration(150).start()
         controls.postDelayed(hide, 3500)
     }
+    companion object { const val EXTRA_MORSE = "morse" }
     override fun onDestroy() { TorchTools.stopPattern(sos); sos = null; super.onDestroy() }
 
     /** Hue around the circle, saturation from the centre (white) outwards. */

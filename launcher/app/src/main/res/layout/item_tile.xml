@@ -15,7 +15,6 @@
         android:id="@+id/card_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:duplicateParentState="true"
         android:clipChildren="false" android:clipToPadding="false">
 
         <FrameLayout android:id="@+id/card_surface"
@@ -53,8 +52,7 @@
             android:id="@+id/focus_ring"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_tile_focus"
-            android:duplicateParentState="true" />
+            android:background="@drawable/bg_tile_focus" />
 
         <TextView android:id="@+id/notification_badge" android:layout_width="wrap_content" android:layout_height="28dp"
             android:layout_gravity="top|end" android:elevation="9dp" android:gravity="center"

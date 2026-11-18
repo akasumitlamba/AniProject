@@ -68,6 +68,9 @@ public class NavigationService extends AccessibilityService implements DisplayMa
     WindowManager wm;
 
     /** The tablet this was built and tested on; other devices keep Android's own navigation. */
+    /** True while AniHome's gesture navigation is running (it then holds the rotation lock itself). */
+    public static boolean running() { return instance != null; }
+
     public static boolean supported() {
         return Build.VERSION.SDK_INT == 29 && "9080G".equals(Build.MODEL);
     }

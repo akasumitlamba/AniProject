@@ -142,6 +142,35 @@ internal class SettingsPanel(private val activity: AppCompatActivity, private va
                 }.setNegativeButton("Cancel", null).show()
         }
     }
+    /**
+     * A choice shown as pictures: each option is a small illustration of how it looks, with its
+     * name underneath; the chosen one is outlined. Scrolls sideways when there are many.
+     */
+    fun visualChoice(parent: LinearLayout, title: String, options: List<Pair<String, android.graphics.drawable.Drawable>>, initial: Int, changed: (Int) -> Unit) {
+        parent.addView(label(title, 15f).apply { setTextColor(0xFFE6E8EE.toInt()); setPadding(dp(12), dp(12), dp(12), dp(4)) })
+        val row = LinearLayout(activity).apply { setPadding(dp(8), dp(4), dp(8), dp(8)) }
+        var selected = initial.coerceIn(options.indices)
+        val cards = mutableListOf<View>()
+        fun mark() = cards.forEachIndexed { i, card ->
+            card.background = android.graphics.drawable.GradientDrawable().apply {
+                cornerRadius = dp(18).toFloat(); setColor(if (i == selected) 0x2EA8C7FA else 0x0FFFFFFF)
+                setStroke(dp(if (i == selected) 2 else 1), if (i == selected) ACCENT_SOFT else 0x1FFFFFFF)
+            }
+        }
+        options.forEachIndexed { index, (name, art) ->
+            val card = LinearLayout(activity).apply {
+                orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER_HORIZONTAL; setPadding(dp(8), dp(10), dp(8), dp(8))
+                isClickable = true; isFocusable = true; contentDescription = "$title: $name"
+                addView(ImageView(activity).apply { setImageDrawable(art) }, LinearLayout.LayoutParams(dp(64), dp(96)))
+                addView(label(name, 12f).apply { gravity = Gravity.CENTER; setTextColor(0xFFC8CBD2.toInt()); setPadding(0, dp(6), 0, 0) }, LinearLayout.LayoutParams(dp(76), -2))
+                setOnClickListener { if (selected != index) { selected = index; mark(); changed(index) } }
+            }
+            cards += card
+            row.addView(card, LinearLayout.LayoutParams(-2, -2).apply { marginEnd = dp(8) })
+        }
+        mark()
+        parent.addView(android.widget.HorizontalScrollView(activity).apply { isHorizontalScrollBarEnabled = false; addView(row) }, LinearLayout.LayoutParams(-1, -2))
+    }
     fun radios(parent: LinearLayout, values: List<String>, initial: Int, changed: (Int) -> Unit) {
         val group = RadioGroup(activity).apply { orientation = RadioGroup.VERTICAL }
         values.forEachIndexed { index, title ->

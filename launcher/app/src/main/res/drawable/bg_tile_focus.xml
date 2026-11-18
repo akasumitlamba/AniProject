@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" android:exitFadeDuration="150">
-    <!-- Mirrors the whole tile (card_frame duplicates the tile's state): a soft press highlight
-         and a clear ring for keyboard / remote focus. -->
-    <item android:state_pressed="true">
-        <shape android:shape="rectangle">
-            <solid android:color="#26FFFFFF" />
-            <corners android:radius="@dimen/tile_radius" />
-        </shape>
-    </item>
-    <item android:state_focused="true">
+    <!-- Selected while the tile has keyboard / remote focus (set from code); tap feedback is the card's own ripple. -->
+    <item android:state_selected="true">
         <shape android:shape="rectangle">
             <stroke android:width="3dp" android:color="#BCE2FF" />
             <corners android:radius="@dimen/tile_radius" />

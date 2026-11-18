@@ -111,7 +111,10 @@ class TileAdapter(
             binding.cardSurface.setLayerType(View.LAYER_TYPE_HARDWARE, null)
             binding.card.clipToOutline = false
             binding.root.setOnClickListener { tile?.let { if (editMode) onOptions(it) else onOpen(it) } }
+            binding.root.setOnFocusChangeListener { _, focused -> binding.focusRing.isSelected = focused }
             binding.root.setOnLongClickListener {
+                // Let go of the pressed look before the drag starts, or the ripple stays lit under the finger.
+                binding.root.isPressed = false; binding.root.jumpDrawablesToCurrentState()
                 tile?.let { onStartDrag(this) }
                 true
             }

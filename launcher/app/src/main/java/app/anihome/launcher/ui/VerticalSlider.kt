@@ -22,10 +22,15 @@ internal class VerticalSlider(context: Context, private val icon: Drawable?, lab
     var onChange: ((Int) -> Unit)? = null
     var onStart: (() -> Unit)? = null
     var onEnd: (() -> Unit)? = null
+    /** Lies on its side (fills from the left) when the Control Center tile is wider than tall. */
+    var horizontal = false
+        set(v) { field = v; invalidate() }
+    private val rim = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE }
     private val density = resources.displayMetrics.density
     private val track = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = ControlCenter.SURFACE_HIGH }
     private val fill = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = 0xF2FFFFFF.toInt() }
     private val rect = RectF()
+    private var lastX = 0f
 
     init { contentDescription = label; isFocusable = true; isClickable = true }
 
@@ -39,20 +44,30 @@ internal class VerticalSlider(context: Context, private val icon: Drawable?, lab
     override fun onDraw(canvas: Canvas) {
         rect.set(0f, 0f, width.toFloat(), height.toFloat())
         val radius = minOf(width, height) * .38f
+        // Glass track: translucent with a soft light from the top and a hairline rim.
+        track.shader = android.graphics.LinearGradient(0f, 0f, 0f, height.toFloat(), 0x38FFFFFF, 0x1AFFFFFF, android.graphics.Shader.TileMode.CLAMP)
         canvas.drawRoundRect(rect, radius, radius, track)
         val fraction = if (max == 0) 0f else value.toFloat() / max
         val top = height * (1f - fraction)
+        val right = width * fraction
         if (fraction > 0f) {
             shape.reset(); shape.addRoundRect(rect, radius, radius, android.graphics.Path.Direction.CW)
-            level.reset(); level.addRect(0f, top, width.toFloat(), height.toFloat(), android.graphics.Path.Direction.CW)
+            level.reset()
+            if (horizontal) level.addRect(0f, 0f, right, height.toFloat(), android.graphics.Path.Direction.CW)
+            else level.addRect(0f, top, width.toFloat(), height.toFloat(), android.graphics.Path.Direction.CW)
             level.op(shape, android.graphics.Path.Op.INTERSECT)
             canvas.drawPath(level, fill)
         }
+        rim.strokeWidth = density; rim.color = 0x40FFFFFF
+        rect.inset(density / 2, density / 2); canvas.drawRoundRect(rect, radius, radius, rim)
         icon?.let {
-            val size = (20 * density).toInt(); val left = (width - size) / 2; val bottom = height - (16 * density).toInt()
+            val size = (20 * density).toInt()
+            val left = if (horizontal) (16 * density).toInt() else (width - size) / 2
+            val bottom = if (horizontal) (height + size) / 2 else height - (16 * density).toInt()
             it.setBounds(left, bottom - size, left + size, bottom)
             // Dark icon over the light fill, light icon over the track.
-            if (tintIcon) it.setTint(if (bottom - size / 2 >= top) 0xFF15171C.toInt() else 0xFFFFFFFF.toInt())
+            val covered = if (horizontal) left + size / 2 <= right else bottom - size / 2 >= top
+            if (tintIcon) it.setTint(if (covered) 0xFF15171C.toInt() else 0xFFFFFFFF.toInt())
             it.draw(canvas)
         }
     }
@@ -60,8 +75,8 @@ internal class VerticalSlider(context: Context, private val icon: Drawable?, lab
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.actionMasked) {
-            MotionEvent.ACTION_DOWN -> { parent?.requestDisallowInterceptTouchEvent(true); onStart?.invoke(); isPressed = true; set(event.y) }
-            MotionEvent.ACTION_MOVE -> set(event.y)
+            MotionEvent.ACTION_DOWN -> { parent?.requestDisallowInterceptTouchEvent(true); onStart?.invoke(); isPressed = true; lastX = event.x; set(event.y) }
+            MotionEvent.ACTION_MOVE -> { lastX = event.x; set(event.y) }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> { isPressed = false; onEnd?.invoke(); performClick() }
         }
         return true
@@ -69,7 +84,7 @@ internal class VerticalSlider(context: Context, private val icon: Drawable?, lab
     override fun performClick(): Boolean { super.performClick(); return true }
 
     private fun set(y: Float) {
-        val next = ((1f - (y / height).coerceIn(0f, 1f)) * max).roundToInt()
+        val next = (if (horizontal) (lastX / width).coerceIn(0f, 1f) * max else (1f - (y / height).coerceIn(0f, 1f)) * max).roundToInt()
         if (next != value) { value = next; onChange?.invoke(next) }
     }
 

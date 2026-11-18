@@ -29,10 +29,13 @@ internal class HomeScrollMotion(private val scroll: NestedScrollView, private va
         for (i in 0 until grid.childCount) {
             val child = grid.getChildAt(i)
             val h = child.height.coerceAtLeast(1).toFloat()
-            val center = offset + child.top + h / 2f
-            // 1 once the whole item is comfortably inside the band; 0 when its centre sits on an edge.
-            val fromTop = ((center - top) / h).coerceIn(0f, 1f)
-            val fromBottom = ((bottom - center) / h).coerceIn(0f, 1f)
+            val childTop = offset + child.top.toFloat(); val childBottom = childTop + h
+            // How much of the tile is cut off by each edge: fully on screen = 1, even in the first and
+            // last rows at the ends of the scroll; half past an edge = 0.
+            val cutTop = ((top - childTop) / h).coerceIn(0f, 1f)
+            val cutBottom = ((childBottom - bottom) / h).coerceIn(0f, 1f)
+            val fromTop = (1f - cutTop * 2f).coerceIn(0f, 1f)
+            val fromBottom = (1f - cutBottom * 2f).coerceIn(0f, 1f)
             val f = ease(minOf(fromTop, fromBottom))
             val scale = MIN_SCALE + (1f - MIN_SCALE) * f
             child.pivotX = child.width / 2f

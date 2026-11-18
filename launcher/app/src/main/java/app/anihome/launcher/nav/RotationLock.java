@@ -19,7 +19,7 @@ import android.view.WindowManager;
  * holding an invisible 1×1 window that requests that orientation. Turning it on releases it.
  * This stops the tablet snapping back to its default landscape when auto-rotate is off.
  */
-final class RotationLock {
+public final class RotationLock {
     private static final String TAG = "AniHomeRotation";
     final Context context;
     final WindowManager windows;
@@ -30,7 +30,7 @@ final class RotationLock {
     int lastFreeRotation, lockedRotation;
 
     @SuppressWarnings("deprecation")
-    RotationLock(Context context, WindowManager windows, Handler handler) {
+    public RotationLock(Context context, WindowManager windows, Handler handler) {
         this.context = context;
         this.windows = windows;
         this.handler = handler;
@@ -51,7 +51,7 @@ final class RotationLock {
     }
 
     @SuppressWarnings("deprecation")
-    void displayChanged() {
+    public void displayChanged() {
         if (closed) return;
         if (automatic && readAuto()) lastFreeRotation = windows.getDefaultDisplay().getRotation();
     }
@@ -120,7 +120,7 @@ final class RotationLock {
         anchor = null;
     }
 
-    void close() {
+    public void close() {
         closed = true;
         context.getContentResolver().unregisterContentObserver(observer);
         removeAnchor();
