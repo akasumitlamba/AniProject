@@ -91,8 +91,7 @@ internal class ControlCenter(
                        /** Long press; defaults to opening [settings]. */
                        val longPress: (() -> Unit)? = null)
     /** A drawn tile: its round button, and on wide tiles the whole pill and its second line. */
-    private class TileView(val tile: Tile, val button: ImageButton, val pill: View?, val detail: TextView?,
-                           val name: TextView? = null, val size: CcSize = CcSize.SMALL)
+    private class TileView(val tile: Tile, val button: ImageButton, val pill: View?, val detail: TextView?, val size: CcSize = CcSize.WIDE)
 
     private val allTiles: List<Tile> by lazy { buildTiles() }
     private val tileViews = mutableListOf<TileView>()
@@ -107,6 +106,7 @@ internal class ControlCenter(
     private val slop = android.view.ViewConfiguration.get(activity).scaledTouchSlop * 2
     private var swipeX = 0f; private var swipeY = 0f; private var swipeTracking = false
     fun interceptSwipe(e: MotionEvent, overControls: Boolean): Boolean {
+        if (editing) return false
         when (e.actionMasked) {
             MotionEvent.ACTION_DOWN -> { swipeX = e.x; swipeY = e.y; swipeTracking = overControls }
             MotionEvent.ACTION_MOVE -> if (swipeTracking) {
@@ -160,9 +160,11 @@ internal class ControlCenter(
         if (!::brightnessRow.isInitialized) return
         sliders.removeAllViews()
         listOf(brightnessPill, volumePill).forEach { (it.parent as? android.view.ViewGroup)?.removeView(it) }
-        if (gridMode) {
-            // The sliders and the media card live inside the Control Center grid.
+        if (wideLayout) {
             sliders.visibility = View.GONE
+            val tall = dp(2 * (TILE + 34))
+            topRow.addView(brightnessPill, LinearLayout.LayoutParams(dp(56), tall).apply { marginStart = dp(16) })
+            topRow.addView(volumePill, LinearLayout.LayoutParams(dp(56), tall).apply { marginStart = dp(10) })
         } else {
             sliders.visibility = View.VISIBLE
             sliders.addView(brightnessRow, LinearLayout.LayoutParams(-1, dp(34)))
@@ -178,34 +180,18 @@ internal class ControlCenter(
     fun expandControls() { if (!expanded) applyExpanded(true) }
 
     private val ccGrid = CcGrid(activity)
-    /** Long-press options open here, inside the panel above the controls. */
+    /** Long-press options (flashlight signals and so on) open here, inside the panel. */
     private val sheet = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; visibility = View.GONE }
     private var sheetFor: String? = null
-    private var gridTitle: TextView? = null; private var gridArtist: TextView? = null
-    private var gridArt: ImageView? = null; private var gridPlay: ImageButton? = null
+    /** Edit mode (pencil): tap a tile to select it, drag its side handle to resize, − to remove, hold to move. */
+    private var editing = false
+    private var selectedId: String? = null
+    private val editBar = LinearLayout(activity).apply { gravity = Gravity.CENTER_VERTICAL; visibility = View.GONE }
     // Declared above so they exist when build() runs from init.
     init { build() }
 
     // --- tiles ---------------------------------------------------------------------------
-    /** Expanded (or the full-screen panel): the iOS-style grid of resizable glass tiles. */
-    private val gridMode get() = expanded && !(!wideLayout && !PanelStyle.wideTiles(activity))
-    private fun isPseudo(id: String) = id == "media" || id.startsWith("slider_")
-    private fun sizeOf(id: String): CcSize = CcSize.parse(prefs.getString("cc_size:$id", null), when {
-        id == "wifi" || id == "bluetooth" -> CcSize.WIDE
-        id == "media" -> CcSize.LARGE
-        id.startsWith("slider_") -> CcSize.TALL
-        else -> CcSize.SMALL
-    })
-    private fun sizesFor(id: String) = when {
-        id == "media" -> listOf(CcSize.LARGE, CcSize.BAR)
-        id.startsWith("slider_") -> listOf(CcSize.TALL, CcSize.WIDE, CcSize.BAR)
-        else -> listOf(CcSize.SMALL, CcSize.WIDE, CcSize.TALL, CcSize.LARGE)
-    }
-
     private fun buildTiles(): List<Tile> = listOfNotNull(
-        Tile("media", "Now playing", { R.drawable.ic_cc_music }, { false }, {}, null, momentary = true),
-        Tile("slider_brightness", "Brightness", { R.drawable.ic_cc_brightness }, { false }, {}, Intent(Settings.ACTION_DISPLAY_SETTINGS), momentary = true),
-        Tile("slider_volume", "Volume", { R.drawable.ic_cc_volume }, { false }, {}, Intent(Settings.ACTION_SOUND_SETTINGS), momentary = true),
         Tile("wifi", "Wi-Fi", { R.drawable.ic_wifi }, { runCatching { wifi?.isWifiEnabled == true }.getOrDefault(false) },
             { quick.openSection("Wi-Fi"); refresh() }, Intent(Settings.ACTION_WIFI_SETTINGS), detail = ::wifiDetail),
         Tile("bluetooth", "Bluetooth", { R.drawable.ic_bluetooth }, { runCatching { bluetooth?.isEnabled == true }.getOrDefault(false) },
@@ -215,7 +201,7 @@ internal class ControlCenter(
             detail = { if (quick.rotationAutomatic) "Auto" else "Locked" }),
         torchId?.let { Tile("flashlight", "Flashlight", { R.drawable.ic_cc_flashlight }, { torchOn || TorchTools.sosRunning },
             { if (TorchTools.sosRunning) TorchTools.stopSos(camera, torchId) else setTorch(!torchOn) }, null,
-            detail = { when { TorchTools.sosRunning -> "Signalling · tap to stop"; torchOn -> "On"; else -> "Off" } },
+            detail = { when { TorchTools.sosRunning -> "Signalling · tap to stop"; torchOn -> "On · hold for more"; else -> "Off · hold for more" } },
             longPress = null) },
         Tile("screen_record", "Screen record", { R.drawable.ic_cc_record }, { ScreenRecorder.recording },
             { if (ScreenRecorder.recording) ScreenRecorder.stop(activity) else { closePanel(); ScreenRecorder.start(activity) } }, null,
@@ -294,12 +280,6 @@ internal class ControlCenter(
             saved = saved.take(at) + added + saved.drop(at)
             prefs.edit().putString("cc_tiles", saved.joinToString(",")).putBoolean("cc_new_controls_1_1", true).apply()
         }
-        // Media and the two sliders become grid tiles once for saved layouts, after the first four controls.
-        if (prefs.contains("cc_tiles") && !prefs.getBoolean("cc_grid_v1", false)) {
-            val add = listOf("media", "slider_brightness", "slider_volume").filter { it !in saved }
-            saved = saved.take(4) + add + saved.drop(4)
-            prefs.edit().putString("cc_tiles", saved.joinToString(",")).putBoolean("cc_grid_v1", true).apply()
-        }
         // Screen record arrives once for saved layouts, right after Screenshot.
         if (prefs.contains("cc_tiles") && !prefs.getBoolean("cc_new_controls_1_1_r10", false)) {
             if ("screen_record" !in saved) { val at = saved.indexOf("screenshot").takeIf { it >= 0 }?.plus(1) ?: saved.size; saved = saved.take(at) + "screen_record" + saved.drop(at) }
@@ -349,7 +329,7 @@ internal class ControlCenter(
         sub.addView(TextClock(activity).apply { format12Hour = "EEE, d MMM"; format24Hour = "EEE, d MMM"; textSize = 12f; setTextColor(-1) })
         sub.addView(battery)
         header.addView(sub, LinearLayout.LayoutParams(0, -2, 1f))
-        header.addView(headerButton(R.drawable.ic_edit, "Edit controls") { edit() })
+        header.addView(headerButton(R.drawable.ic_edit, "Edit controls") { toggleEditing() })
         expandButton.apply {
             setImageResource(R.drawable.ic_expand_more); imageTintList = ColorStateList.valueOf(-1)
             background = null; scaleType = ImageView.ScaleType.CENTER
@@ -358,10 +338,12 @@ internal class ControlCenter(
         header.addView(expandButton, LinearLayout.LayoutParams(dp(40), dp(40)))
         view.addView(header)
 
-        view.addView(sheet, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(10) })
+        view.addView(sheet, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(8) })
+        view.addView(editBar, LinearLayout.LayoutParams(-1, -2).apply { bottomMargin = dp(8) })
         grid.apply { useDefaultMargins = false }
         topRow.gravity = Gravity.CENTER_VERTICAL
         topRow.addView(grid, LinearLayout.LayoutParams(0, -2, 1f))
+        ccGrid.visibility = View.GONE
         topRow.addView(ccGrid, LinearLayout.LayoutParams(0, -2, 1f))
         view.addView(topRow, LinearLayout.LayoutParams(-1, -2))
         view.addView(radioSlot, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(4) })
@@ -408,23 +390,20 @@ internal class ControlCenter(
         grid.removeAllViews(); tileViews.clear()
         val tiles = chosen()
         val open = expanded
-        // Full screen: two rows beside the slider pills.
         ccGrid.removeAllViews()
-        arrangeSliders()
-        if (gridMode) {
+        // Expanded (and the full-screen panel): Android-16 style tiles, each compact (icon) or wide
+        // (icon, name and a live second line), resized in edit mode by dragging its side handle.
+        if (open && (wideLayout || PanelStyle.wideTiles(activity))) {
             grid.visibility = View.GONE; ccGrid.visibility = View.VISIBLE
             ccGrid.fixedColumns = if (wideLayout) 0 else 4
-            if (mediaCard.parent != null) (mediaCard.parent as android.view.ViewGroup).removeView(mediaCard)
             tiles.forEach(::addGridTile)
             expandButton.rotation = 180f; expandButton.contentDescription = "Show fewer controls"
             if (attached) refresh(); return
         }
         grid.visibility = View.VISIBLE; ccGrid.visibility = View.GONE
-        if (mediaCard.parent == null) view.addView(mediaCard, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(8) })
-        val compact = tiles.filterNot { isPseudo(it.id) }
-        val columns = if (open) 4 else COLLAPSED
+        val columns = when { wideLayout -> ((tiles.size + 1) / 2).coerceIn(1, 8); open -> 4; else -> COLLAPSED }
         grid.columnCount = columns
-        val shown = if (open) compact else compact.take(COLLAPSED)
+        val shown = if (open) tiles else tiles.take(COLLAPSED)
         shown.forEach { tile ->
             val cell = LinearLayout(activity).apply {
                 orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER_HORIZONTAL
@@ -457,98 +436,157 @@ internal class ControlCenter(
 
     private fun longPress(tile: Tile): Boolean { showSheet(tile); return true }
 
-    /** Rounded like iOS: circles and pills for one-row tiles, soft squares for bigger ones. */
-    private fun radiusFor(size: CcSize, cellPx: Int) = when (size) {
-        CcSize.SMALL, CcSize.WIDE, CcSize.BAR, CcSize.TALL -> 999f
-        CcSize.LARGE -> dp(30).toFloat()
+    private fun sizeOf(id: String) = if (prefs.getString("cc_size:$id", null) == CcSize.SMALL.name) CcSize.SMALL else CcSize.WIDE
+    private fun setSize(id: String, size: CcSize) {
+        if (sizeOf(id) == size) return
+        prefs.edit().putString("cc_size:$id", size.name).apply()
+        MotionUi.expand(view); layoutGrid()
     }
 
-    /** A tile in the grid: glass pill, icon, and (when there is room) its name and a live second line. */
+    /**
+     * One tile in the grid, in the panel's own style: a rounded pill, accent when on. Wide tiles
+     * show the name and a live second line; compact ones only the icon. In edit mode a tap
+     * selects it, a handle appears on its right edge to drag it narrower or wider, − removes it,
+     * and holding it lets you drag it to another place.
+     */
     private fun addGridTile(tile: Tile) {
         val size = sizeOf(tile.id)
-        when {
-            tile.id == "slider_brightness" || tile.id == "slider_volume" -> {
-                val visible = if (tile.id == "slider_brightness") PanelStyle.brightness(activity) else PanelStyle.volume(activity)
-                if (!visible) return
-                val pill = if (tile.id == "slider_brightness") brightnessPill else volumePill
-                (pill.parent as? android.view.ViewGroup)?.removeView(pill)
-                pill.horizontal = size.columns > size.rows
-                pill.setOnLongClickListener { showSheet(tile); true }
-                ccGrid.addView(pill, CcGrid.Params(size)); return
-            }
-            tile.id == "media" -> { if (PanelStyle.media(activity)) ccGrid.addView(gridMedia(tile, size), CcGrid.Params(size)); return }
-        }
-        val button = ImageButton(activity).apply { scaleType = ImageView.ScaleType.CENTER; isClickable = false; isFocusable = false; background = null; importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO }
-        val name = TextView(activity).apply { text = tile.label; textSize = if (size == CcSize.LARGE) 15f else 13.5f; setTextColor(-1); maxLines = if (size == CcSize.TALL) 2 else 1; ellipsize = TextUtils.TruncateAt.END
+        val button = ImageButton(activity).apply { scaleType = ImageView.ScaleType.CENTER; isClickable = false; isFocusable = false; importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO }
+        val name = TextView(activity).apply { text = tile.label; textSize = 13.5f; setTextColor(-1); maxLines = 1; ellipsize = TextUtils.TruncateAt.END
             typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL) }
         val detail = TextView(activity).apply { textSize = 12f; setTextColor(0xffc4c6d0.toInt()); maxLines = 1; ellipsize = TextUtils.TruncateAt.END }
-        val words = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; addView(name); addView(detail) }
-        val icon = dp(if (size == CcSize.LARGE) 30 else 24)
-        val pill: android.view.ViewGroup = when (size) {
-            CcSize.SMALL -> android.widget.FrameLayout(activity).apply { addView(button, android.widget.FrameLayout.LayoutParams(-1, -1)) }
-            CcSize.WIDE, CcSize.BAR -> LinearLayout(activity).apply {
-                gravity = Gravity.CENTER_VERTICAL; setPadding(dp(16), 0, dp(14), 0)
-                addView(button, LinearLayout.LayoutParams(icon, icon)); addView(words, LinearLayout.LayoutParams(0, -2, 1f).apply { marginStart = dp(12) })
-            }
-            CcSize.TALL, CcSize.LARGE -> LinearLayout(activity).apply {
-                orientation = LinearLayout.VERTICAL; setPadding(dp(16), dp(16), dp(14), dp(14))
-                addView(button, LinearLayout.LayoutParams(icon, icon)); addView(View(activity), LinearLayout.LayoutParams(1, 0, 1f)); addView(words)
-            }
-        }
-        if (size == CcSize.SMALL) { name.visibility = View.GONE }
-        pill.apply {
+        val pill = LinearLayout(activity).apply {
+            gravity = if (size == CcSize.SMALL) Gravity.CENTER else Gravity.CENTER_VERTICAL
+            setPadding(dp(if (size == CcSize.SMALL) 0 else 8), dp(8), dp(if (size == CcSize.SMALL) 0 else 12), dp(8))
             isClickable = true; isFocusable = true; tooltipText = tile.label
-            foreground = android.graphics.drawable.RippleDrawable(ColorStateList.valueOf(0x33FFFFFF), null, GradientDrawable().apply { setColor(-1); cornerRadius = radiusFor(size, 0) })
-            setOnClickListener { if (sheetFor == tile.id) closeSheet(); tile.tap(); handler.postDelayed(::refresh, 350) }
-            setOnLongClickListener { showSheet(tile); true }
+            foreground = android.graphics.drawable.RippleDrawable(ColorStateList.valueOf(0x33FFFFFF), null, GradientDrawable().apply { setColor(-1); cornerRadius = dp(24).toFloat() })
+            addView(button, LinearLayout.LayoutParams(dp(40), dp(40)))
+            if (size != CcSize.SMALL) addView(LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; addView(name); addView(detail) },
+                LinearLayout.LayoutParams(0, -2, 1f).apply { marginStart = dp(10) })
+        }
+        val cell = android.widget.FrameLayout(activity).apply { clipChildren = false; clipToPadding = false }
+        cell.addView(pill, android.widget.FrameLayout.LayoutParams(-1, -1))
+        if (editing) addEditControls(cell, pill, tile, size)
+        else {
+            pill.setOnClickListener { if (sheetFor == tile.id) closeSheet(); tile.tap(); handler.postDelayed(::refresh, 350) }
+            pill.setOnLongClickListener { longPress(tile) }
             @Suppress("ClickableViewAccessibility")
-            setOnTouchListener { v, e ->
+            pill.setOnTouchListener { v, e ->
                 if (e.actionMasked == MotionEvent.ACTION_DOWN) MotionUi.press(v, true)
                 else if (e.actionMasked == MotionEvent.ACTION_UP || e.actionMasked == MotionEvent.ACTION_CANCEL) MotionUi.press(v, false)
                 false
             }
         }
-        ccGrid.addView(pill, CcGrid.Params(size))
-        tileViews += TileView(tile, button, pill, detail.takeIf { size != CcSize.SMALL }, name, size)
+        ccGrid.addView(cell, CcGrid.Params(size))
+        tileViews += TileView(tile, button, pill, detail.takeIf { size != CcSize.SMALL }, size)
     }
 
-    // Grid media tile: artwork, title, artist and transport, kept in step with the media session.
-    private fun gridMedia(tile: Tile, size: CcSize): View {
-        val card = LinearLayout(activity).apply {
-            orientation = if (size == CcSize.BAR) LinearLayout.HORIZONTAL else LinearLayout.VERTICAL
-            gravity = if (size == CcSize.BAR) Gravity.CENTER_VERTICAL else Gravity.NO_GRAVITY
-            setPadding(dp(14), dp(14), dp(12), dp(10)); background = CcGlass.tile(activity, dp(30).toFloat(), false)
-            isClickable = true
-            setOnClickListener { media?.sessionActivity?.let { runCatching { it.send(); closePanel() } } }
-            setOnLongClickListener { showSheet(tile); true }
+    @android.annotation.SuppressLint("ClickableViewAccessibility")
+    private fun addEditControls(cell: android.widget.FrameLayout, pill: View, tile: Tile, size: CcSize) {
+        val selected = selectedId == tile.id
+        pill.setOnClickListener { selectedId = if (selected) null else tile.id; layoutGrid() }
+        pill.contentDescription = "${tile.label}, ${if (size == CcSize.SMALL) "compact" else "wide"}. Tap to select, then drag the handle to resize."
+        // Hold and drag to move the tile; it lands where you let go. A quick drag still scrolls the panel.
+        moveOnHold(cell, pill, tile)
+        // − removes the tile from the panel (it stays available under Add controls).
+        cell.addView(ImageButton(activity).apply {
+            setImageResource(R.drawable.ic_close); imageTintList = ColorStateList.valueOf(0xFF1D2027.toInt()); scaleType = ImageView.ScaleType.CENTER
+            background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(0xFFE3E2E9.toInt()) }; setPadding(dp(4), dp(4), dp(4), dp(4))
+            contentDescription = "Remove ${tile.label}"
+            setOnClickListener {
+                val order = chosen().map { it.id }.filter { it != tile.id }
+                prefs.edit().putString("cc_tiles", order.joinToString(",")).apply()
+                if (selectedId == tile.id) selectedId = null
+                MotionUi.expand(view); layoutGrid()
+            }
+        }, android.widget.FrameLayout.LayoutParams(dp(22), dp(22), Gravity.TOP or Gravity.START).apply { setMargins(dp(2), dp(2), 0, 0) })
+        if (!selected) return
+        // The resize handle: a pill on the right edge. Drag left for compact, right for wide.
+        val handle = View(activity).apply {
+            background = GradientDrawable().apply { setColor(-1); cornerRadius = dp(3).toFloat() }
+            contentDescription = "Resize ${tile.label}"
         }
-        val art = ImageView(activity).apply { scaleType = ImageView.ScaleType.CENTER_CROP; clipToOutline = true; outlineProvider = RoundOutline(dp(12).toFloat())
-            setImageResource(R.drawable.ic_cc_music); imageTintList = null }
-        val title = TextView(activity).apply { textSize = 14f; setTextColor(-1); maxLines = 1; ellipsize = TextUtils.TruncateAt.END; setTypeface(null, android.graphics.Typeface.BOLD) }
-        val artist = TextView(activity).apply { textSize = 12f; setTextColor(MUTED); maxLines = 1; ellipsize = TextUtils.TruncateAt.END }
-        val words = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; addView(title); addView(artist) }
-        val transport = LinearLayout(activity).apply { gravity = Gravity.CENTER }
-        fun control(icon: Int, label: String, action: () -> Unit) = ArtworkUi.plainIcon(activity, icon, label) { action() }.also {
-            it.setPadding(dp(8), dp(8), dp(8), dp(8)); transport.addView(it, LinearLayout.LayoutParams(0, dp(40), 1f))
+        val grip = android.widget.FrameLayout(activity).apply {
+            addView(handle, android.widget.FrameLayout.LayoutParams(dp(6), dp(28), Gravity.CENTER))
+            var startX = 0f
+            setOnTouchListener { v, e ->
+                when (e.actionMasked) {
+                    MotionEvent.ACTION_DOWN -> { v.parent?.requestDisallowInterceptTouchEvent(true); startX = e.rawX; handle.animate().scaleY(1.2f).setDuration(120).start() }
+                    MotionEvent.ACTION_MOVE -> {
+                        val dx = e.rawX - startX; val half = ccGrid.cellWidth / 2f
+                        if (size == CcSize.WIDE && dx < -half) { setSize(tile.id, CcSize.SMALL); return@setOnTouchListener true }
+                        if (size == CcSize.SMALL && dx > half) { setSize(tile.id, CcSize.WIDE); return@setOnTouchListener true }
+                        handle.translationX = dx.coerceIn(-half, half) / 3f
+                    }
+                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> { handle.animate().translationX(0f).scaleY(1f).setDuration(150).start() }
+                }
+                true
+            }
         }
-        control(R.drawable.ic_cc_previous, "Previous") { media?.transportControls?.skipToPrevious() }
-        val play = control(R.drawable.ic_cc_play, "Play or pause") {
-            val c = media ?: return@control
-            if (c.playbackState?.state == PlaybackState.STATE_PLAYING) c.transportControls.pause() else c.transportControls.play()
+        cell.addView(grip, android.widget.FrameLayout.LayoutParams(dp(28), -1, Gravity.END or Gravity.CENTER_VERTICAL))
+    }
+
+    /**
+     * Drag a tile (edit mode) to a new place: hold it, it lifts and follows the finger, and drops
+     * before the tile underneath. Until the hold completes the touch belongs to the scrolling panel.
+     */
+    @android.annotation.SuppressLint("ClickableViewAccessibility")
+    private fun moveOnHold(cell: View, pill: View, tile: Tile) {
+        val slop = android.view.ViewConfiguration.get(activity).scaledTouchSlop
+        var downX = 0f; var downY = 0f; var lastX = 0f; var lastY = 0f; var moving = false
+        val lift = Runnable {
+            moving = true
+            pill.parent?.requestDisallowInterceptTouchEvent(true)
+            // Drop the press highlight the tile picked up when the finger went down.
+            val now = android.os.SystemClock.uptimeMillis()
+            MotionEvent.obtain(now, now, MotionEvent.ACTION_CANCEL, 0f, 0f, 0).also { pill.onTouchEvent(it); it.recycle() }
+            pill.isPressed = false
+            cell.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
+            cell.animate().scaleX(1.06f).scaleY(1.06f).alpha(.92f).setDuration(120).start(); cell.translationZ = dp(8).toFloat()
         }
-        control(R.drawable.ic_cc_next, "Next") { media?.transportControls?.skipToNext() }
-        if (size == CcSize.BAR) {
-            card.addView(art, LinearLayout.LayoutParams(dp(40), dp(40)))
-            card.addView(words, LinearLayout.LayoutParams(0, -2, 1f).apply { marginStart = dp(10) })
-            card.addView(transport, LinearLayout.LayoutParams(dp(120), -2))
-        } else {
-            card.addView(art, LinearLayout.LayoutParams(dp(48), dp(48)))
-            card.addView(View(activity), LinearLayout.LayoutParams(1, 0, 1f))
-            card.addView(words); card.addView(transport, LinearLayout.LayoutParams(-1, -2))
+        fun drop() {
+            val cx = cell.left + cell.translationX + cell.width / 2f; val cy = cell.top + cell.translationY + cell.height / 2f
+            val target = (0 until ccGrid.childCount).map(ccGrid::getChildAt).firstOrNull { it !== cell && cx >= it.left && cx <= it.right && cy >= it.top && cy <= it.bottom }
+            val targetId = tileViews.firstOrNull { target != null && it.pill?.parent === target }?.tile?.id
+            if (targetId != null) {
+                val order = chosen().map { it.id }.toMutableList()
+                val from = order.indexOf(tile.id); val to = order.indexOf(targetId)
+                if (from >= 0 && to >= 0) { order.removeAt(from); order.add(to, tile.id); prefs.edit().putString("cc_tiles", order.joinToString(",")).apply() }
+            }
+            MotionUi.expand(view); layoutGrid()
         }
-        gridTitle = title; gridArtist = artist; gridArt = art; gridPlay = play
-        renderMedia()
-        return card
+        pill.setOnTouchListener { _, e ->
+            when (e.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    moving = false; downX = e.rawX; downY = e.rawY; lastX = e.rawX; lastY = e.rawY
+                    handler.postDelayed(lift, android.view.ViewConfiguration.getLongPressTimeout().toLong())
+                }
+                MotionEvent.ACTION_MOVE -> if (moving) {
+                    cell.translationX += e.rawX - lastX; cell.translationY += e.rawY - lastY
+                    lastX = e.rawX; lastY = e.rawY
+                } else if (kotlin.math.hypot(e.rawX - downX, e.rawY - downY) > slop) handler.removeCallbacks(lift)
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    handler.removeCallbacks(lift)
+                    if (moving) { moving = false; drop(); return@setOnTouchListener true }
+                }
+            }
+            moving
+        }
+    }
+
+    private fun toggleEditing() {
+        if (!expanded) applyExpanded(true)
+        editing = !editing; selectedId = null; closeSheet()
+        editBar.removeAllViews()
+        if (editing) {
+            editBar.addView(TextView(activity).apply { text = "Tap a control, then drag its handle to resize. Hold to move."; textSize = 12.5f; setTextColor(0xffc4c6d0.toInt()) },
+                LinearLayout.LayoutParams(0, -2, 1f))
+            editBar.addView(MaterialUi.tonal(activity, "Add") { edit() }, LinearLayout.LayoutParams(-2, -2).apply { marginStart = dp(8) })
+            editBar.addView(MaterialUi.filled(activity, "Done") { toggleEditing() }, LinearLayout.LayoutParams(-2, -2).apply { marginStart = dp(8) })
+        }
+        MotionUi.expand(view)
+        editBar.visibility = if (editing) View.VISIBLE else View.GONE
+        layoutGrid()
     }
 
     // --- long-press options, inside the panel ---------------------------------------------
@@ -556,16 +594,16 @@ internal class ControlCenter(
         if (sheet.visibility != View.VISIBLE) return
         MotionUi.expand(view); sheet.visibility = View.GONE; sheet.removeAllViews(); sheetFor = null
     }
-    /**
-     * Options for one control open at the top of the panel (not a pop-up): its size in the grid,
-     * and what else it can do. Tap ✕, the control again, or another control's long press.
-     */
     private fun showSheet(tile: Tile) {
+        if (tile.id != "flashlight" && tile.id != "wifi" && tile.id != "bluetooth" && tile.id != "settings") {
+            tile.longPress?.let { it(); return }
+            tile.settings?.let(::launch); return
+        }
         MotionUi.expand(view)
         sheet.removeAllViews(); sheetFor = tile.id
         val card = LinearLayout(activity).apply {
-            orientation = LinearLayout.VERTICAL; setPadding(dp(16), dp(10), dp(8), dp(14))
-            background = CcGlass.tile(activity, dp(26).toFloat(), false)
+            orientation = LinearLayout.VERTICAL; setPadding(dp(16), dp(8), dp(8), dp(14))
+            background = GradientDrawable().apply { setColor(SURFACE_HIGH); cornerRadius = dp(24).toFloat() }
         }
         val head = LinearLayout(activity).apply { gravity = Gravity.CENTER_VERTICAL }
         head.addView(ImageView(activity).apply { setImageResource(tile.icon()); imageTintList = ColorStateList.valueOf(-1) }, LinearLayout.LayoutParams(dp(22), dp(22)))
@@ -573,35 +611,28 @@ internal class ControlCenter(
             typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL) }, LinearLayout.LayoutParams(0, -2, 1f))
         head.addView(headerButton(R.drawable.ic_close, "Close options") { closeSheet() })
         card.addView(head)
-        fun section(text: String) = card.addView(TextView(activity).apply { this.text = text; textSize = 12f; setTextColor(0xffc4c6d0.toInt()); setPadding(dp(2), dp(12), 0, dp(6)) })
-        if (gridMode) {
-            section("Size")
-            val sizes = sizesFor(tile.id)
-            card.addView(MaterialUi.segmented(activity, sizes.map { it.label }, sizes.indexOf(sizeOf(tile.id)).coerceAtLeast(0)) { i ->
-                prefs.edit().putString("cc_size:${tile.id}", sizes[i].name).apply()
-                MotionUi.expand(view); layoutGrid()
-            }, LinearLayout.LayoutParams(-1, -2))
-        }
-        if (tile.id == "flashlight") torchOptions(card, ::section)
+        fun section(text: String) = card.addView(TextView(activity).apply { this.text = text; textSize = 12f; setTextColor(0xffc4c6d0.toInt()); setPadding(dp(2), dp(10), 0, dp(6)) })
         fun action(label: String, run: () -> Unit) = card.addView(MaterialUi.tonal(activity, label) { run() }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(8) })
         when (tile.id) {
+            "flashlight" -> torchOptions(card, ::section)
             "wifi" -> { action("Networks") { closeSheet(); quick.openSection("Wi-Fi"); refresh() }
                 if (activity.checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-                    action("Show the network's name") { androidx.core.app.ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 77) } }
+                    action("Show the network's name") { androidx.core.app.ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 77) }
+                action("Wi-Fi settings") { launch(Intent(Settings.ACTION_WIFI_SETTINGS)) } }
             "bluetooth" -> { action("Devices") { closeSheet(); quick.openSection("Bluetooth"); refresh() }
                 if (Build.VERSION.SDK_INT >= 31 && activity.checkSelfPermission(android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED)
-                    action("Show connected devices") { androidx.core.app.ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.BLUETOOTH_CONNECT), 78) } }
+                    action("Show connected devices") { androidx.core.app.ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.BLUETOOTH_CONNECT), 78) }
+                action("Bluetooth settings") { launch(Intent(Settings.ACTION_BLUETOOTH_SETTINGS)) } }
             "settings" -> action("Android settings") { launch(Intent(Settings.ACTION_SETTINGS)) }
         }
-        if (tile.id != "settings" && tile.id != "flashlight") tile.longPress?.let { lp -> action("More") { lp() } }
-        tile.settings?.takeIf { tile.id != "settings" }?.let { intent -> action("Open settings") { launch(intent) } }
         sheet.addView(card, LinearLayout.LayoutParams(-1, -2))
         sheet.visibility = View.VISIBLE
     }
 
-    /** Flashlight extras: brightness (where the phone allows), SOS, a message in Morse code, and the screen light. */
+    /** Flashlight extras: brightness (where the phone allows), SOS, a message in Morse code, the screen light. */
     private fun torchOptions(card: LinearLayout, section: (String) -> Unit) {
         val id = torchId ?: return
+        val again = { showSheet(allTiles.first { it.id == "flashlight" }) }
         val max = TorchTools.maxLevel(camera, id)
         if (max > 1 && Build.VERSION.SDK_INT >= 33) {
             section("Brightness")
@@ -619,8 +650,7 @@ internal class ControlCenter(
         section("Signal")
         val row = LinearLayout(activity)
         row.addView(MaterialUi.tonal(activity, if (TorchTools.sosRunning) "Stop" else "SOS") {
-            if (TorchTools.sosRunning) TorchTools.stopSos(camera, id) else TorchTools.startSos(camera, id)
-            refresh(); showSheet(allTiles.first { it.id == "flashlight" })
+            if (TorchTools.sosRunning) TorchTools.stopSos(camera, id) else TorchTools.startSos(camera, id); refresh(); again()
         }, LinearLayout.LayoutParams(0, -2, 1f))
         row.addView(MaterialUi.tonal(activity, "Screen light") {
             closePanel(); activity.startActivity(Intent(activity, ScreenLightActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
@@ -632,17 +662,15 @@ internal class ControlCenter(
             setTextColor(-1); setHintTextColor(0x99FFFFFF.toInt()); filters = arrayOf(android.text.InputFilter.LengthFilter(80))
         }
         card.addView(input, LinearLayout.LayoutParams(-1, -2))
-        val flash = LinearLayout(activity)
         fun send(onScreen: Boolean) {
             val text = input.text.toString().trim()
             if (TorchTools.morse(text).isEmpty()) { input.error = "Use letters, numbers or . , ? ! / @"; return }
             prefs.edit().putString("morse_text", text).apply()
             if (onScreen) { closePanel(); activity.startActivity(Intent(activity, ScreenLightActivity::class.java).putExtra(ScreenLightActivity.EXTRA_MORSE, text).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
-            else { TorchTools.startMorse(camera, id, text); refresh(); showSheet(allTiles.first { it.id == "flashlight" }) }
+            else { TorchTools.startMorse(camera, id, text); refresh(); again() }
         }
-        flash.addView(MaterialUi.tonal(activity, if (TorchTools.sosRunning) "Stop" else "Flash with torch") {
-            if (TorchTools.sosRunning) { TorchTools.stopSos(camera, id); refresh(); showSheet(allTiles.first { it.id == "flashlight" }) } else send(false)
-        }, LinearLayout.LayoutParams(0, -2, 1f))
+        val flash = LinearLayout(activity)
+        flash.addView(MaterialUi.tonal(activity, "Flash with torch") { send(false) }, LinearLayout.LayoutParams(0, -2, 1f))
         flash.addView(MaterialUi.tonal(activity, "Flash on screen") { send(true) }, LinearLayout.LayoutParams(0, -2, 1f).apply { marginStart = dp(8) })
         card.addView(flash, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(6) })
     }
@@ -672,7 +700,7 @@ internal class ControlCenter(
 
     private fun applyExpanded(open: Boolean) {
         MotionUi.expand(view)
-        if (!open) { sheet.visibility = View.GONE; sheet.removeAllViews(); sheetFor = null }
+        if (!open) { sheet.visibility = View.GONE; sheet.removeAllViews(); sheetFor = null; editing = false; selectedId = null; editBar.visibility = View.GONE }
         expanded = open
         expandButton.animate().rotation(if (open) 180f else 0f).setDuration(MotionUi.duration(expandButton, 200)).setInterpolator(MotionUi.STANDARD).start()
         layoutGrid()
@@ -907,14 +935,15 @@ internal class ControlCenter(
             if (tile.artwork != null) { button.scaleType = ImageView.ScaleType.FIT_CENTER; button.setPadding(dp(11), dp(11), dp(11), dp(11)) }
             button.contentDescription = if (tile.momentary) tile.label else "${tile.label}, ${if (on) "on" else "off"}"
             if (tv.pill != null) {
-                // Glass tile: Material primary showing through when on; the icon and words follow.
-                tv.pill.background = CcGlass.tile(activity, radiusFor(tv.size, 0), on, outlined = open || sheetFor == tile.id)
-                button.background = null
-                button.imageTintList = if (tile.artwork != null) null else ColorStateList.valueOf(if (on) CcGlass.ON_TEXT else -1)
-                tv.name?.setTextColor(if (on) CcGlass.ON_TEXT else -1)
+                // Wide tile: the whole pill lights up when on; the icon sits in a darker circle on it.
+                tv.pill.background = GradientDrawable().apply { setColor(if (on) ACCENT else SURFACE_HIGH); cornerRadius = dp(24).toFloat()
+                    if (open || (editing && selectedId == tile.id)) setStroke(dp(2), -1) }
+                button.background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(if (on) 0x26000000 else 0x1AFFFFFF) }
+                button.imageTintList = if (tile.artwork != null) null else ColorStateList.valueOf(if (on) ON_ACCENT else -1)
+                ((tv.pill as android.view.ViewGroup).getChildAt(1) as? android.view.ViewGroup)?.getChildAt(0)?.let { (it as TextView).setTextColor(if (on) ON_ACCENT else -1) }
                 val second = runCatching { tile.detail?.invoke() }.getOrNull() ?: if (tile.momentary) null else if (on) "On" else "Off"
                 tv.detail?.text = second.orEmpty(); tv.detail?.visibility = if (second.isNullOrEmpty()) View.GONE else View.VISIBLE
-                tv.detail?.setTextColor(if (on) (CcGlass.ON_TEXT and 0x00FFFFFF) or 0xCC000000.toInt() else 0xffc4c6d0.toInt())
+                tv.detail?.setTextColor(if (on) (ON_ACCENT and 0x00FFFFFF) or 0xCC000000.toInt() else 0xffc4c6d0.toInt())
                 tv.pill.contentDescription = listOfNotNull(tile.label, second).joinToString(", ")
             }
         }
@@ -934,11 +963,8 @@ internal class ControlCenter(
         val metadata = controller?.metadata
         val state = controller?.playbackState?.state
         val active = controller != null && metadata != null && state != null && state != PlaybackState.STATE_NONE && state != PlaybackState.STATE_STOPPED
-        if (!active) {
-            gridTitle?.text = "Not playing"; gridArtist?.text = ""; gridArt?.setImageResource(R.drawable.ic_cc_music); gridPlay?.setImageResource(R.drawable.ic_cc_play)
-        }
-        if (!active || !PanelStyle.media(activity) || gridMode) { mediaCard.visibility = View.GONE; if (!active) return }
-        if (!gridMode) mediaCard.visibility = View.VISIBLE
+        if (!active || !PanelStyle.media(activity)) { mediaCard.visibility = View.GONE; return }
+        mediaCard.visibility = View.VISIBLE
         mediaTitle.text = metadata!!.getString(MediaMetadata.METADATA_KEY_TITLE) ?: metadata.getString(MediaMetadata.METADATA_KEY_DISPLAY_TITLE) ?: "Now playing"
         val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: metadata.getString(MediaMetadata.METADATA_KEY_ALBUM)
         val appLabel = runCatching { activity.packageManager.getApplicationLabel(activity.packageManager.getApplicationInfo(controller!!.packageName, 0)).toString() }.getOrNull()
@@ -949,8 +975,6 @@ internal class ControlCenter(
             if (icon != null) mediaArt.setImageBitmap(icon) else mediaArt.setImageResource(R.drawable.ic_cc_music)
         }
         playButton?.setImageResource(if (state == PlaybackState.STATE_PLAYING) R.drawable.ic_cc_pause else R.drawable.ic_cc_play)
-        gridTitle?.text = mediaTitle.text; gridArtist?.text = mediaArtist.text; gridArt?.setImageDrawable(mediaArt.drawable)
-        gridPlay?.setImageResource(if (state == PlaybackState.STATE_PLAYING) R.drawable.ic_cc_pause else R.drawable.ic_cc_play)
     }
 
     private val mediaCallback = object : MediaController.Callback() {
@@ -1002,6 +1026,7 @@ internal class ControlCenter(
         if (!attached) return
         attached = false
         sheet.visibility = View.GONE; sheet.removeAllViews(); sheetFor = null
+        if (editing) { editing = false; selectedId = null; editBar.visibility = View.GONE; layoutGrid() }
         handler.removeCallbacksAndMessages(null)
         runCatching { camera?.unregisterTorchCallback(torchCallback) }
         runCatching { activity.contentResolver.unregisterContentObserver(observer) }
@@ -1021,6 +1046,6 @@ internal class ControlCenter(
         const val TILE = 48
         const val COLLAPSED = 5
         // Must be static: build() runs from init, before later instance properties exist.
-        private val defaultOrder = listOf("wifi", "bluetooth", "rotation", "flashlight", "media", "slider_brightness", "slider_volume", "dnd", "location", "dark", "night_light", "sound_mode", "battery_saver", "airplane", "mobile_data", "hotspot", "caffeine", "screenshot", "screen_record", "lock", "settings")
+        private val defaultOrder = listOf("wifi", "bluetooth", "rotation", "flashlight", "dnd", "location", "dark", "night_light", "sound_mode", "battery_saver", "airplane", "mobile_data", "hotspot", "caffeine", "screenshot", "screen_record", "lock", "settings")
     }
 }
