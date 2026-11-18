@@ -507,11 +507,11 @@
     },
     {
       "id": "samsung-health",
-      "prompt": "Use case: logo-brand. Create ONE landscape 1.62:1 smart-TV launcher banner for \"Samsung Health\". The attached image shows the genuine identity of this specific brand. Use exclusively this brand's artwork. Full-bleed brand-color background near #087B80, large recognizable art, balanced safe margins near 9%, bold readable lettering. Let the brand's own geometry, color and shapes determine composition. Aim for confident scale like classic TV app tiles.  Brand lettering must appear once total. Any lettering in the illustration or icon counts, including a repeated first letter. If a genuine full wordmark exists, feature it alone. If an icon spells a partial or full name, remove it in favor of the wordmark or isolate a genuine non-letter symbol. Multiword labels may wrap at a word boundary to remain readable; keep a hyphenated name intact. No unrelated logo, border, square icon frame, rounded outer corners, device mockup, slogan or watermark."
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Health from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #C6E8CD. Preserve safe margins and omit outer frames."
     },
     {
       "id": "samsung-smart-switch",
-      "prompt": "One full-bleed 1.62:1 AniHome smart-TV tile in the Samsung Smart Switch palette near #252AB8. ONLY the single exact wordmark \"Samsung Smart Switch\" in large heavy legible display typography, centered within 9% margins. This is a wordmark-only card. Absolutely zero logos, icons, monograms, letter emblems, badges or other text. Use restrained abstract light and layered color in the background to make this specific brand feel polished. No frame, border or watermark."
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Smart Switch from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #DDD0F7. Preserve safe margins and omit outer frames."
     },
     {
       "id": "galaxy-wearable",
@@ -1704,6 +1704,286 @@
     {
       "id": "smart-manager",
       "prompt": "Recolor this 1.62:1 AniHome launcher banner for Smart Manager. Preserve the reference icon geometry, single exact label, proportions, and placement. The main change is the new palette, including text contrast. Palette: muted dark aubergine #4A3452, silver shield and name. Subtle gradient at most, minimal uncluttered full bleed, 9% safe margins, keep the intended icon colors and one clearly readable label, no unrelated marks or objects, no outer frame or watermark."
+    },
+    {
+      "id": "samsung-knox-manage",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Knox Manage from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-smart-tutor",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Smart Tutor from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "bixby",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Bixby from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-device-care",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Device Care from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "galaxy-store",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Galaxy Store from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F5CDD4. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "galaxy-themes",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Galaxy Themes from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #DDD0F7. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-one-ui-home",
+      "prompt": "Compose a 1600 × 988 AniHome banner for One UI Home from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-quick-share",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Quick Share from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-calculator",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Calculator from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #C6E8CD. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-calendar",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Calendar from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #BFE6E2. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-camera",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Camera from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F5CDD4. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-clock",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Clock from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #DADEEA. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-cloud",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Cloud from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-contacts",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Contacts from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F5CDD4. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-email",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Email from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F5CDD4. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-find",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Find from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #BFE6E2. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-gallery",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Gallery from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F5CDD4. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-health-monitor",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Health Monitor from the supplied brand artwork. Center the supplied app artwork over the app name on a light field. Background color #FBF0F1. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-keyboard",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Keyboard from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #BFE6E2. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-kids",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Kids from the supplied brand artwork. Center the supplied app artwork over the app name on a light field. Background color #EAF5F6. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-members",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Members from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-messages",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Messages from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-my-files",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung My Files from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F5E3AB. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-notes",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Notes from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F5CDD4. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-pass",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Pass from the supplied brand artwork. Center the full published app mark on a flat brand-tint field. Background color #DDD0F7. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-phone",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Phone from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #C6E8CD. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-reminder",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Reminder from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #DDD0F7. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-voice-recorder",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Voice Recorder from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F5CDD4. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-weather",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Weather from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-secure-folder",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Secure Folder from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-good-guardians",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Good Guardians from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #C6E8CD. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-clockface",
+      "prompt": "Compose a 1600 × 988 AniHome banner for ClockFace from the supplied brand artwork. Center the supplied app artwork over the app name on a light field. Background color #ECF3FE. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-display-assistant",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Display Assistant from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-edge-lighting-plus",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Edge Lighting+ from the supplied brand artwork. Center the supplied app artwork over the app name on a light field. Background color #F4EFFC. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-edge-touch",
+      "prompt": "Compose a 1600 × 988 AniHome banner for EdgeTouch from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #C6E8CD. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-good-lock",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Good Lock from the supplied brand artwork. Center the supplied app artwork over the app name on a light field. Background color #FBF0F1. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-home-up",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Home Up from the supplied brand artwork. Place the supplied app artwork beside the name on a dark field. Background color #1A2B4C. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-keys-cafe",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Keys Cafe from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F5E3AB. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-lockstar",
+      "prompt": "Compose a 1600 × 988 AniHome banner for LockStar from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #DDD0F7. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-multistar",
+      "prompt": "Compose a 1600 × 988 AniHome banner for MultiStar from the supplied brand artwork. Center the supplied app artwork over the app name on a light field. Background color #EDF7EF. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-navstar",
+      "prompt": "Compose a 1600 × 988 AniHome banner for NavStar from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #BFE6E2. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-nice-catch",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Nice Catch from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #C6E8CD. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-notistar",
+      "prompt": "Compose a 1600 × 988 AniHome banner for NotiStar from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F5CDD4. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-one-hand-operation-plus",
+      "prompt": "Compose a 1600 × 988 AniHome banner for One Hand Operation+ from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #BFE6E2. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-pentastic",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Pentastic from the supplied brand artwork. Center the supplied app artwork over the app name on a light field. Background color #F4EFFC. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-quickstar",
+      "prompt": "Compose a 1600 × 988 AniHome banner for QuickStar from the supplied brand artwork. Center the supplied app artwork over the app name on a light field. Background color #EAF5F6. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-registar",
+      "prompt": "Compose a 1600 × 988 AniHome banner for RegiStar from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F5CDD4. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-routines-plus",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Routines+ from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-sound-assistant",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Sound Assistant from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #DDD0F7. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-theme-park",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Theme Park from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F9D9BF. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-wonderland",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Wonderland from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #DDD0F7. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-modes-routines",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Modes and Routines from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #DDD0F7. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-internet-beta",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Browser Beta from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #DDD0F7. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-food",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Food from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #BFE6E2. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-shop",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Shop Samsung from the supplied brand artwork. Center the full published app mark on a flat brand-tint field. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-camera-assistant",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Camera Assistant from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #BFE6E2. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-expert-raw",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Expert RAW from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #DADEEA. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "galaxy-enhance-x",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Galaxy Enhance-X from the supplied brand artwork. Place the supplied app artwork beside the name on a dark field. Background color #292249. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-game-booster",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Game Booster from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #DDD0F7. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-gaming-hub",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Gaming Hub from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #DDD0F7. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-penup",
+      "prompt": "Compose a 1600 × 988 AniHome banner for PENUP from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #BFE6E2. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-photo-editor",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Photo Editor from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F5CDD4. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-capture",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Capture from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #BFE6E2. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-flow",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Flow from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-global-goals",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Global Goals from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #CDE0F9. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-music",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Music from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #DDD0F7. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-free",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung News from the supplied brand artwork. Center the full published app mark on a flat brand-tint field. Background color #F5CDD4. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-tv-plus",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung TV Plus from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F9D9BF. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-video-player",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Samsung Video Player from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F5CDD4. Preserve safe margins and omit outer frames."
+    },
+    {
+      "id": "samsung-studio",
+      "prompt": "Compose a 1600 × 988 AniHome banner for Studio from the supplied brand artwork. Use a flat brand-tint field with a large app mark and readable name. Background color #F5CDD4. Preserve safe margins and omit outer frames."
     }
   ],
   "artworkTreatments": {

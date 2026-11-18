@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "updated": "2026-11-17",
+  "updated": "2026-11-18",
   "curation": "Mainstream Android apps, tablet utilities, and popular global and India-relevant sites for pinned shortcuts",
   "entries": [
     {
@@ -3405,7 +3405,7 @@
       "category": "health",
       "tabletPriority": 68,
       "popular": true,
-      "sha256": "7edff4086f75a5dd558358e9511261978d06fb3d6cb9ddba59a518151f52757b"
+      "sha256": "e63876cbb296847fa73f4b1a146cc6592a4c90f8a29d4bf78e336563b58cf978"
     },
     {
       "id": "samsung-smart-switch",
@@ -3419,7 +3419,7 @@
       "category": "utilities",
       "tabletPriority": 56,
       "popular": true,
-      "sha256": "34f0feb0ace8770b8a8b3e3d381bca3c2381ac8fda9444f984e12d52d1ce0452"
+      "sha256": "140bd8f421762c1c2d6ada3288d5a2b7ce2d3d277a052d54d960819e4c823451"
     },
     {
       "id": "galaxy-wearable",
@@ -7989,6 +7989,995 @@
       "tabletPriority": 66,
       "popular": false,
       "sha256": "70e09da11f92cbf9e60638a0d2a1ea503f1787eef66cb5e5cbc40906a11df2c3"
+    },
+    {
+      "id": "samsung-knox-manage",
+      "name": "Samsung Knox Manage",
+      "file": "images/samsung-knox-manage.webp",
+      "packages": [
+        "com.sds.emm.cloud.knox.samsung"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "08e168b95be767559e12597f7d26f9e5ee572fb31be69aae83238666ad002d42",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-smart-tutor",
+      "name": "Samsung Smart Tutor",
+      "file": "images/samsung-smart-tutor.webp",
+      "packages": [
+        "com.rsupport.rs.activity.rsupport.aas2"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "493969689868f4dd576300b02a98e56416e7374396dc7ff7b1c1acb7df441c1e",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "bixby",
+      "name": "Bixby",
+      "file": "images/bixby.webp",
+      "packages": [
+        "com.samsung.android.bixby.agent"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "840344f1712c4d55941a3045e2f0b2a88fd4b9a97fde976b78781f15496e4705",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-device-care",
+      "name": "Device Care",
+      "file": "images/samsung-device-care.webp",
+      "packages": [
+        "com.samsung.android.lool"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "2adf944cadf4b90b6561e481b95c40fb425617a4b1a42e0e0b48033dee977209",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "galaxy-store",
+      "name": "Galaxy Store",
+      "file": "images/galaxy-store.webp",
+      "packages": [
+        "com.sec.android.app.samsungapps"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "87e8daa91b37a6317e55eabf55d1a973e00ae88ca55d94b11ef34d60a3d40e4b",
+      "popular": true,
+      "category": "utilities",
+      "tabletPriority": 70
+    },
+    {
+      "id": "galaxy-themes",
+      "name": "Galaxy Themes",
+      "file": "images/galaxy-themes.webp",
+      "packages": [
+        "com.samsung.android.themestore"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "66b777297c16b713e9e69f3f0e1d3fb67df82e74879f34c4c931b04217ceffbe",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-one-ui-home",
+      "name": "One UI Home",
+      "file": "images/samsung-one-ui-home.webp",
+      "packages": [
+        "com.sec.android.app.launcher"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "1348ecf8da06401ef673d6bba739ea995f80555376095e104a8bbb9ec647d8d7",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-quick-share",
+      "name": "Quick Share",
+      "file": "images/samsung-quick-share.webp",
+      "packages": [
+        "com.samsung.android.app.sharelive"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "4490c73a8e2e4da7d13e004b051c74731ac9cc7b91467fb3a69cb234185f94e8",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-calculator",
+      "name": "Samsung Calculator",
+      "file": "images/samsung-calculator.webp",
+      "packages": [
+        "com.sec.android.app.popupcalculator"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "6ca1cc6793c3087ce10a1c3e704b3cd7c619d61c886b96ddeeaef4b61db921f0",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-calendar",
+      "name": "Samsung Calendar",
+      "file": "images/samsung-calendar.webp",
+      "packages": [
+        "com.samsung.android.calendar"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "8f1976cace83e37ee9cda047f3f692f0f93a19389ea796274435570535e6c7e1",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 70
+    },
+    {
+      "id": "samsung-camera",
+      "name": "Samsung Camera",
+      "file": "images/samsung-camera.webp",
+      "packages": [
+        "com.sec.android.app.camera"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "f7554c26084137e18dbcf0d88504e549009d35c6fac4e592ee00dd4b1896b0b6",
+      "popular": true,
+      "category": "creativity",
+      "tabletPriority": 86
+    },
+    {
+      "id": "samsung-clock",
+      "name": "Samsung Clock",
+      "file": "images/samsung-clock.webp",
+      "packages": [
+        "com.sec.android.app.clockpackage"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "74468eaba8cd407471bf91f5c4964fe9c60f7b4e55d7ea704843732b04f81310",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-cloud",
+      "name": "Samsung Cloud",
+      "file": "images/samsung-cloud.webp",
+      "packages": [
+        "com.samsung.android.scloud"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "23e444bbc0b43ed8bd942f66d6f769b7c909252d0aa3504667a3eb11ff04af9c",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-contacts",
+      "name": "Samsung Contacts",
+      "file": "images/samsung-contacts.webp",
+      "packages": [
+        "com.samsung.android.app.contacts"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "bf86573794bf9c04deb9fa27b7e528ddf746a71c346b9be56928b1aee4d1de8e",
+      "popular": false,
+      "category": "communication",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-email",
+      "name": "Samsung Email",
+      "file": "images/samsung-email.webp",
+      "packages": [
+        "com.samsung.android.email.provider"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "349482c0c4bad84a65a5cf43e4686a4a0688323a42f3986c8b0349a043e6ee85",
+      "popular": false,
+      "category": "communication",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-find",
+      "name": "Samsung Find",
+      "file": "images/samsung-find.webp",
+      "packages": [
+        "com.samsung.android.app.find"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "6cd576980d12959c672aebccdd08b9fb1271bbaa63242574b00ee972230cf844",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-gallery",
+      "name": "Samsung Gallery",
+      "file": "images/samsung-gallery.webp",
+      "packages": [
+        "com.sec.android.gallery3d"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "d9e7a5625892c4fbfbef80238d0754e5b3712d2bcc54ff5d9e48029e09100a09",
+      "popular": true,
+      "category": "utilities",
+      "tabletPriority": 70
+    },
+    {
+      "id": "samsung-health-monitor",
+      "name": "Samsung Health Monitor",
+      "file": "images/samsung-health-monitor.webp",
+      "packages": [
+        "com.samsung.android.shealthmonitor"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "6ab21181f968ffc9f27e1b43e1c74366f3ec40f31016608f62d67012f6792eb7",
+      "popular": false,
+      "category": "health",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-keyboard",
+      "name": "Samsung Keyboard",
+      "file": "images/samsung-keyboard.webp",
+      "packages": [
+        "com.samsung.android.honeyboard"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "142130d2e2eaca100f9d28ab4f00e3a1252f156f9d56abb6b7596791458e0fb3",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-kids",
+      "name": "Samsung Kids",
+      "file": "images/samsung-kids.webp",
+      "packages": [
+        "com.samsung.android.kidsinstaller"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "695378f8936b84405e33fa462b5d06f99c65fd7af2388d690b2666b25566888c",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-members",
+      "name": "Samsung Members",
+      "file": "images/samsung-members.webp",
+      "packages": [
+        "com.samsung.android.voc"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "b5e1a305831bec3b9f7ceba37a1682b341c88f58ca3cb35533e014d7499c6e02",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-messages",
+      "name": "Samsung Messages",
+      "file": "images/samsung-messages.webp",
+      "packages": [
+        "com.samsung.android.messaging"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "20a01bcfebfdf2f2a6e4b229265f3eb9eeedea19a4df345e0cf45bcea8435126",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 70
+    },
+    {
+      "id": "samsung-my-files",
+      "name": "Samsung My Files",
+      "file": "images/samsung-my-files.webp",
+      "packages": [
+        "com.sec.android.app.myfiles"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "4ab9532e5f9a8929cde83080f339c46a13e44802963ea3c6ca20e2499203c422",
+      "popular": true,
+      "category": "utilities",
+      "tabletPriority": 70
+    },
+    {
+      "id": "samsung-notes",
+      "name": "Samsung Notes",
+      "file": "images/samsung-notes.webp",
+      "packages": [
+        "com.samsung.android.app.notes"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "fdd1dcb787d65cd1d943b2ca0cb585f8cd05baaf4360cbdae930e34a369d261f",
+      "popular": true,
+      "category": "productivity",
+      "tabletPriority": 70
+    },
+    {
+      "id": "samsung-pass",
+      "name": "Samsung Pass",
+      "file": "images/samsung-pass.webp",
+      "packages": [
+        "com.samsung.android.samsungpass"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "c62bc3d7669057fa4c0444b8e06c3cb22ba597e31c93874f8da9fdbef649e2f4",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-phone",
+      "name": "Samsung Phone",
+      "file": "images/samsung-phone.webp",
+      "packages": [
+        "com.samsung.android.dialer"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "cca01d11ebd0913c7033f2965d57887cec6d948e395d157eaf60bc9f7a72f194",
+      "popular": true,
+      "category": "communication",
+      "tabletPriority": 70
+    },
+    {
+      "id": "samsung-reminder",
+      "name": "Samsung Reminder",
+      "file": "images/samsung-reminder.webp",
+      "packages": [
+        "com.samsung.android.app.reminder"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "e8427237f1c450f4aaa41240e3aa7f524775d7590a1ff11b7800a9f70a635b8e",
+      "popular": false,
+      "category": "productivity",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-voice-recorder",
+      "name": "Samsung Voice Recorder",
+      "file": "images/samsung-voice-recorder.webp",
+      "packages": [
+        "com.sec.android.app.voicenote"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "74912bdbdba955c59a7d382c48a88ad44d3605e122271c7c71e379b250a74681",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-weather",
+      "name": "Samsung Weather",
+      "file": "images/samsung-weather.webp",
+      "packages": [
+        "com.sec.android.daemonapp"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "b709b5441fc3246da9871dd3bdfad65697f62368e6164bd6fee59ee255c7828a",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-secure-folder",
+      "name": "Secure Folder",
+      "file": "images/samsung-secure-folder.webp",
+      "packages": [
+        "com.samsung.knox.securefolder"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "f0bac96edd473c3a9f62ff5548d4c76cf4ef3bbda7aa0c23eb6f551333dfbd86",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-good-guardians",
+      "name": "Good Guardians",
+      "file": "images/samsung-good-guardians.webp",
+      "packages": [
+        "com.android.samsung.utilityapp"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "5660909d066fc557fc5353a2135122b21fde40355122dd8f641cd067ed5ac05e",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-clockface",
+      "name": "ClockFace",
+      "file": "images/samsung-clockface.webp",
+      "packages": [
+        "com.samsung.android.app.clockface"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "7788d2567cc163ecade599aa28c30e22b5f79effda07b9b2ced196665316452f",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-display-assistant",
+      "name": "Display Assistant",
+      "file": "images/samsung-display-assistant.webp",
+      "packages": [
+        "com.samsung.android.displayassistant"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "f1a3d95f2ab2f609457aee2c6a1c53ad8717e1de2823f44b58599445e8f6079e",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-edge-lighting-plus",
+      "name": "Edge Lighting+",
+      "file": "images/samsung-edge-lighting-plus.webp",
+      "packages": [
+        "com.samsung.android.edgelightingplus"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "0fcbe3423d675107c58ccc10b947d1fa0befd0edf8a499fed22d4f0f055a7ab6",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-edge-touch",
+      "name": "EdgeTouch",
+      "file": "images/samsung-edge-touch.webp",
+      "packages": [
+        "com.samsung.android.app.edgetouch"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "2c5e1d9b6cc43e3d48c2879159b50560f88ebe8aab80ed171ebe724ed1e10f1c",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-good-lock",
+      "name": "Good Lock",
+      "file": "images/samsung-good-lock.webp",
+      "packages": [
+        "com.samsung.android.goodlock"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "72698e026d4588bfbf11c1981c70adc389eaf0a5f9f7fc53f90e6dbf1c83968e",
+      "popular": true,
+      "category": "utilities",
+      "tabletPriority": 70
+    },
+    {
+      "id": "samsung-home-up",
+      "name": "Home Up",
+      "file": "images/samsung-home-up.webp",
+      "packages": [
+        "com.samsung.android.app.homestar"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "6cbb59e4ed1b44e31388fe1f9ddc683d18cf6b94e252da8d5db822a27ebaff6c",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-keys-cafe",
+      "name": "Keys Cafe",
+      "file": "images/samsung-keys-cafe.webp",
+      "packages": [
+        "com.samsung.android.keyscafe"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "e554115cd2c65c6ab7ed176ae533c00973c6044aae38e5431e9b7bf64dc9f43d",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-lockstar",
+      "name": "LockStar",
+      "file": "images/samsung-lockstar.webp",
+      "packages": [
+        "com.samsung.systemui.lockstar"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "2daf41e7578bed4edb946ee0a5b8ad85645a371f318541d8b509aea980440eee",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-multistar",
+      "name": "MultiStar",
+      "file": "images/samsung-multistar.webp",
+      "packages": [
+        "com.samsung.android.multistar"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "babaa6d856bc4c7d51de01bfe3c4018bf62623605f41c1fabcac76c327507e41",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-navstar",
+      "name": "NavStar",
+      "file": "images/samsung-navstar.webp",
+      "packages": [
+        "com.samsung.systemui.navillera"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "2a7c3e126c3fb2797a39edc90df7d123d379ac8936b81e687684732daaa207c2",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-nice-catch",
+      "name": "Nice Catch",
+      "file": "images/samsung-nice-catch.webp",
+      "packages": [
+        "com.samsung.android.app.goodcatch"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "d1e8fa796f0f81090c309747730c4ebf61f1d653ec1451b2daa6a1874dd82c74",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-notistar",
+      "name": "NotiStar",
+      "file": "images/samsung-notistar.webp",
+      "packages": [
+        "com.samsung.systemui.notilus"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "a912dca0f2edf1cd923320b5dfb4678f30676fda8ff0cb8115bb18aad370dad1",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-one-hand-operation-plus",
+      "name": "One Hand Operation+",
+      "file": "images/samsung-one-hand-operation-plus.webp",
+      "packages": [
+        "com.samsung.android.sidegesturepad"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "886aed2d08e4c4112d47c08f26158170d695e1bdcf2d7fac79a496cae342a143",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-pentastic",
+      "name": "Pentastic",
+      "file": "images/samsung-pentastic.webp",
+      "packages": [
+        "com.samsung.android.pentastic"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "a90f994242a53f88dded795dcfdc243c5893e3445812f5291df1f3ad7dbf45cd",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-quickstar",
+      "name": "QuickStar",
+      "file": "images/samsung-quickstar.webp",
+      "packages": [
+        "com.samsung.android.qstuner"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "7b7e620b3422146e3a1ad762369607c53819dd35a2cb1f1a68ed87c53f50c610",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-registar",
+      "name": "RegiStar",
+      "file": "images/samsung-registar.webp",
+      "packages": [
+        "com.samsung.android.app.galaxyregistry"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "e902f0819ec88df10daebcc12d6258034132275c67d068a88a4610120061aff6",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-routines-plus",
+      "name": "Routines+",
+      "file": "images/samsung-routines-plus.webp",
+      "packages": [
+        "com.samsung.android.app.routineplus"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "a797d0749c935152a79a184ee60e1d06022334928c8697eeb0f9174923f6d8e0",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-sound-assistant",
+      "name": "Sound Assistant",
+      "file": "images/samsung-sound-assistant.webp",
+      "packages": [
+        "com.samsung.android.soundassistant"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "4b4a576617b1b625444a0d58c748a00c8241896844b8ba60066f5420d3860d83",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-theme-park",
+      "name": "Theme Park",
+      "file": "images/samsung-theme-park.webp",
+      "packages": [
+        "com.samsung.android.themedesigner"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "1be8b9c850678afadaf92c4ba87c19ec44bce7777956df35690d95d371180ffb",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-wonderland",
+      "name": "Wonderland",
+      "file": "images/samsung-wonderland.webp",
+      "packages": [
+        "com.samsung.android.wonderland.wallpaper"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "81ebbe23475463e7eb8500c9781241a2d89cbceb7c8c7ea1c6f24b49136de508",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-modes-routines",
+      "name": "Modes and Routines",
+      "file": "images/samsung-modes-routines.webp",
+      "packages": [
+        "com.samsung.android.app.routines"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "98157471aa4ac80d73f50e559727462abc459d5c9d750e6617161ac50b4c6663",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-internet-beta",
+      "name": "Samsung Browser Beta",
+      "file": "images/samsung-internet-beta.webp",
+      "packages": [
+        "com.sec.android.app.sbrowser.beta"
+      ],
+      "aliases": [
+        "Samsung Internet Beta"
+      ],
+      "webHosts": [],
+      "sha256": "9c1689b378d0b77c3df5681a48b3ab9b900e38a06ba395b64c06a8dc3ca85579",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-food",
+      "name": "Samsung Food",
+      "file": "images/samsung-food.webp",
+      "packages": [
+        "com.foodient.whisk"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "6c95ceb4b8d7b8e2ddc0b849ab6ffd62946338cd20e24ee5934dd3c32de0c9ba",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-shop",
+      "name": "Shop Samsung",
+      "file": "images/samsung-shop.webp",
+      "packages": [
+        "com.samsung.ecomm",
+        "com.samsung.ecomm.global.in"
+      ],
+      "aliases": [
+        "Samsung Shop"
+      ],
+      "webHosts": [],
+      "sha256": "61c344d214e66e3de14546a0a0ed2c8291cad4cc959ecce69ff543c5a665a15a",
+      "popular": false,
+      "category": "shopping",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-camera-assistant",
+      "name": "Camera Assistant",
+      "file": "images/samsung-camera-assistant.webp",
+      "packages": [
+        "com.samsung.android.app.cameraassistant"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "92938f6f18f98b0eeb8b67ac99e72284a4f2f13c8724cef7d848432ce2de5139",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-expert-raw",
+      "name": "Expert RAW",
+      "file": "images/samsung-expert-raw.webp",
+      "packages": [
+        "com.samsung.android.app.galaxyraw"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "1785a9b3432c64d3b8f83680c2fe925bac558d2f13c3507c18bafc49ccc9f64b",
+      "popular": false,
+      "category": "creativity",
+      "tabletPriority": 86
+    },
+    {
+      "id": "galaxy-enhance-x",
+      "name": "Galaxy Enhance-X",
+      "file": "images/galaxy-enhance-x.webp",
+      "packages": [
+        "com.samsung.android.imageenhancer"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "b41d6a3af256fcad7a6dfac67d4b412204adf9a35042b0054eb7c94d302d88dd",
+      "popular": false,
+      "category": "creativity",
+      "tabletPriority": 86
+    },
+    {
+      "id": "samsung-game-booster",
+      "name": "Game Booster",
+      "file": "images/samsung-game-booster.webp",
+      "packages": [
+        "com.samsung.android.game.gametools"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "5d0a50e8efbeb626d6a1bc779498f693416f3e6288da0f383487257a24cb4b77",
+      "popular": false,
+      "category": "games",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-gaming-hub",
+      "name": "Gaming Hub",
+      "file": "images/samsung-gaming-hub.webp",
+      "packages": [
+        "com.samsung.android.game.gamehome"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "860a0efddaa9c99f9dc152ab33a84a77dbdcc362b35efa54d5ee2c514c4b695f",
+      "popular": false,
+      "category": "games",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-penup",
+      "name": "PENUP",
+      "file": "images/samsung-penup.webp",
+      "packages": [
+        "com.sec.penup"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "30eb1e89d43bfdb3d2cc18e1d3e3d002e289874e1d3320a839f1bced27096313",
+      "popular": false,
+      "category": "creativity",
+      "tabletPriority": 86
+    },
+    {
+      "id": "samsung-photo-editor",
+      "name": "Photo Editor",
+      "file": "images/samsung-photo-editor.webp",
+      "packages": [
+        "com.sec.android.mimage.photoretouching"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "d0f2243fe93db961ca5014da1da4c22ee5c9692cd0c9283944258ec0b24fc379",
+      "popular": false,
+      "category": "creativity",
+      "tabletPriority": 86
+    },
+    {
+      "id": "samsung-capture",
+      "name": "Samsung Capture",
+      "file": "images/samsung-capture.webp",
+      "packages": [
+        "com.samsung.android.app.smartcapture"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "fc68c36410c3ff94e30d64ac56f7c55998e51c8842d4d8db27848805c6f331be",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-flow",
+      "name": "Samsung Flow",
+      "file": "images/samsung-flow.webp",
+      "packages": [
+        "com.samsung.android.galaxycontinuity"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "589fb61a50b2e3e4b1f8aa1324ff53a4dd765730047f6d04c1bac96125d5519d",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-global-goals",
+      "name": "Samsung Global Goals",
+      "file": "images/samsung-global-goals.webp",
+      "packages": [
+        "com.samsung.sree"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "0ba1844fbcd4a57a032e3e3f2bbd851e56d0ade71e62d527e329581fbe423856",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-music",
+      "name": "Samsung Music",
+      "file": "images/samsung-music.webp",
+      "packages": [
+        "com.sec.android.app.music"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "06d0e71cdbe3ef65449746e5448c0efe3ab1d4f55aa28fa7a252310b34112c18",
+      "popular": false,
+      "category": "entertainment",
+      "tabletPriority": 86
+    },
+    {
+      "id": "samsung-free",
+      "name": "Samsung News",
+      "file": "images/samsung-free.webp",
+      "packages": [
+        "com.samsung.android.app.spage"
+      ],
+      "aliases": [
+        "Samsung Free"
+      ],
+      "webHosts": [],
+      "sha256": "3a408fa5d18a9d8d654bbb4cff5b1af82ccef49b659393afe8d8650516f51306",
+      "popular": false,
+      "category": "utilities",
+      "tabletPriority": 56
+    },
+    {
+      "id": "samsung-tv-plus",
+      "name": "Samsung TV Plus",
+      "file": "images/samsung-tv-plus.webp",
+      "packages": [
+        "com.samsung.android.tvplus"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "0750d6a5666e3d7f6ead1dc9b32b3ded097fba6b3deffdadda9ff15feda9a55e",
+      "popular": true,
+      "category": "entertainment",
+      "tabletPriority": 86
+    },
+    {
+      "id": "samsung-video-player",
+      "name": "Samsung Video Player",
+      "file": "images/samsung-video-player.webp",
+      "packages": [
+        "com.samsung.android.video"
+      ],
+      "aliases": [],
+      "webHosts": [],
+      "sha256": "4142565b10fc204fa269fd8e5ec0846793ead1f144112afec00025865128e293",
+      "popular": false,
+      "category": "entertainment",
+      "tabletPriority": 86
+    },
+    {
+      "id": "samsung-studio",
+      "name": "Studio",
+      "file": "images/samsung-studio.webp",
+      "packages": [
+        "com.sec.android.app.vepreload"
+      ],
+      "aliases": [
+        "Samsung Studio"
+      ],
+      "webHosts": [],
+      "sha256": "6d75ee0d7216f51f4ee9ad56a62204daae627bb3441620a7c83add2ff5447096",
+      "popular": false,
+      "category": "creativity",
+      "tabletPriority": 86
     }
   ]
 }

@@ -1613,18 +1613,20 @@
   {
     "id": "samsung-health",
     "name": "Samsung Health",
-    "sourceUrl": "https://play.google.com/store/apps/details?id=com.sec.android.app.shealth&hl=en&gl=IN",
-    "referenceSourceUrl": "https://play-lh.googleusercontent.com/OS7TGfRDIg8sbKxzYpsAr6fcg8vWPBV6Wx85alc0EQivKZY4I6VQuFRNaFSyi07ZydngVcxFkmVUUkr32khBVg=s0-br30",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.sec.android.app.shealth",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000004188581/ENG/IconImage_20261112085038209_NEW_WAP_ICON_512_512.png",
     "artworkTreatment": "Individual ImageGen composition using the linked brand identity reference.",
-    "verifiedPlayTitle": "Samsung Health - Apps on Google Play"
+    "verifiedPlayTitle": "Samsung Health - Apps on Google Play",
+    "brandColor": "#C6E8CD"
   },
   {
     "id": "samsung-smart-switch",
     "name": "Samsung Smart Switch",
-    "sourceUrl": "https://play.google.com/store/apps/details?id=com.sec.android.easyMover&hl=en&gl=IN",
-    "referenceSourceUrl": "https://play-lh.googleusercontent.com/GK0YM6uxb10kBT92GunL-y2GSC0eeh3YjEKDhfAVbPb1vkbUMtXx0jmqS_gbUSE3B2yt4WCqmlVvT1N_UcGDFw=s0-br30",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.sec.android.easyMover",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000004936714/ENG/IconImage_20261117072831699_NEW_WAP_ICON_512_512.png",
     "artworkTreatment": "Individual ImageGen composition using the linked brand identity reference.",
-    "verifiedPlayTitle": "Samsung Smart Switch Mobile - Apps on Google Play"
+    "verifiedPlayTitle": "Samsung Smart Switch Mobile - Apps on Google Play",
+    "brandColor": "#DDD0F7"
   },
   {
     "id": "galaxy-wearable",
@@ -4112,5 +4114,518 @@
     "name": "AniHome Settings",
     "brandColor": "#263B42",
     "artworkTreatment": "Clean system artwork with a restrained palette."
+  },
+  {
+    "id": "samsung-knox-manage",
+    "name": "Samsung Knox Manage",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.sds.emm.cloud.knox.samsung&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/Z84L41hIqWFKmLXqePQp_SpzA1J6CS7pmINDQ7jexZzhNKZlOQ8m4RYkr7eIGeLRVHAIx8fwkT82OhhKHJxe=s512",
+    "brandColor": "#CDE0F9",
+    "verifiedPlayTitle": "Samsung Knox Manage - Apps on Google Play"
+  },
+  {
+    "id": "samsung-smart-tutor",
+    "name": "Samsung Smart Tutor",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.rsupport.rs.activity.rsupport.aas2",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000000948638/ENG/IconImage_20261104225730471_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#CDE0F9",
+    "verifiedPlayTitle": "Smart Tutor for SAMSUNG Mobile - Apps on Google Play"
+  },
+  {
+    "id": "bixby",
+    "name": "Bixby",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.bixby.agent",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008856582/ENG/IconImage_20261006112910705_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#CDE0F9"
+  },
+  {
+    "id": "samsung-device-care",
+    "name": "Device Care",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.lool",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008965176/ENG/IconImage_20260902021821361_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#CDE0F9",
+    "verifiedPlayTitle": "Device Care - Apps on Google Play"
+  },
+  {
+    "id": "galaxy-store",
+    "name": "Galaxy Store",
+    "sourceUrl": "https://www.samsung.com/us/support/answer/ANS10002645/",
+    "referenceSourceUrl": "https://images.samsung.com/is/image/samsung/assets/apps/global/overview/logo/img_logo_galaxy-store.png",
+    "brandColor": "#F5CDD4"
+  },
+  {
+    "id": "galaxy-themes",
+    "name": "Galaxy Themes",
+    "sourceUrl": "https://www.samsung.com/us/support/answer/ANS10001905/",
+    "referenceSourceUrl": "https://downloadr2.apkmirror.com/wp-content/uploads/2016/11/5825cb464fcb5.png",
+    "brandColor": "#DDD0F7"
+  },
+  {
+    "id": "samsung-one-ui-home",
+    "name": "One UI Home",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.sec.android.app.launcher",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008740392/ENG/IconImage_20260713051027226_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#CDE0F9",
+    "verifiedPlayTitle": "Samsung One UI Home - Apps on Google Play"
+  },
+  {
+    "id": "samsung-quick-share",
+    "name": "Quick Share",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.sharelive",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000007304457/ENG/IconImage_20260806010757834_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#CDE0F9"
+  },
+  {
+    "id": "samsung-calculator",
+    "name": "Samsung Calculator",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.sec.android.app.popupcalculator",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008917135/ENG/IconImage_20261001072053854_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#C6E8CD",
+    "verifiedPlayTitle": "Samsung Calculator - Apps on Google Play"
+  },
+  {
+    "id": "samsung-calendar",
+    "name": "Samsung Calendar",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.calendar",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000009036099/ENG/IconImage_20260922090309765_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#BFE6E2",
+    "verifiedPlayTitle": "Samsung Calendar - Apps on Google Play"
+  },
+  {
+    "id": "samsung-camera",
+    "name": "Samsung Camera",
+    "sourceUrl": "https://www.samsung.com/us/support/answer/ANS10010343/",
+    "referenceSourceUrl": "https://downloadr2.apkmirror.com/wp-content/uploads/2025/08/11/689d230a0a259_com.sec.android.app.camera.png",
+    "brandColor": "#F5CDD4"
+  },
+  {
+    "id": "samsung-clock",
+    "name": "Samsung Clock",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.sec.android.app.clockpackage",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008373503/ENG/IconImage_20260223001841360_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#DADEEA",
+    "verifiedPlayTitle": "Clock - Apps on Google Play"
+  },
+  {
+    "id": "samsung-cloud",
+    "name": "Samsung Cloud",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.scloud?langCd=en",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000009268154/ENG/IconImage_20261001094917895_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#CDE0F9"
+  },
+  {
+    "id": "samsung-contacts",
+    "name": "Samsung Contacts",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.contacts",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008796097/ENG/IconImage_20260309074914997_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#F5CDD4"
+  },
+  {
+    "id": "samsung-email",
+    "name": "Samsung Email",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.email.provider",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008898015/ENG/IconImage_20261027051414044_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#F5CDD4",
+    "verifiedPlayTitle": "Samsung Email - Apps on Google Play"
+  },
+  {
+    "id": "samsung-find",
+    "name": "Samsung Find",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.find",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008856556/ENG/IconImage_20261118054327833_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#BFE6E2",
+    "verifiedPlayTitle": "Samsung Find: Location Sharing - Apps on Google Play"
+  },
+  {
+    "id": "samsung-gallery",
+    "name": "Samsung Gallery",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.sec.android.gallery3d",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000009346993/ENG/IconImage_20261104025204855_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#F5CDD4"
+  },
+  {
+    "id": "samsung-health-monitor",
+    "name": "Samsung Health Monitor",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.shealthmonitor",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008182894/ENG/IconImage_20261027080954617_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#FBF0F1"
+  },
+  {
+    "id": "samsung-keyboard",
+    "name": "Samsung Keyboard",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.honeyboard",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000009068435/ENG/IconImage_20260721024017816_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#BFE6E2"
+  },
+  {
+    "id": "samsung-kids",
+    "name": "Samsung Kids",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.kidsinstaller",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000005755099/ENG/IconImage_20261111043901642_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#EAF5F6"
+  },
+  {
+    "id": "samsung-members",
+    "name": "Samsung Members",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.voc",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000006837822/ENG/IconImage_20261105044500205_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#CDE0F9",
+    "verifiedPlayTitle": "Samsung Members - Apps on Google Play"
+  },
+  {
+    "id": "samsung-messages",
+    "name": "Samsung Messages",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.messaging",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008925704/ENG/IconImage_20260527051158179_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#CDE0F9"
+  },
+  {
+    "id": "samsung-my-files",
+    "name": "Samsung My Files",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.sec.android.app.myfiles",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000009217634/ENG/IconImage_20261104091536771_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#F5E3AB",
+    "verifiedPlayTitle": "Samsung My Files - Apps on Google Play"
+  },
+  {
+    "id": "samsung-notes",
+    "name": "Samsung Notes",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.notes",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008925864/ENG/IconImage_20260920223315218_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#F5CDD4",
+    "verifiedPlayTitle": "Samsung Notes - Apps on Google Play"
+  },
+  {
+    "id": "samsung-pass",
+    "name": "Samsung Pass",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.samsungpass",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000005295090/ENG/IconImage_20261022015118523_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#DDD0F7"
+  },
+  {
+    "id": "samsung-phone",
+    "name": "Samsung Phone",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.dialer",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008796091/ENG/IconImage_20260309075502017_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#C6E8CD"
+  },
+  {
+    "id": "samsung-reminder",
+    "name": "Samsung Reminder",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.reminder",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008947926/ENG/IconImage_20260922090656028_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#DDD0F7"
+  },
+  {
+    "id": "samsung-voice-recorder",
+    "name": "Samsung Voice Recorder",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.sec.android.app.voicenote",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008893904/ENG/IconImage_20260923073652973_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#F5CDD4",
+    "verifiedPlayTitle": "Voice Recorder - Apps on Google Play"
+  },
+  {
+    "id": "samsung-weather",
+    "name": "Samsung Weather",
+    "sourceUrl": "https://www.apkmirror.com/apk/samsung-electronics-co-ltd/samsung-weather/",
+    "referenceSourceUrl": "https://downloadr2.apkmirror.com/wp-content/uploads/2019/01/5c4d27af7abde.png",
+    "brandColor": "#CDE0F9"
+  },
+  {
+    "id": "samsung-secure-folder",
+    "name": "Secure Folder",
+    "sourceUrl": "https://www.samsung.com/us/support/answer/ANS10001401/",
+    "referenceSourceUrl": "https://downloadr2.apkmirror.com/wp-content/uploads/2024/01/86/65b0f7ec75970_com.samsung.knox.securefolder.png",
+    "brandColor": "#CDE0F9"
+  },
+  {
+    "id": "samsung-good-guardians",
+    "name": "Good Guardians",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.android.samsung.utilityapp",
+    "referenceSourceUrl": "https://downloadr2.apkmirror.com/wp-content/uploads/2026/07/70/6a4ecc4b231e1_com.android.samsung.utilityapp.png",
+    "brandColor": "#C6E8CD"
+  },
+  {
+    "id": "samsung-clockface",
+    "name": "ClockFace",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.clockface",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008870468/ENG/IconImage_20260623055115018_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#ECF3FE"
+  },
+  {
+    "id": "samsung-display-assistant",
+    "name": "Display Assistant",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.displayassistant",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000007812075/ENG/IconImage_20261008083408276_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#CDE0F9"
+  },
+  {
+    "id": "samsung-edge-lighting-plus",
+    "name": "Edge Lighting+",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.edgelightingplus",
+    "referenceSourceUrl": "https://downloadr2.apkmirror.com/wp-content/uploads/2023/08/54/64d7ea7908298_com.samsung.android.edgelightingplus.png",
+    "brandColor": "#F4EFFC"
+  },
+  {
+    "id": "samsung-edge-touch",
+    "name": "EdgeTouch",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.edgetouch",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000003084395/ENG/IconImage_20261113030440149_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#C6E8CD"
+  },
+  {
+    "id": "samsung-good-lock",
+    "name": "Good Lock",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.goodlock",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000003080349/ENG/IconImage_20261113030936947_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#FBF0F1",
+    "verifiedPlayTitle": "Good Lock - Apps on Google Play"
+  },
+  {
+    "id": "samsung-home-up",
+    "name": "Home Up",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.homestar",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008836879/ENG/IconImage_20260826022334197_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#1A2B4C"
+  },
+  {
+    "id": "samsung-keys-cafe",
+    "name": "Keys Cafe",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.keyscafe",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000005293390/ENG/IconImage_20260914085751923_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#F5E3AB"
+  },
+  {
+    "id": "samsung-lockstar",
+    "name": "LockStar",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.systemui.lockstar",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008862561/ENG/IconImage_20260629022140368_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#DDD0F7"
+  },
+  {
+    "id": "samsung-multistar",
+    "name": "MultiStar",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.multistar",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008905897/ENG/IconImage_20260724070259012_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#EDF7EF"
+  },
+  {
+    "id": "samsung-navstar",
+    "name": "NavStar",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.systemui.navillera",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008852072/ENG/IconImage_20261013060235130_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#BFE6E2"
+  },
+  {
+    "id": "samsung-nice-catch",
+    "name": "Nice Catch",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.goodcatch",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000003711875/ENG/IconImage_20261113030426554_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#C6E8CD"
+  },
+  {
+    "id": "samsung-notistar",
+    "name": "NotiStar",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.systemui.notilus",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000009132129/ENG/IconImage_20260730054103555_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#F5CDD4"
+  },
+  {
+    "id": "samsung-one-hand-operation-plus",
+    "name": "One Hand Operation+",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.sidegesturepad",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000003036952/ENG/IconImage_20261113030848227_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#BFE6E2",
+    "verifiedPlayTitle": "One Hand Operation + - Apps on Google Play"
+  },
+  {
+    "id": "samsung-pentastic",
+    "name": "Pentastic",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.pentastic",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000005198690/ENG/IconImage_20261113030920423_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#F4EFFC"
+  },
+  {
+    "id": "samsung-quickstar",
+    "name": "QuickStar",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.qstuner",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008878348/ENG/IconImage_20260724070124095_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#EAF5F6"
+  },
+  {
+    "id": "samsung-registar",
+    "name": "RegiStar",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.galaxyregistry",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000009390921/ENG/IconImage_20261113034841318_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#F5CDD4"
+  },
+  {
+    "id": "samsung-routines-plus",
+    "name": "Routines+",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.routineplus",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000009132152/ENG/IconImage_20260730062156022_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#CDE0F9"
+  },
+  {
+    "id": "samsung-sound-assistant",
+    "name": "Sound Assistant",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.soundassistant",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000003206291/ENG/IconImage_20261117085442531_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#DDD0F7"
+  },
+  {
+    "id": "samsung-theme-park",
+    "name": "Theme Park",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.themedesigner",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000004623161/ENG/IconImage_20261103125556524_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#F9D9BF"
+  },
+  {
+    "id": "samsung-wonderland",
+    "name": "Wonderland",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.wonderland.wallpaper",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000005212031/ENG/IconImage_20261109103531307_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#DDD0F7"
+  },
+  {
+    "id": "samsung-modes-routines",
+    "name": "Modes and Routines",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.routines",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008704285/ENG/IconImage_20260331020942094_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#DDD0F7"
+  },
+  {
+    "id": "samsung-internet-beta",
+    "name": "Samsung Browser Beta",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.sec.android.app.sbrowser.beta",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000009265049/ENG/IconImage_20260922051154623_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#DDD0F7",
+    "verifiedPlayTitle": "Samsung Browser Beta - Apps on Google Play"
+  },
+  {
+    "id": "samsung-food",
+    "name": "Samsung Food",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.foodient.whisk?langCd=en",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000004687198/ENG/IconImage_20260828055926416_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#BFE6E2",
+    "verifiedPlayTitle": "Samsung Food: Meal Planner - Apps on Google Play"
+  },
+  {
+    "id": "samsung-shop",
+    "name": "Shop Samsung",
+    "sourceUrl": "https://play.google.com/store/apps/details?id=com.samsung.ecomm&hl=en&gl=IN",
+    "referenceSourceUrl": "https://play-lh.googleusercontent.com/hhTH1twaG1f7xQlJFWPhOdWjWpLs9oNIbwhNb12GCN1QC_CamUNbG2BNZZtuNPFuqZGl7oFdDaTASNOaFtB8XlA=s512",
+    "brandColor": "#CDE0F9",
+    "verifiedPlayTitle": "Shop Samsung - Apps on Google Play"
+  },
+  {
+    "id": "samsung-camera-assistant",
+    "name": "Camera Assistant",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.cameraassistant",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000006540978/ENG/IconImage_20261008083354784_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#BFE6E2"
+  },
+  {
+    "id": "samsung-expert-raw",
+    "name": "Expert RAW",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.galaxyraw",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008416782/ENG/IconImage_20260417055726918_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#DADEEA"
+  },
+  {
+    "id": "galaxy-enhance-x",
+    "name": "Galaxy Enhance-X",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.imageenhancer",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008957344/ENG/IconImage_20260527071019155_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#292249"
+  },
+  {
+    "id": "samsung-game-booster",
+    "name": "Game Booster",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.game.gametools",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000009114981/ENG/IconImage_20261009043539279_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#DDD0F7"
+  },
+  {
+    "id": "samsung-gaming-hub",
+    "name": "Gaming Hub",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.game.gamehome",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008551282/ENG/IconImage_20261007054310606_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#DDD0F7"
+  },
+  {
+    "id": "samsung-penup",
+    "name": "PENUP",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.sec.penup",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000007211956/ENG/IconImage_20261112035108409_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#BFE6E2",
+    "verifiedPlayTitle": "PENUP – Drawing-sharing SNS - Apps on Google Play"
+  },
+  {
+    "id": "samsung-photo-editor",
+    "name": "Photo Editor",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.sec.android.mimage.photoretouching?langCd=en",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008689775/ENG/IconImage_20260421045258713_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#F5CDD4"
+  },
+  {
+    "id": "samsung-capture",
+    "name": "Samsung Capture",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.smartcapture?langCd=en",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008757842/ENG/IconImage_20260219002630539_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#BFE6E2"
+  },
+  {
+    "id": "samsung-flow",
+    "name": "Samsung Flow",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.galaxycontinuity",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008402105/ENG/IconImage_20261104004808945_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#CDE0F9",
+    "verifiedPlayTitle": "Samsung Flow - Apps on Google Play"
+  },
+  {
+    "id": "samsung-global-goals",
+    "name": "Samsung Global Goals",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.sree",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000004263306/ENG/IconImage_20261118041544097_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#CDE0F9",
+    "verifiedPlayTitle": "Samsung Global Goals - Apps on Google Play"
+  },
+  {
+    "id": "samsung-music",
+    "name": "Samsung Music",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.sec.android.app.music",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000001527281/ENG/IconImage_20261015060059195_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#DDD0F7",
+    "verifiedPlayTitle": "Samsung Music - Apps on Google Play"
+  },
+  {
+    "id": "samsung-free",
+    "name": "Samsung News",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.app.spage",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000008770391/ENG/IconImage_20260626002319805_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#F5CDD4"
+  },
+  {
+    "id": "samsung-tv-plus",
+    "name": "Samsung TV Plus",
+    "sourceUrl": "https://galaxystore.samsung.com/detail/com.samsung.android.tvplus",
+    "referenceSourceUrl": "https://img.samsungapps.com/productNew/000005603884/ENG/IconImage_20261110002607266_NEW_WAP_ICON_512_512.png",
+    "brandColor": "#F9D9BF",
+    "verifiedPlayTitle": "Samsung TV Plus - Apps on Google Play"
+  },
+  {
+    "id": "samsung-video-player",
+    "name": "Samsung Video Player",
+    "sourceUrl": "https://www.apkmirror.com/apk/samsung-electronics-co-ltd/samsung-video-player/",
+    "referenceSourceUrl": "https://downloadr2.apkmirror.com/wp-content/uploads/2023/10/87/6530108fc4a31_com.samsung.android.video.png",
+    "brandColor": "#F5CDD4"
+  },
+  {
+    "id": "samsung-studio",
+    "name": "Studio",
+    "sourceUrl": "https://www.samsung.com/us/support/answer/ANS10007435/",
+    "referenceSourceUrl": "https://downloadr2.apkmirror.com/wp-content/uploads/2026/11/75/6aef1d5c91ce5_com.sec.android.app.vepreload.png",
+    "brandColor": "#F5CDD4"
   }
 ]
