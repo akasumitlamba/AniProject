@@ -12,8 +12,9 @@ import android.view.accessibility.AccessibilityNodeInfo
 import kotlin.math.roundToInt
 
 /**
- * Tall pill slider (Control Center style): the fill rises from the bottom, the icon sits near the
- * bottom and inverts over the fill. Drag up or down anywhere on it; tap jumps to that level.
+ * Pill slider (Control Center style). Taller than wide, the fill rises from the bottom with the
+ * icon near the bottom; wider than tall, it fills from the left with the icon at the start. The
+ * icon inverts over the fill. Drag anywhere on it; a tap jumps to that level.
  */
 internal class VerticalSlider(context: Context, private val icon: Drawable?, label: String, private val tintIcon: Boolean = true) : View(context) {
     var max = 100
@@ -42,11 +43,21 @@ internal class VerticalSlider(context: Context, private val icon: Drawable?, lab
         canvas.drawRoundRect(rect, radius, radius, track)
         val fraction = if (max == 0) 0f else value.toFloat() / max
         val top = height * (1f - fraction)
+        val end = width * fraction
         if (fraction > 0f) {
             shape.reset(); shape.addRoundRect(rect, radius, radius, android.graphics.Path.Direction.CW)
-            level.reset(); level.addRect(0f, top, width.toFloat(), height.toFloat(), android.graphics.Path.Direction.CW)
+            level.reset()
+            if (horizontal) level.addRect(0f, 0f, end, height.toFloat(), android.graphics.Path.Direction.CW)
+            else level.addRect(0f, top, width.toFloat(), height.toFloat(), android.graphics.Path.Direction.CW)
             level.op(shape, android.graphics.Path.Op.INTERSECT)
             canvas.drawPath(level, fill)
+        }
+        if (horizontal) icon?.let {
+            val size = (20 * density).toInt(); val left = (18 * density).toInt(); val topY = (height - size) / 2
+            it.setBounds(left, topY, left + size, topY + size)
+            if (tintIcon) it.setTint(if (left + size / 2 <= end) 0xFF15171C.toInt() else 0xFFFFFFFF.toInt())
+            it.draw(canvas)
+            return
         }
         icon?.let {
             val size = (20 * density).toInt(); val left = (width - size) / 2; val bottom = height - (16 * density).toInt()
@@ -60,16 +71,19 @@ internal class VerticalSlider(context: Context, private val icon: Drawable?, lab
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when (event.actionMasked) {
-            MotionEvent.ACTION_DOWN -> { parent?.requestDisallowInterceptTouchEvent(true); onStart?.invoke(); isPressed = true; set(event.y) }
-            MotionEvent.ACTION_MOVE -> set(event.y)
+            MotionEvent.ACTION_DOWN -> { parent?.requestDisallowInterceptTouchEvent(true); onStart?.invoke(); isPressed = true; set(event) }
+            MotionEvent.ACTION_MOVE -> set(event)
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> { isPressed = false; onEnd?.invoke(); performClick() }
         }
         return true
     }
     override fun performClick(): Boolean { super.performClick(); return true }
 
-    private fun set(y: Float) {
-        val next = ((1f - (y / height).coerceIn(0f, 1f)) * max).roundToInt()
+    /** Lies across when wider than tall. */
+    private val horizontal get() = width > height
+    private fun set(event: MotionEvent) {
+        val f = if (horizontal) (event.x / width).coerceIn(0f, 1f) else 1f - (event.y / height).coerceIn(0f, 1f)
+        val next = (f * max).roundToInt()
         if (next != value) { value = next; onChange?.invoke(next) }
     }
 

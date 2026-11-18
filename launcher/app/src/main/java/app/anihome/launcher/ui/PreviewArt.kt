@@ -53,11 +53,6 @@ internal object PreviewArt {
             y += 2 * r + gap
         }
     }
-    fun tile(banner: Boolean): Drawable = Art { c, s, p ->
-        p.color = if (banner) BANNER else ICON
-        if (banner) { val w = s.width() * .8f; val h = w / 1.62f; c.drawRoundRect(RectF(s.centerX() - w / 2, s.centerY() - h / 2, s.centerX() + w / 2, s.centerY() + h / 2), w * .12f, w * .12f, p) }
-        else c.drawCircle(s.centerX(), s.centerY(), s.width() * .22f, p)
-    }
     fun appMenu(list: Boolean): Drawable = Art { c, s, p ->
         val gap = s.width() * .08f
         if (list) {

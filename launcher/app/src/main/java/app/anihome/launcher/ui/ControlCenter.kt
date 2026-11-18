@@ -91,7 +91,7 @@ internal class ControlCenter(
                        /** Long press; defaults to opening [settings]. */
                        val longPress: (() -> Unit)? = null)
     /** A drawn tile: its round button, and on wide tiles the whole pill and its second line. */
-    private class TileView(val tile: Tile, val button: ImageButton, val pill: View?, val detail: TextView?, val size: CcSize = CcSize.WIDE)
+    private class TileView(val tile: Tile, val button: ImageButton, val pill: View?, val name: TextView?, val detail: TextView?)
 
     private val allTiles: List<Tile> by lazy { buildTiles() }
     private val tileViews = mutableListOf<TileView>()
@@ -159,17 +159,9 @@ internal class ControlCenter(
     private fun arrangeSliders() {
         if (!::brightnessRow.isInitialized) return
         sliders.removeAllViews()
-        listOf(brightnessPill, volumePill).forEach { (it.parent as? android.view.ViewGroup)?.removeView(it) }
-        if (wideLayout) {
-            sliders.visibility = View.GONE
-            val tall = dp(2 * (TILE + 34))
-            topRow.addView(brightnessPill, LinearLayout.LayoutParams(dp(56), tall).apply { marginStart = dp(16) })
-            topRow.addView(volumePill, LinearLayout.LayoutParams(dp(56), tall).apply { marginStart = dp(10) })
-        } else {
-            sliders.visibility = View.VISIBLE
-            sliders.addView(brightnessRow, LinearLayout.LayoutParams(-1, dp(34)))
-            sliders.addView(volumeRow, LinearLayout.LayoutParams(-1, dp(34)).apply { topMargin = dp(8) })
-        }
+        // Bars under the folded row; when the full grid shows, the sliders are grid controls instead.
+        sliders.addView(brightnessRow, LinearLayout.LayoutParams(-1, dp(34)))
+        sliders.addView(volumeRow, LinearLayout.LayoutParams(-1, dp(34)).apply { topMargin = dp(8) })
     }
     /** Like Android's shade: every time the panel opens it starts collapsed. */
     private var expandedNow = false
@@ -183,8 +175,11 @@ internal class ControlCenter(
     /** Long-press options (flashlight signals and so on) open here, inside the panel. */
     private val sheet = LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; visibility = View.GONE }
     private var sheetFor: String? = null
-    /** Edit mode (pencil): tap a tile to select it, drag its side handle to resize, − to remove, hold to move. */
+    /** Edit mode (pencil): tap a tile to select it, drag its corner handle to resize, × to remove, hold to move. */
     private var editing = false
+    private lateinit var editButton: ImageButton
+    private lateinit var addButton: ImageButton
+    private lateinit var doneButton: ImageButton
     private var selectedId: String? = null
     private val editBar = LinearLayout(activity).apply { gravity = Gravity.CENTER_VERTICAL; visibility = View.GONE }
     // Declared above so they exist when build() runs from init.
@@ -329,7 +324,16 @@ internal class ControlCenter(
         sub.addView(TextClock(activity).apply { format12Hour = "EEE, d MMM"; format24Hour = "EEE, d MMM"; textSize = 12f; setTextColor(-1) })
         sub.addView(battery)
         header.addView(sub, LinearLayout.LayoutParams(0, -2, 1f))
-        header.addView(headerButton(R.drawable.ic_edit, "Edit controls") { toggleEditing() })
+        // Edit mode swaps the pencil for + (add controls) and ✓ (done), like Android's editor.
+        editButton = headerButton(R.drawable.ic_edit, "Edit controls") { toggleEditing() }
+        addButton = headerButton(R.drawable.ic_add, "Add controls") { edit() }.apply { visibility = View.GONE }
+        doneButton = headerButton(R.drawable.ic_check, "Done") { toggleEditing() }.apply {
+            visibility = View.GONE; imageTintList = ColorStateList.valueOf(ON_ACCENT)
+            background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(ACCENT) }
+            setPadding(dp(8), dp(8), dp(8), dp(8))
+            layoutParams = LinearLayout.LayoutParams(dp(36), dp(36)).apply { marginStart = dp(4); marginEnd = dp(2) }
+        }
+        header.addView(editButton); header.addView(addButton); header.addView(doneButton)
         expandButton.apply {
             setImageResource(R.drawable.ic_expand_more); imageTintList = ColorStateList.valueOf(-1)
             background = null; scaleType = ImageView.ScaleType.CENTER
@@ -396,11 +400,18 @@ internal class ControlCenter(
         if (open && (wideLayout || PanelStyle.wideTiles(activity))) {
             grid.visibility = View.GONE; ccGrid.visibility = View.VISIBLE
             ccGrid.fixedColumns = if (wideLayout) 0 else 4
-            tiles.forEach(::addGridTile)
+            ccGrid.animateChanges = editing
+            // Controls and the brightness and volume sliders share the grid: all movable and resizable.
+            sliders.visibility = View.GONE
+            val byId = tiles.associateBy { it.id }
+            ccGrid.order = gridOrder(tiles)
+            ccGrid.order.forEach { key -> byId[key]?.let(::addGridTile) ?: addSliderCell(key) }
             expandButton.rotation = 180f; expandButton.contentDescription = "Show fewer controls"
             if (attached) refresh(); return
         }
-        grid.visibility = View.VISIBLE; ccGrid.visibility = View.GONE
+        grid.visibility = View.VISIBLE; ccGrid.visibility = View.GONE; ccGrid.forgetPlaces()
+        sliders.visibility = View.VISIBLE
+        listOf(brightnessPill, volumePill).forEach { (it.parent as? android.view.ViewGroup)?.removeView(it) }
         val columns = when { wideLayout -> ((tiles.size + 1) / 2).coerceIn(1, 8); open -> 4; else -> COLLAPSED }
         grid.columnCount = columns
         val shown = if (open) tiles else tiles.take(COLLAPSED)
@@ -427,7 +438,7 @@ internal class ControlCenter(
                 maxLines = 1; ellipsize = TextUtils.TruncateAt.END
             }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(4) })
             grid.addView(cell, GridLayout.LayoutParams(GridLayout.spec(GridLayout.UNDEFINED), GridLayout.spec(GridLayout.UNDEFINED, 1f)).apply { width = 0 })
-            tileViews += TileView(tile, button, null, null)
+            tileViews += TileView(tile, button, null, null, null)
         }
         expandButton.rotation = if (open) 180f else 0f
         expandButton.contentDescription = if (open) "Show fewer controls" else "Show all controls"
@@ -436,37 +447,120 @@ internal class ControlCenter(
 
     private fun longPress(tile: Tile): Boolean { showSheet(tile); return true }
 
-    private fun sizeOf(id: String) = if (prefs.getString("cc_size:$id", null) == CcSize.SMALL.name) CcSize.SMALL else CcSize.WIDE
-    private fun setSize(id: String, size: CcSize) {
-        if (sizeOf(id) == size) return
-        prefs.edit().putString("cc_size:$id", size.name).apply()
-        MotionUi.expand(view); layoutGrid()
+    // --- grid tiles: free sizes, moving, resizing --------------------------------------------
+    private val sliderKeys get() = listOfNotNull(BRIGHTNESS_KEY.takeIf { PanelStyle.brightness(activity) }, VOLUME_KEY.takeIf { PanelStyle.volume(activity) })
+
+    /**
+     * Order of everything in the grid: controls and the two sliders. Controls keep the order
+     * chosen in Add controls; where the sliders sit (and any moves) is remembered on top of that.
+     */
+    private fun gridOrder(tiles: List<Tile>): List<String> {
+        val ids = tiles.map { it.id }; val sliders = sliderKeys
+        val result = (prefs.getString("cc_layout", null)?.split(',') ?: emptyList()).filter { it in ids || it in sliders }.distinct().toMutableList()
+        ids.forEachIndexed { i, id ->
+            if (id in result) return@forEachIndexed
+            val before = ids.take(i).lastOrNull { it in result }
+            result.add(if (before == null) 0 else result.indexOf(before) + 1, id)
+        }
+        sliders.filter { it !in result }.forEach { result += it }
+        return result
+    }
+    private fun saveOrder(order: List<String>) {
+        val ids = allTiles.map { it.id }.toSet() + chosen().map { it.id }
+        prefs.edit().putString("cc_layout", order.joinToString(","))
+            .putString("cc_tiles", order.filter { it in ids && !it.startsWith("@") }.joinToString(",")).apply()
+    }
+
+    /** Columns × rows for a control; old saved sizes (compact or wide) carry over. */
+    private fun spanOf(id: String): Pair<Int, Int> {
+        prefs.getString("cc_span:$id", null)?.split(',')?.mapNotNull { it.toIntOrNull() }?.takeIf { it.size == 2 }
+            ?.let { return it[0].coerceAtLeast(1) to it[1].coerceIn(1, CcGrid.MAX_ROWS) }
+        if (id.startsWith("@")) return if (wideLayout) 1 to 2 else 4 to 1
+        return if (prefs.getString("cc_size:$id", null) == "SMALL") 1 to 1 else 2 to 1
+    }
+    private fun saveSpan(id: String, cols: Int, rows: Int) =
+        prefs.edit().putString("cc_span:$id", "$cols,$rows").remove("cc_size:$id").apply()
+
+    /**
+     * A control's icon, name and second line, arranged for whatever size it has: icon only when
+     * small, icon beside the text when wide, and icon on top with the text below when tall.
+     */
+    private inner class TileBody(val icon: ImageButton, val name: TextView, val detail: TextView) : android.view.ViewGroup(activity) {
+        private var narrow = false
+        private var tall = false
+        init { addView(icon); addView(name); addView(detail) }
+        override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+            val w = MeasureSpec.getSize(widthMeasureSpec); val h = MeasureSpec.getSize(heightMeasureSpec)
+            narrow = w < dp(120); tall = h >= dp(110)
+            val iconSize = dp(if (tall && !narrow) 44 else 40)
+            icon.measure(MeasureSpec.makeMeasureSpec(iconSize, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(iconSize, MeasureSpec.EXACTLY))
+            val textW = when { narrow -> w - dp(12); tall -> w - dp(28); else -> w - dp(8 + 40 + 10 + 12) }.coerceAtLeast(0)
+            val spec = MeasureSpec.makeMeasureSpec(textW, MeasureSpec.AT_MOST); val free = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+            name.measure(spec, free); detail.measure(spec, free)
+            setMeasuredDimension(w, h)
+        }
+        override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+            val w = r - l; val h = b - t
+            val ih = icon.measuredHeight; val nh = name.measuredHeight
+            val showDetail = !narrow && detail.visibility == View.VISIBLE && detail.text.isNotEmpty()
+            val dh = if (showDetail) detail.measuredHeight else 0
+            fun place(v: View, x: Int, y: Int) = v.layout(x, y, x + v.measuredWidth, y + v.measuredHeight)
+            if (!showDetail) detail.layout(0, 0, 0, 0)
+            when {
+                narrow && !tall -> { place(icon, (w - ih) / 2, (h - ih) / 2); name.layout(0, 0, 0, 0) }
+                narrow -> {
+                    val top = (h - ih - dp(6) - nh) / 2
+                    place(icon, (w - ih) / 2, top); place(name, (w - name.measuredWidth) / 2, top + ih + dp(6))
+                }
+                tall -> {
+                    place(icon, dp(14), dp(14))
+                    val bottom = h - dp(14)
+                    if (showDetail) place(detail, dp(14), bottom - dh)
+                    place(name, dp(14), bottom - dh - nh)
+                }
+                else -> {
+                    place(icon, dp(8), (h - ih) / 2)
+                    val top = (h - nh - dh) / 2; val x = dp(8 + 40 + 10)
+                    place(name, x, top); if (showDetail) place(detail, x, top + nh)
+                }
+            }
+        }
+    }
+
+    /** The resize handle: a curved stroke hugging the tile's bottom-right corner, as on iOS. */
+    private class CornerArc(private val radius: Float, private val inset: Float, width: Float) : android.graphics.drawable.Drawable() {
+        private val line = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+            style = android.graphics.Paint.Style.STROKE; strokeWidth = width; strokeCap = android.graphics.Paint.Cap.ROUND; color = -1
+        }
+        private val shade = android.graphics.Paint(line).apply { strokeWidth = width + width; color = 0x40000000 }
+        override fun draw(canvas: android.graphics.Canvas) {
+            val b = bounds
+            val oval = android.graphics.RectF(b.right - inset - 2 * radius, b.bottom - inset - 2 * radius, b.right - inset, b.bottom - inset)
+            canvas.drawArc(oval, 0f, 90f, false, shade); canvas.drawArc(oval, 0f, 90f, false, line)
+        }
+        override fun setAlpha(alpha: Int) { line.alpha = alpha }
+        override fun setColorFilter(filter: android.graphics.ColorFilter?) { line.colorFilter = filter }
+        @Deprecated("Deprecated in Android") override fun getOpacity() = android.graphics.PixelFormat.TRANSLUCENT
     }
 
     /**
-     * One tile in the grid, in the panel's own style: a rounded pill, accent when on. Wide tiles
-     * show the name and a live second line; compact ones only the icon. In edit mode a tap
-     * selects it, a handle appears on its right edge to drag it narrower or wider, − removes it,
-     * and holding it lets you drag it to another place.
+     * One control in the grid, in the panel's own style: a rounded tile, accent when on. In edit
+     * mode a tap selects it (outline, × to remove and a corner handle to resize to any size), and
+     * holding it lets you drag it to another place while the others make room.
      */
     private fun addGridTile(tile: Tile) {
-        val size = sizeOf(tile.id)
+        val (cols, rows) = spanOf(tile.id)
         val button = ImageButton(activity).apply { scaleType = ImageView.ScaleType.CENTER; isClickable = false; isFocusable = false; importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO }
         val name = TextView(activity).apply { text = tile.label; textSize = 13.5f; setTextColor(-1); maxLines = 1; ellipsize = TextUtils.TruncateAt.END
             typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL) }
         val detail = TextView(activity).apply { textSize = 12f; setTextColor(0xffc4c6d0.toInt()); maxLines = 1; ellipsize = TextUtils.TruncateAt.END }
-        val pill = LinearLayout(activity).apply {
-            gravity = if (size == CcSize.SMALL) Gravity.CENTER else Gravity.CENTER_VERTICAL
-            setPadding(dp(if (size == CcSize.SMALL) 0 else 8), dp(8), dp(if (size == CcSize.SMALL) 0 else 12), dp(8))
+        val pill = TileBody(button, name, detail).apply {
             isClickable = true; isFocusable = true; tooltipText = tile.label
             foreground = android.graphics.drawable.RippleDrawable(ColorStateList.valueOf(0x33FFFFFF), null, GradientDrawable().apply { setColor(-1); cornerRadius = dp(24).toFloat() })
-            addView(button, LinearLayout.LayoutParams(dp(40), dp(40)))
-            if (size != CcSize.SMALL) addView(LinearLayout(activity).apply { orientation = LinearLayout.VERTICAL; addView(name); addView(detail) },
-                LinearLayout.LayoutParams(0, -2, 1f).apply { marginStart = dp(10) })
         }
         val cell = android.widget.FrameLayout(activity).apply { clipChildren = false; clipToPadding = false }
         cell.addView(pill, android.widget.FrameLayout.LayoutParams(-1, -1))
-        if (editing) addEditControls(cell, pill, tile, size)
+        if (editing) addEditControls(cell, pill, tile.id, tile.label, removable = true)
         else {
             pill.setOnClickListener { if (sheetFor == tile.id) closeSheet(); tile.tap(); handler.postDelayed(::refresh, 350) }
             pill.setOnLongClickListener { longPress(tile) }
@@ -477,83 +571,113 @@ internal class ControlCenter(
                 false
             }
         }
-        ccGrid.addView(cell, CcGrid.Params(size))
-        tileViews += TileView(tile, button, pill, detail.takeIf { size != CcSize.SMALL }, size)
+        ccGrid.addView(cell, CcGrid.Params(tile.id, cols, rows))
+        tileViews += TileView(tile, button, pill, name, detail)
+    }
+
+    /** Brightness or volume as a grid control: a bar when wide, an upright pill when tall. */
+    private fun addSliderCell(key: String) {
+        val slider = if (key == BRIGHTNESS_KEY) brightnessPill else volumePill
+        (slider.parent as? android.view.ViewGroup)?.removeView(slider)
+        val (cols, rows) = spanOf(key)
+        val cell = android.widget.FrameLayout(activity).apply { clipChildren = false; clipToPadding = false }
+        cell.addView(slider, android.widget.FrameLayout.LayoutParams(-1, -1))
+        if (editing) {
+            // While editing, a cover takes the touches so the slider itself doesn't change.
+            val cover = View(activity).apply { isClickable = true; isFocusable = true }
+            cell.addView(cover, android.widget.FrameLayout.LayoutParams(-1, -1))
+            addEditControls(cell, cover, key, slider.contentDescription.toString(), removable = false)
+            if (selectedId == key) slider.foreground = GradientDrawable().apply { setColor(0); cornerRadius = dp(24).toFloat(); setStroke(dp(2), -1) }
+            else slider.foreground = null
+        } else slider.foreground = null
+        ccGrid.addView(cell, CcGrid.Params(key, cols, rows))
     }
 
     @android.annotation.SuppressLint("ClickableViewAccessibility")
-    private fun addEditControls(cell: android.widget.FrameLayout, pill: View, tile: Tile, size: CcSize) {
-        val selected = selectedId == tile.id
-        pill.setOnClickListener { selectedId = if (selected) null else tile.id; layoutGrid() }
-        pill.contentDescription = "${tile.label}, ${if (size == CcSize.SMALL) "compact" else "wide"}. Tap to select, then drag the handle to resize."
-        // Hold and drag to move the tile; it lands where you let go. A quick drag still scrolls the panel.
-        moveOnHold(cell, pill, tile)
-        // − removes the tile from the panel (it stays available under Add controls).
-        cell.addView(ImageButton(activity).apply {
-            setImageResource(R.drawable.ic_close); imageTintList = ColorStateList.valueOf(0xFF1D2027.toInt()); scaleType = ImageView.ScaleType.CENTER
-            background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(0xFFE3E2E9.toInt()) }; setPadding(dp(4), dp(4), dp(4), dp(4))
-            contentDescription = "Remove ${tile.label}"
-            setOnClickListener {
-                val order = chosen().map { it.id }.filter { it != tile.id }
-                prefs.edit().putString("cc_tiles", order.joinToString(",")).apply()
-                if (selectedId == tile.id) selectedId = null
-                MotionUi.expand(view); layoutGrid()
+    private fun addEditControls(cell: android.widget.FrameLayout, pill: View, id: String, label: String, removable: Boolean) {
+        val selected = selectedId == id
+        pill.setOnClickListener { selectedId = if (selected) null else id; layoutGrid() }
+        pill.contentDescription = "$label. Tap to select, then drag the corner handle to resize. Hold to move."
+        // Hold and drag to move; a quick drag still scrolls the panel.
+        moveOnHold(cell, pill, id)
+        listOf("Make wider" to (1 to 0), "Make narrower" to (-1 to 0), "Make taller" to (0 to 1), "Make shorter" to (0 to -1)).forEach { (name, step) ->
+            androidx.core.view.ViewCompat.addAccessibilityAction(pill, name) { _, _ ->
+                val p = cell.layoutParams as CcGrid.Params
+                p.cols = (p.cols + step.first).coerceIn(1, ccGrid.columnCount); p.rows = (p.rows + step.second).coerceIn(1, CcGrid.MAX_ROWS)
+                saveSpan(id, p.cols, p.rows); ccGrid.requestLayout(); true
             }
-        }, android.widget.FrameLayout.LayoutParams(dp(22), dp(22), Gravity.TOP or Gravity.START).apply { setMargins(dp(2), dp(2), 0, 0) })
+        }
         if (!selected) return
-        // The resize handle: a pill on the right edge. Drag left for compact, right for wide.
-        val handle = View(activity).apply {
-            background = GradientDrawable().apply { setColor(-1); cornerRadius = dp(3).toFloat() }
-            contentDescription = "Resize ${tile.label}"
-        }
-        val grip = android.widget.FrameLayout(activity).apply {
-            addView(handle, android.widget.FrameLayout.LayoutParams(dp(6), dp(28), Gravity.CENTER))
-            var startX = 0f
-            setOnTouchListener { v, e ->
-                when (e.actionMasked) {
-                    MotionEvent.ACTION_DOWN -> { v.parent?.requestDisallowInterceptTouchEvent(true); startX = e.rawX; handle.animate().scaleY(1.2f).setDuration(120).start() }
-                    MotionEvent.ACTION_MOVE -> {
-                        val dx = e.rawX - startX; val half = ccGrid.cellWidth / 2f
-                        if (size == CcSize.WIDE && dx < -half) { setSize(tile.id, CcSize.SMALL); return@setOnTouchListener true }
-                        if (size == CcSize.SMALL && dx > half) { setSize(tile.id, CcSize.WIDE); return@setOnTouchListener true }
-                        handle.translationX = dx.coerceIn(-half, half) / 3f
-                    }
-                    MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> { handle.animate().translationX(0f).scaleY(1f).setDuration(150).start() }
-                }
-                true
+        fun pop(v: View) { v.scaleX = 0f; v.scaleY = 0f; v.animate().scaleX(1f).scaleY(1f).setDuration(MotionUi.duration(v, 180)).setInterpolator(MotionUi.STANDARD).start() }
+        // × removes the control (it stays available under +).
+        if (removable) cell.addView(ImageButton(activity).apply {
+            setImageResource(R.drawable.ic_close); imageTintList = ColorStateList.valueOf(0xFF1D2027.toInt()); scaleType = ImageView.ScaleType.FIT_CENTER
+            background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(0xFFE3E2E9.toInt()) }; setPadding(dp(4), dp(4), dp(4), dp(4))
+            contentDescription = "Remove $label"; elevation = dp(2).toFloat()
+            setOnClickListener {
+                saveOrder(ccGrid.order.filter { it != id })
+                selectedId = null; layoutGrid()
             }
+            pop(this)
+        }, android.widget.FrameLayout.LayoutParams(dp(20), dp(20), Gravity.TOP or Gravity.END).apply { setMargins(0, dp(6), dp(6), 0) })
+        // The resize handle in the bottom-right corner: drag it any way to set the size in cells.
+        val handle = View(activity).apply {
+            background = CornerArc(dp(16).toFloat(), dp(6).toFloat(), dp(3).toFloat())
+            contentDescription = "Resize $label"
         }
-        cell.addView(grip, android.widget.FrameLayout.LayoutParams(dp(28), -1, Gravity.END or Gravity.CENTER_VERTICAL))
+        var sx = 0f; var sy = 0f; var sw = 0; var sh = 0
+        handle.setOnTouchListener { v, e ->
+            val p = cell.layoutParams as CcGrid.Params
+            when (e.actionMasked) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.parent?.requestDisallowInterceptTouchEvent(true)
+                    sx = e.rawX; sy = e.rawY; sw = cell.width; sh = cell.height
+                    ccGrid.stretchW = sw; ccGrid.stretchH = sh; ccGrid.stretching = cell
+                    cell.translationZ = dp(6).toFloat()
+                    v.animate().scaleX(1.2f).scaleY(1.2f).setDuration(120).start()
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val gap = ccGrid.colPitch - ccGrid.cellWidth
+                    val w = (sw + e.rawX - sx).toInt().coerceIn(ccGrid.cellWidth, ccGrid.spanWidth(ccGrid.columnCount))
+                    val h = (sh + e.rawY - sy).toInt().coerceIn(ccGrid.spanHeight(1), ccGrid.spanHeight(CcGrid.MAX_ROWS))
+                    ccGrid.stretchW = w; ccGrid.stretchH = h
+                    val c = ((w + gap).toFloat() / ccGrid.colPitch).roundToInt().coerceIn(1, ccGrid.columnCount)
+                    val r = ((h + gap).toFloat() / ccGrid.rowPitch).roundToInt().coerceIn(1, CcGrid.MAX_ROWS)
+                    if (c != p.cols || r != p.rows) { p.cols = c; p.rows = r; cell.performHapticFeedback(android.view.HapticFeedbackConstants.CLOCK_TICK) }
+                    ccGrid.requestLayout()
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    ccGrid.stretching = null; cell.translationZ = 0f
+                    v.animate().scaleX(1f).scaleY(1f).setDuration(150).start()
+                    saveSpan(id, p.cols, p.rows); ccGrid.requestLayout()
+                }
+            }
+            true
+        }
+        cell.addView(handle, android.widget.FrameLayout.LayoutParams(dp(44), dp(44), Gravity.BOTTOM or Gravity.END))
+        pop(handle)
     }
 
     /**
-     * Drag a tile (edit mode) to a new place: hold it, it lifts and follows the finger, and drops
-     * before the tile underneath. Until the hold completes the touch belongs to the scrolling panel.
+     * Drag a control (edit mode) to a new place: hold it, it lifts and follows the finger, and the
+     * others slide aside as it passes over them. Until the hold completes the touch belongs to the
+     * scrolling panel.
      */
     @android.annotation.SuppressLint("ClickableViewAccessibility")
-    private fun moveOnHold(cell: View, pill: View, tile: Tile) {
+    private fun moveOnHold(cell: View, pill: View, id: String) {
         val slop = android.view.ViewConfiguration.get(activity).scaledTouchSlop
-        var downX = 0f; var downY = 0f; var lastX = 0f; var lastY = 0f; var moving = false
+        var downX = 0f; var downY = 0f; var lastX = 0f; var lastY = 0f; var moving = false; var hovered: String? = null
         val lift = Runnable {
-            moving = true
+            moving = true; hovered = null
             pill.parent?.requestDisallowInterceptTouchEvent(true)
             // Drop the press highlight the tile picked up when the finger went down.
             val now = android.os.SystemClock.uptimeMillis()
             MotionEvent.obtain(now, now, MotionEvent.ACTION_CANCEL, 0f, 0f, 0).also { pill.onTouchEvent(it); it.recycle() }
             pill.isPressed = false
             cell.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
-            cell.animate().scaleX(1.06f).scaleY(1.06f).alpha(.92f).setDuration(120).start(); cell.translationZ = dp(8).toFloat()
-        }
-        fun drop() {
-            val cx = cell.left + cell.translationX + cell.width / 2f; val cy = cell.top + cell.translationY + cell.height / 2f
-            val target = (0 until ccGrid.childCount).map(ccGrid::getChildAt).firstOrNull { it !== cell && cx >= it.left && cx <= it.right && cy >= it.top && cy <= it.bottom }
-            val targetId = tileViews.firstOrNull { target != null && it.pill?.parent === target }?.tile?.id
-            if (targetId != null) {
-                val order = chosen().map { it.id }.toMutableList()
-                val from = order.indexOf(tile.id); val to = order.indexOf(targetId)
-                if (from >= 0 && to >= 0) { order.removeAt(from); order.add(to, tile.id); prefs.edit().putString("cc_tiles", order.joinToString(",")).apply() }
-            }
-            MotionUi.expand(view); layoutGrid()
+            ccGrid.floatX = cell.left.toFloat(); ccGrid.floatY = cell.top.toFloat(); ccGrid.floating = cell
+            cell.translationZ = dp(8).toFloat()
+            cell.animate().scaleX(1.05f).scaleY(1.05f).setDuration(MotionUi.duration(cell, 140)).start()
         }
         pill.setOnTouchListener { _, e ->
             when (e.actionMasked) {
@@ -562,30 +686,52 @@ internal class ControlCenter(
                     handler.postDelayed(lift, android.view.ViewConfiguration.getLongPressTimeout().toLong())
                 }
                 MotionEvent.ACTION_MOVE -> if (moving) {
-                    cell.translationX += e.rawX - lastX; cell.translationY += e.rawY - lastY
+                    ccGrid.floatX += e.rawX - lastX; ccGrid.floatY += e.rawY - lastY
                     lastX = e.rawX; lastY = e.rawY
+                    val cx = (ccGrid.floatX + cell.width / 2f).toInt(); val cy = (ccGrid.floatY + cell.height / 2f).toInt()
+                    val over = (0 until ccGrid.childCount).map(ccGrid::getChildAt).firstOrNull { it !== cell && ccGrid.slotOf(it)?.contains(cx, cy) == true }
+                    val overKey = (over?.layoutParams as? CcGrid.Params)?.key
+                    if (overKey == null) hovered = null
+                    else if (overKey != hovered) {
+                        hovered = overKey
+                        val order = ccGrid.order.toMutableList(); val from = order.indexOf(id); val to = order.indexOf(overKey)
+                        if (from >= 0 && to >= 0) { order.removeAt(from); order.add(to, id); ccGrid.order = order; cell.performHapticFeedback(android.view.HapticFeedbackConstants.CLOCK_TICK) }
+                    }
+                    ccGrid.requestLayout()
                 } else if (kotlin.math.hypot(e.rawX - downX, e.rawY - downY) > slop) handler.removeCallbacks(lift)
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     handler.removeCallbacks(lift)
-                    if (moving) { moving = false; drop(); return@setOnTouchListener true }
+                    if (moving) {
+                        moving = false
+                        ccGrid.floating = null; cell.translationZ = 0f
+                        cell.animate().scaleX(1f).scaleY(1f).setDuration(MotionUi.duration(cell, 160)).start()
+                        saveOrder(ccGrid.order); ccGrid.requestLayout()
+                        return@setOnTouchListener true
+                    }
                 }
             }
             moving
         }
     }
 
+    private fun syncHeader() {
+        if (!::editButton.isInitialized) return
+        editButton.visibility = if (editing) View.GONE else View.VISIBLE
+        addButton.visibility = if (editing) View.VISIBLE else View.GONE
+        doneButton.visibility = if (editing) View.VISIBLE else View.GONE
+        expandButton.visibility = if (editing || wideLayout) View.GONE else View.VISIBLE
+    }
+
     private fun toggleEditing() {
         if (!expanded) applyExpanded(true)
         editing = !editing; selectedId = null; closeSheet()
         editBar.removeAllViews()
-        if (editing) {
-            editBar.addView(TextView(activity).apply { text = "Tap a control, then drag its handle to resize. Hold to move."; textSize = 12.5f; setTextColor(0xffc4c6d0.toInt()) },
-                LinearLayout.LayoutParams(0, -2, 1f))
-            editBar.addView(MaterialUi.tonal(activity, "Add") { edit() }, LinearLayout.LayoutParams(-2, -2).apply { marginStart = dp(8) })
-            editBar.addView(MaterialUi.filled(activity, "Done") { toggleEditing() }, LinearLayout.LayoutParams(-2, -2).apply { marginStart = dp(8) })
-        }
+        if (editing) editBar.addView(TextView(activity).apply {
+            text = "Tap a control to resize or remove it. Hold it to move."; textSize = 12.5f; setTextColor(0xffc4c6d0.toInt())
+        }, LinearLayout.LayoutParams(-1, -2).apply { marginStart = dp(6) })
         MotionUi.expand(view)
         editBar.visibility = if (editing) View.VISIBLE else View.GONE
+        syncHeader()
         layoutGrid()
     }
 
@@ -700,7 +846,7 @@ internal class ControlCenter(
 
     private fun applyExpanded(open: Boolean) {
         MotionUi.expand(view)
-        if (!open) { sheet.visibility = View.GONE; sheet.removeAllViews(); sheetFor = null; editing = false; selectedId = null; editBar.visibility = View.GONE }
+        if (!open) { sheet.visibility = View.GONE; sheet.removeAllViews(); sheetFor = null; editing = false; selectedId = null; editBar.visibility = View.GONE; syncHeader() }
         expanded = open
         expandButton.animate().rotation(if (open) 180f else 0f).setDuration(MotionUi.duration(expandButton, 200)).setInterpolator(MotionUi.STANDARD).start()
         layoutGrid()
@@ -940,7 +1086,7 @@ internal class ControlCenter(
                     if (open || (editing && selectedId == tile.id)) setStroke(dp(2), -1) }
                 button.background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(if (on) 0x26000000 else 0x1AFFFFFF) }
                 button.imageTintList = if (tile.artwork != null) null else ColorStateList.valueOf(if (on) ON_ACCENT else -1)
-                ((tv.pill as android.view.ViewGroup).getChildAt(1) as? android.view.ViewGroup)?.getChildAt(0)?.let { (it as TextView).setTextColor(if (on) ON_ACCENT else -1) }
+                tv.name?.setTextColor(if (on) ON_ACCENT else -1)
                 val second = runCatching { tile.detail?.invoke() }.getOrNull() ?: if (tile.momentary) null else if (on) "On" else "Off"
                 tv.detail?.text = second.orEmpty(); tv.detail?.visibility = if (second.isNullOrEmpty()) View.GONE else View.VISIBLE
                 tv.detail?.setTextColor(if (on) (ON_ACCENT and 0x00FFFFFF) or 0xCC000000.toInt() else 0xffc4c6d0.toInt())
@@ -1026,7 +1172,7 @@ internal class ControlCenter(
         if (!attached) return
         attached = false
         sheet.visibility = View.GONE; sheet.removeAllViews(); sheetFor = null
-        if (editing) { editing = false; selectedId = null; editBar.visibility = View.GONE; layoutGrid() }
+        if (editing) { editing = false; selectedId = null; editBar.visibility = View.GONE; syncHeader(); layoutGrid() }
         handler.removeCallbacksAndMessages(null)
         runCatching { camera?.unregisterTorchCallback(torchCallback) }
         runCatching { activity.contentResolver.unregisterContentObserver(observer) }
@@ -1036,6 +1182,9 @@ internal class ControlCenter(
     }
 
     companion object {
+        /** Grid keys for the sliders (control ids never start with @). */
+        const val BRIGHTNESS_KEY = "@brightness"
+        const val VOLUME_KEY = "@volume"
         const val ACCENT = 0xff8ab4ff.toInt()
         const val ON_ACCENT = 0xff0b1d3a.toInt()
         // Frosted: translucent white over the panel's tinted, blurred background.

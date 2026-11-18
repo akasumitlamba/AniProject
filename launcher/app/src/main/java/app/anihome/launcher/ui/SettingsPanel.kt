@@ -146,30 +146,42 @@ internal class SettingsPanel(private val activity: AppCompatActivity, private va
      * A choice shown as pictures: each option is a small illustration of how it looks, with its
      * name underneath; the chosen one is outlined. Scrolls sideways when there are many.
      */
-    fun visualChoice(parent: LinearLayout, title: String, options: List<Pair<String, android.graphics.drawable.Drawable>>, initial: Int, changed: (Int) -> Unit) {
-        parent.addView(label(title, 15f).apply { setTextColor(0xFFE6E8EE.toInt()); setPadding(dp(12), dp(12), dp(12), dp(4)) })
-        val row = LinearLayout(activity).apply { setPadding(dp(8), dp(4), dp(8), dp(8)) }
-        var selected = initial.coerceIn(options.indices)
-        val cards = mutableListOf<View>()
-        fun mark() = cards.forEachIndexed { i, card ->
-            card.background = android.graphics.drawable.GradientDrawable().apply {
-                cornerRadius = dp(18).toFloat(); setColor(if (i == selected) 0x2EA8C7FA else 0x0FFFFFFF)
-                setStroke(dp(if (i == selected) 2 else 1), if (i == selected) ACCENT_SOFT else 0x1FFFFFFF)
-            }
+    /** One picture of how the current choices look; the choices below it update it as you pick. */
+    class LivePreview(private val image: ImageView, private val render: () -> android.graphics.drawable.Drawable) {
+        fun update() { image.setImageDrawable(render()); image.alpha = .4f; image.animate().alpha(1f).setDuration(MotionUi.duration(image, 180)).start() }
+    }
+    fun preview(parent: LinearLayout, render: () -> android.graphics.drawable.Drawable): LivePreview {
+        val image = ImageView(activity).apply { setImageDrawable(render()); importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO }
+        val frame = android.widget.FrameLayout(activity).apply {
+            setPadding(dp(12), dp(16), dp(12), dp(16))
+            background = android.graphics.drawable.GradientDrawable().apply { cornerRadius = dp(20).toFloat(); setColor(0x0FFFFFFF) }
+            addView(image, android.widget.FrameLayout.LayoutParams(dp(112), dp(168), Gravity.CENTER))
         }
-        options.forEachIndexed { index, (name, art) ->
-            val card = LinearLayout(activity).apply {
-                orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER_HORIZONTAL; setPadding(dp(8), dp(10), dp(8), dp(8))
-                isClickable = true; isFocusable = true; contentDescription = "$title: $name"
-                addView(ImageView(activity).apply { setImageDrawable(art) }, LinearLayout.LayoutParams(dp(64), dp(96)))
-                addView(label(name, 12f).apply { gravity = Gravity.CENTER; setTextColor(0xFFC8CBD2.toInt()); setPadding(0, dp(6), 0, 0) }, LinearLayout.LayoutParams(dp(76), -2))
-                setOnClickListener { if (selected != index) { selected = index; mark(); changed(index) } }
+        parent.addView(frame, LinearLayout.LayoutParams(-1, -2).apply { setMargins(dp(12), dp(8), dp(12), dp(4)) })
+        return LivePreview(image, render)
+    }
+
+    /**
+     * One choice among a few, Android-style: a title and segmented buttons (or, for many options,
+     * a row of chips). The section's [preview], if any, redraws to show the pick.
+     */
+    fun options(parent: LinearLayout, title: String, options: List<String>, initial: Int, preview: LivePreview? = null, changed: (Int) -> Unit) {
+        parent.addView(label(title, 15f).apply { setTextColor(0xFFE6E8EE.toInt()); setPadding(dp(12), dp(12), dp(12), dp(6)) })
+        val pick: (Int) -> Unit = { changed(it); preview?.update() }
+        val selected = initial.coerceIn(options.indices)
+        if (options.size <= 4) {
+            val group = MaterialUi.segmented(activity, options, selected, pick).apply { contentDescription = title }
+            parent.addView(group, LinearLayout.LayoutParams(-1, -2).apply { setMargins(dp(12), 0, dp(12), dp(6)) })
+        } else {
+            val chips = MaterialUi.chipGroup(activity).apply { contentDescription = title }
+            options.forEachIndexed { index, name ->
+                chips.addView(MaterialUi.filterChip(activity, name).apply { id = View.generateViewId(); tag = index; isCheckedIconVisible = false; isChecked = index == selected })
             }
-            cards += card
-            row.addView(card, LinearLayout.LayoutParams(-2, -2).apply { marginEnd = dp(8) })
+            chips.setOnCheckedStateChangeListener { group, ids -> ids.firstOrNull()?.let { pick(group.findViewById<View>(it).tag as Int) } }
+            parent.addView(android.widget.HorizontalScrollView(activity).apply {
+                isHorizontalScrollBarEnabled = false; clipToPadding = false; setPadding(dp(12), 0, dp(12), dp(6)); addView(chips)
+            }, LinearLayout.LayoutParams(-1, -2))
         }
-        mark()
-        parent.addView(android.widget.HorizontalScrollView(activity).apply { isHorizontalScrollBarEnabled = false; addView(row) }, LinearLayout.LayoutParams(-1, -2))
     }
     fun radios(parent: LinearLayout, values: List<String>, initial: Int, changed: (Int) -> Unit) {
         val group = RadioGroup(activity).apply { orientation = RadioGroup.VERTICAL }
