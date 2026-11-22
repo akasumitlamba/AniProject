@@ -427,3 +427,6 @@ body { isolation: isolate; }
   .browser { grid-template-columns: 1fr; }
   .ambient-particles i { --size: 260px; }
 }
+
+#top .actions { gap: 16px 20px; }
+#top .actions .btn { padding: 14px 18px; font-size: 15px; }
