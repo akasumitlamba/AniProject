@@ -212,6 +212,3 @@ Ranking references are [Similarweb Android apps in India](https://www.similarweb
 | 96 | [Yahoo Finance](https://finance.yahoo.com/) | `finance.yahoo.com` |
 | 97 | [Yahoo Mail](https://mail.yahoo.com/) | `mail.yahoo.com` |
 
-## Existing artwork revised
-
-apna, bigbasket, BookMyShow, Canva, Concepts, Coursera, Facebook, Flipkart, Goibibo, Indeed, Ludo King, Meesho, MobiKwik, MyJio, Naukri, Notion, Ola, Opera, Paytm, Pinterest, redBus, Wipro Smart, YONO SBI, Zoom Workplace.
