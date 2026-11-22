@@ -12,6 +12,16 @@ Version 1.0.0, part of the synchronized AniProject release. An unpacked Manifest
 
 Keep that folder: Brave loads the extension from it. To update, replace its files and press Reload on the extension card. Local settings survive extension reloads and browser restarts; uninstalling removes extension storage. No store account, subscription, server, or build tool is required.
 
+Reload the extension after updating so Brave picks up the new-tab page and the bookmarks, top sites and search permissions.
+
+## New tab
+
+The extension replaces Brave’s new tab through Chromium’s `chrome_url_overrides.newtab`. This covers Brave and other Chromium browsers that load the extension. It does not cover Firefox.
+
+The page has a search box. A web address opens directly. Any other text is sent to the browser’s own default search engine. Bookmarks from the bookmarks bar come first, then other bookmarks, then top sites that are not already shown. Each site is a landscape banner. Private windows show bookmarks only.
+
+Banner art comes from the same public store AniHome uses: `https://raw.githubusercontent.com/akasumitlamba/AniProject/main/banners/catalog.json` and `images/…`. The page matches a site to a catalog entry on this device, then downloads that image with no account and no upload of the site list. The download is kept only when its SHA-256 matches the catalog and the image has the catalog’s banner shape. Otherwise the tile keeps the site’s name. A catalog copy is cached locally for 12 hours. Nothing about bookmarks, top sites or watch history is sent to the store.
+
 ## Playback
 
 Use the − and + buttons to adjust speed in 0.25× steps, from 0.25× through 5×. The same speed is shared with the site’s own playback control. Changing it on YouTube (or another HTML player) updates the extension, including the popup while it is open. Changing it in the extension updates the player and its on-screen control through the native player API where available. Native API acknowledgements are handled asynchronously; an old reply cannot overwrite a newer selection. Existing native selections are preserved even when a legacy API reports an incomplete speed list. An explicit extension choice takes precedence over a restricted site speed menu. If the native player API refuses it, the extension applies the requested speed to the HTML media element and filters scripted rate resets instead of repeatedly rewriting competing speeds. A deliberate speed-control click or speed key releases that filter and becomes the new saved choice. The site’s menu may lack the higher rate even while actual media playback uses it. Protected players or code that bypasses the media setter can still restrict playback. Repeated competing writes can cause visible speed oscillation and unnecessary player work.
@@ -49,11 +59,11 @@ Automatic identity adapters cover Crunchyroll, HiAnime (`hianime.to` / `hianimez
 
 ## Privacy and permissions
 
-All settings/history stay in `chrome.storage.local` on this browser profile. If enabled in a private window, episode memory is hidden and does not save or delete watch records; playback/view preferences remain shared with the regular profile. No analytics, remote code, external requests, or cloud service. Website access lets the content script control media and read episode headings across player frames. `tabs` resolves the active site; `webNavigation` restores site modes; `debugger` implements real viewport and user-agent/client-hint emulation; `storage` saves preferences and episode memory. Browser internal pages, extension store pages, inaccessible players, and DRM-controlled behavior may be restricted.
+All settings/history stay in `chrome.storage.local` on this browser profile. If enabled in a private window, episode memory is hidden and does not save or delete watch records; playback/view preferences remain shared with the regular profile. The new tab reads bookmarks and, outside private windows, top sites locally. Its only network requests are anonymous downloads of the public banner catalog and the individual images those sites match. Bookmarks, top sites and watch history are not uploaded, and there is no account or analytics. Website access lets the content script control media and read episode headings across player frames. `tabs` resolves the active site; `webNavigation` restores site modes; `debugger` implements real viewport and user-agent/client-hint emulation; `storage` saves preferences, episode memory and the banner catalog cache; `bookmarks` and `topSites` fill the new tab; `search` uses the browser’s default search engine. Browser internal pages, extension store pages, inaccessible players, and DRM-controlled behavior may be restricted.
 
 ## Validation
 
-- `node --test tests/*.test.js`: 48 checks covering speed ordering, validation, history edits, private-window history guards, message scope and debugger cancellation.
+- `node --test tests/*.test.js`: 56 checks covering speed ordering, validation, history edits, private-window history guards, message scope, debugger cancellation, new-tab site selection and banner-store matching.
 - `node tests/browser.cjs`: isolated real Brave profile; extension loading, popup speed changes, site-control sync in both directions, asynchronous native acknowledgements, rapid clicks, player speed limits, ad playback left intact, replacement videos, cross-origin embedded players, open shadow roots, reload persistence, history rename/deletion, persistent reminder dismissal/revisit, phone layout, identity-only view and desktop restoration. Requires Playwright and Brave; set `PLAYWRIGHT_MODULE` / `BRAVE_BINARY` if needed.
 
 Two Python packaging tests verify manifest resources and the page-world bridge. The automated browser suite uses local HTML fixtures. An additional unsigned-in public YouTube check used its actual Playback speed menu and verified site-control-to-extension and extension-to-player synchronization. Signed-in YouTube/Crunchyroll streams, DRM playback, and future live-site markup changes still need acceptance testing. No claim of bug-free compatibility is made.

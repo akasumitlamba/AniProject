@@ -20,6 +20,9 @@ class PackageTests(unittest.TestCase):
                 manifest = json.loads(archive.read('manifest.json'))
                 for content in manifest['content_scripts']:
                     for name in content['js']: self.assertEqual(archive.read(name), (ROOT / name).read_bytes())
+                self.assertEqual(manifest['chrome_url_overrides']['newtab'], 'newtab.html')
+                for name in ('newtab.html', 'newtab.js', 'newtab.css', 'newtab-core.js'):
+                    self.assertEqual(archive.read(name), (ROOT / name).read_bytes())
                 self.assertIn('player.js', archive.namelist())
                 self.assertFalse(any(name.startswith('tests/') for name in archive.namelist()))
 

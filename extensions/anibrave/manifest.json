@@ -3,12 +3,15 @@
   "name": "AniBrave \u2014 Playback & Anime Memory",
   "version": "1.1.0",
   "minimum_chrome_version": "125",
-  "description": "Per-site playback speed, device views, and private anime episode reminders.",
+  "description": "Per-site playback speed, device views, private anime episode reminders, and a local new tab.",
   "permissions": [
     "storage",
     "tabs",
     "webNavigation",
-    "debugger"
+    "debugger",
+    "bookmarks",
+    "topSites",
+    "search"
   ],
   "host_permissions": [
     "http://*/*",
@@ -17,6 +20,9 @@
   "background": {
     "service_worker": "background.js",
     "type": "module"
+  },
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
   },
   "action": {
     "default_popup": "popup.html",

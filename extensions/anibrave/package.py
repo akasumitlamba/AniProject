@@ -11,6 +11,10 @@ def runtime_files(root=ROOT):
     for pattern in ('*.js', '*.html', '*.css', 'icons/*.png'):
         names.update(str(p.relative_to(root)) for p in root.glob(pattern))
     required = [manifest['background']['service_worker'], manifest['action']['default_popup']]
+    override = manifest.get('chrome_url_overrides', {}).get('newtab')
+    if override:
+        required.append(override)
+        required.extend(['newtab.js', 'newtab.css', 'newtab-core.js'])
     for script in manifest['content_scripts']:
         required.extend(script.get('js', [])); required.extend(script.get('css', []))
     required.extend(manifest['icons'].values())

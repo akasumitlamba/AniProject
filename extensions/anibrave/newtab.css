@@ -1,0 +1,38 @@
+:root{color-scheme:dark;font:15px/1.4 system-ui,sans-serif;color:#f4f0e9;background:#191817;--surface:#252320;--border:#403b35;--muted:#b8afa3;--accent:#e2b779}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh}
+main{max-width:1080px;margin:0 auto;padding:56px 28px 72px}
+header{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+header img{width:28px;height:28px}
+h1{margin:0;font-size:18px;font-weight:650;letter-spacing:.01em}
+h2{margin:0 0 12px;font-size:13px;font-weight:600;color:var(--muted)}
+form{display:flex;gap:8px;margin:0 0 40px}
+input,button{font:inherit;color:inherit}
+input{flex:1;min-width:0;height:52px;padding:0 16px;background:#211f1c;border:1px solid var(--border);border-radius:12px}
+input::placeholder{color:#8d8478}
+button{height:52px;padding:0 18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;cursor:pointer}
+button:hover,input:hover{border-color:#71614b}
+button:hover{background:#34302a;color:var(--accent)}
+section{margin-top:28px}
+section:first-of-type{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px 14px;list-style:none;margin:0;padding:0}
+.grid a{display:block;color:inherit;text-decoration:none;border-radius:12px}
+.art{position:relative;display:block;aspect-ratio:1.62/1;overflow:hidden;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+.art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
+.art img.ready{opacity:1}
+.art img.ready + .fallback{display:none}
+.fallback{position:absolute;inset:0;display:grid;place-items:center;font-size:28px;font-weight:650;color:var(--accent)}
+.name{display:block;margin-top:8px;font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+.grid a:hover .name{color:var(--accent)}
+.grid a:hover .art{border-color:#71614b}
+#empty,#status{margin:28px 0 0;color:var(--muted);font-size:13px}
+#empty:empty,#status:empty{display:none}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){.art img{transition:opacity .2s ease}}
+@media (max-width:640px){
+  main{padding:32px 16px 48px}
+  form{flex-direction:column}
+  button,input{width:100%}
+  .grid{grid-template-columns:1fr 1fr;gap:12px}
+}

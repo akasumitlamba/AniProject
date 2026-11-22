@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New Tab</title>
+  <link rel="stylesheet" href="newtab.css">
+</head>
+<body>
+<main>
+  <header>
+    <img src="icons/48.png" width="28" height="28" alt="">
+    <h1>AniBrave</h1>
+  </header>
+  <form id="search" role="search">
+    <label class="sr" for="query">Search</label>
+    <input id="query" type="search" placeholder="Search or type an address" autocomplete="off" spellcheck="false" enterkeyhint="search" maxlength="2000">
+    <button type="submit">Search</button>
+  </form>
+  <section id="bookmarks" hidden>
+    <h2>Bookmarks</h2>
+    <ul class="grid"></ul>
+  </section>
+  <section id="top-sites" hidden>
+    <h2>Top sites</h2>
+    <ul class="grid"></ul>
+  </section>
+  <p id="empty">Bookmarks and top sites will show up here.</p>
+  <p id="status" role="status"></p>
+</main>
+<script src="newtab.js" type="module"></script>
+</body>
+</html>

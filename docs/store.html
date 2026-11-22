@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Banner store | AniProject</title>
+  <meta name="description" content="Find banner artwork for your AniHome launcher.">
+  <meta name="theme-color" content="#0d0e11">
+  <link rel="preload" href="site/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="site/style.css">
+  <script src="site/app.js" defer></script>
+</head>
+<body>
+<div class="ambient-particles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <a class="wordmark" href="index.html"><span class="dot" aria-hidden="true"></span>AniProject</a>
+  <nav aria-label="Products">
+    <a href="anihome.html">AniHome</a>
+    <a href="anibrave.html">AniBrave</a>
+    <a href="store.html" aria-current="page">Banner store</a>
+    <a href="desktop.html">Desktop</a>
+  </nav>
+  <div class="nav-end">
+    <a class="ghost" href="https://github.com/akasumitlamba/AniProject">GitHub</a>
+    <a class="btn btn-small" href="index.html#get">Downloads</a>
+  </div>
+</header>
+<main id="main" tabindex="-1">
+<section class="channel store" id="store" aria-labelledby="store-title">
+  <header class="store-masthead">
+    <div>
+      <h1 class="display" id="store-title">Banner store</h1>
+      <p class="lede"><span data-count>Find</span> banners for your apps and websites in AniHome.</p>
+    </div>
+    <a class="link-arrow" href="#store-guide-title">Use or contribute a banner</a>
+  </header>
+  <div class="store-bar">
+    <label class="search">
+      <span class="sr">Search banners</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" disabled placeholder="Search apps and websites…" data-search autocomplete="off">
+    </label>
+    <details class="category-menu">
+      <summary data-category-label>Categories</summary>
+      <div class="chips" role="group" aria-label="Categories" data-chips></div>
+    </details>
+  </div>
+  <p class="store-status" data-status aria-live="polite" tabindex="-1">Loading the catalogue…</p>
+  <noscript><p>Search requires JavaScript. <a href="https://github.com/akasumitlamba/AniProject/tree/main/banners">Browse the banners on GitHub</a>.</p></noscript>
+  <ul class="wall" data-wall data-loading></ul>
+  <div class="store-more"><button type="button" class="btn btn-quiet" data-more hidden>Show more</button></div>
+</section>
+<section class="channel store-guide" aria-labelledby="store-guide-title">
+  <h2 class="title" id="store-guide-title">Put a banner on Home.</h2>
+  <div class="specs">
+    <div><h3 class="label">In AniHome</h3><p>Hold an app or website on Home, choose Image, then open Store. Pick the suggested match or search for another banner.</p></div>
+    <div><h3 class="label">Contribute</h3><p>Add artwork and its catalogue entry to the public project. <a href="https://github.com/akasumitlamba/AniProject/blob/main/banners/CONTRIBUTING.md">Read the banner contribution guide</a>.</p></div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <a class="wordmark" href="index.html"><span class="dot" aria-hidden="true"></span>AniProject</a>
+  <p>Source under the <a href="https://github.com/akasumitlamba/AniProject/blob/main/LICENSE">Mozilla Public License 2.0</a>. App names and logos in the banner catalog belong to their owners; AniProject is independent of Brave Software and the services shown.</p>
+  <p><a href="https://github.com/akasumitlamba/AniProject">GitHub</a> · <a href="https://github.com/akasumitlamba/AniProject/releases">Releases</a> · <a href="https://github.com/akasumitlamba/AniProject/blob/main/CHANGELOG.md">Changelog</a></p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AniHome | AniProject</title>
+  <meta name="description" content="The Android launcher for apps, websites and widgets.">
+  <meta name="theme-color" content="#0d0e11">
+  <link rel="preload" href="site/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="site/style.css">
+  <script src="site/app.js" defer></script>
+</head>
+<body>
+<div class="ambient-particles" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <a class="wordmark" href="index.html"><span class="dot" aria-hidden="true"></span>AniProject</a>
+  <nav aria-label="Products">
+    <a href="anihome.html" aria-current="page">AniHome</a>
+    <a href="anibrave.html">AniBrave</a>
+    <a href="store.html">Banner store</a>
+    <a href="desktop.html">Desktop</a>
+  </nav>
+  <div class="nav-end">
+    <a class="ghost" href="https://github.com/akasumitlamba/AniProject">GitHub</a>
+    <a class="btn btn-small" href="index.html#get">Downloads</a>
+  </div>
+</header>
+<main id="main" tabindex="-1">
+<section class="hero product-hero" aria-labelledby="product-title">
+  <div class="hero-copy">
+    <p class="label">Android launcher · Android 8+</p>
+    <h1 class="display" id="product-title">AniHome</h1>
+    <p class="lede">Turn your apps and websites into a wall of banners. Make room for the controls you use every day.</p>
+    <div class="actions"><a class="btn" href="https://github.com/akasumitlamba/AniProject/releases/latest" data-download="anihome">Download AniHome <span class="btn-meta" data-version>APK</span></a> <a class="link-arrow" href="#anihome">Explore features</a></div>
+  </div>
+  <figure class="hero-device">
+    <div class="tablet">
+      <img src="site/shots/tablet-home.webp" srcset="site/shots/tablet-home-640.webp 640w, site/shots/tablet-home-960.webp 960w, site/shots/tablet-home.webp 1600w" sizes="(max-width: 640px) 90vw, (max-width: 1000px) 80vw, 55vw" alt="AniHome on a tablet: a wall of colourful app banners over a rolling green landscape, with the dock along the right edge" width="1600" height="1000" fetchpriority="high" decoding="async">
+    </div>
+    <figcaption class="label">AniHome on a tablet, landscape</figcaption>
+  </figure>
+</section>
+<section class="channel product-section" id="anihome" aria-labelledby="anihome-title">
+  <header class="section-heading">
+    <h2 class="title" id="anihome-title">Make it your Home.</h2>
+  </header>
+  <div class="tuner" data-tuner>
+    <ol class="programmes" role="tablist" aria-orientation="vertical" aria-label="AniHome features">
+      <li role="presentation"><button type="button" role="tab" id="feature-1" aria-selected="false" aria-controls="screen-1" tabindex="-1">
+        <span class="p-title">Home banners</span>
+      </button></li>
+      <li role="presentation"><button type="button" role="tab" id="feature-2" aria-selected="true" aria-controls="screen-2" tabindex="0">
+        <span class="p-title">Control Center</span>
+      </button></li>
+      <li role="presentation"><button type="button" role="tab" id="feature-3" aria-selected="false" aria-controls="screen-3" tabindex="-1">
+        <span class="p-title">Banner store</span>
+      </button></li>
+      <li role="presentation"><button type="button" role="tab" id="feature-4" aria-selected="false" aria-controls="screen-4" tabindex="-1">
+        <span class="p-title">Your own artwork</span>
+      </button></li>
+      <li role="presentation"><button type="button" role="tab" id="feature-5" aria-selected="false" aria-controls="screen-5" tabindex="-1">
+        <span class="p-title">Dock controls</span>
+      </button></li>
+    </ol>
+    <div class="screens">
+      <div role="tabpanel" id="screen-1" aria-labelledby="feature-1" tabindex="0" hidden>
+        <img src="site/shots/tablet-home.webp" srcset="site/shots/tablet-home-640.webp 640w, site/shots/tablet-home-960.webp 960w, site/shots/tablet-home.webp 1600w" sizes="(max-width: 640px) 90vw, (max-width: 1000px) 80vw, 55vw" alt="Tablet Home with app banners and a right-hand dock over a green landscape" decoding="async" fetchpriority="high" width="1600" height="1000">
+        <p>Match apps and websites with artwork from the store, or keep them as icons.</p>
+      </div>
+      <div role="tabpanel" id="screen-2" aria-labelledby="feature-2" tabindex="0">
+        <img src="site/shots/controls.webp" width="760" height="843" alt="Expanded AniHome Control Center with round buttons and brightness and volume sliders" decoding="async" loading="lazy">
+        <p>Resize round controls and sliders, swipe through pages and move the media player. Fullscreen gives notifications their own space.</p>
+      </div>
+      <div role="tabpanel" id="screen-3" aria-labelledby="feature-3" tabindex="0" hidden>
+        <img src="site/shots/banner-store.webp" width="535" height="870" alt="AniHome banner picker with search and matching artwork" decoding="async" loading="lazy">
+        <p>Search the store inside AniHome and choose the suggested match for your app.</p>
+      </div>
+      <div role="tabpanel" id="screen-4" aria-labelledby="feature-4" tabindex="0" hidden>
+        <img src="site/shots/banner-editor.webp" width="560" height="870" alt="Banner editor with a rounded crop preview" decoding="async" loading="lazy">
+        <p>Choose a picture from your gallery and frame it in the banner editor.</p>
+      </div>
+      <div role="tabpanel" id="screen-5" aria-labelledby="feature-5" tabindex="0" hidden>
+        <img src="site/shots/dock.webp" width="960" height="236" alt="AniHome dock with clock, messages and quick controls" decoding="async" loading="lazy">
+        <p>Keep up to three of your favourite controls beside the clock, battery and messages.</p>
+      </div>
+    </div>
+  </div>
+  <div class="specs">
+    <div><h2 class="label">Tablet gestures</h2><p>Swipe up for Home or Recents, and slide along the bottom to switch apps on supported tablets.</p></div>
+    <div><h2 class="label">Notification history</h2><p>Turn on history to keep dismissed notifications on your device for as long as you choose.</p></div>
+    <div><h2 class="label">Privacy</h2><p>AniHome has no accounts, ads or analytics.</p></div>
+  </div>
+</section>
+<section class="wallpaper" aria-labelledby="wallpaper-title">
+  <img src="site/shots/wallpaper.webp" width="1280" height="720" alt="" loading="lazy" decoding="async">
+  <div>
+    <h2 class="title" id="wallpaper-title">One wallpaper, two frames.</h2>
+    <p>Choose a wallpaper in AniHome and frame it separately for portrait and landscape. Your banners stay over the part of the picture you chose for each orientation.</p>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <a class="wordmark" href="index.html"><span class="dot" aria-hidden="true"></span>AniProject</a>
+  <p>Source under the <a href="https://github.com/akasumitlamba/AniProject/blob/main/LICENSE">Mozilla Public License 2.0</a>. App names and logos in the banner catalog belong to their owners; AniProject is independent of Brave Software and the services shown.</p>
+  <p><a href="https://github.com/akasumitlamba/AniProject">GitHub</a> · <a href="https://github.com/akasumitlamba/AniProject/releases">Releases</a> · <a href="https://github.com/akasumitlamba/AniProject/blob/main/CHANGELOG.md">Changelog</a></p>
+</footer>
+
+</body>
+</html>

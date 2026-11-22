@@ -1,5 +1,10 @@
 # Release history
 
+## Unreleased
+
+- The AniBrave desktop extension adds a new tab with search, bookmarks and top sites, using artwork from the public banner store.
+- The AniProject website introduces dedicated product pages and a searchable banner catalogue.
+
 ## 1.1.0 — Control Center, volume panel and AniHome Settings
 
 See [the full 1.1.0 release notes](docs/releases/1.1.0.md) for every change.
